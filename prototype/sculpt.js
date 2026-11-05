@@ -195,3 +195,16 @@ export function grimeTex(base, { rust = 60, scratches = 2500 } = {}) {
 }
 export const toothMat = () => new THREE.MeshPhysicalMaterial({ color: '#c9b27a', roughness: 0.42, clearcoat: 0.4 });
 export const clawMat = () => new THREE.MeshPhysicalMaterial({ color: '#1e1a14', roughness: 0.3, clearcoat: 0.6 });
+
+// Generic variant pass for any monster: size, skin tint and wear, so no two copies match.
+export function applyVariant(group, v = 0) {
+  if (!v) return group;
+  const h = (k) => ((Math.imul((v + 1) * 2654435761, (k + 3) * 40503) >>> 8) % 1000) / 1000;
+  group.scale.multiplyScalar(0.92 + h(1) * 0.16);
+  const tint = new THREE.Color().setHSL(h(2), 0.25, 0.82 + h(3) * 0.18);
+  group.traverse((o) => {
+    if (!o.isMesh || !o.material || !o.material.vertexColors) return;
+    o.material = o.material.clone(); o.material.color = tint; o.material.roughness = Math.min(1, o.material.roughness * (0.85 + h(4) * 0.3));
+  });
+  return group;
+}

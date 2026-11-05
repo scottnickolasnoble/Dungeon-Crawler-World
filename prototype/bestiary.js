@@ -1,10 +1,13 @@
 import * as THREE from './node_modules/three/build/three.module.js';
 import { makeGoblin } from './creature.js';
 import * as T1 from './monsters/tier1.js';
-import { grimeTex, canvasTex, rnd } from './sculpt.js';
+import { grimeTex, canvasTex, rnd, applyVariant } from './sculpt.js';
 
 // name -> [builder, camera position, look-at target, fov]
+const pack = (make, n, spacing) => () => { const g = new THREE.Group(); for (let i = 0; i < n; i++) { const m = make.variants ? make({ variant: i }) : applyVariant(make({ variant: i }), i); m.position.set((i - (n - 1) / 2) * spacing, 0, -Math.abs(i - (n - 1) / 2) * 0.35); m.rotation.y = (i - (n - 1) / 2) * -0.12; g.add(m); } return g; };
+makeGoblin.variants = true;
 const MONSTERS = {
+  goblinpack: [pack(makeGoblin, 5, 0.85), [0.4, 1.5, 4.6], [0, 0.95, -0.2], 40],
   goblin: [makeGoblin, [1.3, 1.45, 3.2], [0, 1.0, 0.1], 34],
   lamprey: [T1.drainLamprey, [1.1, 1.3, 1.9], [0, 0.7, 0.1], 34],
   wight: [T1.mopWight, [1.0, 1.5, 2.8], [0, 1.15, 0.1], 36],

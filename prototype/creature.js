@@ -234,6 +234,12 @@ const leatherTex = canvasTex(256, 256, (g, w, h) => {
 });
 leatherTex.wrapS = leatherTex.wrapT = THREE.RepeatWrapping;
 
+const grime = (base, o = {}) => canvasTex(256, 256, (g, w, h) => {
+  g.fillStyle = base; g.fillRect(0, 0, w, h);
+  for (let i = 0; i < 700; i++) { g.fillStyle = `rgba(${rnd() < 0.6 ? 30 : 220},${rnd() < 0.6 ? 26 : 215},20,${rnd() * 0.22})`; g.fillRect(rnd() * w, rnd() * h, 1 + rnd() * 16, 1 + rnd() * 1.5); }
+  for (let i = 0; i < (o.rust ?? 25); i++) { g.fillStyle = `rgba(110,50,20,${0.15 + rnd() * 0.4})`; g.beginPath(); g.arc(rnd() * w, rnd() * h, 2 + rnd() * 10, 0, 7); g.fill(); }
+});
+
 // ---------- build ----------
 let cachedGeo = null;
 function buildSkinGeometry() {
@@ -319,9 +325,17 @@ function skinMaterial() {
   return m;
 }
 
+// Outfit variants: every goblin in a pack looks a little different.
+const HEADGEAR = ['cone', 'coneYellow', 'bucket', 'hardhat', 'coneBroken', 'cone'];
+const WEAPONS = ['club', 'pipe', 'stopSign', 'club'];
+const SKIN_TINTS = ['#ffffff', '#e4f0cc', '#d6dcff', '#ffe4cc', '#c8d8b0'];
+const CLOTH = ['#8a7058', '#5a6a7a', '#7a3a2a', '#4a5a3a'];
 export function makeGoblin(opts = {}) {
+  const v = opts.variant ?? 0;
+  const pick = (arr, k) => arr[(v + k * 7) % arr.length]; // each attribute steps once per goblin, so pack-mates differ
   const g = new THREE.Group();
-  const skin = new THREE.Mesh(buildSkinGeometry(), skinMaterial());
+  const sm = skinMaterial(); sm.color = new THREE.Color(pick(SKIN_TINTS, 1));
+  const skin = new THREE.Mesh(buildSkinGeometry(), sm);
   g.add(skin);
   const eyeMat = new THREE.MeshPhysicalMaterial({ map: eyeTex, roughness: 0.15, clearcoat: 1, clearcoatRoughness: 0.02, emissive: new THREE.Color('#ff8800'), emissiveIntensity: 0.12, emissiveMap: eyeTex });
   for (const sx of [-1, 1]) {
@@ -344,12 +358,34 @@ export function makeGoblin(opts = {}) {
   const claw = (x, y, z, rx, rz) => { const c = new THREE.Mesh(new THREE.ConeGeometry(0.007, 0.035, 6), clawMat); c.position.set(x, y, z); c.rotation.set(rx, 0, rz); g.add(c); };
   for (const [dx, dy] of [[-0.25, -0.1], [0, -0.15], [0.25, -0.2], [0.5, -0.1]]) claw(0.34 + dx * 0.11, 0.91 + dy * 0.11 - 0.02, 0.36 + 0.11 * 0.95 + 0.015, 1.9, 0);
   // traffic-cone helmet, real plastic
-  const coneMat = new THREE.MeshPhysicalMaterial({ map: coneTex, roughness: 0.55, clearcoat: 0.3, clearcoatRoughness: 0.6 });
+  const gear = pick(HEADGEAR, 2);
   const helmet = new THREE.Group();
-  const cone = new THREE.Mesh(new THREE.CylinderGeometry(0.028, 0.15, 0.36, 40, 1, true), coneMat); cone.position.y = 0.18;
-  const brim = new THREE.Mesh(new THREE.BoxGeometry(0.31, 0.022, 0.31), new THREE.MeshPhysicalMaterial({ color: '#c94a0a', roughness: 0.7 }));
-  const tip = new THREE.Mesh(new THREE.CylinderGeometry(0.03, 0.03, 0.01, 20), coneMat); tip.position.y = 0.36;
-  helmet.add(cone, brim, tip); helmet.position.set(0.0, 1.70, 0.08); helmet.rotation.set(-0.18, 0, 0.12); g.add(helmet);
+  if (gear.startsWith('cone')) {
+    const coneMat = new THREE.MeshPhysicalMaterial({ map: coneTex, roughness: 0.55, clearcoat: 0.3, clearcoatRoughness: 0.6, color: gear === 'coneYellow' ? '#ffe070' : '#ffffff' });
+    const h = gear === 'coneBroken' ? 0.22 : 0.36;
+    const cone = new THREE.Mesh(new THREE.CylinderGeometry(gear === 'coneBroken' ? 0.07 : 0.028, 0.15, h, 40, 1, true), coneMat); cone.position.y = h / 2;
+    const brim = new THREE.Mesh(new THREE.BoxGeometry(0.31, 0.022, 0.31), new THREE.MeshPhysicalMaterial({ color: gear === 'coneYellow' ? '#c8a020' : '#c94a0a', roughness: 0.7 }));
+    helmet.add(cone, brim);
+    if (gear !== 'coneBroken') { const tip = new THREE.Mesh(new THREE.CylinderGeometry(0.03, 0.03, 0.01, 20), coneMat); tip.position.y = h; helmet.add(tip); }
+  } else if (gear === 'bucket') {
+    const tin = new THREE.MeshStandardMaterial({ map: grime('#8a8c90'), metalness: 0.85, roughness: 0.45 });
+    const b = new THREE.Mesh(new THREE.CylinderGeometry(0.13, 0.15, 0.2, 32, 1, true), tin); b.position.y = 0.08; b.material.side = THREE.DoubleSide;
+    const top = new THREE.Mesh(new THREE.CircleGeometry(0.13, 32), tin); top.rotation.x = -Math.PI / 2; top.position.y = 0.18;
+    const handle = new THREE.Mesh(new THREE.TorusGeometry(0.14, 0.005, 6, 24, Math.PI), tin); handle.position.y = 0.02; handle.rotation.z = Math.PI;
+    helmet.add(b, top, handle);
+  } else {
+    const plastic = new THREE.MeshPhysicalMaterial({ color: '#e8b400', roughness: 0.4, clearcoat: 0.6, map: grime('#e8b400') });
+    const dome = new THREE.Mesh(new THREE.SphereGeometry(0.145, 32, 16, 0, Math.PI * 2, 0, Math.PI / 2), plastic); dome.position.y = 0.0;
+    const peak = new THREE.Mesh(new THREE.CylinderGeometry(0.17, 0.17, 0.012, 32, 1, false, -0.9, 1.8), plastic); peak.position.set(0, 0.0, 0.02);
+    const ridge = new THREE.Mesh(new THREE.BoxGeometry(0.03, 0.03, 0.27), plastic); ridge.position.y = 0.13;
+    helmet.add(dome, peak, ridge);
+  }
+  helmet.position.set(0.0, 1.70, 0.08); helmet.rotation.set(-0.18, 0, 0.12 * (v % 2 ? -1 : 1)); g.add(helmet);
+  // hubcap shoulder armour on some goblins
+  if (pick([0, 1, 0], 3)) {
+    const cap = new THREE.Mesh(new THREE.CylinderGeometry(0.11, 0.12, 0.025, 24), new THREE.MeshStandardMaterial({ map: grime('#b0b4ba'), metalness: 0.95, roughness: 0.3 }));
+    cap.position.set(0.25, 1.36, 0.0); cap.rotation.set(0, 0, -0.9); g.add(cap);
+  }
   // leather belt, straps and loincloth
   const leather = new THREE.MeshPhysicalMaterial({ map: leatherTex, roughness: 0.8, sheen: 0.3, sheenColor: new THREE.Color('#704a30') });
   const belt = new THREE.Mesh(new THREE.TorusGeometry(1, 0.03, 10, 48), leather); belt.scale.set(0.185, 0.145, 1); belt.rotation.x = Math.PI / 2; belt.position.set(0, 0.9, 0.01);
@@ -362,10 +398,24 @@ export function makeGoblin(opts = {}) {
   const cloth = new THREE.PlaneGeometry(0.22, 0.32, 20, 30); const cp = cloth.attributes.position;
   for (let i = 0; i < cp.count; i++) { const x = cp.getX(i), y = cp.getY(i); cp.setZ(i, Math.sin(x * 60) * 0.008 + vnoise(x * 30, y * 20, 0) * 0.012 - (0.16 - y) * 0.1); if (y < -0.12) cp.setX(i, x + vnoise(x * 50, y * 50, 3) * 0.015); }
   cloth.computeVertexNormals();
-  const rag = new THREE.Mesh(cloth, new THREE.MeshPhysicalMaterial({ map: leatherTex, color: '#8a7058', roughness: 0.95, side: THREE.DoubleSide }));
+  const rag = new THREE.Mesh(cloth, new THREE.MeshPhysicalMaterial({ map: leatherTex, color: pick(CLOTH, 4), roughness: 0.95, side: THREE.DoubleSide }));
   rag.position.set(0, 0.74, 0.16); g.add(rag);
-  // nail-studded club in right hand
+  // weapon in the right hand
   const club = new THREE.Group();
+  const weapon = pick(WEAPONS, 5);
+  if (weapon === 'pipe') {
+    const steel = new THREE.MeshStandardMaterial({ map: grime('#6a6c70'), metalness: 0.9, roughness: 0.5 });
+    const p = new THREE.Mesh(new THREE.CylinderGeometry(0.022, 0.022, 0.75, 16), steel); p.position.y = 0.25; club.add(p);
+    const elbow = new THREE.Mesh(new THREE.TorusGeometry(0.05, 0.026, 10, 16, Math.PI / 2), steel); elbow.position.set(-0.05, 0.62, 0); club.add(elbow);
+  } else if (weapon === 'stopSign') {
+    const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.014, 0.014, 0.9, 10), new THREE.MeshStandardMaterial({ map: grime('#7a7c80'), metalness: 0.8, roughness: 0.5 })); pole.position.y = 0.3; club.add(pole);
+    const sign = new THREE.Mesh(new THREE.CylinderGeometry(0.16, 0.16, 0.012, 8), new THREE.MeshPhysicalMaterial({ map: grime('#b01810', { rust: 30 }), roughness: 0.5, metalness: 0.4 }));
+    sign.rotation.x = Math.PI / 2; sign.position.set(0, 0.78, 0); club.add(sign);
+    club.position.set(...RIGHT_HAND); club.rotation.set(-0.35, 0, 0.55); g.add(club);
+    g.traverse((o) => { if (o.isMesh) { o.castShadow = true; o.receiveShadow = true; } });
+    return g;
+  }
+  if (weapon === 'pipe') { club.position.set(...RIGHT_HAND); club.rotation.set(-0.35, 0, 0.55); g.add(club); g.traverse((o) => { if (o.isMesh) { o.castShadow = true; o.receiveShadow = true; } }); return g; }
   const shaft = new THREE.CylinderGeometry(0.022, 0.05, 0.7, 14, 20); const sp = shaft.attributes.position;
   for (let i = 0; i < sp.count; i++) { const x = sp.getX(i), y = sp.getY(i), z = sp.getZ(i); const k = 1 + vnoise(x * 40, y * 12, z * 40) * 0.12; sp.setXYZ(i, x * k, y, z * k); }
   shaft.computeVertexNormals();
