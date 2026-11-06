@@ -8,6 +8,7 @@ import * as T5 from './monsters/tier5.js';
 import * as T6 from './monsters/tier6.js';
 import * as BO1 from './monsters/bosses1.js';
 import * as N1 from './npcs/floor1to3.js';
+import * as BO2 from './monsters/bosses2.js';
 import { grimeTex, canvasTex, rnd, applyVariant, buildMesh } from './sculpt.js';
 import { humanoid } from './anatomy.js';
 
@@ -15,6 +16,21 @@ import { humanoid } from './anatomy.js';
 const pack = (make, n, spacing) => () => { const g = new THREE.Group(); for (let i = 0; i < n; i++) { const m = make.variants ? make({ variant: i }) : applyVariant(make({ variant: i }), i); m.position.set((i - (n - 1) / 2) * spacing, 0, -Math.abs(i - (n - 1) / 2) * 0.35); m.rotation.y = (i - (n - 1) / 2) * -0.12; g.add(m); } return g; };
 makeGoblin.variants = true;
 const MONSTERS = {
+  kevlar: [BO2.captainKevlar, [3.0, 3.0, 6.6], [0, 1.9, 0.3], 40, -2.6, -2.2],
+  fetch: [BO2.mrFetch, [3.4, 2.4, 4.6], [0, 1.1, 0.4], 40, -3.0, -2.4],
+  sludge: [BO2.auntieSludge, [2.6, 2.4, 5.0], [-0.2, 1.5, 0.4], 40, -2.6, -2.2],
+  blob: [BO2.birthdayBlob, [3.4, 3.2, 6.6], [0, 1.7, 0], 42, -3.5, -3.0],
+  pope: [BO2.gnomePope, [2.6, 2.4, 5.4], [0, 1.4, 0.3], 40, -3.0, -2.6],
+  notice: [BO2.finalNotice, [3.0, 2.4, 4.6], [0, 0.8, 0], 42, -3.0, -2.6],
+  hoa: [BO2.hoaPresident, [3.2, 2.8, 6.4], [0, 1.6, 0.2], 42, -3.5, -1.6],
+  brick: [BO2.officerBrick, [3.0, 2.8, 6.0], [0, 1.9, 0.3], 40, -3.0, -2.2],
+  kraken: [BO2.foodCourtKraken, [6.0, 5.0, 9.5], [0, 2.0, 0], 44, -6, -4.6],
+  sprinkler: [BO2.sprinklerLord, [4.6, 3.6, 8.4], [0, 2.4, 0], 44, -6, -2.4],
+  icecream: [BO2.iceCreamTruck, [5.6, 3.4, 8.4], [0, 1.8, 0.5], 42, -6, -3.0],
+  matriarch: [BO2.dogParkMatriarch, [5.0, 3.8, 7.2], [0, 1.6, -0.6], 44, -6, -3.6],
+  mallmother: [BO2.mallMother, [8.5, 6.0, 13], [0, 4.0, 0], 46, -8, -5.5],
+  mayor: [BO2.mayorEternal, [4.0, 3.6, 8.0], [0, 2.4, 0.4], 42, -3.5, -2.2],
+  culdesac: [BO2.culDeSac, [0, 16, 26], [0, 1.5, 0], 50, -30, 3.0],
   marta: [N1.martaVance, [1.0, 1.4, 2.6], [0, 1.0, 0.1], 36],
   pickles: [N1.pickles, [1.1, 1.2, 2.3], [0, 0.85, 0], 36],
   spin: [N1.spinCycle, [1.1, 1.5, 3.0], [0, 1.1, 0], 36],
@@ -75,6 +91,7 @@ r.shadowMap.enabled = true; r.shadowMap.type = THREE.PCFSoftShadowMap;
 document.getElementById('stage').appendChild(r.domElement);
 const scene = new THREE.Scene(); scene.background = new THREE.Color('#140e18'); scene.fog = new THREE.Fog('#140e18', 6, 16);
 const cam = new THREE.PerspectiveCamera(fov, W / H, 0.02, 50); cam.position.set(...cp); cam.lookAt(...ct);
+{ const dist = Math.hypot(cp[0] - ct[0], cp[1] - ct[1], cp[2] - ct[2]); scene.fog.near = Math.max(6, dist * 1.1); scene.fog.far = Math.max(16, dist * 2.6); cam.far = Math.max(50, dist * 4); cam.updateProjectionMatrix(); }
 
 // stone-tile dungeon floor and a back wall
 const stone = canvasTex(1024, 1024, (g, w, h) => {
@@ -83,9 +100,9 @@ const stone = canvasTex(1024, 1024, (g, w, h) => {
   for (let i = 0; i < n; i++) for (let j = 0; j < n; j++) { g.fillStyle = `hsl(${20 + rnd() * 15},${10 + rnd() * 8}%,${17 + rnd() * 8}%)`; g.fillRect(i * s + 6, j * s + 6, s - 12, s - 12);
     for (let k = 0; k < 400; k++) { g.fillStyle = `rgba(${rnd() < 0.5 ? 0 : 120},${rnd() < 0.5 ? 0 : 110},${rnd() < 0.5 ? 0 : 100},${rnd() * 0.15})`; g.fillRect(i * s + rnd() * s, j * s + rnd() * s, 2 + rnd() * 8, 2 + rnd() * 8); } }
 }, { repeat: [3, 3] });
-const floor = new THREE.Mesh(new THREE.PlaneGeometry(16, 16), new THREE.MeshStandardMaterial({ map: stone, roughness: 0.85 }));
+const floor = new THREE.Mesh(new THREE.PlaneGeometry(80, 80), new THREE.MeshStandardMaterial({ map: stone, roughness: 0.85 }));
 floor.rotation.x = -Math.PI / 2; floor.receiveShadow = true; scene.add(floor);
-const wall = new THREE.Mesh(new THREE.PlaneGeometry(16, 8), new THREE.MeshStandardMaterial({ map: grimeTex('#2a2230', { rust: 40 }), roughness: 0.95 }));
+const wall = new THREE.Mesh(new THREE.PlaneGeometry(80, 30), new THREE.MeshStandardMaterial({ map: grimeTex('#2a2230', { rust: 40 }), roughness: 0.95 }));
 wall.position.set(0, 2.5, wallZ); wall.receiveShadow = true; scene.add(wall);
 
 const mon = build(); scene.add(mon);
