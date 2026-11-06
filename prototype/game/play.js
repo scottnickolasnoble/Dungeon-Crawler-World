@@ -2,6 +2,7 @@
 import * as THREE from '../node_modules/three/build/three.module.js';
 import { createInk, Collision } from '../engine/ink.js';
 import { makeGoblin } from '../creature.js';
+import { mopWight } from '../monsters/tier1.js';
 import { SKILLS, CLASS, STATS, makeItem, makeRng, openBox, BOXES, ACHIEVEMENTS, CONSUMABLES } from './data.js';
 import { createUI } from './ui.js';
 
@@ -134,13 +135,16 @@ function explode(p, radius, dmgFn) {
 }
 
 // ---------------- mobs ----------------
-const mobs = [];
+const mobs = []; let wightTemplate = null;
 function spawnMobs(list) {
   for (const s of list) {
-    const g = makeGoblin({ variant: s.variant }); g.position.set(s.x, 0, s.z); g.rotation.y = Math.random() * 6; scene.add(g);
+    let g;
+    if (s.kind === 'wight') { if (!wightTemplate) wightTemplate = mopWight(); g = wightTemplate.clone(); g.scale.setScalar(0.95 + (s.variant % 3) * 0.06); }
+    else g = makeGoblin({ variant: s.variant });
+    g.position.set(s.x, 0, s.z); g.rotation.y = Math.random() * 6; scene.add(g);
     const mats = []; g.traverse((o) => { if (o.isMesh && o.material && o.material.vertexColors) { o.material = o.material.clone(); mats.push(o.material); } });
-    const lvl = 3 + (s.variant % 3), maxHp = 55 + lvl * 8;
-    mobs.push({ g, mats, lvl, hp: maxHp, maxHp, home: new THREE.Vector3(s.x, 0, s.z), state: 'idle', atk: 0, burn: 0, burnDps: 0, flash: 0, dead: false, deadT: 0, wander: Math.random() * 10, name: 'Traffic-Cone Goblin', bar: makeBar() });
+    const wight = s.kind === 'wight', lvl = (wight ? 3 : 2) + (s.variant % 3), maxHp = (wight ? 75 : 55) + lvl * 8;
+    mobs.push({ g, mats, lvl, hp: maxHp, maxHp, home: new THREE.Vector3(s.x, 0, s.z), state: 'idle', atk: 0, burn: 0, burnDps: 0, flash: 0, dead: false, deadT: 0, wander: Math.random() * 10, name: wight ? 'Mop Wight' : 'Traffic-Cone Goblin', kind: s.kind, bar: makeBar() });
   }
 }
 function makeBar() { const el = document.createElement('div'); el.className = 'mbar'; el.innerHTML = '<div class="mn"></div><div class="mb"><i></i></div>'; $('hud').appendChild(el); return el; }
@@ -187,7 +191,7 @@ function drawMap(cv, big = false) {
   if (big) { c.fillStyle = 'rgba(13,11,18,0.9)'; const cs = VCELL * scale; for (let gx = -S / 2; gx < S / 2; gx += VCELL) for (let gz = -S / 2; gz < S / 2; gz += VCELL) if (!visited.has(`${Math.floor(gx / VCELL)},${Math.floor(gz / VCELL)}`)) c.fillRect(X(gx), Z(gz), cs + 0.5, cs + 0.5); }
   if (!big) c.restore();
   const px = big ? X(P.pos.x) : W / 2, pz = big ? Z(P.pos.z) : H / 2; c.save(); c.translate(px, pz); c.rotate(big ? -P.yaw + Math.PI : 0); c.fillStyle = '#3FD0E0'; c.strokeStyle = '#0D0B12'; c.lineWidth = 2; c.beginPath(); c.moveTo(0, -9); c.lineTo(6, 7); c.lineTo(0, 3); c.lineTo(-6, 7); c.closePath(); c.fill(); c.stroke(); c.restore();
-  if (big) { c.fillStyle = '#F5C518'; c.font = 'bold 22px Bangers'; c.textAlign = 'left'; c.fillText(world.name, 16, 32); c.fillStyle = '#d9d2bf'; c.font = '15px Barlow Condensed'; c.fillText(`${state.discovered.size}/${m.pois.length} places discovered · fog clears as you explore · this chunk is 360 m across (Floor 1 is 2 km)`, 16, 54); }
+  if (big) { c.fillStyle = '#F5C518'; c.font = 'bold 22px Bangers'; c.textAlign = 'left'; c.fillText(world.name, 16, 32); c.fillStyle = '#d9d2bf'; c.font = '15px Barlow Condensed'; c.fillText(`${state.discovered.size}/${m.pois.length} places discovered · fog clears as you explore · this chunk is 360 m across (the full floor is about 2 km)`, 16, 54); }
 }
 
 // ---------------- loop ----------------
@@ -256,9 +260,9 @@ function frame(now) {
     // mobs
     for (const m of mobs) {
       const g = m.g;
-      if (m.dead) { m.deadT += dt; g.rotation.x = Math.max(-1.5, -m.deadT * 4); if (m.deadT > 6) { g.visible = false; } continue; }
+      if (m.dead) { m.deadT += dt; if (m.kind === 'wight') { g.position.y = -Math.min(1.6, m.deadT * 1.2); } else g.rotation.x = Math.max(-1.5, -m.deadT * 4); if (m.deadT > 6) { g.visible = false; } continue; }
       const toP = P.pos.clone().sub(g.position).setY(0), dist = toP.length();
-      if (m.state === 'idle' && dist < 16) { m.state = 'chase'; if (Math.random() < 0.5) ui.host('A goblin noticed you. It has a cone. You have a lighter. Fight!'); }
+      if (m.state === 'idle' && dist < 16) { m.state = 'chase'; if (Math.random() < 0.5) ui.host(m.kind === 'wight' ? 'A Mop Wight. Still on shift. Forever. Put it out of its misery.' : 'A goblin noticed you. It has a cone. You have a lighter. Fight!'); }
       if (m.state === 'chase' && dist > 40) m.state = 'return';
       let move = new THREE.Vector3();
       if (m.state === 'chase') { if (dist > 1.5) move = toP.clone().normalize().multiplyScalar(3.4); m.atk -= dt; if (dist < 1.9 && m.atk <= 0) { m.atk = 1.3; let dmg = 6 + m.lvl * 1.5; dmg *= 1 - Math.min(0.6, D.armor / 200); if (state.ward > 0) { const a = Math.min(state.ward, dmg); state.ward -= a; dmg -= a; state.counters.wardAbsorb += a; } state.hp -= dmg; shake = Math.max(shake, 0.15); if (dmg > 0) { dmgNumber(P.pos.clone().add(new THREE.Vector3(0, 1.4, 0)).add(fwdVec().multiplyScalar(0.8)), '-' + Math.round(dmg), 'hurt'); $('vign').style.opacity = 0.7; } } }
@@ -305,6 +309,6 @@ async function boot() {
   $('startBtn').disabled = false; $('startBtn').textContent = 'CLICK TO ENTER';
   requestAnimationFrame(frame);
 }
-$('startBtn').addEventListener('click', () => { $('loading').style.display = 'none'; started = true; $('stage').requestPointerLock(); ui.host('Welcome back to the Undercroft, Dale! Try not to die before the commercial break.'); });
+$('startBtn').addEventListener('click', () => { $('loading').style.display = 'none'; started = true; $('stage').requestPointerLock(); ui.host(FLOOR === '2' ? 'Welcome to Spin City! Mind the floor, it\u2019s wet. Everything is wet. Forever.' : 'Welcome back to the Undercroft, Dale! Try not to die before the commercial break.'); });
 boot().catch((e) => { $('loadMsg').textContent = 'Error: ' + e.message; console.error(e); });
 window.__game = { state, P, mobs, cast, ui, G };
