@@ -72,7 +72,7 @@ export const WTYPES = {
   blade: { name: 'Blade', speed: 1.15, reach: 2.4, arc: 1.8, dmg: 0.95, hits: 3, bleed: 3, desc: 'Causes bleeding' },
   pierce: { name: 'Polearm', speed: 0.95, reach: 3.5, arc: 0.8, dmg: 1.05, hits: 2, crit: 6, desc: 'Long reach, extra crit' },
   heavy: { name: 'Heavy', speed: 0.7, reach: 2.8, arc: 2.2, dmg: 1.45, hits: 4, stagger: 0.5, knock: 3, desc: 'Slow, hits hard, knocks back' },
-  quick: { name: 'Quick', speed: 1.55, reach: 2.0, arc: 1.2, dmg: 0.68, hits: 1, crit: 8, desc: 'Very fast, extra crit' },
+  quick: { name: 'Quick', speed: 1.55, reach: 2.3, arc: 1.2, dmg: 0.68, hits: 1, crit: 8, desc: 'Very fast, extra crit' },
   flail: { name: 'Flail', speed: 0.85, reach: 3.0, arc: 2.7, dmg: 0.9, hits: 5, desc: 'Wide sweeps hit crowds' },
   shock: { name: 'Shock', speed: 1.0, reach: 2.5, arc: 1.5, dmg: 0.95, hits: 3, elem: 'storm', stun: 0.2, desc: 'Shocks; can stun' },
   hot: { name: 'Searing', speed: 1.0, reach: 2.5, arc: 1.6, dmg: 0.95, hits: 3, elem: 'fire', burn: 2, desc: 'Sets enemies alight' },
