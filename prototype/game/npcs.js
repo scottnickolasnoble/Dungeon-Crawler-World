@@ -5,8 +5,9 @@ import { poolNPC } from '../npcs/races.js';
 import { rigCharacter, bipedParams, stepRig } from './anim.js';
 import { martaVance, pickles, spinCycle, oldReggie } from '../npcs/floor1to3.js';
 import { wickley, brotherAsh } from '../npcs/floor1to3.js';
+import { madamePrickle, sunnySponsorRep, bigDeb, neighbourhoodWatch, gusset, elderLantern } from '../npcs/floor4to6.js';
 
-const NAMED = { marta: martaVance, pickles, spin: spinCycle, reggie: oldReggie, wickley, ash: brotherAsh };
+const NAMED = { marta: martaVance, pickles, spin: spinCycle, reggie: oldReggie, wickley, ash: brotherAsh, sunny: sunnySponsorRep, prickle: madamePrickle, deb: bigDeb, watch: neighbourhoodWatch, gusset, lantern: elderLantern };
 // first names + jobs for filler NPCs, so the towns feel lived in
 const FIRST = ['Dot', 'Lenny', 'Moss', 'Gertie', 'Sal', 'Pip', 'Ruthie', 'Big Al', 'Tomasz', 'Nell', 'Ozzie', 'Fern', 'Hank', 'Juno', 'Wren', 'Marlow', 'Bea', 'Crispin', 'Ida', 'Rocco'];
 export const FILLER_LINES = {
@@ -52,7 +53,7 @@ export function createNPCSystem(ctx) {
   function update(dt, t, P, speakLine) {
     for (const n of npcs) {
       n.t += dt; const g = n.g, b = n.body; const toP = P.pos.clone().sub(g.position).setY(0), dp = toP.length();
-      g.visible = dp < 70; if (dp > 90 && !n.route) continue;
+      g.visible = dp < (globalThis.__VIEW || 70); if (dp > 90 && !n.route) continue;
       let moving = false; const p0x = g.position.x, p0z = g.position.z;
       const engaged = (n.kind !== 'filler' && dp < 4.5) || n.talking > 0; n.talking = Math.max(0, (n.talking || 0) - dt);
       if (n.route && !engaged) {

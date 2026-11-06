@@ -1,12 +1,13 @@
 // Procedural audio, all synthesised with Web Audio (no sound files):
 // SFX, positional panning, adaptive music (town / explore / combat / boss per floor), babble voices for NPCs,
 // the host and monsters, and an optional spoken host voice through the browser's speech engine.
+import { createVoicePack } from './voicepack.js';
 export function createAudio() {
   let ctx = null, master, music, sfx, voice, comp, noiseBuf, verb, verbSend;
   const S = { master: 0.8, music: 0.45, sfx: 0.8, voice: 0.9, voiceMode: 'speech' };
   try { Object.assign(S, JSON.parse(localStorage.getItem('downstairs_audio') || '{}')); } catch (e) {}
   const save = () => { try { localStorage.setItem('downstairs_audio', JSON.stringify(S)); } catch (e) {} };
-  let listener = { x: 0, z: 0, yaw: 0 }; let active = 0; // live oscillators/noise sources, capped so big fights can't overload audio
+  let listener = { x: 0, z: 0, yaw: 0 }; let VP = null; let active = 0; // live oscillators/noise sources, capped so big fights can't overload audio
 
   function init() {
     if (ctx) { if (ctx.state === 'suspended') ctx.resume(); return; }
@@ -17,7 +18,7 @@ export function createAudio() {
     const len = ctx.sampleRate * 1.6, ir = ctx.createBuffer(2, len, ctx.sampleRate); for (let c = 0; c < 2; c++) { const d = ir.getChannelData(c); for (let i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, 3); }
     verb = ctx.createConvolver(); verb.buffer = ir; verbSend = ctx.createGain(); verbSend.gain.value = 0.22; verbSend.connect(verb); verb.connect(master);
     noiseBuf = ctx.createBuffer(1, ctx.sampleRate * 2, ctx.sampleRate); const nd = noiseBuf.getChannelData(0); for (let i = 0; i < nd.length; i++) nd[i] = Math.random() * 2 - 1;
-    apply(); startMusic();
+    apply(); startMusic(); VP = createVoicePack(() => ctx, () => voice); VP.load();
   }
   function apply() { if (!ctx) return; master.gain.value = S.master; music.gain.value = S.music * 0.55; sfx.gain.value = S.sfx; voice.gain.value = S.voice; save(); }
 
@@ -176,6 +177,7 @@ export function createAudio() {
   }
   let speaking = null;
   function say(text, who = 'villager', pos = null, opts = {}) {
+    if (VP && VP.count()) { const d = VP.play(text, who); if (d > 0) { try { window.speechSynthesis && window.speechSynthesis.cancel(); } catch (e) {} return d; } }
     if (S.voiceMode === 'speech') { const r = speak(text, who, pos, opts); if (r >= 0) return r; }
     if (!ctx || active > 30) return 0; const P = { ...(VOICES[who] || VOICES.villager), ...(opts.voice || {}) }; if (opts.seed) { P.pitch *= 0.85 + (opts.seed % 7) * 0.05; P.formant = (P.formant || 1) * (0.92 + (opts.seed % 5) * 0.04); }
     // babble fallback (no speech voices available)
@@ -223,7 +225,7 @@ export function createAudio() {
   }
 
   return {
-    init, play, say, setMood, setFloor, settings: S, apply, voiceCount: () => voices.length, voiceFor: (who) => { const v = pickVoice(who, 0); return v ? `${v.name} (${v.lang})` : 'none'; },
+    init, play, say, voicePack: () => VP, setMood, setFloor, settings: S, apply, voiceCount: () => voices.length, voiceFor: (who) => { const v = pickVoice(who, 0); return v ? `${v.name} (${v.lang})` : 'none'; },
     stopSpeech: () => { try { window.speechSynthesis && window.speechSynthesis.cancel(); } catch (e) {} },
     setListener(x, z, yaw) { listener.x = x; listener.z = z; listener.yaw = yaw; },
     get ready() { return !!ctx; },

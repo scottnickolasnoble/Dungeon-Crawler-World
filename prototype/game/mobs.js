@@ -4,10 +4,13 @@ import * as THREE from '../node_modules/three/build/three.module.js';
 import { rigCharacter, bipedParams, stepRig } from './anim.js';
 import { makeGoblin } from '../creature.js';
 import { mopWight, fluorescentMoth, pigeonGhoul, vendingMimic, drainLamprey } from '../monsters/tier1.js';
-import { sergeantPylon, headCustodianEbb, trafficCone, bulbQueen, oldManCoo, coneKing, bigSucker } from '../monsters/bosses1.js';
+import { sergeantPylon, headCustodianEbb, trafficCone, bulbQueen, oldManCoo, coneKing, bigSucker, machineThatAteDave, grandmaGristle, lostAndFound } from '../monsters/bosses1.js';
+import { mallCopOgre, culDeSacHound, gutterHag, bounceHouseSlime, lawnGnome, couponLeech } from '../monsters/tier2.js';
+import * as B2 from '../monsters/bosses2.js';
+import { poolNPC } from '../npcs/races.js';
 
 // how each model moves: biped walk cycle, slither, wing flap or waddle
-const RIG = { goblin: 'biped', thrower: 'biped', captain: 'biped', pylon: 'biped', coneKing: 'biped', wight: 'glide', ebb: 'glide', pigeon: 'bird', coo: 'bird', moth: 'fly', bulbQueen: 'fly', mimic: 'waddle', lamprey: 'slither', bigSucker: 'slither' };
+const RIG = { lintKing: 'slither', mallcop: 'biped', hound: 'quad', hag: 'biped', slime: 'waddle', gnome: 'biped', leech: 'slither', hunter: 'biped', huntLord: 'biped', dummy: 'none', mothMatron: 'fly', pigeonElder: 'bird', dave: 'waddle', gristle: 'biped', lostfound: 'waddle', kevlar: 'biped', fetch: 'quad', sludge: 'biped', blob: 'waddle', pope: 'biped', notice: 'fly', hoa: 'biped', brick: 'biped', kraken: 'slither', sprinkler: 'waddle', icecream: 'waddle', matriarch: 'quad', mallmother: 'slither', mayor: 'biped', goblin: 'biped', thrower: 'biped', captain: 'biped', pylon: 'biped', coneKing: 'biped', wight: 'glide', ebb: 'glide', pigeon: 'bird', coo: 'bird', moth: 'fly', bulbQueen: 'fly', mimic: 'waddle', lamprey: 'slither', bigSucker: 'slither' };
 // ---------------- definitions ----------------
 // windup = how long the attack is telegraphed (parry window is the last 0.35 s of it plus the swing)
 export const MOBDEFS = {
@@ -19,6 +22,37 @@ export const MOBDEFS = {
     barks: ['HALT! This is a CONE ZONE!', 'Lads! Fall in!', 'You are parked in MY spot.', 'I have twenty years on the force. Okay, two. In cones.'], enrage: 'SERGEANT PYLON BLOWS HIS WHISTLE IN RAGE' },
   ebb: { name: 'Head Custodian Ebb', title: 'Neighbourhood Boss · Boiler Room 0', model: 'ebb', boss: true, hp: 620, dmg: 18, speed: 2.9, reach: 3.0, arc: 2.6, windup: 0.9, swing: 0.25, recover: 0.8, xp: 800, aggro: 18, leash: 30, abilities: ['sweep', 'puddle', 'clockin', 'keys'],
     barks: ['You are tracking mud on my floor.', 'Shift change, wights! Clock in!', 'Forty years. Not one dry day.'], enrage: 'HEAD CUSTODIAN EBB HAS HAD IT WITH YOU' },
+  // training dummy (towns, tutorial): never attacks, shrugs off damage
+  dummy: { name: 'Training Dummy', model: 'dummy', hp: 999, dmg: 0, speed: 0, reach: 0, arc: 0, windup: 9, swing: 0.1, recover: 1, xp: 0, aggro: 0, passive: true, barks: ['…'] },
+  cardboard: { name: 'Cardboard Goblin', model: 'goblin', hp: 18, dmg: 2, speed: 2.4, reach: 1.9, arc: 1.4, windup: 1.0, swing: 0.2, recover: 0.9, xp: 15, aggro: 20, barks: ['Grr! (on cardboard)', 'Tutorial violence!', 'I am a training goblin!'] },
+  // boss variants of regular mobs for the newer encampments
+  lintKing: { name: 'The Lint King', title: 'Neighbourhood Boss · The Lint Traps', model: 'bigSucker', boss: true, hp: 560, dmg: 18, speed: 2.0, reach: 3.6, arc: 1.6, windup: 0.85, swing: 0.2, recover: 0.8, xp: 900, aggro: 16, leash: 16, abilities: ['charge', 'slam', 'summon', 'puddle'], summon: 'lamprey', barks: ['Lint… everywhere… mine…', 'The traps are FULL.'], enrage: 'THE LINT KING CLOGS THE DRAINS' },
+  mothMatron: { name: 'The Moth Matron', title: 'Neighbourhood Boss · The Lightwell', model: 'moth', scale: 2.3, boss: true, hp: 380, dmg: 13, speed: 3.8, reach: 3.2, arc: 1.8, windup: 0.75, swing: 0.2, recover: 0.7, xp: 520, aggro: 18, leash: 26, abilities: ['nova', 'summon', 'charge'], summon: 'moth', barks: ['Who dims my light?', 'Children, to me!'], enrage: 'THE MOTH MATRON BLAZES' },
+  pigeonElder: { name: 'The Pigeon Elder', title: 'Neighbourhood Boss · The Pigeon Loft', model: 'pigeon', scale: 2.0, boss: true, hp: 340, dmg: 12, speed: 3.6, reach: 3.0, arc: 1.6, windup: 0.75, swing: 0.2, recover: 0.7, xp: 480, aggro: 16, leash: 26, abilities: ['charge', 'barrage', 'summon'], summon: 'pigeon', proj: 'crumb', barks: ['COOOOO.', 'The loft provides!'], enrage: 'THE PIGEON ELDER PUFFS UP' },
+  dave: { name: 'The Machine That Ate Dave', title: 'Neighbourhood Boss · The Machine Graveyard', model: 'dave', boss: true, hp: 700, dmg: 20, speed: 2.2, reach: 3.2, arc: 1.6, windup: 0.9, swing: 0.22, recover: 0.8, xp: 950, aggro: 16, leash: 22, abilities: ['slam', 'barrage', 'summon'], summon: 'mimic', proj: 'crumb', barks: ['EXACT CHANGE ONLY.', 'DAVE IS NOT AVAILABLE.', 'PLEASE INSERT CONTESTANT.'], enrage: 'THE MACHINE IS OUT OF ORDER. VERY OUT OF ORDER.' },
+  lostfound: { name: 'Lost & Found', title: 'Borough Boss · The Lost Property Office', model: 'lostfound', boss: true, hp: 900, dmg: 22, speed: 2.6, reach: 3.4, arc: 1.8, windup: 0.85, swing: 0.22, recover: 0.8, xp: 1500, aggro: 18, leash: 26, abilities: ['slam', 'barrage', 'summon', 'charge'], summon: 'mimic', proj: 'crumb', barks: ['Have you lost something? I have it now.', 'Unclaimed items will be eaten.'], enrage: 'LOST & FOUND IS CLAIMING EVERYTHING' },
+  gristle: { name: 'Grandma Gristle', title: 'Neighbourhood Boss · Grandma Gristle’s Kitchen', model: 'gristle', boss: true, hp: 760, dmg: 24, speed: 2.8, reach: 3.0, arc: 1.8, windup: 0.85, swing: 0.22, recover: 0.8, xp: 1400, aggro: 18, leash: 24, abilities: ['puddle', 'nova', 'summon'], summon: 'hag', barks: ['Eat your soup, dearie.', 'Second helpings for everyone!'], enrage: 'GRANDMA GRISTLE IS SERVING DESSERT' },
+  // Floors 4-6 regulars
+  mallcop: { name: 'Mall-Cop Ogre', model: 'mallcop', hp: 70, dmg: 13, speed: 3.0, reach: 2.4, arc: 1.6, windup: 0.8, swing: 0.22, recover: 0.8, xp: 36, aggro: 15, barks: ['Sir. SIR. No running.', 'You’re banned from the mall. For life.', 'Code red. Code ME.'] },
+  hound: { name: 'Cul-de-Sac Hound', model: 'hound', hp: 46, dmg: 11, speed: 5.0, reach: 1.9, arc: 1.4, windup: 0.5, swing: 0.15, recover: 0.6, xp: 30, aggro: 20, barks: ['*BARK BARK BARK*', '*growls at the mailbox*', '*snarl*'] },
+  hag: { name: 'Gutter Hag', model: 'hag', hp: 58, dmg: 12, speed: 2.8, reach: 2.2, arc: 1.4, windup: 0.7, swing: 0.2, recover: 0.8, xp: 34, aggro: 15, ranged: { min: 6, max: 14, windup: 0.9, speed: 12, cd: 3 }, proj: 'orb', barks: ['Come closer, sweetie.', 'Soup’s almost ready…', 'Hee hee hee!'] },
+  slime: { name: 'Bounce-House Slime', model: 'slime', hp: 64, dmg: 10, speed: 3.2, reach: 2.2, arc: 2, windup: 0.7, swing: 0.2, recover: 0.7, xp: 32, aggro: 14, abilities: ['slam'], barks: ['*boing*', '*wobbly laughter*', '*squelch*'] },
+  gnome: { name: 'Lawn Gnome', model: 'gnome', hp: 34, dmg: 9, speed: 3.6, reach: 1.7, arc: 1.4, windup: 0.5, swing: 0.15, recover: 0.6, xp: 24, aggro: 16, ranged: { min: 5, max: 12, windup: 0.7, speed: 13, cd: 2.4 }, proj: 'crumb', barks: ['Off the lawn!', 'HOA violation!', 'Hee! Hee!'] },
+  leech: { name: 'Coupon Leech', model: 'leech', hp: 40, dmg: 10, speed: 3.0, reach: 2.0, arc: 1.2, windup: 0.6, swing: 0.16, recover: 0.7, xp: 26, aggro: 13, barks: ['Limited time offer!', 'Buy one, get bitten.', '*paper rustling*'] },
+  hunter: { name: 'Tourist Hunter', model: 'hunter', hp: 80, dmg: 14, speed: 3.6, reach: 2.2, arc: 1.4, windup: 0.7, swing: 0.2, recover: 0.7, xp: 48, aggro: 24, elite: true, ranged: { min: 8, max: 22, windup: 1.0, speed: 22, cd: 2.6 }, proj: 'orb', abilities: ['charge'], barks: ['There! Trophy at two o’clock!', 'Hold still, contestant.', 'Licence number 4471. You’re on it.'] },
+  // Floors 4-6 bosses
+  kevlar: { name: 'Captain Kevlar', title: 'Neighbourhood Boss · Mall Security HQ', model: 'kevlar', boss: true, hp: 1000, dmg: 30, speed: 3.2, reach: 3.0, arc: 1.7, windup: 0.8, swing: 0.22, recover: 0.75, xp: 2400, aggro: 18, leash: 28, abilities: ['charge', 'slam', 'summon', 'barrage'], summon: 'mallcop', proj: 'orb', barks: ['This mall is under MY protection.', 'Backup! BACKUP!'], enrage: 'CAPTAIN KEVLAR CALLS IN EVERYONE' },
+  notice: { name: 'The Final Notice', title: 'Neighbourhood Boss · The Coupon Den', model: 'notice', boss: true, hp: 860, dmg: 28, speed: 3.4, reach: 3.0, arc: 1.6, windup: 0.8, swing: 0.2, recover: 0.7, xp: 2200, aggro: 18, leash: 26, abilities: ['barrage', 'nova', 'summon'], summon: 'leech', proj: 'orb', barks: ['THIS IS YOUR FINAL NOTICE.', 'Payment is overdue. So are you.'], enrage: 'THE FINAL NOTICE IS STAMPED IN RED' },
+  blob: { name: 'The Birthday Blob', title: 'Neighbourhood Boss · The Bounce Castle', model: 'blob', boss: true, hp: 1100, dmg: 26, speed: 2.6, reach: 3.6, arc: 2.2, windup: 0.9, swing: 0.22, recover: 0.8, xp: 2300, aggro: 16, leash: 26, abilities: ['slam', 'nova', 'summon'], summon: 'slime', barks: ['IT’S MY PARTY!', 'Cake! CAKE!'], enrage: 'THE BIRTHDAY BLOB HAS EATEN THE CAKE' },
+  kraken: { name: 'The Food Court Kraken', title: 'Borough Boss · The Food Court Depths', model: 'kraken', boss: true, hp: 1600, dmg: 34, speed: 2.4, reach: 4.4, arc: 2.4, windup: 0.95, swing: 0.25, recover: 0.8, xp: 4000, aggro: 20, leash: 26, abilities: ['sweep', 'puddle', 'barrage', 'summon'], summon: 'slime', proj: 'orb', barks: ['ORDER UP.', 'Would you like fries with your doom?'], enrage: 'THE KRAKEN FLIPS THE TABLES' },
+  mallmother: { name: 'Mall Mother', title: 'City Boss · The Atrium', model: 'mallmother', boss: true, hp: 2600, dmg: 40, speed: 2.4, reach: 5, arc: 2.6, windup: 1.0, swing: 0.25, recover: 0.9, xp: 7000, aggro: 22, leash: 30, abilities: ['sweep', 'nova', 'barrage', 'summon', 'charge'], summon: 'mallcop', proj: 'orb', barks: ['Shhh. Shop, my darlings. Shop forever.', 'Nobody leaves the mall.'], enrage: 'MALL MOTHER ANNOUNCES: THE MALL IS CLOSING' },
+  pope: { name: 'The Gnome Pope', title: 'Neighbourhood Boss · The Gnome Garden', model: 'pope', boss: true, hp: 1300, dmg: 32, speed: 3.0, reach: 3.0, arc: 1.7, windup: 0.85, swing: 0.22, recover: 0.75, xp: 3000, aggro: 18, leash: 26, abilities: ['nova', 'barrage', 'summon'], summon: 'gnome', proj: 'crumb', barks: ['Kneel, lawn-defiler.', 'Bless this garden. Curse you.'], enrage: 'THE GNOME POPE EXCOMMUNICATES YOU' },
+  fetch: { name: 'Mr. Fetch', title: 'Neighbourhood Boss · The Dog Park', model: 'fetch', boss: true, hp: 1200, dmg: 32, speed: 5.0, reach: 2.8, arc: 1.6, windup: 0.6, swing: 0.18, recover: 0.6, xp: 2900, aggro: 22, leash: 30, abilities: ['charge', 'summon', 'slam'], summon: 'hound', barks: ['*the biggest bark you have ever heard*', '*drops a ball at your feet, menacingly*'], enrage: 'MR. FETCH IS A BAD BOY NOW' },
+  hoa: { name: 'The HOA President', title: 'Borough Boss · The HOA Clubhouse', model: 'hoa', boss: true, hp: 1900, dmg: 36, speed: 3.0, reach: 3.2, arc: 1.8, windup: 0.85, swing: 0.22, recover: 0.8, xp: 4600, aggro: 20, leash: 28, abilities: ['barrage', 'summon', 'slam', 'charge'], summon: 'gnome', proj: 'orb', barks: ['Your lawn is two millimetres too long.', 'Fined. Fined. FINED.'], enrage: 'THE HOA PRESIDENT HAS CALLED AN EMERGENCY MEETING' },
+  mayor: { name: 'Mayor Eternal', title: 'City Boss · Town Hall', model: 'mayor', boss: true, hp: 3000, dmg: 42, speed: 2.8, reach: 3.4, arc: 2, windup: 0.9, swing: 0.24, recover: 0.85, xp: 8000, aggro: 22, leash: 30, abilities: ['slam', 'nova', 'barrage', 'summon', 'charge'], summon: 'hound', proj: 'orb', barks: ['Re-elect me. Forever.', 'This cul-de-sac is a democracy. I am the democracy.'], enrage: 'MAYOR ETERNAL DECLARES A STATE OF EMERGENCY' },
+  sludge: { name: 'Auntie Sludge', title: 'Neighbourhood Boss · Hag Hollow', model: 'sludge', boss: true, hp: 1500, dmg: 36, speed: 2.8, reach: 3.0, arc: 1.8, windup: 0.85, swing: 0.22, recover: 0.8, xp: 3600, aggro: 18, leash: 26, abilities: ['puddle', 'barrage', 'summon'], summon: 'hag', proj: 'orb', barks: ['Grandma’s soup was always too salty.', 'Stay for dinner. Forever.'], enrage: 'AUNTIE SLUDGE BOILS OVER' },
+  matriarch: { name: 'The Dog Park Matriarch', title: 'Neighbourhood Boss · Wild Kennel', model: 'matriarch', boss: true, hp: 1700, dmg: 38, speed: 4.6, reach: 3.0, arc: 1.7, windup: 0.6, swing: 0.18, recover: 0.6, xp: 4000, aggro: 22, leash: 30, abilities: ['charge', 'summon', 'slam'], summon: 'hound', barks: ['*a howl that shakes the leaves*'], enrage: 'THE MATRIARCH CALLS THE WHOLE PACK' },
+  huntLord: { name: 'Lord-Hunter Facet', title: 'Lodge Boss · Glimmerkin Safari Lodge', model: 'hunter', scale: 1.35, boss: true, hp: 2200, dmg: 40, speed: 3.6, reach: 3.0, arc: 1.7, windup: 0.8, swing: 0.2, recover: 0.7, xp: 6000, aggro: 26, leash: 32, abilities: ['charge', 'barrage', 'summon', 'nova'], summon: 'hunter', proj: 'orb', barks: ['A contestant in MY lodge? How sporting.', 'You’ll look wonderful above the fireplace.'], enrage: 'LORD-HUNTER FACET STOPS BEING SPORTING' },
   lamprey: { name: 'Drain Lamprey', model: 'lamprey', hp: 38, dmg: 9, speed: 2.6, reach: 2.0, arc: 1.2, windup: 0.65, swing: 0.16, recover: 0.7, xp: 22, aggro: 11, barks: ['…shhhhllk…', '*wet gurgling*', 'Ssssuck…'] },
   bigSucker: { name: 'The Big Sucker', title: 'Neighbourhood Boss · The Flooded Bay', model: 'bigSucker', boss: true, hp: 480, dmg: 15, speed: 1.9, reach: 3.6, arc: 1.6, windup: 0.85, swing: 0.2, recover: 0.8, xp: 600, aggro: 16, leash: 16, abilities: ['charge', 'slam', 'summon', 'puddle'], summon: 'lamprey', barks: ['Feeeeed meeee…', 'My clutch! Away from my clutch!', 'The drains all lead to ME.'], enrage: 'THE BIG SUCKER THRASHES IN THE FLOODWATER' },
   moth: { name: 'Fluorescent Moth', model: 'moth', hp: 42, dmg: 10, speed: 4.2, reach: 2.0, arc: 1.4, windup: 0.5, swing: 0.16, recover: 0.6, xp: 26, aggro: 17, barks: ['bzzzt… LIGHT…', 'The Queen sees you…', 'bzz bzz BZZ'] },
@@ -67,7 +101,9 @@ class NavGrid {
 const m0weapon = (b) => !!(b.getObjectByName('weapon') && b.getObjectByName('weapon').visible);
 export function createMobSystem(ctx) {
   const { scene, fx, col } = ctx; const mobs = []; const projs = []; const tele = []; const trails = []; const zones = [];
-  let nav = null, flowT = 0, flowCell = -1;
+  let nav = null, flowT = 0, flowCell = -1; let noMob = [];
+  // towns: monsters can't path into them and get pushed back out if they reach a gate
+  function setNoMob(rects) { noMob = rects; if (!nav) return; for (const [x0, z0, x1, z1] of rects) for (let x = x0; x <= x1; x += 1) for (let z = z0; z <= z1; z += 1) { const k = nav.idx(x, z); if (k >= 0) nav.block[k] = 1; } }
   const tmpl = {};
   function modelFor(kind, variant) {
     const d = MOBDEFS[kind];
@@ -82,7 +118,13 @@ export function createMobSystem(ctx) {
     if (d.model === 'wight') { if (!tmpl.w) tmpl.w = mopWight(); const g = tmpl.w.clone(); g.scale.setScalar(0.95 + (variant % 3) * 0.06); return g; }
     const T1 = { moth: fluorescentMoth, pigeon: pigeonGhoul, mimic: vendingMimic, lamprey: drainLamprey };
     if (d.model === 'bigSucker') return bigSucker();
-    if (T1[d.model]) { if (!tmpl[d.model]) tmpl[d.model] = T1[d.model](); const g = tmpl[d.model].clone(); g.scale.multiplyScalar(0.95 + (variant % 3) * 0.06); return g; }
+    if (d.model === 'dummy') { const g = new THREE.Group(); const straw = new THREE.MeshStandardMaterial({ color: '#d8b860', roughness: 0.9 }); const post = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.06, 1.7, 8), new THREE.MeshStandardMaterial({ color: '#6a4a2a' })); post.position.y = 0.85; g.add(post); const body = new THREE.Mesh(new THREE.CylinderGeometry(0.28, 0.32, 0.8, 12), straw); body.position.y = 1.15; g.add(body); const head = new THREE.Mesh(new THREE.SphereGeometry(0.2, 12, 10), straw); head.position.y = 1.75; g.add(head); const arm = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.05, 1.1, 8), straw); arm.rotation.z = Math.PI / 2; arm.position.y = 1.35; g.add(arm); const tgt = new THREE.Mesh(new THREE.CircleGeometry(0.16, 16), new THREE.MeshStandardMaterial({ color: '#c81a14' })); tgt.position.set(0, 1.2, 0.3); g.add(tgt); return g; }
+    const MODELS = { mallcop: mallCopOgre, hound: culDeSacHound, hag: gutterHag, slime: bounceHouseSlime, gnome: lawnGnome, leech: couponLeech };
+    if (MODELS[d.model]) { const key = d.model + (variant % 3); if (!tmpl[key]) tmpl[key] = MODELS[d.model]({ variant: variant % 3 }); const g = tmpl[key].clone(); return g; }
+    if (d.model === 'hunter') { const key = 'hunt' + (variant % 3); if (!tmpl[key]) tmpl[key] = poolNPC({ role: 'guard', race: ['lumen', 'grimhide', 'fennix'][variant % 3], variant: variant % 3 }); const g = tmpl[key].clone(); if (d.scale) g.scale.setScalar(d.scale); return g; }
+    const BOSS = { dave: machineThatAteDave, gristle: grandmaGristle, lostfound: lostAndFound, kevlar: B2.captainKevlar, notice: B2.finalNotice, blob: B2.birthdayBlob, kraken: B2.foodCourtKraken, mallmother: B2.mallMother, pope: B2.gnomePope, fetch: B2.mrFetch, hoa: B2.hoaPresident, mayor: B2.mayorEternal, sludge: B2.auntieSludge, matriarch: B2.dogParkMatriarch };
+    if (BOSS[d.model]) return BOSS[d.model]();
+    if (T1[d.model]) { if (!tmpl[d.model]) tmpl[d.model] = T1[d.model](); const g = tmpl[d.model].clone(); g.scale.multiplyScalar(d.scale || 0.95 + (variant % 3) * 0.06); return g; }
     if (d.model === 'bulbQueen') return bulbQueen(); if (d.model === 'coo') return oldManCoo(); if (d.model === 'coneKing') return coneKing();
     if (d.model === 'pylon') return sergeantPylon();
     if (d.model === 'ebb') return headCustodianEbb();
@@ -97,6 +139,7 @@ export function createMobSystem(ctx) {
     if (rt === 'biped') rig = rigCharacter(body, bipedParams(body, { arms: m0weapon(body) ? 0.5 : 1 }), ['weapon', 'held'], ctx.rigged);
     else if (rt === 'bird') rig = rigCharacter(body, bipedParams(body, { hip: 0.3, shoulder: 0.6, arms: 0.3 }), ['weapon', 'held'], ctx.rigged);
     else if (rt === 'glide') rig = rigCharacter(body, { ...bipedParams(body, { arms: 0.6 }), lift: 0.02 }, ['weapon', 'held'], ctx.rigged);
+    else if (rt === 'quad') { const P = bipedParams(body, { hip: 0.55, arms: 0 }); rig = rigCharacter(body, { ...P, gap: 0.02, quad: 0.0 }, ['weapon', 'held'], ctx.rigged); }
     else if (rt === 'slither') { const P = bipedParams(body); rig = rigCharacter(body, { hip: P.hip * 2, slither: 0.06 }, [], ctx.rigged); }
     body.scale.setScalar(sc0);
     const wings = []; body.traverse((o) => { if (o.name === 'wing') wings.push({ o, z: o.rotation.z, sx: o.scale.x }); });
@@ -182,7 +225,8 @@ export function createMobSystem(ctx) {
       if (m.dead) { m.deadT += dt; if (m.kind === 'wight' || m.kind === 'ebb') g.position.y = -Math.min(1.6 * m.bodyScale, m.deadT * 1.2); else m.body.rotation.x = Math.max(-1.5, -m.deadT * 4); if (m.deadT > 6) g.visible = false;
         if (m.roam && m.deadT > 90 && pp.distanceTo(m.home) > 60) { revive(m); } continue; }
       const dx = pp.x - g.position.x, dz = pp.z - g.position.z, dist = Math.hypot(dx, dz);
-      g.visible = dist < (m.def.boss ? 110 : 78); // don't draw what the fog hides
+      g.visible = dist < (globalThis.__VIEW || 78) * (m.def.boss ? 1.4 : 1); // don't draw what the fog hides
+      m._tick = (m._tick || 0) + 1; if (dist > 45 && m.state === 'idle' && m._tick % 3) continue; // far, idle mobs think every third frame
       const far = dist > 90; if (far && m.state === 'idle') continue;
       const d = m.def, spd = d.speed * (m.enraged ? 1.25 : 1) * (m.slow > 0 ? 0.5 : 1); m.slow -= dt;
       let move = new THREE.Vector3();
@@ -225,6 +269,7 @@ export function createMobSystem(ctx) {
       for (const o of mobs) { if (o === m || o.dead) continue; const sx = g.position.x - o.g.position.x, sz = g.position.z - o.g.position.z, sd = Math.hypot(sx, sz), min = 0.55 * (m.bodyScale + o.bodyScale); if (sd < min && sd > 1e-3) { move.x += (sx / sd) * 2.5; move.z += (sz / sd) * 2.5; } }
       if (m.stun > 0) { m.stun -= dt; move.set(0, 0, 0); }
       g.position.addScaledVector(move, dt); col.resolve(g.position, 0.4 * Math.min(1.6, m.bodyScale), 0);
+      if (!d.passive) for (const r of noMob) if (g.position.x > r[0] && g.position.x < r[2] && g.position.z > r[1] && g.position.z < r[3]) { const dl = g.position.x - r[0], dr = r[2] - g.position.x, dtp = g.position.z - r[1], db = r[3] - g.position.z, mn = Math.min(dl, dr, dtp, db); if (mn === dl) g.position.x = r[0] - 0.5; else if (mn === dr) g.position.x = r[2] + 0.5; else if (mn === dtp) g.position.z = r[1] - 0.5; else g.position.z = r[3] + 0.5; if (m.state === 'chase') m.state = 'return'; }
       if (move.lengthSq() > 0.2 && m.state !== 'attack') { const want = Math.atan2(move.x, move.z); let df = want - g.rotation.y; while (df > Math.PI) df -= 6.283; while (df < -Math.PI) df += 6.283; g.rotation.y += df * Math.min(1, dt * 10); }
       animate(m, move, t, dt);
       if (m.burn > 0) { m.burn -= dt; m.hp -= m.burnDps * dt; if (Math.random() < dt * 14) ctx.burst(g.position.clone().add(new THREE.Vector3((Math.random() - 0.5) * 0.4, 1 + Math.random(), (Math.random() - 0.5) * 0.4)), '#ff8a2a', 1, 0.2, -2); if (m.hp <= 0) ctx.kill(m); }
@@ -250,7 +295,7 @@ export function createMobSystem(ctx) {
     const amt = m.rig ? stepRig(m.rig, moved / s, dt, t, m.stride) : Math.min(0.55, spd * 0.16);
     if (!m.rig) { m.walkPh = (m.walkPh || 0) + moved / s * 5; }
     const ph = m.rig ? m.rig.uPhase.value : m.walkPh;
-    if (m.rigType === 'biped' || m.rigType === 'bird') { hop = Math.abs(Math.cos(ph)) * 0.025 * s * amt * 2; lean = 0.05 * amt; roll = Math.sin(ph) * 0.03 * amt; if (m.rigType === 'bird') lean += Math.max(0, Math.sin(ph * 2)) * 0.06 * amt; }
+    if (m.rigType === 'biped' || m.rigType === 'bird' || m.rigType === 'quad') { hop = Math.abs(Math.cos(ph)) * 0.025 * s * amt * 2; lean = 0.05 * amt; roll = Math.sin(ph) * 0.03 * amt; if (m.rigType === 'bird') lean += Math.max(0, Math.sin(ph * 2)) * 0.06 * amt; }
     else if (m.rigType === 'glide') { hop = Math.sin(t * 2 + m.wander) * 0.03 * s; roll = Math.sin(ph) * 0.04 * amt; lean = 0.08 * amt; }
     else if (m.rigType === 'waddle') { roll = Math.sin(ph) * 0.14 * Math.min(1, amt * 3); hop = Math.abs(Math.sin(ph)) * 0.06 * s * Math.min(1, amt * 3); }
     else if (m.rigType === 'fly') { hop = 0.35 * s + Math.sin(t * 3 + m.wander) * 0.12 * s; lean = 0.15 * amt; for (const w of m.wings) w.o.rotation.z = w.z + Math.sin(t * 22 + m.wander) * 0.55 * (w.sx < 0 ? -1 : 1); }
@@ -269,5 +314,5 @@ export function createMobSystem(ctx) {
   }
   function revive(m) { m.dead = false; m.deadT = 0; m.hp = m.maxHp; m.state = 'idle'; m.g.visible = true; m.body.rotation.x = 0; m.g.position.copy(m.home); m.bar = ctx.makeBar(); }
   function clearAll() { for (const m of mobs) if (m.act) endAct(m); }
-  return { mobs, spawn, update, buildNav, aggro, stagger, endAct, playerInZone, get nav() { return nav; }, clearAll, projs };
+  return { mobs, spawn, update, buildNav, setNoMob, aggro, stagger, endAct, playerInZone, get nav() { return nav; }, clearAll, projs };
 }

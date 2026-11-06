@@ -5,7 +5,7 @@ import * as THREE from '../node_modules/three/build/three.module.js';
 
 const VERT_HEAD = `
 uniform mat4 uToBody; uniform mat4 uFromBody;
-uniform float uPhase, uAmt, uLift, uHip, uGap, uArmX, uShoulder, uArms, uSlither, uTime;
+uniform float uPhase, uAmt, uLift, uHip, uGap, uArmX, uShoulder, uArms, uSlither, uTime, uQuad;
 `;
 const VERT_BODY = `
 {
@@ -16,7 +16,7 @@ const VERT_BODY = `
     bp.z += cos(bp.y * 4.0 - uTime * 6.0) * uSlither * 0.4 * k;
   } else {
     float side = bp.x >= 0.0 ? 1.0 : -1.0;
-    float ph = uPhase + (side > 0.0 ? 0.0 : 3.14159265);
+    float ph = uPhase + (side > 0.0 ? 0.0 : 3.14159265) + (uQuad > 0.0 && bp.z > uQuad ? 3.14159265 : 0.0);
     float below = clamp((uHip - bp.y) / uHip, 0.0, 1.0);
     float sep = smoothstep(0.0, uGap, abs(bp.x));
     float legW = below * sep;
@@ -35,7 +35,7 @@ const VERT_BODY = `
 export function makeRig(params = {}) {
   return {
     uPhase: { value: 0 }, uAmt: { value: 0 }, uLift: { value: params.lift ?? 0.08 }, uHip: { value: params.hip ?? 0.85 }, uGap: { value: params.gap ?? 0.05 },
-    uArmX: { value: params.armX ?? 0.24 }, uShoulder: { value: params.shoulder ?? 1.35 }, uArms: { value: params.arms ?? 1 }, uSlither: { value: params.slither ?? 0 }, uTime: { value: 0 },
+    uArmX: { value: params.armX ?? 0.24 }, uShoulder: { value: params.shoulder ?? 1.35 }, uArms: { value: params.arms ?? 1 }, uSlither: { value: params.slither ?? 0 }, uTime: { value: 0 }, uQuad: { value: params.quad ?? 0 },
   };
 }
 

@@ -18,10 +18,10 @@ export function createUI(G) {
   const state = G.state;
   let open = null, tab = 'gear', hoverEl = null;
   // ---------- panels ----------
-  const panels = { inv: $('pInv'), char: $('pChar'), skills: $('pSkills'), map: $('pMap'), ach: $('pAch'), craft: $('pCraft'), settings: $('pSettings'), shop: $('pShop'), quests: $('pQuests') };
+  const panels = { inv: $('pInv'), char: $('pChar'), skills: $('pSkills'), map: $('pMap'), ach: $('pAch'), craft: $('pCraft'), settings: $('pSettings'), shop: $('pShop'), quests: $('pQuests'), class: $('pClass') };
   function toggle(p) { if (open === p) return close(); open = p; Object.entries(panels).forEach(([k, el]) => el.classList.toggle('show', k === p)); $('panelWrap').classList.add('show'); render(); G.onPanel(true); }
   function close() { open = null; Object.values(panels).forEach((el) => el.classList.remove('show')); $('panelWrap').classList.remove('show'); hideTip(); G.onPanel(false); }
-  function render() { if (open === 'inv') renderInv(); if (open === 'char') renderChar(); if (open === 'skills') renderSkills(); if (open === 'map') G.drawMap($('bigMap'), true); if (open === 'ach') renderAch(); if (open === 'craft') G.renderCraft(); if (open === 'settings') G.renderSettings(); if (open === 'shop') G.renderShop(); if (open === 'quests') G.renderLog(); }
+  function render() { if (open === 'inv') renderInv(); if (open === 'char') renderChar(); if (open === 'skills') renderSkills(); if (open === 'map') G.drawMap($('bigMap'), true); if (open === 'ach') renderAch(); if (open === 'craft') G.renderCraft(); if (open === 'settings') G.renderSettings(); if (open === 'shop') G.renderShop(); if (open === 'quests') G.renderLog(); if (open === 'class') G.renderClass(); }
 
   // ---------- tooltip ----------
   const tip = $('tip');
@@ -35,7 +35,7 @@ export function createUI(G) {
     let h = `<div class="tart">${artImg(item, 128)}</div><div class="tn" style="color:${rcol(item.rarity)}">${esc(item.name)}</div>`;
     if (item.kind === 'gear') h += `<div class="tr">${(RARITIES.find((r) => r.id === item.rarity) || {}).name} ${SLOT_NAMES[item.slot]} · iLvl ${item.level} · ${item.family}</div>` + statLines(item.stats, cur && cur !== item ? cur.stats : null) + (cur && cur !== item ? `<div class="tc">Compared with equipped: ${esc(cur.name)}</div>` : '');
     if (item.kind === 'consumable') h += `<div class="tr">Consumable</div>` + Object.entries(item.effect).map(([k, v]) => `<div class="sl">+${v} ${k}</div>`).join('');
-    if (item.kind === 'book') { const s = SKILLS.find((q) => q.id === item.skill); h += `<div class="tr">Skill book · Pyromancer</div><div class="sl">${state.skills[item.skill] ? 'Known: +1 skill level' : 'Teaches: ' + esc(s.name)}</div><div class="sl">${esc(s.desc)}</div>`; }
+    if (item.kind === 'book') { const s = G.skillDef(item.skill); h += `<div class="tr">Skill book · ${esc((G.classes[s.cls] || {}).name || 'Any class')}</div><div class="sl">${state.skills[item.skill] ? 'Known: +1 skill level' : 'Teaches: ' + esc(s.name)}</div><div class="sl">${esc(s.desc)}</div>`; }
     if (item.kind === 'box') h += `<div class="tr">Loot box</div><div class="sl">${BOXES[item.box].items}+ items · chance of a skill book</div>`;
     h += `<div class="th">“${esc(item.host || '')}”</div>`;
     h += `<div class="tk">${item.kind === 'gear' ? (state.equipped(item) ? 'Click: unequip' : 'Click: equip · Right-click: scrap') : item.kind === 'consumable' ? 'Click: use' : item.kind === 'book' ? 'Click: read' : 'Click: open'}</div>`;
@@ -58,7 +58,7 @@ export function createUI(G) {
     for (const slot of SLOTS) { const it = state.equip[slot]; const [c, r] = DOLL[slot]; const el = document.createElement('button'); el.className = 'eq'; el.style.gridColumn = c + 1; el.style.gridRow = r + 1; el.style.borderColor = it ? rcol(it.rarity) : '#3a3448';
       el.innerHTML = it ? artImg(it, 72) : `${icon(slot === 'ring2' ? 'ring1' : slot, '#5a5068')}<span>${SLOT_NAMES[slot]}</span>`; el.setAttribute('aria-label', it ? it.name : SLOT_NAMES[slot] + ' (empty)');
       if (it) bindItem(el, it, () => G.unequip(slot)); doll.appendChild(el); }
-    const D = G.derived(); $('invStats').innerHTML = `<b>${state.name}</b> · Lv ${state.level} ${CLASS.name}<br>HP ${Math.round(D.maxHp)} · Mana ${Math.round(D.maxMana)} · Armour ${D.armor} · Spell ${D.spell} · Fire +${D.fire}%<br>Gold <span style="color:#F5C518">${state.gold}</span> · Scrap ${state.scrap}`;
+    const D = G.derived(); $('invStats').innerHTML = `<b>${state.name}</b> · Lv ${state.level} ${G.cls().name}<br>HP ${Math.round(D.maxHp)} · Mana ${Math.round(D.maxMana)} · Armour ${D.armor} · Spell ${D.spell} · Fire +${D.fire}%<br>Gold <span style="color:#F5C518">${state.gold}</span> · Scrap ${state.scrap}`;
     document.querySelectorAll('#invTabs button').forEach((b) => b.classList.toggle('on', b.dataset.tab === tab));
     const grid = $('grid'); grid.innerHTML = '';
     const list = state.inv.filter((it) => (tab === 'gear' ? it.kind === 'gear' : tab === 'cons' ? it.kind === 'consumable' : tab === 'books' ? it.kind === 'book' : it.kind === 'box'));
@@ -72,26 +72,27 @@ export function createUI(G) {
   // ---------- character sheet ----------
   function renderChar() {
     const D = G.derived();
-    $('charHead').innerHTML = `<div class="big">${esc(state.name)}</div><div>Level ${state.level} ${CLASS.name} · Human</div><div class="xpbar"><i style="width:${(state.xp / state.xpNext) * 100}%"></i></div><div class="sm">${state.xp} / ${state.xpNext} XP</div><div class="pts">Stat points: <b>${state.statPoints}</b></div>`;
-    $('statRows').innerHTML = STATS.map((s) => `<div class="srow"><div class="sn">${s}${CLASS.main.includes(s) ? '<span class="main">MAIN</span>' : ''}</div><div class="sv">${state.base[s]}${D.gearStats[s] ? `<span class="gear"> +${D.gearStats[s]}</span>` : ''}</div><button class="plus" data-s="${s}" ${state.statPoints ? '' : 'disabled'} aria-label="Add a point to ${s}">+</button><div class="sd">${STAT_INFO[s]}</div></div>`).join('');
+    $('charHead').innerHTML = `<div class="big">${esc(state.name)}</div><div>Level ${state.level} ${G.cls().name}${state.race ? ' · ' + G.races[state.race].name : ' · no race chosen yet'}</div><div class="xpbar"><i style="width:${(state.xp / state.xpNext) * 100}%"></i></div><div class="sm">${state.xp} / ${state.xpNext} XP</div><div class="pts">Stat points: <b>${state.statPoints}</b></div>`;
+    $('statRows').innerHTML = STATS.map((s) => `<div class="srow"><div class="sn">${s}${G.cls().main.includes(s) ? '<span class="main">MAIN</span>' : ''}</div><div class="sv">${state.base[s]}${D.gearStats[s] ? `<span class="gear"> +${D.gearStats[s]}</span>` : ''}</div><button class="plus" data-s="${s}" ${state.statPoints ? '' : 'disabled'} aria-label="Add a point to ${s}">+</button><div class="sd">${STAT_INFO[s]}</div></div>`).join('');
     document.querySelectorAll('#statRows .plus').forEach((b) => b.addEventListener('click', () => { G.addStat(b.dataset.s); renderChar(); }));
     const rows = [['Max HP', Math.round(D.maxHp)], ['Max mana', Math.round(D.maxMana)], ['Mana regen', D.manaRegen.toFixed(1) + '/s'], ['Max stamina', Math.round(D.maxStamina)], ['Armour', D.armor], ['Spell power', D.spell], ['Fire damage', '+' + D.fire + '%'], ['Crit chance', D.crit + '%'], ['Cast speed', '+' + D.castSpeed + '%'], ['Move speed', '+' + D.moveSpeed + '%'], ['Firebolt hit', Math.round(G.spellDamage('firebolt'))], ['Fireball hit', state.skills.fireball ? Math.round(G.spellDamage('fireball')) : '—']];
     $('derived').innerHTML = rows.map(([a, b]) => `<div class="dr"><span>${a}</span><b>${b}</b></div>`).join('');
-    const [o, d, u] = CLASS.mix; $('mix').innerHTML = `<div class="mixbar"><i style="width:${o}%;background:#E5484D"></i><i style="width:${d}%;background:#4a9aff"></i><i style="width:${u}%;background:#5ad86a"></i></div><div class="sm">Skill mix: ${o}% attack · ${d}% defence · ${u}% utility. +1 INT and +1 CON are added automatically each level.</div>`;
+    const [o, d, u] = G.cls().mix; $('mix').innerHTML = `<div class="mixbar"><i style="width:${o}%;background:#E5484D"></i><i style="width:${d}%;background:#4a9aff"></i><i style="width:${u}%;background:#5ad86a"></i></div><div class="sm">Skill mix: ${o}% attack · ${d}% defence · ${u}% utility. ${Object.entries(G.cls().auto).map(([k, v]) => '+' + v + ' ' + k).join(' and ')} are added automatically each level.</div>`;
   }
 
   // ---------- skill tree ----------
   function renderSkills() {
-    $('skPts').innerHTML = `Skill points: <b>${state.skillPoints}</b> · Base levels cap at 15 · Upgrade choices at base 5, 10 and 15 · Gear adds levels (damage only)`;
+    $('skPts').innerHTML = `${G.cls().name}${state.cls === 'none' ? ' (choose a class at the Hall of Callings on Floor 3; skill points are saved until then)' : ''} · Skill points: <b>${state.skillPoints}</b> · Base levels cap at 15 · Upgrade choices at base 5, 10 and 15 · Gear adds levels (damage only)`;
     const groups = [['atk', 'ATTACK', '#E5484D'], ['def', 'DEFENCE', '#4a9aff'], ['util', 'UTILITY', '#5ad86a']];
-    $('skillTree').innerHTML = groups.map(([t, label, c]) => `<div class="sgroup"><div class="sgh" style="color:${c}">${label}</div><div class="scards">${SKILLS.filter((s) => s.type === t).map((s) => {
+    $('skillTree').innerHTML = groups.map(([t, label, c]) => `<div class="sgroup"><div class="sgh" style="color:${c}">${label}</div><div class="scards">${G.skillList().filter((s) => s.type === t).map((s) => {
       const k = state.skills[s.id]; const base = k ? k.lvl : 0, bonus = k ? G.gearSkillBonus(s.id) : 0;
       const tiers = s.ups.map((pair, i) => { const need = (i + 1) * 5, ch = k && k.ups[i]; return `<div class="tier ${base >= need ? 'open' : ''}"><span class="tl">Lv ${need}</span>${pair.map((nm, j) => `<button class="up ${ch === j ? 'chosen' : ''}" data-s="${s.id}" data-t="${i}" data-c="${j}" ${base >= need && ch === undefined ? '' : 'disabled'}>${esc(nm)}</button>`).join('<span class="or">or</span>')}</div>`; }).join('');
       return `<div class="scard ${k ? '' : 'locked'}" style="border-color:${k ? c : '#3a3448'}"><div class="st"><b>${esc(s.name)}</b>${s.built ? '<span class="bi">BUILT-IN</span>' : ''}${s.passive ? '<span class="bi">PASSIVE</span>' : ''}</div>
         <div class="slv">${k ? `Lv <b>${base}</b>${bonus ? `<span class="gear"> +${bonus} gear = ${base + bonus}</span>` : ''} / 15` : `<span class="lk">Locked · ${esc(s.src)}</span>`}</div>
         <div class="pips">${Array.from({ length: 15 }, (_, i) => `<i class="${i < base ? 'f' : i < base + bonus ? 'g' : ''} ${(i + 1) % 5 === 0 ? 'm' : ''}"></i>`).join('')}</div>
         <div class="sdsc">${esc(s.desc)}${s.mana ? ` <span class="sm">${s.mana} mana</span>` : ''}</div>${tiers}
-        ${k ? `<button class="lvl" data-s="${s.id}" ${state.skillPoints && base < 15 ? '' : 'disabled'}>+ Level</button>` : ''}</div>`; }).join('')}</div></div>`).join('');
+        ${k ? `<button class="lvl" data-s="${s.id}" ${state.skillPoints && base < 15 ? '' : 'disabled'}>+ Level</button>${s.kind !== 'passive' ? `<div class="hb">Hotbar: ${[1, 2, 3, 4, 5, 6].map((n) => `<button class="hbs ${G.hotbarIds()[n - 1] === s.id ? 'on' : ''}" data-s="${s.id}" data-n="${n}">${n}</button>`).join('')}</div>` : ''}` : ''}</div>`; }).join('')}</div></div>`).join('');
+    document.querySelectorAll('#skillTree .hbs').forEach((b) => b.addEventListener('click', () => { G.setHotbar(+b.dataset.n - 1, b.dataset.s); renderSkills(); }));
     document.querySelectorAll('#skillTree .lvl').forEach((b) => b.addEventListener('click', () => { G.levelSkill(b.dataset.s); renderSkills(); }));
     document.querySelectorAll('#skillTree .up').forEach((b) => b.addEventListener('click', () => { G.chooseUpgrade(b.dataset.s, +b.dataset.t, +b.dataset.c); renderSkills(); }));
   }
@@ -119,7 +120,7 @@ export function createUI(G) {
     $('wardF').style.width = p.ward > 0 ? (p.ward / p.wardMax) * 100 + '%' : '0%';
     $('hunF').style.width = p.hunger + '%'; $('thiF').style.width = p.thirst + '%';
     $('xpF').style.width = (p.xp / p.xpNext) * 100 + '%'; $('lvl').textContent = 'LV ' + p.level;
-    for (const [id, sk] of [['h1', 'firebolt'], ['h2', 'fireball'], ['h3', 'flameward'], ['h4', 'kindle']]) { const el = $(id), cd = G.cooldownFrac(sk); el.querySelector('.cdo').style.height = cd * 100 + '%'; el.classList.toggle('locked', !p.skills[sk]); el.classList.toggle('nomana', !!p.skills[sk] && p.mana < (SKILLS.find((s) => s.id === sk).mana || 0)); }
+    for (const sk of G.hotbarIds()) { const el = $('hk_' + sk); if (!el) continue; const cd = G.cooldownFrac(sk); el.querySelector('.cdo').style.height = cd * 100 + '%'; const d = G.skillDef(sk); el.classList.toggle('nomana', !!d && p.mana < (d.cost || 0)); }
     $('ptsBadge').style.display = p.statPoints || p.skillPoints ? 'block' : 'none'; $('ptsBadge').textContent = `${p.statPoints ? p.statPoints + ' stat' : ''}${p.statPoints && p.skillPoints ? ' · ' : ''}${p.skillPoints ? p.skillPoints + ' skill' : ''} point${p.statPoints + p.skillPoints > 1 ? 's' : ''} to spend (C / K)`;
     $('boxBadge').style.display = p.inv.some((i) => i.kind === 'box') ? 'block' : 'none'; $('boxBadge').textContent = `${p.inv.filter((i) => i.kind === 'box').length} loot box(es) · press I`;
   }

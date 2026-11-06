@@ -24,7 +24,8 @@ html,body{margin:0;height:100%;background:#000;overflow:hidden;font-family:'Barl
 .hk b{font-family:Bangers;font-size:15px;letter-spacing:1px;font-weight:400;color:#fff4d0}
 .hk .k{position:absolute;left:4px;top:1px;font-size:11px;color:#c8b090}
 .hk .cdo{position:absolute;left:0;right:0;bottom:0;background:#000a;height:0}
-.hk.locked{filter:grayscale(1) brightness(.5)}.hk.nomana{box-shadow:4px 4px 0 var(--ink),inset 0 0 0 3px #4a9aff}
+.hb{margin-top:6px;font-size:12px;color:#a89fb4;display:flex;gap:3px;align-items:center}.hbs{width:22px;height:22px;background:#1a1622;border:2px solid #000;color:#ccc;font-weight:800;cursor:pointer}.hbs.on{background:var(--gold);color:#111}
+.hk.locked{filter:grayscale(1) brightness(.5)}.hk.atk0{border-color:#f4eedc}.hk small{font-size:11px;color:#c8b090}.hk.nomana{box-shadow:4px 4px 0 var(--ink),inset 0 0 0 3px #4a9aff}
 #topl{position:absolute;left:20px;top:16px}
 #loc{font-family:Bangers;font-size:28px;letter-spacing:2px}
 #safe{display:none;background:#5ad86a;color:var(--ink);font-weight:800;font-size:13px;padding:1px 7px;margin-left:8px;vertical-align:middle}
@@ -187,12 +188,21 @@ button{font-family:inherit}
 #intro{position:fixed;inset:0;z-index:50;background:#000;transition:opacity .7s}#intro.out{opacity:0}#introCv{width:100%;height:100%;display:block}
 #introSub{position:absolute;left:50%;bottom:10%;transform:translateX(-50%);width:min(900px,calc(100vw - 32px));text-align:center;font:700 26px/1.35 'Barlow Condensed',sans-serif;color:#f4eedc;text-shadow:0 2px 0 #000,0 0 8px #000}#introWho{display:block;font-family:Bangers;color:var(--gold);letter-spacing:1px;font-size:24px}
 #introHint{position:absolute;right:16px;top:12px;font-size:14px;color:#8a8494}
+.cpick{display:grid;grid-template-columns:1fr 1.2fr 1.1fr;gap:14px}.cph{font:800 14px 'Barlow Condensed';letter-spacing:1px;color:var(--gold);margin-bottom:6px;display:flex;gap:10px;align-items:center}
+.rgrid{display:grid;grid-template-columns:1fr 1fr;gap:5px}.rcard,.ccard{display:flex;flex-direction:column;align-items:flex-start;gap:1px;background:#1a1622;border:2px solid #000;color:var(--paper);padding:6px 8px;cursor:pointer;font:700 15px 'Barlow Condensed',sans-serif;text-align:left;position:relative}
+.rcard i{position:absolute;right:8px;top:8px;width:14px;height:14px;border-radius:50%;border:2px solid #000}.rcard span,.ccard span{font-size:12px;color:#a89fb4;font-weight:600}.rcard.on,.ccard.on{background:#2e2640;box-shadow:0 0 0 2px var(--gold)}
+.cgrid{display:grid;grid-template-columns:1fr 1fr;gap:5px}.ccard{border-left:6px solid var(--c)}.ctabs button{background:#1a1622;color:#ccc;border:2px solid #000;font:800 12px 'Barlow Condensed';padding:2px 8px;cursor:pointer}.ctabs button.on{background:var(--gold);color:#111}
+.cdet{background:#16121e;border:2px solid #000;border-top:5px solid var(--c);padding:10px 12px;font-size:16px}.cskill{margin-top:5px;padding:5px 8px;background:#1a1622;border-left:4px solid var(--c)}#pClass{width:min(1240px,100%)}
+@media (max-width:900px){.cpick{grid-template-columns:1fr}}
+.dn.heal{color:#7BE38A;font-size:30px}
+#floorPick a{color:#cfc8d8;margin:0 2px}#floorPick a:hover{color:#F5C518}
+#fps{position:absolute;right:16px;bottom:96px;font:700 13px 'Barlow Condensed';color:#9a9a9a;display:none}
 </style></head><body>
 <div id="stage"></div>
-<div id="hud"><div id="quests"></div><div id="bossBar"><div id="bossName"></div><div id="bossTitle"></div><div id="bossTrack"><div id="bossFill"></div></div></div>
+<div id="hud"><div id="fps"></div><div id="quests"></div><div id="bossBar"><div id="bossName"></div><div id="bossTitle"></div><div id="bossTrack"><div id="bossFill"></div></div></div>
   <div id="vign"></div>
   <div id="topl"><div class="ink"><span id="loc">LOADING</span><span id="safe">SAFE ZONE</span></div>
-    <div id="keys" class="ink">WASD move · Shift sprint · Space jump · LMB Firebolt · RMB/R Fireball · Q Flame Ward · F parry (tap) / block (hold) · V dodge · E use · G bomb<br>I inventory · C character · K skills · L quests · M map · J achievements · H Crash Pad · B craft · P sound · O outlines</div></div>
+    <div id="keys" class="ink">WASD move · Shift sprint · Space jump · LMB attack · RMB heavy · 1-6 skills · Q defend · F parry (tap) / block (hold) · V dodge · E use · G bomb<br>I inventory · C character · K skills · L quests · M map · J achievements · H Crash Pad · B craft · P sound · O outlines</div></div>
   <div id="minimapWrap"><canvas id="mini" width="180" height="180" aria-label="Minimap"></canvas><div id="compass"></div></div>
   <div id="toasts"></div>
   <div id="cross"></div>
@@ -206,11 +216,7 @@ button{font-family:inherit}
     <div class="row ink"><span class="lab">ST</span><div class="bar" style="height:10px"><i id="stF" style="background:#7BE38A"></i></div><span style="width:74px"></span></div>
     <div class="small ink"><div><span class="sm">HUNGER</span><div class="bar" style="height:9px"><i id="hunF" style="background:#ff8a2a"></i></div></div><div><span class="sm">THIRST</span><div class="bar" style="height:9px"><i id="thiF" style="background:#3ac8ff"></i></div></div></div>
   </div>
-  <div id="hotbar">
-    <div class="hk" id="h1"><span class="k">1 / LMB</span><b>FIREBOLT</b>8 mp<div class="cdo"></div></div>
-    <div class="hk" id="h2"><span class="k">2 / RMB</span><b>FIREBALL</b>30 mp<div class="cdo"></div></div>
-    <div class="hk" id="h3"><span class="k">3 / Q</span><b>WARD</b>25 mp<div class="cdo"></div></div>
-    <div class="hk" id="h4"><span class="k">4</span><b>KINDLE</b>5 mp<div class="cdo"></div></div>
+  <div id="hotbar"></div>
   </div>
   <div id="host"><div class="who"><span>THE HOST</span><span class="live">LIVE · 2.4M</span></div><div id="hostTxt"></div></div>
   <div id="xp"><i id="xpF"></i></div>
@@ -223,15 +229,16 @@ button{font-family:inherit}
         <div id="grid"></div><div class="sm" style="margin-top:6px" id="invCount"></div></div></div></section>
   <section class="panel" id="pChar"><div class="ph"><h2>CHARACTER</h2><span class="keys">5 stat points per level · C or Esc to close</span></div>
     <div class="charWrap"><div><div id="charHead"></div><div id="statRows"></div></div><div><div id="derived"></div><div id="mix"></div></div></div></section>
-  <section class="panel" id="pSkills"><div class="ph"><h2>SKILL TREE · PYROMANCER</h2><span class="keys">K or Esc to close</span></div><div id="skPts"></div><div id="skillTree"></div></section>
+  <section class="panel" id="pSkills"><div class="ph"><h2>SKILL TREE</h2><span class="keys">K or Esc to close</span></div><div id="skPts"></div><div id="skillTree"></div></section>
   <section class="panel" id="pMap"><div class="ph"><h2>MAP</h2><span class="keys">M or Esc to close</span></div><canvas id="bigMap" width="820" height="820" aria-label="Floor map"></canvas></section>
   <section class="panel" id="pAch"><div class="ph"><h2>ACHIEVEMENTS</h2><span class="keys">Each one awards a loot box · J or Esc to close</span></div><div id="achList"></div></section>
-  <section class="panel" id="pSettings"><div class="ph"><h2>SOUND</h2><span class="keys">P or Esc to close</span></div><div id="setList"></div></section>
+  <section class="panel" id="pSettings"><div class="ph"><h2>SETTINGS</h2><span class="keys">P or Esc to close</span></div><div id="setList"></div></section>
   <section class="panel" id="pCraft"><div class="ph"><h2 id="craftTitle">CRAFTING</h2><span id="craftGold"></span><span class="keys">Esc to close</span></div>
     <div id="craftInstall"></div>
     <div id="craftMain"><div id="craftHead"></div>
     <div class="craftWrap"><div><div id="craftFilter"></div><div id="recipeList"></div></div>
       <div><div id="recipeDetail"></div><div class="sm" style="margin-top:8px">MATERIALS</div><div id="matList"></div></div></div></div></section>
+  <section class="panel" id="pClass"><div class="ph"><h2>THE HALL OF CALLINGS</h2><span class="keys">Choose once · Esc to close</span></div><div id="classBody"></div></section>
   <section class="panel" id="pShop"><div class="ph"><h2 id="shopTitle">SHOP</h2><span id="shopGold"></span><span class="keys">Esc to close</span></div><div id="shopTabs"></div><div id="shopList"></div></section>
   <section class="panel" id="pQuests"><div class="ph"><h2>QUEST LOG</h2><span class="keys">L or Esc to close</span></div><div id="questLog"></div></section>
 </div>
@@ -239,7 +246,7 @@ button{font-family:inherit}
 <div id="dialog"><div class="dHead"><b id="dName"></b><span id="dRole"></span></div><div id="dText"></div><div id="dChoices"></div><div class="dHint">1-5 choose · Space skip · Esc leave</div></div>
 <div id="boxModal"><div id="boxTitle">LOOT BOX</div><div id="boxCards"></div><button id="boxOk">TAKE IT ALL</button></div>
 <div id="loading"><h1>DOWNSTAIRS</h1><div id="loadMsg">Loading…</div><div id="loadBox"><div id="loadBar"></div></div>
-  <div class="help"><b>WASD</b> move · <b>Mouse</b> look · <b>Shift</b> sprint · <b>Space</b> jump · <b>Left click</b> Firebolt · <b>Right click / R</b> Fireball · <b>Q</b> Flame Ward · <b>E</b> pick up loot / talk / use table · <b>G</b> throw bomb · <b>F</b> parry (tap as the red warning fills) / block (hold) · <b>V</b> dodge<br><b>H</b> Crash Pad (from a safe zone) · <b>B</b> crafting · <b>I</b> inventory &amp; gear · <b>C</b> character stats · <b>K</b> skill tree · <b>M</b> map · <b>J</b> achievements · <b>O</b> toggle ink outlines (faster) · <b>Esc</b> close / release mouse<br><span class="sm">Desktop browser with keyboard and mouse required.</span></div>
-  <button id="startBtn" disabled>BUILDING THE FLOOR…</button><div class="help" id="floorPick">Floor: <a href="#floor-1" style="color:#F5C518">1 · The Undercroft</a> · <a href="#floor-2" style="color:#3affea">2 · Spin City</a> · <a href="#floor-3" style="color:#ffb040">3 · The Soup District</a> · <a href="#pad" style="color:#ff8a2a">Crash Pad</a> · <a href="#new" style="color:#9a9a9a">New game</a> · <a href="#intro" style="color:#9a9a9a">Watch intro</a></div></div>
+  <div class="help"><b>WASD</b> move · <b>Mouse</b> look · <b>Shift</b> sprint · <b>Space</b> jump · <b>Left click</b> attack · <b>Right click</b> heavy attack / second skill · <b>1-6</b> skills · <b>Q</b> defensive skill · <b>E</b> pick up loot / talk / use table · <b>G</b> throw bomb · <b>F</b> parry (tap as the red warning fills) / block (hold) · <b>V</b> dodge<br><b>H</b> Crash Pad (from a safe zone) · <b>B</b> crafting · <b>I</b> inventory &amp; gear · <b>C</b> character stats · <b>K</b> skill tree · <b>M</b> map · <b>J</b> achievements · <b>O</b> toggle ink outlines (faster) · <b>Esc</b> close / release mouse<br><span class="sm">Desktop browser with keyboard and mouse required.</span></div>
+  <button id="startBtn" disabled>BUILDING THE FLOOR…</button><div class="help" id="floorPick">Continue: <a href="./play.html" style="color:#F5C518">last floor</a> · Jump to: <a href="#floor-0">0 · Landing</a> · <a href="#floor-1">1 · Undercroft</a> · <a href="#floor-2">2 · Spin City</a> · <a href="#floor-3">3 · Soup District</a> · <a href="#floor-4">4 · Endless Mall</a> · <a href="#floor-5">5 · Suburbia</a> · <a href="#floor-6">6 · Canopy</a> · <a href="#pad">Crash Pad</a> · <a href="#new" style="color:#ff8a6a">New game</a> · <a href="#intro">Watch intro</a></div></div>
 <script type="module" src="./game/play.js"></script>
 </body></html>

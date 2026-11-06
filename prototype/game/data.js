@@ -100,10 +100,10 @@ export const BOXES = {
   gold: { name: 'Gold Box', color: '#F5C518', items: 3, minRarity: 3, bonus: 0.8, book: 0.35 },
   boss: { name: 'Boss Box', color: '#E5484D', items: 3, minRarity: 3, bonus: 1.2, book: 0.4 },
 };
-export function openBox(rng, type, level) {
+export function openBox(rng, type, level, bookPool = null) {
   const b = BOXES[type], out = [];
   for (let i = 0; i < b.items; i++) out.push(makeItem(rng, { level, minRarity: i === 0 ? b.minRarity : Math.max(1, b.minRarity - 1), rarityBonus: b.bonus }));
-  if (rng() < b.book) { const learnable = SKILLS.filter((s) => !s.built && !s.src.startsWith('Prestige')); const s = learnable[Math.floor(rng() * learnable.length)]; out.push({ uid: uid++, kind: 'book', skill: s.id, name: `Skill Book: ${s.name}`, rarity: 'epic', host: 'Reading! In MY dungeon? Bold.' }); }
+  if (rng() < b.book) { const learnable = bookPool || SKILLS.filter((s) => !s.built && !s.src.startsWith('Prestige')); if (learnable.length) { const s = learnable[Math.floor(rng() * learnable.length)]; out.push({ uid: uid++, kind: 'book', skill: s.id, name: `Skill Book: ${s.name}`, rarity: 'epic', host: 'Reading! In MY dungeon? Bold.' }); } else out.push({ uid: uid++, kind: 'consumable', name: 'Tome of Grit', rarity: 'epic', effect: { statPoints: 2 }, host: 'No class, no spells. Have some stat points instead.' }); }
   out.push({ uid: uid++, kind: 'consumable', ...CONSUMABLES[Math.floor(rng() * CONSUMABLES.length)] });
   return out;
 }

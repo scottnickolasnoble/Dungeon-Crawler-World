@@ -80,7 +80,9 @@ export function createInk(container, { fov = 70 } = {}) {
     scene.fog = fog; fx.forEach((o, i) => { o.visible = vis[i]; });
     renderer.setRenderTarget(null); renderer.render(postScene, postCam);
   }
-  return { THREE, renderer, scene, camera, render, resize, fx, state, rigged };
+  // render scale: fewer pixels for weaker GPUs (applies to the canvas and the ink passes)
+  function setScale(k) { state.scale = k; renderer.setPixelRatio(DPR * k); resize(); }
+  return { THREE, renderer, scene, camera, render, resize, fx, state, rigged, setScale };
 }
 
 // Collision world: axis-aligned boxes and circles in a spatial hash, resolved against a player circle.
