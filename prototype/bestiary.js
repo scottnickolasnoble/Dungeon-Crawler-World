@@ -4,12 +4,24 @@ import * as T1 from './monsters/tier1.js';
 import * as T2 from './monsters/tier2.js';
 import * as T3 from './monsters/tier3.js';
 import * as T4 from './monsters/tier4.js';
+import * as T5 from './monsters/tier5.js';
+import * as T6 from './monsters/tier6.js';
 import { grimeTex, canvasTex, rnd, applyVariant } from './sculpt.js';
 
 // name -> [builder, camera position, look-at target, fov]
 const pack = (make, n, spacing) => () => { const g = new THREE.Group(); for (let i = 0; i < n; i++) { const m = make.variants ? make({ variant: i }) : applyVariant(make({ variant: i }), i); m.position.set((i - (n - 1) / 2) * spacing, 0, -Math.abs(i - (n - 1) / 2) * 0.35); m.rotation.y = (i - (n - 1) / 2) * -0.12; g.add(m); } return g; };
 makeGoblin.variants = true;
 const MONSTERS = {
+  lich: [T5.librarianLich, [1.5, 1.6, 3.4], [0, 1.25, 0.2], 36],
+  spider: [T5.indexSpider, [1.4, 1.3, 2.4], [0, 0.55, -0.2], 38],
+  redacted: [T5.redactedThing, [1.5, 1.7, 4.0], [0, 1.3, 0.2], 36],
+  papergolem: [T5.paperGolem, [1.6, 1.7, 4.0], [0, 1.2, 0.2], 36],
+  revenant: [T5.overdueRevenant, [1.4, 1.6, 3.5], [0, 1.2, 0.2], 36],
+  wraith: [T6.ratingsWraith, [1.4, 1.6, 3.5], [0, 1.2, 0.2], 36],
+  seraph: [T6.censorSeraph, [1.2, 1.8, 3.6], [0, 1.6, 0], 38],
+  drones: [T6.producerDrones, [1.8, 1.8, 3.8], [0, 1.3, 0], 40],
+  hydra: [T6.algorithmHydra, [2.2, 2.0, 4.2], [0, 1.5, 0.3], 40],
+  shade: [T6.executiveShade, [1.4, 1.6, 3.6], [0, 1.25, 0.2], 36],
   gladiator: [T4.gladiatorBot, [1.6, 1.8, 3.6], [0, 1.25, 0.2], 36],
   phantom: [T4.stagePhantom, [1.4, 1.6, 3.6], [0, 1.3, 0.2], 36],
   imp: [T4.commercialImp, [0.8, 0.9, 1.7], [0, 0.6, 0.05], 36],
