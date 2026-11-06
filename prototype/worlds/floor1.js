@@ -78,7 +78,8 @@ export function buildFloor1(ink, col, onProgress = () => {}) {
   const cartProto = makeCart();
   for (let i = 0; i < 70; i++) { const x = (seeded(i, 11) - 0.5) * SIZE * 0.9, z = (seeded(i, 12) - 0.5) * SIZE * 0.9; if (inZone(x, z)) continue; const g = cartProto.clone(); g.position.set(x, 0, z); g.rotation.y = seeded(i, 13) * 6; if (seeded(i, 14) > 0.7) { g.rotation.z = Math.PI / 2; g.position.y = 0.32; } add(g); col.circle(x, z, 0.55, 1.0); }
   const ticketTex = canvasTex(128, 256, (g) => { g.fillStyle = '#c8a020'; g.fillRect(0, 0, 128, 256); g.fillStyle = '#0d0b12'; g.fillRect(14, 30, 100, 60); g.fillStyle = '#3affea'; g.font = 'bold 16px monospace'; g.fillText('RIDDLE?', 24, 66); g.fillStyle = '#0d0b12'; g.font = 'bold 20px sans-serif'; g.fillText('PAY HERE', 14, 200); });
-  for (let i = 0; i < 14; i++) { const x = (seeded(i, 21) - 0.5) * SIZE * 0.8, z = (seeded(i, 22) - 0.5) * SIZE * 0.8; if (inZone(x, z)) continue; const m = add(new THREE.Mesh(new THREE.BoxGeometry(0.7, 1.6, 0.5), toon('#ffffff', { map: ticketTex }))); m.position.set(x, 0.8, z); m.rotation.y = seeded(i, 23) * 6; col.circle(x, z, 0.5); }
+  const ticketSpots = [];
+  for (let i = 0; i < 14; i++) { const x = (seeded(i, 21) - 0.5) * SIZE * 0.8, z = (seeded(i, 22) - 0.5) * SIZE * 0.8; if (inZone(x, z)) continue; ticketSpots.push([x, z]); const m = add(new THREE.Mesh(new THREE.BoxGeometry(0.7, 1.6, 0.5), toon('#ffffff', { map: ticketTex }))); m.position.set(x, 0.8, z); m.rotation.y = seeded(i, 23) * 6; col.circle(x, z, 0.5); }
   const water = new THREE.MeshPhysicalMaterial({ color: '#1a3038', roughness: 0.03, metalness: 0.3, clearcoat: 1, transparent: true, opacity: 0.85 });
   for (const [x, z, rx, rz] of [[-60, -30, 22, 14], [30, 30, 10, 6], [-20, 90, 30, 18], [110, 20, 18, 26], [-120, -90, 26, 20], [10, -110, 14, 9]]) { const w = add(new THREE.Mesh(new THREE.CircleGeometry(1, 40), water)); w.rotation.x = -Math.PI / 2; w.scale.set(rx, rz, 1); w.position.set(x, 0.03, z); map.water.push([x, z, rx, rz]); }
   const debris = add(new THREE.InstancedMesh(new THREE.DodecahedronGeometry(0.25, 0), toon('#6a6460'), 500));
@@ -149,6 +150,7 @@ export function buildFloor1(ink, col, onProgress = () => {}) {
   map.pois = [
     { name: 'Stairwell Camp', x: 0, z: 0, r: 26, kind: 'hub', safe: true },
     { name: 'Pylon Point', x: PX, z: PZ, r: 24, kind: 'camp', camp: 'pylon', boss: 'pylon', level: '6-10' },
+    { name: 'The Flooded Bay', x: -60, z: -30, r: 22, kind: 'camp', camp: 'flooded', boss: 'bigSucker', level: '5-8' },
     { name: 'The Ramp Spiral', x: SX, z: SZ, r: 16, kind: 'landmark' },
     { name: 'The Burning Bus', x: BX, z: BZ, r: 14, kind: 'landmark' },
     { name: 'The Exit Sign', x: 0, z: -SIZE / 2 + 6, r: 18, kind: 'landmark' },
@@ -163,11 +165,25 @@ export function buildFloor1(ink, col, onProgress = () => {}) {
   mobs.push(...roamingPacks({ size: SIZE, seed: 1, count: 26, avoid: (x, z) => inZone(x, z) || Math.hypot(x - PX, z - PZ) < 34,
     kinds: (r, d, i) => (d > 120 && i === 0 && r < 0.4 ? 'captain' : r < 0.25 ? 'thrower' : 'goblin'),
     levelAt: (d) => (d < 70 ? [1, 2] : d < 110 ? [2, 4] : d < 150 ? [4, 6] : [5, 7]) }));
+  // the rest of Floor 1's monsters
+  // The Flooded Bay (largest puddle): a lamprey nest with the Big Sucker on its drain (encampment, Lv 5-8)
+  const [FBX, FBZ] = [-60, -30];
+  for (let i = 0; i < 8; i++) { const a = (i / 8) * Math.PI * 2, r = 6 + (i % 2) * 7; mobs.push({ kind: 'lamprey', variant: i, lvl: 5 + (i % 3), camp: 'flooded', x: FBX + Math.cos(a) * r * 1.4, z: FBZ + Math.sin(a) * r * 0.8 }); }
+  mobs.push({ kind: 'bigSucker', lvl: 8, camp: 'flooded', x: FBX, z: FBZ });
+  // lampreys in the other puddles
+  for (const [x, z, rx] of [[30, 30, 10], [-20, 90, 30], [110, 20, 18], [-120, -90, 26], [10, -110, 14]]) for (let i = 0; i < 2 + (rx > 20 ? 1 : 0); i++) { const d = Math.hypot(x, z); mobs.push({ kind: 'lamprey', variant: i, lvl: d < 70 ? 1 + i : d < 120 ? 3 + i : 5 + i, x: x + (i - 1) * 3, z: z + (i % 2) * 2 }); }
+  // vending mimics waiting beside the ticket machines (they only wake when you're close)
+  ticketSpots.slice(0, 8).forEach(([x, z], i) => { const d = Math.hypot(x, z); mobs.push({ kind: 'mimic', variant: i, lvl: d < 80 ? 3 : d < 130 ? 5 : 7, x: x + 1.6, z: z + 1.2 }); });
+  // fluorescent moths drifting under the working lights, pigeon ghouls picking at the edges of camp
+  for (let k = 0; k < 7; k++) { const a = k * 0.9 + 0.4, r = 55 + k * 16; const x = Math.cos(a) * r, z = Math.sin(a) * r; if (inZone(x, z)) continue; for (let i = 0; i < 3; i++) mobs.push({ kind: 'moth', variant: i + k, lvl: r < 80 ? 2 + (i % 2) : r < 120 ? 3 + (i % 2) : 5 + (i % 2), x: x + i * 2.5, z: z + (i % 2) * 2 }); }
+  for (let k = 0; k < 5; k++) { const a = k * 1.25 + 2.2, r = 38 + k * 6; const x = Math.cos(a) * r, z = Math.sin(a) * r; if (inZone(x, z)) continue; for (let i = 0; i < 3; i++) mobs.push({ kind: 'pigeon', variant: i + k, lvl: 1 + (k % 2), x: x + i * 2, z: z + (i % 2) * 1.5 }); }
+  // a mop-wight work crew that wandered up from Floor 2, far in the north-east corner
+  for (let i = 0; i < 4; i++) mobs.push({ kind: 'wight', variant: i, lvl: 7, x: 140 + i * 3, z: -140 + (i % 2) * 3 });
   // townsfolk: quest NPCs at their posts, the table merchant, and filler NPCs on routines
   const npcs = [
     { id: 'marta', named: 'marta', kind: 'quest', title: 'Camp leader · Med tent', x: -12.5, z: 12.2, yaw: 2.4, voice: 'marta' },
     { id: 'pickles', named: 'pickles', kind: 'quest', title: 'Junk trader', x: 13.8, z: -4.8, yaw: -1.2, voice: 'pickles' },
-    { id: 'bo', kind: 'quest', role: 'trader', race: 'stoneblood', variant: 2, name: 'Benchwright Bo', title: 'Table merchant', x: 5.2, z: -7.6, yaw: Math.PI + 0.4, voice: 'merchant', static: true },
+    { id: 'bo', kind: 'quest', role: 'trader', race: 'stoneblood', variant: 2, name: 'Benchwright Bo', title: 'Table merchant', x: 5.2, z: -7.6, yaw: Math.PI + 0.4, voice: 'bo', static: true },
     ...townFillers({ x: 0, z: 0, r: 20, r0: 6.5, count: 11, races: ['human', 'gutterkin', 'fennix', 'human', 'bogling'], seed: 1 }),
   ];
   // the stairwell door (descend once Marta gives you the key)

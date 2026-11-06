@@ -1,0 +1,8 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Intro Preview</title>
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Barlow+Condensed:wght@600;800&display=swap" rel="stylesheet">
+<style>:root{--gold:#F5C518}body{margin:0;background:#000}
+#intro{position:fixed;inset:0;z-index:50;background:#000}#introCv{width:100%;height:100%;display:block}
+#introSub{position:absolute;left:50%;bottom:10%;transform:translateX(-50%);width:min(900px,calc(100vw - 32px));text-align:center;font:700 26px/1.35 'Barlow Condensed',sans-serif;color:#f4eedc;text-shadow:0 2px 0 #000,0 0 8px #000}#introWho{display:block;font-family:Bangers;color:var(--gold);letter-spacing:1px;font-size:24px}
+#introHint{position:absolute;right:16px;top:12px;font-size:14px;color:#8a8494;font-family:sans-serif}</style></head><body>
+<script type="module">import { playIntro } from './game/intro.js'; document.fonts.ready.then(() => { playIntro({ say: () => 0, startShot: +(new URLSearchParams(location.search).get('shot') || 0), onDone: () => { window.__done = true; } }); window.__ready = true; });</script>
+</body></html>

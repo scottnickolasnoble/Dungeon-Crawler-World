@@ -3,10 +3,10 @@
 // the host and monsters, and an optional spoken host voice through the browser's speech engine.
 export function createAudio() {
   let ctx = null, master, music, sfx, voice, comp, noiseBuf, verb, verbSend;
-  const S = { master: 0.8, music: 0.45, sfx: 0.8, voice: 0.8, hostSpeech: false };
+  const S = { master: 0.8, music: 0.45, sfx: 0.8, voice: 0.9, voiceMode: 'speech' };
   try { Object.assign(S, JSON.parse(localStorage.getItem('downstairs_audio') || '{}')); } catch (e) {}
   const save = () => { try { localStorage.setItem('downstairs_audio', JSON.stringify(S)); } catch (e) {} };
-  let listener = { x: 0, z: 0, yaw: 0 };
+  let listener = { x: 0, z: 0, yaw: 0 }; let active = 0; // live oscillators/noise sources, capped so big fights can't overload audio
 
   function init() {
     if (ctx) { if (ctx.state === 'suspended') ctx.resume(); return; }
@@ -33,19 +33,20 @@ export function createAudio() {
   function osc(type, f, t0, dur, dest, { gain = 0.3, f1 = null, a = 0.005, curve = 'exp' } = {}) {
     const o = ctx.createOscillator(), g = ctx.createGain(); o.type = type; o.frequency.setValueAtTime(f, t0); if (f1) o.frequency.exponentialRampToValueAtTime(Math.max(20, f1), t0 + dur);
     g.gain.setValueAtTime(0.0001, t0); g.gain.exponentialRampToValueAtTime(gain, t0 + a); if (curve === 'exp') g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur); else g.gain.linearRampToValueAtTime(0, t0 + dur);
-    o.connect(g); g.connect(dest); o.start(t0); o.stop(t0 + dur + 0.05); return o;
+    o.connect(g); g.connect(dest); o.start(t0); o.stop(t0 + dur + 0.05); active++; o.onended = () => { active--; try { o.disconnect(); g.disconnect(); } catch (e) {} }; return o;
   }
   function noise(t0, dur, dest, { gain = 0.3, type = 'bandpass', f = 1000, f1 = null, q = 1, a = 0.005 } = {}) {
     const s = ctx.createBufferSource(); s.buffer = noiseBuf; s.loop = true; const fl = ctx.createBiquadFilter(); fl.type = type; fl.frequency.setValueAtTime(f, t0); if (f1) fl.frequency.exponentialRampToValueAtTime(f1, t0 + dur); fl.Q.value = q;
     const g = ctx.createGain(); g.gain.setValueAtTime(0.0001, t0); g.gain.exponentialRampToValueAtTime(gain, t0 + a); g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
-    s.connect(fl); fl.connect(g); g.connect(dest); s.start(t0, Math.random()); s.stop(t0 + dur + 0.05);
+    s.connect(fl); fl.connect(g); g.connect(dest); s.start(t0, Math.random()); s.stop(t0 + dur + 0.05); active++; s.onended = () => { active--; try { s.disconnect(); fl.disconnect(); g.disconnect(); } catch (e) {} };
   }
-  const dist = (k = 20) => { const ws = ctx.createWaveShaper(); const c = new Float32Array(256); for (let i = 0; i < 256; i++) { const x = i / 128 - 1; c[i] = ((1 + k) * x) / (1 + k * Math.abs(x)); } ws.curve = c; return ws; };
+  const curves = {}; const dist = (k = 20) => { const ws = ctx.createWaveShaper(); if (!curves[k]) { const c = new Float32Array(256); for (let i = 0; i < 256; i++) { const x = i / 128 - 1; c[i] = ((1 + k) * x) / (1 + k * Math.abs(x)); } curves[k] = c; } ws.curve = curves[k]; return ws; };
 
   // ---------- sound effects ----------
   const lastPlayed = {};
   function play(name, pos) {
-    if (!ctx) return; const t = now(); if (lastPlayed[name] && t - lastPlayed[name] < 0.03) return; lastPlayed[name] = t;
+    if (!ctx) return; const t = now(); const gap = { hit: 0.06, step: 0.12, swing: 0.08, windup: 0.15, bossWindup: 0.3, death: 0.15, hurt: 0.12 }[name] || 0.04; if (lastPlayed[name] && t - lastPlayed[name] < gap) return;
+    const vital = ['parry', 'levelup', 'victory', 'achieve', 'roar', 'slam'].includes(name); if (active > (vital ? 90 : 56)) return; lastPlayed[name] = t;
     const o = out(sfx, pos, name === 'slam' || name === 'roar' ? 0.35 : 0.12); if (!o) return;
     switch (name) {
       case 'firebolt': noise(t, 0.35, o, { gain: 0.35, f: 3000, f1: 600, q: 0.8 }); osc('sine', 900, t, 0.18, o, { gain: 0.12, f1: 300 }); break;
@@ -72,6 +73,10 @@ export function createAudio() {
       case 'step': noise(t, 0.07, o, { gain: 0.06, type: 'lowpass', f: 400 + Math.random() * 200 }); break;
       case 'roar': { const d = dist(40); d.connect(o); osc('sawtooth', 90, t, 1.4, d, { gain: 0.3, f1: 55, a: 0.1 }); osc('sawtooth', 93, t, 1.4, d, { gain: 0.25, f1: 50, a: 0.1 }); noise(t, 1.4, o, { gain: 0.3, f: 500, f1: 200, q: 2, a: 0.1 }); break; }
       case 'death': voiceBurst('ah', { pitch: 220, rough: 0.5 }, t, o, 0.5, 0.6); break;
+      case 'static': noise(t, 1.2, o, { gain: 0.35, type: 'highpass', f: 1500, a: 0.01 }); break;
+      case 'rumble': noise(t, 3.5, o, { gain: 0.9, type: 'lowpass', f: 220, f1: 60, q: 0.3, a: 0.4 }); osc('sine', 45, t, 3.5, o, { gain: 0.5, a: 0.5, curve: 'lin' }); break;
+      case 'siren': for (let i = 0; i < 4; i++) { osc('sawtooth', 600, t + i * 1.1, 0.55, o, { gain: 0.05, f1: 900, a: 0.05 }); osc('sawtooth', 900, t + i * 1.1 + 0.55, 0.55, o, { gain: 0.05, f1: 600, a: 0.05 }); } break;
+      case 'flick': noise(t, 0.06, o, { gain: 0.5, f: 5000, q: 1 }); noise(t + 0.05, 0.6, o, { gain: 0.2, f: 900, f1: 600, q: 0.6, a: 0.05 }); break;
       case 'door': noise(t, 0.5, o, { gain: 0.3, type: 'lowpass', f: 500 }); osc('sine', 80, t, 0.3, o, { gain: 0.3 }); break;
     }
   }
@@ -100,10 +105,80 @@ export function createAudio() {
     marta: { pitch: 210, speed: 10, formant: 1.12 }, pickles: { pitch: 260, speed: 14, formant: 1.25, rough: 0.15 }, spin: { pitch: 240, speed: 12, formant: 1.2, wave: 'square' }, reggie: { pitch: 110, speed: 7, formant: 0.92, breath: 0.04 },
     merchant: { pitch: 150, speed: 10, formant: 1 }, villager: { pitch: 180, speed: 10, formant: 1.05 },
   };
+  // ---------- real spoken voices (the browser's speech engine), cast per character ----------
+  // accent = preferred English locales in order; g = gender hint matched against voice names; pitch/rate shape the character
+  const CAST = {
+    host: { accent: ['en-US'], g: 'm', pitch: 1.12, rate: 1.12 },
+    narrator: { accent: ['en-GB'], g: 'm', pitch: 0.92, rate: 0.95 },
+    marta: { accent: ['en-IE', 'en-GB'], g: 'f', pitch: 0.95, rate: 0.98 },
+    pickles: { accent: ['en-AU', 'en-NZ', 'en-GB'], g: 'm', pitch: 1.45, rate: 1.22 },
+    bo: { accent: ['en-GB-SCT', 'en-SC', 'en-GB'], g: 'm', pitch: 0.7, rate: 0.95 },
+    bev: { accent: ['en-AU', 'en-NZ'], g: 'f', pitch: 1.1, rate: 1.08 },
+    bix: { accent: ['en-NZ', 'en-AU', 'en-GB'], g: 'm', pitch: 0.85, rate: 1.0 },
+    spin: { accent: ['en-IN', 'en-US'], g: 'f', pitch: 1.25, rate: 1.15 },
+    reggie: { accent: ['en-GB'], g: 'm', pitch: 0.62, rate: 0.82 },
+    wickley: { accent: ['en-ZA', 'en-GB'], g: 'm', pitch: 1.2, rate: 1.15 },
+    ash: { accent: ['en-IN', 'en-GB'], g: 'm', pitch: 0.78, rate: 0.82 },
+    vrask: { accent: ['en-GB'], g: 'm', pitch: 1.55, rate: 0.88 },
+    merchant: { accent: ['en-GB', 'en-US'], g: 'm', pitch: 0.9, rate: 1.0 },
+    villager: { accent: ['en-'], g: null, pitch: 1.0, rate: 1.0, varied: true },
+    goblin: { accent: ['en-GB', 'en-AU', 'en-'], g: 'm', pitch: 1.95, rate: 1.35, varied: true, growl: 'goblin' },
+    thrower: { accent: ['en-AU', 'en-'], g: 'm', pitch: 2, rate: 1.4, varied: true, growl: 'goblin' },
+    captain: { accent: ['en-GB', 'en-'], g: 'm', pitch: 1.35, rate: 1.1, growl: 'goblin' },
+    pylon: { accent: ['en-GB', 'en-'], g: 'm', pitch: 0.65, rate: 1.08, growl: 'big' },
+    wight: { accent: ['en-'], g: 'm', pitch: 0.1, rate: 0.6, growl: 'ghost' }, ebb: { accent: ['en-GB', 'en-'], g: 'm', pitch: 0.25, rate: 0.72, growl: 'ghost' },
+    moth: { accent: ['en-'], g: 'f', pitch: 2, rate: 1.5, growl: 'buzz' }, bulbQueen: { accent: ['en-GB', 'en-'], g: 'f', pitch: 1.5, rate: 0.9, growl: 'buzz' },
+    pigeon: { accent: ['en-US', 'en-'], g: 'm', pitch: 1.6, rate: 1.25, growl: 'coo' }, coo: { accent: ['en-GB', 'en-'], g: 'm', pitch: 0.5, rate: 0.8, growl: 'coo' },
+    mimic: { accent: ['en-US', 'en-'], g: 'm', pitch: 0.4, rate: 0.85, growl: 'metal' }, coneKing: { accent: ['en-GB', 'en-'], g: 'm', pitch: 0.45, rate: 0.95, growl: 'big' },
+    lamprey: { accent: ['en-'], g: null, pitch: 0.3, rate: 0.7, growl: 'ghost' }, bigSucker: { accent: ['en-'], g: null, pitch: 0.2, rate: 0.7, growl: 'big' },
+  };
+  const FEM = /female|zira|susan|hazel|libby|sonia|natasha|emily|aria|jenny|clara|moira|karen|tessa|fiona|samantha|victoria|kate|serena|veena|ava|allison|neerja|molly|emma|michelle|ana\b|leah|luna|maisie|mia|hollie|catherine|heera|linda|sara|nicole|olivia|amy|joanna|salli|kimberly|ivy|kendra|raveena|aditi|isla|sonia|abbi|bella|elsie|hayley|ruby|yan|annette|freya|natalie|tina|zoe|eliza|imani|luciana|rosa|siri/i;
+  const MALE = /male|david|mark|george|ryan|thomas|william|connor|daniel|oliver|rishi|prabhat|guy|christopher|eric|roger|steffan|brian|liam|mitchell|luke|alex|fred|tom\b|arthur|james|ken|duncan|darren|elliot|ethan|ollie|noah|alfie|aaron|andrew|brandon|davis|jacob|jason|tony|ravi|hemant|kai|neil|ken|matthew|joey|justin|russell|geraint|gordon|lee|rocko|reed|grandpa|eddy|ralph/i;
+  let voices = [];
+  const loadVoices = () => { try { voices = (window.speechSynthesis ? window.speechSynthesis.getVoices() : []).filter((v) => /^en/i.test(v.lang)); } catch (e) { voices = []; } };
+  if (window.speechSynthesis) { loadVoices(); try { window.speechSynthesis.onvoiceschanged = loadVoices; } catch (e) {} }
+  const hash = (str) => { let h = 2166136261; for (const c of String(str)) { h ^= c.charCodeAt(0); h = Math.imul(h, 16777619); } return h >>> 0; };
+  const quality = (v) => (/natural|online|neural/i.test(v.name) ? 3 : /google/i.test(v.name) ? 2 : v.localService ? 1 : 1);
+  const castCache = {};
+  function pickVoice(who, seed) {
+    const key = who + '|' + seed; if (castCache[key] !== undefined) return castCache[key];
+    const C = CAST[who] || CAST.villager; let pool = [];
+    for (const a of C.accent) { const m = voices.filter((v) => v.lang.toLowerCase().replace('_', '-').startsWith(a.toLowerCase())); if (m.length) { pool = m; break; } }
+    if (!pool.length) pool = voices.slice();
+    const g = C.g || (C.varied ? (hash(seed) % 2 ? 'f' : 'm') : null);
+    if (g) { const gp = pool.filter((v) => (g === 'f' ? FEM.test(v.name) && !/\bmale\b/i.test(v.name.replace(/female/i, '')) : MALE.test(v.name.replace(/female/i, '')) && !FEM.test(v.name))); if (gp.length) pool = gp; }
+    pool.sort((a, b) => quality(b) - quality(a)); const top = pool.filter((v) => quality(v) === quality(pool[0]));
+    const v = top.length ? top[hash(who + seed) % top.length] : null; castCache[key] = v; return v;
+  }
+  let speakPri = 0, speakUntil = 0, lastBark = 0;
+  function speak(text, who, pos, opts) {
+    const synth = window.speechSynthesis; if (!synth || !voices.length) return -1;
+    const clean = text.replace(/<[^>]+>/g, '').replace(/\*[^*]+\*/g, '').replace(/[…]/g, '...').trim(); if (!clean) return 0;
+    const pri = opts.pri ?? (who === 'host' ? 2 : 1); const nowS = performance.now() / 1000; const busy = synth.speaking && nowS < speakUntil;
+    if (busy && pri < speakPri) return 0; // a bark never interrupts dialogue or the host
+    if (pri === 1) { if (nowS - lastBark < 2.5) return 0; lastBark = nowS; }
+    let vol = 1; if (pos) { const d = Math.hypot(pos.x - listener.x, pos.z - listener.z); vol = 1 / (1 + d * d * 0.01); if (vol < 0.08) return 0; }
+    const C = CAST[who] || CAST.villager; const seed = opts.seed ?? 0; const v = pickVoice(who, seed);
+    try { synth.cancel(); const u = new SpeechSynthesisUtterance(clean); if (v) { u.voice = v; u.lang = v.lang; }
+      const vary = C.varied ? 0.85 + (hash(seed) % 30) / 100 : 1; u.pitch = Math.max(0, Math.min(2, C.pitch * vary)); u.rate = Math.max(0.5, Math.min(1.6, C.rate)); u.volume = Math.max(0, Math.min(1, S.voice * S.master * vol));
+      u.onend = () => { speakPri = 0; }; synth.speak(u); speakPri = pri; const dur = clean.split(/\s+/).length / (2.6 * u.rate) + 0.4; speakUntil = nowS + dur;
+      if (C.growl && ctx) growl(C.growl, pos); return dur; } catch (e) { return -1; }
+  }
+  // a short creature sound under a monster's line, so they sound like monsters and not just people
+  function growl(kind, pos) {
+    const o = out(sfx, pos, 0.2); if (!o || active > 40) return; const t = now();
+    if (kind === 'goblin') { const d = dist(30); d.connect(o); osc('sawtooth', 320, t, 0.35, d, { gain: 0.08, f1: 220 }); }
+    if (kind === 'big') { const d = dist(40); d.connect(o); osc('sawtooth', 90, t, 0.6, d, { gain: 0.14, f1: 60, a: 0.05 }); noise(t, 0.6, o, { gain: 0.12, f: 400, f1: 150, q: 2 }); }
+    if (kind === 'ghost') { osc('sine', 180, t, 1.2, o, { gain: 0.06, f1: 120, a: 0.3 }); noise(t, 1.2, o, { gain: 0.05, f: 900, q: 6, a: 0.3 }); }
+    if (kind === 'buzz') { osc('sawtooth', 210, t, 0.5, o, { gain: 0.05 }); osc('square', 213, t, 0.5, o, { gain: 0.03 }); }
+    if (kind === 'coo') { for (let i = 0; i < 3; i++) osc('sine', 420 - i * 30, t + i * 0.18, 0.16, o, { gain: 0.07, f1: 300 }); }
+    if (kind === 'metal') { [1, 2.7, 5.1].forEach((k) => osc('square', 140 * k, t, 0.4, o, { gain: 0.03 })); }
+  }
   let speaking = null;
   function say(text, who = 'villager', pos = null, opts = {}) {
-    if (!ctx) return 0; const P = { ...(VOICES[who] || VOICES.villager), ...(opts.voice || {}) }; if (opts.seed) { P.pitch *= 0.85 + (opts.seed % 7) * 0.05; P.formant = (P.formant || 1) * (0.92 + (opts.seed % 5) * 0.04); }
-    if (who === 'host' && S.hostSpeech && window.speechSynthesis) { try { window.speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(text.replace(/<[^>]+>/g, '')); u.rate = 1.12; u.pitch = 1.15; u.volume = S.voice * S.master; window.speechSynthesis.speak(u); return 1; } catch (e) {} }
+    if (S.voiceMode === 'speech') { const r = speak(text, who, pos, opts); if (r >= 0) return r; }
+    if (!ctx || active > 30) return 0; const P = { ...(VOICES[who] || VOICES.villager), ...(opts.voice || {}) }; if (opts.seed) { P.pitch *= 0.85 + (opts.seed % 7) * 0.05; P.formant = (P.formant || 1) * (0.92 + (opts.seed % 5) * 0.04); }
+    // babble fallback (no speech voices available)
     const o = out(voice, pos, 0.1); if (!o) return 0; const words = text.replace(/<[^>]+>/g, '').toLowerCase().split(/\s+/).filter(Boolean).slice(0, opts.max || 26);
     let t = now() + 0.02; const step = 1 / P.speed; const question = /\?\s*$/.test(text), shout = /!\s*$/.test(text) || text === text.toUpperCase();
     words.forEach((w, wi) => { const syl = w.match(/[aeiouy]+/g) || ['a']; syl.slice(0, 3).forEach((s, si) => { const v = s[0] === 'y' ? 'i' : s[0]; const last = wi === words.length - 1 && si === Math.min(2, syl.length - 1);
@@ -148,7 +223,8 @@ export function createAudio() {
   }
 
   return {
-    init, play, say, setMood, setFloor, settings: S, apply,
+    init, play, say, setMood, setFloor, settings: S, apply, voiceCount: () => voices.length, voiceFor: (who) => { const v = pickVoice(who, 0); return v ? `${v.name} (${v.lang})` : 'none'; },
+    stopSpeech: () => { try { window.speechSynthesis && window.speechSynthesis.cancel(); } catch (e) {} },
     setListener(x, z, yaw) { listener.x = x; listener.z = z; listener.yaw = yaw; },
     get ready() { return !!ctx; },
   };

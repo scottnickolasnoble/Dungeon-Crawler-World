@@ -7,7 +7,7 @@ const { chromium } = require('playwright');
   const p = await b.newPage({ viewport: { width: 960, height: 540 } }); p.setDefaultTimeout(300000);
   const errs = []; p.on('pageerror', (e) => errs.push(e.message)); p.on('console', (m) => { if (m.type() === 'error') errs.push(m.text()); });
   const t0 = Date.now();
-  await p.goto('http://localhost:8765/play.html?floor=1&newgame&fast', { timeout: 300000 });
+  await p.goto('http://localhost:8765/play.html?floor=1&newgame&fast&nointro', { timeout: 300000 });
   await p.waitForFunction(() => !document.getElementById('startBtn').disabled || document.getElementById('loadMsg').textContent.startsWith('Error'), null, { timeout: 600000 });
   console.log('load', await p.evaluate(() => document.getElementById('loadMsg').textContent), ((Date.now() - t0) / 1000).toFixed(0) + 's');
   await p.click('#startBtn'); await p.waitForTimeout(600);

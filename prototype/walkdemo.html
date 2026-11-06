@@ -1,0 +1,21 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Walk Cycle Preview</title>
+<style>body{margin:0;background:#1c1622;overflow:hidden}#stage{position:fixed;inset:0}</style></head><body><div id="stage"></div>
+<script type="module">
+// Walk-cycle preview: a goblin, a pigeon ghoul and a townsperson side by side, frozen mid-stride (?ph=phase).
+import * as THREE from './node_modules/three/build/three.module.js';
+import { createInk, toon } from './engine/ink.js';
+import { makeGoblin } from './creature.js';
+import { pigeonGhoul } from './monsters/tier1.js';
+import { poolNPC } from './npcs/races.js';
+import { rigCharacter, bipedParams } from './game/anim.js';
+globalThis.__SDF_STEP = 1.5; globalThis.__NPC_STEP = 1.6;
+const ph = +(new URLSearchParams(location.search).get('ph') || 1.57);
+const ink = createInk(document.getElementById('stage'), { fov: 32 }); const { scene, camera } = ink;
+scene.background = new THREE.Color('#2a2230'); scene.add(new THREE.HemisphereLight('#ffe8d0', '#3a2a40', 1.4)); const k = new THREE.DirectionalLight('#fff0dd', 1.2); k.position.set(3, 6, 5); scene.add(k);
+const fl = new THREE.Mesh(new THREE.PlaneGeometry(30, 30), toon('#5a5458')); fl.rotation.x = -Math.PI / 2; scene.add(fl);
+const make = [() => makeGoblin({ variant: 2 }), () => pigeonGhoul(), () => poolNPC({ role: 'guard', race: 'human', variant: 0 })];
+make.forEach((fn, i) => { const root = new THREE.Group(); const body = fn(); root.add(body); root.position.set((i - 1) * 1.6, 0, 0); root.rotation.y = Math.PI / 2; scene.add(root);
+  const P = i === 1 ? bipedParams(body, { hip: 0.3, shoulder: 0.6, arms: 0.3 }) : bipedParams(body, { arms: i === 0 ? 0.5 : 1 }); const rig = rigCharacter(body, P, ['weapon'], ink.rigged); rig.uAmt.value = 0.55; rig.uPhase.value = ph + i * 0.0; });
+camera.position.set(0, 1.1, 7); camera.lookAt(0, 0.85, 0);
+ink.render(); setTimeout(() => { ink.render(); window.__ready = true; }, 300);
+</script></body></html>

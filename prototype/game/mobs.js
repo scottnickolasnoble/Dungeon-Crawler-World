@@ -1,10 +1,13 @@
 // Mob system: nav-grid flow-field pathfinding, readable attacks (wind-up, ground telegraph, swing, recover),
 // ranged throwers, elites, bosses with telegraphed abilities, encampment groups, level scaling and respawns.
 import * as THREE from '../node_modules/three/build/three.module.js';
+import { rigCharacter, bipedParams, stepRig } from './anim.js';
 import { makeGoblin } from '../creature.js';
-import { mopWight, fluorescentMoth, pigeonGhoul, vendingMimic } from '../monsters/tier1.js';
-import { sergeantPylon, headCustodianEbb, trafficCone, bulbQueen, oldManCoo, coneKing } from '../monsters/bosses1.js';
+import { mopWight, fluorescentMoth, pigeonGhoul, vendingMimic, drainLamprey } from '../monsters/tier1.js';
+import { sergeantPylon, headCustodianEbb, trafficCone, bulbQueen, oldManCoo, coneKing, bigSucker } from '../monsters/bosses1.js';
 
+// how each model moves: biped walk cycle, slither, wing flap or waddle
+const RIG = { goblin: 'biped', thrower: 'biped', captain: 'biped', pylon: 'biped', coneKing: 'biped', wight: 'glide', ebb: 'glide', pigeon: 'bird', coo: 'bird', moth: 'fly', bulbQueen: 'fly', mimic: 'waddle', lamprey: 'slither', bigSucker: 'slither' };
 // ---------------- definitions ----------------
 // windup = how long the attack is telegraphed (parry window is the last 0.35 s of it plus the swing)
 export const MOBDEFS = {
@@ -16,6 +19,8 @@ export const MOBDEFS = {
     barks: ['HALT! This is a CONE ZONE!', 'Lads! Fall in!', 'You are parked in MY spot.', 'I have twenty years on the force. Okay, two. In cones.'], enrage: 'SERGEANT PYLON BLOWS HIS WHISTLE IN RAGE' },
   ebb: { name: 'Head Custodian Ebb', title: 'Neighbourhood Boss · Boiler Room 0', model: 'ebb', boss: true, hp: 620, dmg: 18, speed: 2.9, reach: 3.0, arc: 2.6, windup: 0.9, swing: 0.25, recover: 0.8, xp: 800, aggro: 18, leash: 30, abilities: ['sweep', 'puddle', 'clockin', 'keys'],
     barks: ['You are tracking mud on my floor.', 'Shift change, wights! Clock in!', 'Forty years. Not one dry day.'], enrage: 'HEAD CUSTODIAN EBB HAS HAD IT WITH YOU' },
+  lamprey: { name: 'Drain Lamprey', model: 'lamprey', hp: 38, dmg: 9, speed: 2.6, reach: 2.0, arc: 1.2, windup: 0.65, swing: 0.16, recover: 0.7, xp: 22, aggro: 11, barks: ['…shhhhllk…', '*wet gurgling*', 'Ssssuck…'] },
+  bigSucker: { name: 'The Big Sucker', title: 'Neighbourhood Boss · The Flooded Bay', model: 'bigSucker', boss: true, hp: 480, dmg: 15, speed: 1.9, reach: 3.6, arc: 1.6, windup: 0.85, swing: 0.2, recover: 0.8, xp: 600, aggro: 16, leash: 16, abilities: ['charge', 'slam', 'summon', 'puddle'], summon: 'lamprey', barks: ['Feeeeed meeee…', 'My clutch! Away from my clutch!', 'The drains all lead to ME.'], enrage: 'THE BIG SUCKER THRASHES IN THE FLOODWATER' },
   moth: { name: 'Fluorescent Moth', model: 'moth', hp: 42, dmg: 10, speed: 4.2, reach: 2.0, arc: 1.4, windup: 0.5, swing: 0.16, recover: 0.6, xp: 26, aggro: 17, barks: ['bzzzt… LIGHT…', 'The Queen sees you…', 'bzz bzz BZZ'] },
   pigeon: { name: 'Pigeon Ghoul', model: 'pigeon', hp: 52, dmg: 11, speed: 3.7, reach: 1.9, arc: 1.4, windup: 0.55, swing: 0.18, recover: 0.6, xp: 28, aggro: 15, ranged: { min: 5, max: 13, windup: 0.7, speed: 12, cd: 3 }, proj: 'crumb', barks: ['COO. COO. COO.', 'Got any bread?', 'Mine! MINE! COO!'] },
   mimic: { name: 'Vending Mimic', model: 'mimic', hp: 95, dmg: 17, speed: 2.4, reach: 2.3, arc: 1.3, windup: 0.95, swing: 0.2, recover: 0.9, xp: 40, aggro: 6, elite: true, barks: ['INSERT COIN.', 'OUT OF ORDER. OUT OF PATIENCE.', 'Exact change only. Exact. CHANGE.'] },
@@ -59,6 +64,7 @@ class NavGrid {
 }
 
 // ---------------- system ----------------
+const m0weapon = (b) => !!(b.getObjectByName('weapon') && b.getObjectByName('weapon').visible);
 export function createMobSystem(ctx) {
   const { scene, fx, col } = ctx; const mobs = []; const projs = []; const tele = []; const trails = []; const zones = [];
   let nav = null, flowT = 0, flowCell = -1;
@@ -74,7 +80,8 @@ export function createMobSystem(ctx) {
       return g;
     }
     if (d.model === 'wight') { if (!tmpl.w) tmpl.w = mopWight(); const g = tmpl.w.clone(); g.scale.setScalar(0.95 + (variant % 3) * 0.06); return g; }
-    const T1 = { moth: fluorescentMoth, pigeon: pigeonGhoul, mimic: vendingMimic };
+    const T1 = { moth: fluorescentMoth, pigeon: pigeonGhoul, mimic: vendingMimic, lamprey: drainLamprey };
+    if (d.model === 'bigSucker') return bigSucker();
     if (T1[d.model]) { if (!tmpl[d.model]) tmpl[d.model] = T1[d.model](); const g = tmpl[d.model].clone(); g.scale.multiplyScalar(0.95 + (variant % 3) * 0.06); return g; }
     if (d.model === 'bulbQueen') return bulbQueen(); if (d.model === 'coo') return oldManCoo(); if (d.model === 'coneKing') return coneKing();
     if (d.model === 'pylon') return sergeantPylon();
@@ -85,10 +92,18 @@ export function createMobSystem(ctx) {
   function spawn(s) {
     const d = MOBDEFS[s.kind]; const lvl = s.lvl || 1; let [x, z] = nav ? nav.nearestFree(s.x, s.z) : [s.x, s.z];
     const root = new THREE.Group(); const body = modelFor(s.kind, s.variant || 0); root.add(body); root.position.set(x, 0, z); root.rotation.y = Math.random() * 6; scene.add(root);
+    // walk rig (vertex-shader legs/arms), measured from the sculpt before scaling games with it
+    const rt = RIG[d.model] || 'biped'; let rig = null; const sc0 = body.scale.x; body.scale.setScalar(1);
+    if (rt === 'biped') rig = rigCharacter(body, bipedParams(body, { arms: m0weapon(body) ? 0.5 : 1 }), ['weapon', 'held'], ctx.rigged);
+    else if (rt === 'bird') rig = rigCharacter(body, bipedParams(body, { hip: 0.3, shoulder: 0.6, arms: 0.3 }), ['weapon', 'held'], ctx.rigged);
+    else if (rt === 'glide') rig = rigCharacter(body, { ...bipedParams(body, { arms: 0.6 }), lift: 0.02 }, ['weapon', 'held'], ctx.rigged);
+    else if (rt === 'slither') { const P = bipedParams(body); rig = rigCharacter(body, { hip: P.hip * 2, slither: 0.06 }, [], ctx.rigged); }
+    body.scale.setScalar(sc0);
+    const wings = []; body.traverse((o) => { if (o.name === 'wing') wings.push({ o, z: o.rotation.z, sx: o.scale.x }); });
     const mats = []; body.traverse((o) => { if (o.isMesh && o.material && (o.material.isMeshPhysicalMaterial || o.material.isMeshStandardMaterial) && o.material.emissive) { o.material = o.material.clone(); mats.push(o.material); } });
     const baseY = body.position.y, baseZ = body.position.z; const weapon = body.getObjectByName('weapon') || body.getObjectByName('held'); const wBase = weapon ? weapon.rotation.clone() : null; const bodyScale = body.scale.x;
     const hp = scaleHp(d.hp, lvl);
-    const m = { def: d, kind: s.kind, g: root, body, bodyScale, baseY, baseZ, weapon, wBase, mats, lvl, hp, maxHp: hp, home: new THREE.Vector3(x, 0, z), camp: s.camp || null, roam: !s.camp && !d.boss, state: 'idle', act: null, atkCd: 0.5 + Math.random(), abCd: {}, abUses: {}, burn: 0, burnDps: 0, flash: 0, stun: 0, stagger: 0, slow: 0, dead: false, deadT: 0, wander: Math.random() * 10, wanderTarget: null, name: d.name, bar: d.boss ? null : ctx.makeBar(), barkT: 0, enraged: false, spawnSpec: s, respawnT: 0 };
+    const m = { def: d, kind: s.kind, g: root, body, bodyScale, baseY, baseZ, rig, rigType: rt, wings, stride: Math.max(0.6, (rig ? rig.uHip.value : 0.8) * 1.6), weapon, wBase, mats, lvl, hp, maxHp: hp, home: new THREE.Vector3(x, 0, z), camp: s.camp || null, roam: !s.camp && !d.boss, state: 'idle', act: null, atkCd: 0.5 + Math.random(), abCd: {}, abUses: {}, burn: 0, burnDps: 0, flash: 0, stun: 0, stagger: 0, slow: 0, dead: false, deadT: 0, wander: Math.random() * 10, wanderTarget: null, name: d.name, bar: d.boss ? null : ctx.makeBar(), barkT: 0, enraged: false, spawnSpec: s, respawnT: 0 };
     for (const a of d.abilities || []) m.abCd[a] = ABIL[a].cd * (0.4 + Math.random() * 0.4);
     mobs.push(m); return m;
   }
@@ -167,6 +182,7 @@ export function createMobSystem(ctx) {
       if (m.dead) { m.deadT += dt; if (m.kind === 'wight' || m.kind === 'ebb') g.position.y = -Math.min(1.6 * m.bodyScale, m.deadT * 1.2); else m.body.rotation.x = Math.max(-1.5, -m.deadT * 4); if (m.deadT > 6) g.visible = false;
         if (m.roam && m.deadT > 90 && pp.distanceTo(m.home) > 60) { revive(m); } continue; }
       const dx = pp.x - g.position.x, dz = pp.z - g.position.z, dist = Math.hypot(dx, dz);
+      g.visible = dist < (m.def.boss ? 110 : 78); // don't draw what the fog hides
       const far = dist > 90; if (far && m.state === 'idle') continue;
       const d = m.def, spd = d.speed * (m.enraged ? 1.25 : 1) * (m.slow > 0 ? 0.5 : 1); m.slow -= dt;
       let move = new THREE.Vector3();
@@ -228,18 +244,28 @@ export function createMobSystem(ctx) {
   function playerInZone() { const pp = P(); return zones.some((z) => Math.hypot(pp.x - z.p.x, pp.z - z.p.z) < z.r); }
 
   function animate(m, move, t, dt) {
-    const b = m.body, s = m.bodyScale, a = m.act; let lean = 0, hop = 0, sway = 0, glow = 0, lunge = 0, wRot = 0, squash = 1;
-    const moving = move.lengthSq() > 0.05;
-    if (moving) { hop = Math.abs(Math.sin(t * 9 + m.wander)) * 0.08 * s; sway = Math.sin(t * 9 + m.wander) * 0.06; lean = 0.08; }
+    const b = m.body, s = m.bodyScale, a = m.act; let lean = 0, hop = 0, sway = 0, glow = 0, lunge = 0, wRot = 0, squash = 1, roll = 0;
+    const spd = move.length(); const moved = spd * dt;
+    // locomotion: legs do the walking now; the body only bobs a little with each step
+    const amt = m.rig ? stepRig(m.rig, moved / s, dt, t, m.stride) : Math.min(0.55, spd * 0.16);
+    if (!m.rig) { m.walkPh = (m.walkPh || 0) + moved / s * 5; }
+    const ph = m.rig ? m.rig.uPhase.value : m.walkPh;
+    if (m.rigType === 'biped' || m.rigType === 'bird') { hop = Math.abs(Math.cos(ph)) * 0.025 * s * amt * 2; lean = 0.05 * amt; roll = Math.sin(ph) * 0.03 * amt; if (m.rigType === 'bird') lean += Math.max(0, Math.sin(ph * 2)) * 0.06 * amt; }
+    else if (m.rigType === 'glide') { hop = Math.sin(t * 2 + m.wander) * 0.03 * s; roll = Math.sin(ph) * 0.04 * amt; lean = 0.08 * amt; }
+    else if (m.rigType === 'waddle') { roll = Math.sin(ph) * 0.14 * Math.min(1, amt * 3); hop = Math.abs(Math.sin(ph)) * 0.06 * s * Math.min(1, amt * 3); }
+    else if (m.rigType === 'fly') { hop = 0.35 * s + Math.sin(t * 3 + m.wander) * 0.12 * s; lean = 0.15 * amt; for (const w of m.wings) w.o.rotation.z = w.z + Math.sin(t * 22 + m.wander) * 0.55 * (w.sx < 0 ? -1 : 1); }
+    else if (m.rigType === 'slither') { roll = Math.sin(t * 3) * 0.05; }
+    sway = roll;
     if (a) { const W = a.windup, S = a.swing; const p = Math.min(1, a.t / W);
-      if (a.t < W) { lean = -0.32 * p; wRot = -2.1 * p; glow = 0.06 + 0.16 * p * (0.6 + 0.4 * Math.sin(t * 30)); squash = 1 + 0.06 * p; if (a.type === 'slam' || a.type === 'sweep' || a.type === 'nova') { hop = 0.5 * p * s; } }
-      else if (a.t < W + S) { const q = (a.t - W) / S; lean = 0.45; wRot = -2.1 + 3.5 * Math.min(1, q * 1.6); lunge = 0.35 * Math.sin(q * Math.PI) * s; glow = 0.08; if (a.type === 'slam' || a.type === 'sweep') { hop = 0; squash = 0.85; } }
+      if (a.t < W) { lean = -0.32 * p; wRot = -2.1 * p; glow = p * (0.5 + 0.5 * Math.sin(t * 24)); squash = 1 + 0.06 * p; if (a.type === 'slam' || a.type === 'sweep' || a.type === 'nova') { hop = 0.5 * p * s; } }
+      else if (a.t < W + S) { const q = (a.t - W) / S; lean = 0.45; wRot = -2.1 + 3.5 * Math.min(1, q * 1.6); lunge = 0.35 * Math.sin(q * Math.PI) * s; if (a.type === 'slam' || a.type === 'sweep' || a.type === 'nova') { hop = 0; squash = 0.85; } }
       else { const q = Math.min(1, (a.t - W - S) / a.recover); lean = 0.45 * (1 - q); wRot = 1.4 * (1 - q); } }
     if (m.state === 'stagger') { lean = -0.25 + Math.sin(t * 14) * 0.08; sway = Math.sin(t * 9) * 0.15; }
     b.rotation.x = lean; b.rotation.z = sway; b.position.y = m.baseY + hop; b.position.z = m.baseZ + lunge; b.scale.set(s, s * squash, s);
     if (m.weapon && m.wBase) m.weapon.rotation.set(m.wBase.x + wRot, m.wBase.y, m.wBase.z + (a && a.type === 'sweep' ? wRot * 0.6 : 0));
-    m.flash = Math.max(0, m.flash - dt); const f = m.flash / 0.12, bn = m.burn > 0 ? 0.25 : 0;
-    for (const mt of m.mats) mt.emissive.setRGB(0.8 * f + bn + glow, 0.1 * f + bn * 0.35 + glow * 0.25, 0.05 * f);
+    // hit flash is a quick pale blink; the wind-up warning is a faint red pulse (no more orange cast)
+    m.flash = Math.max(0, m.flash - dt); const f = m.flash / 0.1;
+    for (const mt of m.mats) mt.emissive.setRGB(0.32 * f + 0.09 * glow, 0.3 * f + 0.01 * glow, 0.28 * f + 0.01 * glow);
   }
   function revive(m) { m.dead = false; m.deadT = 0; m.hp = m.maxHp; m.state = 'idle'; m.g.visible = true; m.body.rotation.x = 0; m.g.position.copy(m.home); m.bar = ctx.makeBar(); }
   function clearAll() { for (const m of mobs) if (m.act) endAct(m); }

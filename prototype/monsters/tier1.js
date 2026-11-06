@@ -233,7 +233,7 @@ export function fluorescentMoth() {
       for (let i = 0; i < p.count; i++) { const u = p.getX(i) / sz + 0.5; p.setZ(i, Math.sin(u * Math.PI) * 0.03 + vnoise(p.getX(i) * 8, p.getY(i) * 8, 1) * 0.008); }
       geo.computeVertexNormals(); geo.translate(sz / 2, 0, 0);
       const w = new THREE.Mesh(geo, wingMat(tex)); w.rotation.set(-Math.PI / 2 + 0.25, 0, 0);
-      const holder = new THREE.Group(); holder.add(w); holder.position.set(sx * 0.05, Y + 0.03, dz); holder.scale.x = sx; holder.rotation.set(0, sx * ry, sx * rz);
+      const holder = new THREE.Group(); holder.name = "wing"; holder.add(w); holder.position.set(sx * 0.05, Y + 0.03, dz); holder.scale.x = sx; holder.rotation.set(0, sx * ry, sx * rz);
       g.add(holder);
     }
   }

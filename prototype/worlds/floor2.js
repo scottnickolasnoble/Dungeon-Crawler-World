@@ -151,7 +151,7 @@ export function buildFloor2(ink, col, onProgress = () => {}) {
   const npcs = [
     { id: 'spin', named: 'spin', kind: 'quest', title: 'Laundromat owner', x: -5, z: 4, yaw: 0.4, voice: 'spin' },
     { id: 'reggie', named: 'reggie', kind: 'quest', title: 'Retired custodian', x: 7, z: 8, yaw: -0.6, voice: 'reggie' },
-    { id: 'bev', kind: 'quest', role: 'trader', race: 'fennix', variant: 1, name: 'Bev', title: 'Table merchant', x: -10, z: 9, yaw: 0.8, voice: 'merchant', static: true },
+    { id: 'bev', kind: 'quest', role: 'trader', race: 'fennix', variant: 1, name: 'Bev', title: 'Table merchant', x: -10, z: 9, yaw: 0.8, voice: 'bev', static: true },
     ...townFillers({ x: 0, z: 8, r: 19, r0: 5, count: 10, races: ['gutterkin', 'fennix', 'human', 'bogling'], seed: 2 }),
   ];
   const stairs = { x: 16, z: 2, r: 2.6, to: '3', flag: 'ebb_handled', locked: 'The service stairs to Floor 3 are behind the Boiler Room’s pressure door. Deal with Ebb first.' };

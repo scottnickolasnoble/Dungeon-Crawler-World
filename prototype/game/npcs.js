@@ -2,6 +2,7 @@
 // look at you. Filler NPCs bark one-liners; quest NPCs and merchants open dialogue (handled by story.js).
 import * as THREE from '../node_modules/three/build/three.module.js';
 import { poolNPC } from '../npcs/races.js';
+import { rigCharacter, bipedParams, stepRig } from './anim.js';
 import { martaVance, pickles, spinCycle, oldReggie } from '../npcs/floor1to3.js';
 import { wickley, brotherAsh } from '../npcs/floor1to3.js';
 
@@ -33,8 +34,9 @@ export function createNPCSystem(ctx) {
   function spawn(spec) {
     let [x, z] = ctx.nav ? ctx.nav.nearestFree(spec.x, spec.z) : [spec.x, spec.z];
     const root = new THREE.Group(); const body = model(spec); root.add(body); root.position.set(x, 0, z); root.rotation.y = spec.yaw ?? Math.random() * 6; scene.add(root);
+    const sc0 = body.scale.x; body.scale.setScalar(1); const rig = rigCharacter(body, bipedParams(body), [], ctx.rigged); body.scale.setScalar(sc0);
     const name = spec.name || `${FIRST[(spec.variant * 7 + (spec.seed || 0)) % FIRST.length]}`;
-    const n = { ...spec, name, g: root, body, baseScale: body.scale.x, home: new THREE.Vector3(x, 0, z), wp: 0, wait: Math.random() * 3, act: spec.activity || 'idle', t: Math.random() * 10, talkT: 3 + Math.random() * 6, lookAt: 0, route: buildRoute(spec, x, z) };
+    const n = { ...spec, name, g: root, body, rig, stride: rig.uHip.value * 1.7, baseScale: body.scale.x, home: new THREE.Vector3(x, 0, z), wp: 0, wait: Math.random() * 3, act: spec.activity || 'idle', t: Math.random() * 10, talkT: 3 + Math.random() * 6, lookAt: 0, route: buildRoute(spec, x, z) };
     npcs.push(n); return n;
   }
   // filler routes: a loop of 3-4 free points inside the town that can see each other
@@ -50,7 +52,8 @@ export function createNPCSystem(ctx) {
   function update(dt, t, P, speakLine) {
     for (const n of npcs) {
       n.t += dt; const g = n.g, b = n.body; const toP = P.pos.clone().sub(g.position).setY(0), dp = toP.length();
-      let moving = false;
+      g.visible = dp < 70; if (dp > 90 && !n.route) continue;
+      let moving = false; const p0x = g.position.x, p0z = g.position.z;
       const engaged = (n.kind !== 'filler' && dp < 4.5) || n.talking > 0; n.talking = Math.max(0, (n.talking || 0) - dt);
       if (n.route && !engaged) {
         const W = n.route[n.wp];
@@ -63,7 +66,8 @@ export function createNPCSystem(ctx) {
       if (engaged || (dp < 3 && !moving)) { turn(n, Math.atan2(toP.x, toP.z), 4, dt); if (n.kind !== 'filler') n.act = engaged ? 'listen' : n.act; }
       // animation by activity
       const s = n.baseScale; let lean = 0, hop = 0, sway = 0, yaw2 = 0;
-      if (moving) { hop = Math.abs(Math.sin(n.t * 8)) * 0.05; sway = Math.sin(n.t * 8) * 0.05; }
+      const amt = stepRig(n.rig, Math.hypot(g.position.x - p0x, g.position.z - p0z) / s, dt, t, n.stride);
+      if (moving) { hop = Math.abs(Math.cos(n.rig.uPhase.value)) * 0.02 * amt * 2; sway = Math.sin(n.rig.uPhase.value) * 0.025 * amt; lean = 0.04 * amt; }
       else if (n.act === 'work') { lean = Math.max(0, Math.sin(n.t * 5)) * 0.28; hop = Math.max(0, -Math.sin(n.t * 5)) * 0.02; }
       else if (n.act === 'sweep') { sway = Math.sin(n.t * 3) * 0.12; yaw2 = Math.sin(n.t * 3) * 0.3; lean = 0.15; }
       else if (n.act === 'talk' || n.act === 'listen') { lean = Math.sin(n.t * 2.2) * 0.04; yaw2 = Math.sin(n.t * 1.3) * 0.12; hop = Math.abs(Math.sin(n.t * (n.talking > 0 ? 9 : 1.5))) * (n.talking > 0 ? 0.03 : 0.01); }

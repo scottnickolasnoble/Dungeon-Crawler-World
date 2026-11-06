@@ -4,7 +4,7 @@ const { chromium } = require('playwright');
   const b = await chromium.launch({ args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader'] });
   const p = await b.newPage({ viewport: { width: 960, height: 540 } }); p.setDefaultTimeout(300000);
   const errs = []; p.on('pageerror', (e) => errs.push(e.message));
-  await p.goto('http://localhost:8765/play.html?floor=1&newgame', { timeout: 300000 });
+  await p.goto('http://localhost:8765/play.html?floor=1&newgame&nointro', { timeout: 300000 });
   await p.waitForFunction(() => !document.getElementById('startBtn').disabled, null, { timeout: 600000 });
   await p.click('#startBtn'); await p.waitForTimeout(500);
   await p.evaluate(() => {

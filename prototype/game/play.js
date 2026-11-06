@@ -5,6 +5,8 @@ import { createMobSystem, MOBDEFS, scaleDmg } from './mobs.js';
 import { createAudio } from './audio.js';
 import { createNPCSystem, FILLER_LINES } from './npcs.js';
 import { createStory } from './story.js';
+import { artImg } from './lootart.js';
+import { playIntro } from './intro.js';
 const AU = createAudio();
 import { SKILLS, CLASS, STATS, makeItem, makeRng, openBox, BOXES, ACHIEVEMENTS, CONSUMABLES } from './data.js';
 import { createUI } from './ui.js';
@@ -13,7 +15,7 @@ import { createCrafting, createCraftUI, MATS, TABLES } from './crafting.js';
 const $ = (id) => document.getElementById(id);
 const QS = new URLSearchParams(location.search); const HASH = location.hash.slice(1);
 // floors are chosen by #hash (artifact pages drop query strings); ?floor= still works for local tests
-const FLOOR = QS.get('floor') || (HASH === 'pad' ? 'pad' : HASH === 'floor-2' ? '2' : HASH === 'floor-3' ? '3' : '1');
+const FLOOR = QS.get('floor') || (HASH === 'intro' ? '1' : HASH === 'pad' ? 'pad' : HASH === 'floor-2' ? '2' : HASH === 'floor-3' ? '3' : '1');
 function goFloor(f) { if (QS.get('floor')) { location.search = `?floor=${f}`; return; } location.hash = f === 'pad' ? 'pad' : `floor-${f}`; }
 window.addEventListener('hashchange', () => location.reload());
 const SAVE_KEY = 'downstairs_save_v2';
@@ -33,7 +35,7 @@ state.tables = { workbench: { tier: 1, slot: 2 }, still: { tier: 1, slot: 3 } };
 function saveGame() { try { const o = { ...state, discovered: [...state.discovered] }; delete o.equipped; localStorage.setItem(SAVE_KEY, JSON.stringify(o)); } catch (e) {} }
 function loadGame() { try { const raw = localStorage.getItem(SAVE_KEY); if (!raw) return false; const o = JSON.parse(raw); Object.assign(state, o); state.discovered = new Set(o.discovered || []); return true; } catch (e) { return false; } }
 const LOADED = !QS.has('newgame') && HASH !== 'new' && loadGame();
-if (HASH === 'new') { try { history.replaceState(null, '', '#floor-1'); } catch (e) {} }
+if (HASH === 'new' || HASH === 'intro') { try { history.replaceState(null, '', '#floor-1'); } catch (e) {} }
 state.equipped = (it) => Object.values(state.equip).includes(it);
 const xpFor = (lv) => Math.round(60 * lv ** 1.35);
 state.xpNext = xpFor(state.level);
@@ -84,14 +86,21 @@ const ui = createUI(G);
 { const h = ui.host; ui.host = (t) => { h(t); AU.say(t, 'host'); }; const tg = ui.toggle; ui.toggle = (p) => { SFX('ui'); tg(p); }; }
 const CR = createCrafting(G); const craftUI = createCraftUI(G, CR);
 G.closeCraft = () => ui.close();
-const NPCS = createNPCSystem({ scene, col, get nav() { return MS.nav; } });
+const NPCS = createNPCSystem({ scene, col, rigged: ink.rigged, get nav() { return MS.nav; } });
 const STORY = createStory({ state, floor: FLOOR, CR, derived, toast: (...a) => ui.toast(...a), host: (t) => ui.host(t), sfx: (n) => SFX(n), gainXP: (n) => gainXP(n), save: () => saveGame(),
-  uid: () => Math.floor(Math.random() * 1e9), makeItem: (o) => makeItem(rng, o), give: (it) => { state.inv.push(it); ui.toast(`<span style="color:${RCOL[it.rarity] || '#fff'}">${it.name}</span> added`, '#3a3448', 2500); }, giveCons: (i) => state.inv.push({ ...CONSUMABLES[i], uid: Math.floor(Math.random() * 1e9), rarity: 'common' }),
-  say: (t, v, p) => AU.say(t, v, p), openShop: (id, title) => {}, openPanel: (p) => { ui.toggle(p); }, onOpen: (o) => { if (o && document.pointerLockElement) document.exitPointerLock(); }, rcol: (r) => RCOL[r] || '#fff' });
+  uid: () => Math.floor(Math.random() * 1e9), makeItem: (o) => makeItem(rng, o), give: (it) => { state.inv.push(it); ui.toast(`<span class="toastArt">${artImg(it, 44)}</span><span style="color:${RCOL[it.rarity] || '#fff'}">${it.name}</span><div class="sm">added to your bag</div>`, '#3a3448', 3000); }, giveCons: (i) => state.inv.push({ ...CONSUMABLES[i], uid: Math.floor(Math.random() * 1e9), rarity: 'common' }),
+  say: (t, v, p, o) => AU.say(t, v, p, o), stopVoice: () => AU.stopSpeech(), openShop: (id, title) => {}, openPanel: (p) => { ui.toggle(p); }, onOpen: (o) => { if (o && document.pointerLockElement) document.exitPointerLock(); }, rcol: (r) => RCOL[r] || '#fff' });
 G.renderShop = () => STORY.renderShop(); G.renderLog = () => STORY.renderLog();
 const RCOL = { junk: '#9a9a9a', common: '#f4eedc', uncommon: '#5ad86a', rare: '#4a9aff', epic: '#b46cff', legendary: '#ff9a2a' };
 G.toast = (...a) => ui.toast(...a);
-G.renderSettings = () => { const S = AU.settings; $('setList').innerHTML = ['master', 'music', 'sfx', 'voice'].map((k) => `<label class="setRow" for="set_${k}"><span>${{ master: 'Master volume', music: 'Music', sfx: 'Sound effects', voice: 'Voices' }[k]}</span><input type="range" id="set_${k}" min="0" max="1" step="0.05" value="${S[k]}"></label>`).join('') + `<label class="setRow" for="set_hostSpeech"><span>Host voice: spoken (uses your browser's speech voice) instead of babble</span><input type="checkbox" id="set_hostSpeech" ${S.hostSpeech ? 'checked' : ''}></label><button class="cbtn" id="setTest">TEST VOICE</button>`; ['master', 'music', 'sfx', 'voice'].forEach((k) => { $('set_' + k).oninput = (e) => { S[k] = +e.target.value; AU.apply(); }; }); $('set_hostSpeech').onchange = (e) => { S.hostSpeech = e.target.checked; AU.apply(); }; $('setTest').onclick = () => { AU.init(); AU.say('Welcome back, contestant! Please keep your limbs inside the dungeon at all times.', 'host'); }; }; G.renderCraft = () => craftUI.render();
+G.renderSettings = () => { const S = AU.settings; const n = AU.voiceCount();
+  $('setList').innerHTML = ['master', 'music', 'sfx', 'voice'].map((k) => `<label class="setRow" for="set_${k}"><span>${{ master: 'Master volume', music: 'Music', sfx: 'Sound effects', voice: 'Voices' }[k]}</span><input type="range" id="set_${k}" min="0" max="1" step="0.05" value="${S[k]}"></label>`).join('')
+    + `<label class="setRow" for="set_voiceMode"><span>Character voices</span><select id="set_voiceMode"><option value="speech" ${S.voiceMode === 'speech' ? 'selected' : ''}>Spoken, with accents</option><option value="babble" ${S.voiceMode === 'babble' ? 'selected' : ''}>Gibberish babble</option></select></label>`
+    + `<div class="sm" style="margin:10px 0 6px">${n ? `${n} English voices found in your browser. Microsoft Edge has the most natural accented voices (Irish, Scottish, Australian, Indian, South African and more).` : 'No speech voices found in this browser, so characters babble instead.'}</div>`
+    + `<div class="castList">${[['host', 'The Host'], ['marta', 'Marta Vance'], ['pickles', 'Pickles'], ['bo', 'Benchwright Bo'], ['reggie', 'Old Reggie'], ['spin', 'Spin Cycle'], ['wickley', 'Wickley'], ['ash', 'Brother Ash'], ['vrask', 'Judge Vrask'], ['goblin', 'Goblins'], ['pylon', 'Sergeant Pylon']].map(([k, nm]) => `<button class="castRow" data-k="${k}"><b>${nm}</b><span>${AU.voiceFor(k)}</span><i>▶</i></button>`).join('')}</div>`;
+  ['master', 'music', 'sfx', 'voice'].forEach((k) => { $('set_' + k).oninput = (e) => { S[k] = +e.target.value; AU.apply(); }; }); $('set_voiceMode').onchange = (e) => { S.voiceMode = e.target.value; AU.apply(); };
+  const LINES = { host: 'Welcome back, contestant! Please keep your limbs inside the dungeon at all times.', marta: 'Another new face. Welcome to Stairwell Camp.', pickles: 'Pickles\u2019 Junk! Everything\u2019s junk! Some of it\u2019s good junk!', bo: 'Tables built to last. Mostly in one piece.', reggie: 'Forty years I mopped these floors.', spin: 'Have you seen Dave? Dave\u2019s inside.', wickley: 'Best soup on Floor 3, worst soup on Floor 3.', ash: 'Peace, traveller. I keep the Last Light.', vrask: 'I have come a very long way to be disappointed.', goblin: 'Oi! Cone zone! Get the tall one!', pylon: 'Halt! This is a cone zone!' };
+  document.querySelectorAll('.castRow').forEach((b) => b.onclick = () => { AU.init(); AU.say(LINES[b.dataset.k], b.dataset.k, null, { pri: 3 }); }); };
 G.onTables = () => { if (world && world.refreshTables) world.refreshTables(state); saveGame(); };
 G.onCraft = () => { SFX('craft'); state.counters.crafted = (state.counters.crafted || 0) + 1; if (state.counters.crafted === 1) ui.host('You made a thing! With your hands! The audience is moved. Mildly.'); saveGame(); };
 function inSafe() { return FLOOR === 'pad' || (lastPOI && lastPOI.safe); }
@@ -210,7 +219,7 @@ function explode(p, radius, dmgFn) {
 
 // ---------------- mobs ----------------
 const LVL_COL = (d) => (d >= 5 ? '#ff3a3a' : d >= 3 ? '#ff8a3a' : d >= -2 ? '#f4eedc' : '#8a8a8a');
-const MS = createMobSystem({ scene, fx, col, P, makeBar,
+const MS = createMobSystem({ scene, fx, col, P, rigged: ink.rigged, makeBar,
   playerSafe: () => inSafe(), truce: (camp) => STORY.truceOn(camp), hitPlayer, kill: (m) => killMob(m), hurt: (m, d, b) => hurtMob(m, d, b),
   burst: (...a) => burstAt(...a), shake: (v) => { shake = Math.max(shake, v); }, banner: (...a) => ui.banner(...a),
   bark: (m, txt) => { floatText(m.g.position.clone().setY(2.2 * m.bodyScale + 0.3), txt, 'bark', 2.6); AU.say(txt, m.kind, m.g.position, { seed: m.spawnSpec.variant || 0, max: 8 }); },
@@ -231,7 +240,7 @@ function hurtMob(m, dmg, burnSec = 0) {
   const mult = Math.max(0.35, Math.min(1.3, 1 - diff * 0.08)) * (m.state === 'stagger' ? 1.5 : 1);
   const d = Math.max(1, Math.round(dmg * mult * (crit ? 1.8 : 1) * (0.9 + Math.random() * 0.2)));
   if (m.camp && STORY.truceOn(m.camp)) STORY.breakTruce(m.camp);
-  m.hp -= d; m.flash = 0.12; MS.aggro(m); dmgNumber(m.g.position.clone().add(new THREE.Vector3(0, 2.0 * m.bodyScale, 0)), (crit ? 'CRIT ' : '') + d, crit ? 'crit' : '');
+  m.hp -= d; m.flash = 0.1; MS.aggro(m); dmgNumber(m.g.position.clone().add(new THREE.Vector3(0, 2.0 * m.bodyScale, 0)), (crit ? 'CRIT ' : '') + d, crit ? 'crit' : '');
   SFX('hit', m.g.position);
   if (burnSec > 0) { if (m.burn <= 0) state.counters.burned++; m.burn = Math.max(m.burn, burnSec); m.burnDps = Math.max(m.burnDps, (4 + effLevel('firebolt') * 0.8) * mult); }
   if (m.hp <= 0) killMob(m); checkAch();
@@ -257,7 +266,7 @@ function killMob(m) {
   STORY.Q.event('kill', m); if (m.def.boss) { STORY.Q.event('boss', m.kind); state.flags[m.kind + '_handled'] = true; if (m.kind === 'pylon') state.flags.pylon_handled = true; bossDown(m); } else if (m.camp) campCheck(m.camp);
   if (state.counters.kills === 1) ui.host('Your first kill on camera! Our legal team has been notified.');
   // loot pouch with 1-2 items
-  const items = [makeItem(rng, { level: m.lvl, minRarity: m.def.boss ? 3 : m.def.elite ? 2 : 0 })]; if (m.def.boss) { items.push(makeItem(rng, { level: m.lvl + 1, minRarity: 3 }), makeItem(rng, { level: m.lvl, minRarity: 2 }), { uid: Math.floor(Math.random() * 1e9), kind: 'box', box: 'boss', name: 'Boss Box', rarity: 'epic', host: 'You killed a boss. Here is a box. Inside the box: more boxes? No. Loot.' }); } const matDrop = m.kind === 'wight' || m.kind === 'ebb' ? { bonedust: 2, cloth: 2, dirtywater: 1, frost: Math.random() < 0.3 ? 1 : 0 } : { coneplastic: 1 + (Math.random() < 0.5 ? 1 : 0), gristle: 2, hide: 1, scrapmetal: 1, ember: Math.random() < 0.25 ? 1 : 0, sulphur: Math.random() < 0.4 ? 1 : 0 }; items.push({ kind: 'mat', mats: matDrop, rarity: 'common', name: 'Materials' }); if (Math.random() < 0.5) items.push(makeItem(rng, { level: m.lvl })); if (Math.random() < 0.35) items.push({ ...CONSUMABLES[Math.floor(Math.random() * CONSUMABLES.length)], uid: Math.floor(Math.random() * 1e9), rarity: 'common' });
+  const items = [makeItem(rng, { level: m.lvl, minRarity: m.def.boss ? 3 : m.def.elite ? 2 : 0 })]; if (m.def.boss) { items.push(makeItem(rng, { level: m.lvl + 1, minRarity: 3 }), makeItem(rng, { level: m.lvl, minRarity: 2 }), { uid: Math.floor(Math.random() * 1e9), kind: 'box', box: 'boss', name: 'Boss Box', rarity: 'epic', host: 'You killed a boss. Here is a box. Inside the box: more boxes? No. Loot.' }); } const MATDROP = { wight: { bonedust: 2, cloth: 2, dirtywater: 1 }, ebb: { bonedust: 6, cloth: 4, frost: 2, bosscore: 1 }, lamprey: { lampreymeat: 2, gristle: 1, dirtywater: 2 }, bigSucker: { lampreymeat: 6, gristle: 4, tide: 2, bosscore: 1 }, moth: { glass: 1, light: Math.random() < 0.35 ? 1 : 0, cloth: 1 }, bulbQueen: { glass: 6, light: 4, bosscore: 1 }, pigeon: { gristle: 1, cloth: 1, hide: 1 }, coo: { gristle: 4, cloth: 4, bosscore: 1 }, mimic: { scrapmetal: 2, battery: 1, spring: Math.random() < 0.5 ? 1 : 0, wire: 1 }, pylon: { coneplastic: 8, scrapmetal: 4, bosscore: 1 }, coneKing: { coneplastic: 12, alloy: 2, bosscore: 2 } }; const matDrop = MATDROP[m.kind] || { coneplastic: 1 + (Math.random() < 0.5 ? 1 : 0), gristle: 2, hide: 1, scrapmetal: 1, ember: Math.random() < 0.25 ? 1 : 0, sulphur: Math.random() < 0.4 ? 1 : 0 }; items.push({ kind: 'mat', mats: matDrop, rarity: 'common', name: 'Materials' }); if (Math.random() < 0.5) items.push(makeItem(rng, { level: m.lvl })); if (Math.random() < 0.35) items.push({ ...CONSUMABLES[Math.floor(Math.random() * CONSUMABLES.length)], uid: Math.floor(Math.random() * 1e9), rarity: 'common' });
   const best = items.filter((i) => i.kind !== 'mat').reduce((b, i) => (['junk', 'common', 'uncommon', 'rare', 'epic', 'legendary'].indexOf(i.rarity) > ['junk', 'common', 'uncommon', 'rare', 'epic', 'legendary'].indexOf(b.rarity) ? i : b), items.find((i) => i.kind !== 'mat'));
   const colr = { junk: '#9a9a9a', common: '#f4eedc', uncommon: '#5ad86a', rare: '#4a9aff', epic: '#b46cff', legendary: '#ff9a2a' }[best.rarity];
   const pouch = new THREE.Group(); const bag = new THREE.Mesh(new THREE.SphereGeometry(0.18, 12, 10), new THREE.MeshPhysicalMaterial({ color: '#7a5a3a', roughness: 0.8 })); bag.scale.y = 0.8; pouch.add(bag);
@@ -266,7 +275,7 @@ function killMob(m) {
 }
 function bossDown(m) {
   ui.banner(`${m.def.name.toUpperCase()} DEFEATED`, '#F5C518'); SFX('victory', P.pos); MUSIC('explore'); activeBoss = null;
-  ui.host({ pylon: 'Sergeant Pylon is down! Somebody tell the cones. Actually, don\u2019t. They\u2019ll riot.', ebb: 'Head Custodian Ebb has clocked out. Permanently. Spin City is a little drier tonight.', bulbQueen: 'The Bulb Queen is out! Lights out! Somebody find the switch!', coo: 'Old Man Coo has flown the coop. Permanently. Get it? The writers are very tired.', coneKing: 'THE CONE KING IS DEAD! Long live… nobody. The cones are leaderless. Chaos. Beautiful chaos.' }[m.kind] || 'A boss is dead! Sponsors are thrilled. Mostly about the explosions.');
+  ui.host({ pylon: 'Sergeant Pylon is down! Somebody tell the cones. Actually, don\u2019t. They\u2019ll riot.', ebb: 'Head Custodian Ebb has clocked out. Permanently. Spin City is a little drier tonight.', bulbQueen: 'The Bulb Queen is out! Lights out! Somebody find the switch!', bigSucker: 'The Big Sucker has been… unplugged. The drains are safe. The drains are never safe.', coo: 'Old Man Coo has flown the coop. Permanently. Get it? The writers are very tired.', coneKing: 'THE CONE KING IS DEAD! Long live… nobody. The cones are leaderless. Chaos. Beautiful chaos.' }[m.kind] || 'A boss is dead! Sponsors are thrilled. Mostly about the explosions.');
   state.inv.push({ uid: Math.floor(Math.random() * 1e9), kind: 'consumable', name: `District Map: ${world.map.pois.find((p) => p.boss === m.kind)?.name || 'Unknown'}`, rarity: 'rare', effect: { map: 1 }, host: 'A map of this district, with everything still alive on it. Mostly.' });
   ui.toast(`<div class="ta">BOSS LOOT</div>District Map + Boss Box dropped<div class="sm">Pick up the pouch (E)</div>`, '#F5C518', 4500);
   if (m.camp) { state.conquered[m.camp] = true; setTimeout(() => campCheck(m.camp), 400); }
@@ -283,10 +292,10 @@ function use() {
   const si = nearSlot(); if (si >= 0) return useSlot(si); interact();
 }
 const FILLER_POOL = (n) => { const L = FILLER_LINES[n.role] || FILLER_LINES.gossip; return L[Math.floor(Math.random() * L.length)]; };
-function fillerSay(n, line, vol) { floatText(n.g.position.clone().setY(2.0 * n.baseScale + 0.35), line, 'bark', 3.2); AU.say(line, n.voice || 'villager', n.g.position, { seed: n.variant || 0, max: 14 }); }
+function fillerSay(n, line, vol) { floatText(n.g.position.clone().setY(2.0 * n.baseScale + 0.35), line, 'bark', 3.2); AU.say(line, n.voice || 'villager', n.g.position, { seed: n.variant || 0, max: 14, pri: vol >= 1 ? 2 : 1 }); }
 function interact() {
   let best = null, bd = 2.2; for (const d of drops) { const dd = d.g.position.distanceTo(P.pos.clone().setY(0.15)); if (dd < bd) { bd = dd; best = d; } }
-  if (!best) return; for (const it of best.items) { if (it.kind === 'mat') { const got = Object.entries(it.mats).filter(([, n]) => n > 0); got.forEach(([mm, n]) => { state.mats[mm] = (state.mats[mm] || 0) + n; }); ui.toast(`<span class="sm">${got.map(([mm, n]) => `+${n} ${MATS[mm]}`).join(' · ')}</span>`, '#3a3448', 2400); continue; } if (state.inv.length >= state.invCap) { ui.toast('Inventory full! Scrap some junk (I).', '#E5484D'); break; } state.inv.push(it); ui.toast(`<span style="color:${{ junk: '#9a9a9a', common: '#f4eedc', uncommon: '#5ad86a', rare: '#4a9aff', epic: '#b46cff', legendary: '#ff9a2a' }[it.rarity] || '#fff'}">${it.name}</span>`, '#3a3448', 2200); }
+  if (!best) return; for (const it of best.items) { if (it.kind === 'mat') { const got = Object.entries(it.mats).filter(([, n]) => n > 0); got.forEach(([mm, n]) => { state.mats[mm] = (state.mats[mm] || 0) + n; }); ui.toast(`<span class="sm">${got.map(([mm, n]) => `+${n} ${MATS[mm]}`).join(' · ')}</span>`, '#3a3448', 2400); continue; } if (state.inv.length >= state.invCap) { ui.toast('Inventory full! Scrap some junk (I).', '#E5484D'); break; } state.inv.push(it); ui.toast(`<span class="toastArt">${artImg(it, 44)}</span><span style="color:${RCOL[it.rarity] || '#fff'}">${it.name}</span><div class="sm">${it.kind === 'gear' ? 'iLvl ' + it.level : it.kind}</div>`, '#3a3448', 2600); }
   scene.remove(best.g); drops.splice(drops.indexOf(best), 1); SFX('pickup');
 }
 
@@ -432,7 +441,17 @@ async function boot() {
   $('startBtn').disabled = false; $('startBtn').textContent = 'CLICK TO ENTER';
   requestAnimationFrame(frame);
 }
-$('startBtn').addEventListener('click', () => { AU.init(); AU.setFloor(FLOOR); $('loading').style.display = 'none'; started = true; $('stage').requestPointerLock(); ui.host(FLOOR === '3' ? 'Welcome to the Soup District! Everything is delicious and one in five things is cursed. Bon appétit!' : FLOOR === 'pad' ? 'Your Crash Pad! Buy tables, craft weird things, and remember: tables next to each other can work together.' : FLOOR === '2' ? 'Welcome to Spin City! Mind the floor, it\u2019s wet. Everything is wet. Forever.' : 'Welcome back to the Undercroft, Dale! Try not to die before the commercial break.'); });
+function beginTutorial() {
+  if (FLOOR !== '1' || state.flags.tutorialDone) return; state.flags.tutorialDone = true;
+  STORY.Q.start('arrival');
+  const tips = [[1500, '<div class="ta">HOW TO PLAY</div><b>WASD</b> to move · <b>mouse</b> to look · <b>Shift</b> to sprint'], [9000, '<div class="ta">FIND MARTA</div>Look for the <b style="color:#F5C518">!</b> in camp and press <b>E</b> to talk'], [20000, '<div class="ta">FIGHTING</div><b>Left click</b> Firebolt · <b>Right click</b> Fireball · <b>Q</b> Flame Ward'], [32000, '<div class="ta">STAY ALIVE</div>When a <b style="color:#ff5a3a">red warning</b> fills on the ground, step out, <b>V</b> to dodge, or tap <b>F</b> to parry'], [44000, '<div class="ta">SURVIVE</div>Watch Hunger and Thirst (bottom left). <b>I</b> inventory · <b>L</b> quests · <b>M</b> map']];
+  tips.forEach(([ms, h]) => setTimeout(() => ui.toast(h, '#F5C518', 7000), ms));
+}
+let intro = null;
+function startPlaying() { $('loading').style.display = 'none'; started = true; $('stage').requestPointerLock && $('stage').requestPointerLock(); }
+$('startBtn').addEventListener('click', () => { AU.init(); AU.setFloor(FLOOR);
+  if (FLOOR === '1' && !QS.has('nointro') && ((!LOADED && !state.flags.introSeen) || QS.has('intro') || HASH === 'intro')) { $('loading').style.display = 'none'; state.flags.introSeen = true; saveGame(); intro = playIntro({ say: (t, w, p, o) => AU.say(t, w, p, o), sfx: (n) => SFX(n), music: (m) => AU.setMood(m), onDone: () => { AU.stopSpeech(); intro = null; startPlaying(); ui.host('Welcome to the Undercroft, Dale! The camp is right here. Go and say hello to Marta.'); beginTutorial(); } }); return; }
+  $('loading').style.display = 'none'; started = true; $('stage').requestPointerLock(); ui.host(FLOOR === '3' ? 'Welcome to the Soup District! Everything is delicious and one in five things is cursed. Bon appétit!' : FLOOR === 'pad' ? 'Your Crash Pad! Buy tables, craft weird things, and remember: tables next to each other can work together.' : FLOOR === '2' ? 'Welcome to Spin City! Mind the floor, it\u2019s wet. Everything is wet. Forever.' : 'Welcome back to the Undercroft, Dale! Try not to die before the commercial break.'); });
 boot().catch((e) => { $('loadMsg').textContent = 'Error: ' + e.message; console.error(e); });
 window.addEventListener('beforeunload', saveGame);
-window.__game = { state, P, mobs, cast, ui, G, CR, craftUI, throwBomb, saveGame, MS, DEF, NPCS, STORY, AU, use, world: () => world };
+window.__game = { state, P, mobs, cast, ui, G, CR, craftUI, throwBomb, saveGame, MS, DEF, NPCS, STORY, AU, use, ink, world: () => world };

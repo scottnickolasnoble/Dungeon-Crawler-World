@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Loot Art Gallery</title>
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Barlow+Condensed:wght@600;800&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#0d0b12;color:#f4eedc;font-family:'Barlow Condensed',sans-serif;padding:16px}
+h1{font-family:Bangers;color:#F5C518;letter-spacing:1px;margin:0 0 10px}
+#g{display:grid;grid-template-columns:repeat(8,1fr);gap:10px}
+.c{background:#16121e;border:2px solid #000;padding:6px;text-align:center;font-size:13px;line-height:1.1}
+.c img{width:100%;height:auto;display:block;margin-bottom:4px}
+</style></head><body>
+<h1>LOOT ART · EVERY ITEM PAINTED FROM WHAT IT IS</h1>
+<div id="g"></div>
+<script type="module">
+import { itemArt } from './game/lootart.js';
+import { makeItem, makeRng, CONSUMABLES, SLOTS } from './game/data.js';
+import { RECIPES } from './game/crafting.js';
+const rng = makeRng(42); const items = [];
+for (const slot of SLOTS) for (let i = 0; i < 2; i++) items.push(makeItem(rng, { level: 10, slot, minRarity: i ? 3 : 0 }));
+CONSUMABLES.forEach((c, i) => items.push({ ...c, uid: 900 + i, rarity: 'common' }));
+for (const r of RECIPES.filter((r, i) => i % 23 === 0).slice(0, 14)) { const o = r.out; if (o.gear) items.push({ uid: r.name.length * 31, kind: 'gear', slot: o.gear.slot, name: o.gear.name, family: o.gear.family, stats: o.gear.stats, rarity: ['common', 'uncommon', 'rare', 'epic', 'legendary'][r.tier - 1] }); if (o.cons) items.push({ uid: r.name.length * 37, kind: 'consumable', name: o.cons.name, effect: o.cons.effect, rarity: 'uncommon' }); }
+items.push({ uid: 1, kind: 'box', box: 'gold', name: 'Gold Box', rarity: 'epic' }, { uid: 2, kind: 'book', name: 'Skill Book: Fireball', rarity: 'epic' }, { uid: 3, kind: 'gear', slot: 'head', name: 'Cone Crown', rarity: 'epic', family: 'trophy', stats: { armor: 14, CHA: 4 } });
+document.getElementById('g').innerHTML = items.map((it) => `<div class="c"><img src="${itemArt(it, 128)}" alt=""><div>${it.name}</div></div>`).join('');
+window.__ready = true;
+</script>
+</body></html>

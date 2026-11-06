@@ -6,7 +6,7 @@ const { chromium } = require('playwright');
   const p = await b.newPage({ viewport: { width: 1280, height: 720 } }); p.setDefaultTimeout(240000);
   const errs = []; p.on('pageerror', (e) => errs.push(e.message)); p.on('console', (m) => { if (m.type() === 'error') errs.push(m.text()); if (m.text().startsWith('T:')) console.log(m.text()); });
   const t0 = Date.now();
-  await p.goto('http://localhost:8765/play.html?floor=1&newgame', { timeout: 300000 });
+  await p.goto('http://localhost:8765/play.html?floor=1&newgame&nointro', { timeout: 300000 });
   await p.waitForFunction(() => !document.getElementById('startBtn').disabled || document.getElementById('loadMsg').textContent.startsWith('Error'), null, { timeout: 600000 });
   console.log('load:', await p.evaluate(() => document.getElementById('loadMsg').textContent), ((Date.now() - t0) / 1000).toFixed(0) + 's');
   console.log('mobs:', await p.evaluate(() => { const g = window.__game; const c = {}; g.mobs.forEach((m) => { c[m.kind] = (c[m.kind] || 0) + 1; }); return JSON.stringify(c) + ' lv ' + g.mobs.map((m) => m.lvl).join(','); }));

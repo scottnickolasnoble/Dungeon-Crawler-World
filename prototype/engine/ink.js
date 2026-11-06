@@ -65,17 +65,22 @@ export function createInk(container, { fov = 70 } = {}) {
     post.uniforms.res.value.set(W, H);
   }
   window.addEventListener('resize', resize); resize();
+  const rigged = new Set();
   function render() {
     post.uniforms.near.value = camera.near; post.uniforms.far.value = camera.far;
     if (!state.outline) { renderer.setRenderTarget(null); renderer.render(scene, camera); return; }
     renderer.setRenderTarget(colorRT); renderer.render(scene, camera);
     const vis = fx.map((o) => o.visible); fx.forEach((o) => { o.visible = false; });
+    // animated (rigged) meshes render their outline normals with their own deforming material, in a second pass on layer 2
+    const rv = []; for (const m of rigged) { rv.push(m.visible); m.visible = false; }
     scene.overrideMaterial = normalMat; const fog = scene.fog; scene.fog = null;
     renderer.setRenderTarget(normalRT); renderer.render(scene, camera);
-    scene.overrideMaterial = null; scene.fog = fog; fx.forEach((o, i) => { o.visible = vis[i]; });
+    scene.overrideMaterial = null;
+    if (rigged.size) { let i = 0; const mats = []; for (const m of rigged) { m.visible = rv[i++]; mats.push(m.material); m.material = m.userData.normalMat; } const ac = renderer.autoClear; renderer.autoClear = false; camera.layers.set(2); renderer.render(scene, camera); camera.layers.set(0); renderer.autoClear = ac; i = 0; for (const m of rigged) m.material = mats[i++]; }
+    scene.fog = fog; fx.forEach((o, i) => { o.visible = vis[i]; });
     renderer.setRenderTarget(null); renderer.render(postScene, postCam);
   }
-  return { THREE, renderer, scene, camera, render, resize, fx, state };
+  return { THREE, renderer, scene, camera, render, resize, fx, state, rigged };
 }
 
 // Collision world: axis-aligned boxes and circles in a spatial hash, resolved against a player circle.

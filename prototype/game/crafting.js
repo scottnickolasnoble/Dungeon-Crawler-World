@@ -3,6 +3,7 @@
 import { RARITIES, SLOT_NAMES, STAT_LABEL } from './data.js';
 import { icon } from './ui.js';
 import { generateRecipes, extraMaterialRecipes, MATS_EXTRA } from './recipes_gen.js';
+import { artImg } from './lootart.js';
 
 export const TABLES = {
   workbench: { name: 'Workbench', cost: 0, color: '#c8a070', stat: 'STR', desc: 'Scrap processing, repairs, tools, smelting.' },
@@ -172,7 +173,8 @@ export function createCraftUI(G, CR) {
     const d = $('recipeDetail'); if (!sel) { d.innerHTML = '<div class="sm" style="padding:10px">Pick a recipe. Higher tiers need upgrades and rarer materials: components from other tables, essences, Reinforced Alloy and Boss Cores.</div>'; return; }
     const c = CR.canCraft(sel); const o = sel.out;
     let res = o.mat ? `${o.n}× ${MATS[o.mat]} <span class="sm">(component for other tables)</span>` : o.cons ? `${o.cons.name}<div class="sm">${Object.entries(o.cons.effect).map(([k, v]) => `${k}: ${v}`).join(' · ')}</div>` : o.gear ? `${o.gear.name} <span class="sm">(${SLOT_NAMES[o.gear.slot]})</span><div class="sm">${Object.entries(o.gear.stats).map(([k, v]) => `+${v} ${STAT_LABEL[k] || k}`).join(' · ')} · quality rolls Crude → Legendary</div>` : `${o.imbue.tag}<div class="sm">Adds ${Object.entries(o.imbue.add).map(([k, v]) => `+${v} ${STAT_LABEL[k] || k}`).join(', ')} to an existing ${o.imbue.target === 'weapon' ? 'weapon' : 'item'}. 3 finishing passes earn a ★.</div>`;
-    let h = `<div class="ctitle2">${sel.name} <span class="sm">Tier ${ROMAN[sel.tier - 1]}</span></div><div class="ins">${Object.entries(sel.inputs).map(([m, n]) => `<div class="in ${CR.have(m) >= n ? 'have' : 'miss'}">${MATS[m] || m} <b>${CR.have(m)}/${n}</b></div>`).join('')}</div><div class="arrow">↓</div><div class="res">${res}</div>`;
+    const prev = o.gear ? { uid: sel.id.length * 977 + sel.tier, kind: 'gear', slot: o.gear.slot, name: o.gear.name, family: o.gear.family, stats: o.gear.stats, rarity: ['common', 'uncommon', 'rare', 'epic', 'legendary'][sel.tier - 1] } : o.cons ? { uid: sel.id.length * 991 + sel.tier, kind: 'consumable', name: o.cons.name, effect: o.cons.effect, rarity: 'uncommon' } : null;
+    let h = `${prev ? `<div class="resArt">${artImg(prev, 72)}</div>` : ''}<div class="ctitle2">${sel.name} <span class="sm">Tier ${ROMAN[sel.tier - 1]}</span></div><div class="ins">${Object.entries(sel.inputs).map(([m, n]) => `<div class="in ${CR.have(m) >= n ? 'have' : 'miss'}">${MATS[m] || m} <b>${CR.have(m)}/${n}</b></div>`).join('')}</div><div class="arrow">↓</div><div class="res">${res}</div>`;
     if (sel.needs) h += `<div class="sm" style="color:${CR.adjacent(sel.table, sel.needs) ? '#5ad86a' : '#ff8a6a'}">Combo recipe: needs ${TABLES[sel.needs].name} next to this table.</div>`;
     if (o.imbue) { const cands = [...Object.values(S.equip).filter(Boolean), ...S.inv.filter((i) => i.kind === 'gear')].filter((i) => o.imbue.target !== 'weapon' || i.slot === 'main'); h += `<div class="sm" style="margin-top:8px">Choose the item:</div><div class="tgts">${cands.map((i) => `<button class="tgt ${target === i ? 'on' : ''}" data-u="${i.uid}" style="border-color:${(RARITIES.find((r) => r.id === i.rarity) || {}).color}">${icon(i.slot)}<span>${i.name}${i.tags ? `<br><i>${i.tags.join(' · ')}</i>` : ''}</span></button>`).join('') || '<span class="sm">No gear.</span>'}</div>`; }
     h += `<div class="cfoot"><button class="cbtn big" id="craftBtn" ${c.ok ? '' : 'disabled'}>CRAFT</button>${o.mat || o.cons ? '<button class="cbtn" id="craft5">×5</button>' : ''}<span class="sm">${c.ok ? '' : c.why}</span></div>`;

@@ -85,6 +85,9 @@ button{font-family:inherit}
 #doll{display:grid;grid-template-columns:repeat(3,78px);grid-template-rows:repeat(6,78px);gap:8px;background:#0d0b12;padding:12px;border:3px solid var(--line)}
 .eq,.cell{background:#120e18;border:3px solid var(--line);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;color:#8a8098;font-size:11px;font-weight:700;padding:4px}
 .eq svg{width:38px;height:38px}.cell svg{width:30px;height:30px}
+.eq,.cell{padding:2px}.lootart{display:block;width:100%;height:100%;object-fit:contain;image-rendering:auto}.eq .lootart,.cell .lootart{max-width:72px;max-height:72px}
+#tip .tart{float:right;width:96px;height:96px;margin:0 0 6px 10px}#tip .tart .lootart{width:96px;height:96px}.bcard .bi2 .lootart{width:120px;height:120px;margin:0 auto}
+.toastArt{width:44px;height:44px;float:left;margin-right:8px}.srow .lootart{width:52px;height:52px;flex:none}.srow{gap:12px}.srow>div{flex:1}.resArt{float:left;width:72px;height:72px;margin-right:10px}
 .eq:hover,.cell:hover{filter:brightness(1.4)}
 #invStats{margin-top:10px;font-size:15px;line-height:1.5;max-width:270px}
 .right{flex:1;min-width:300px}
@@ -142,7 +145,7 @@ button{font-family:inherit}
 #boxOk{font-family:Bangers;font-size:26px;letter-spacing:2px;background:var(--gold);color:var(--ink);border:4px solid #fff;padding:6px 24px;cursor:pointer}
 @media (max-width:700px){#minimapWrap{transform:scale(.7);transform-origin:top right}#host{width:280px}#toasts{right:10px;top:200px}}
 #pCraft{width:min(1280px,100%)}
-#pSettings{width:min(560px,100%)}.setRow{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:10px 0;border-bottom:1px solid var(--line);font-size:18px;font-weight:700}.setRow input[type=range]{width:220px;accent-color:var(--gold)}.setRow input[type=checkbox]{width:22px;height:22px;accent-color:var(--gold)}#setTest{margin-top:12px}
+#pSettings{width:min(560px,100%)}.setRow{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:10px 0;border-bottom:1px solid var(--line);font-size:18px;font-weight:700}.setRow input[type=range]{width:220px;accent-color:var(--gold)}.setRow input[type=checkbox]{width:22px;height:22px;accent-color:var(--gold)}#setTest{margin-top:12px}.setRow select{background:#1a1622;color:var(--paper);border:2px solid var(--gold);font:700 16px 'Barlow Condensed';padding:4px 8px}.castList{display:grid;grid-template-columns:1fr 1fr;gap:5px}.castRow{display:flex;flex-direction:column;align-items:flex-start;gap:2px;background:#1a1622;border:2px solid #000;color:var(--paper);padding:6px 9px;cursor:pointer;font:600 14px 'Barlow Condensed',sans-serif;text-align:left;position:relative}.castRow span{font-size:12px;color:#a89fb4}.castRow i{position:absolute;right:10px;top:10px;color:var(--gold);font-style:normal}.castRow:hover{background:#2a2236}
 #craftTables{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin:8px 0}
 .ctab{background:#1a1622;border:2px solid;border-left-width:6px;color:var(--paper,#F4EEDC);padding:6px 8px;text-align:left;cursor:pointer;font:600 14px 'Barlow Condensed',sans-serif;display:flex;flex-direction:column}
 .ctab span{font-size:12px;opacity:.75}.ctab.unowned{opacity:.55}.ctab.on{background:#2e2640;opacity:1;box-shadow:0 0 0 2px #F5C518}
@@ -181,6 +184,9 @@ button{font-family:inherit}
 .dk{display:inline-grid;place-items:center;width:24px;height:24px;background:var(--gold);color:#111;font-weight:800;flex:none}.dHint{font-size:12px;color:#8a8494;margin-top:8px}
 .qmark{position:absolute;left:0;top:0;font-family:Bangers;font-size:38px;color:var(--gold);-webkit-text-stroke:2px var(--ink);paint-order:stroke fill;display:none;pointer-events:none}.qmark.ready{color:#7BE38A}
 .npcName{position:absolute;left:0;top:0;font-weight:800;font-size:13px;color:var(--paper);text-shadow:0 2px 0 #000,0 0 4px #000;white-space:nowrap;display:none;pointer-events:none}
+#intro{position:fixed;inset:0;z-index:50;background:#000;transition:opacity .7s}#intro.out{opacity:0}#introCv{width:100%;height:100%;display:block}
+#introSub{position:absolute;left:50%;bottom:10%;transform:translateX(-50%);width:min(900px,calc(100vw - 32px));text-align:center;font:700 26px/1.35 'Barlow Condensed',sans-serif;color:#f4eedc;text-shadow:0 2px 0 #000,0 0 8px #000}#introWho{display:block;font-family:Bangers;color:var(--gold);letter-spacing:1px;font-size:24px}
+#introHint{position:absolute;right:16px;top:12px;font-size:14px;color:#8a8494}
 </style></head><body>
 <div id="stage"></div>
 <div id="hud"><div id="quests"></div><div id="bossBar"><div id="bossName"></div><div id="bossTitle"></div><div id="bossTrack"><div id="bossFill"></div></div></div>
@@ -234,6 +240,6 @@ button{font-family:inherit}
 <div id="boxModal"><div id="boxTitle">LOOT BOX</div><div id="boxCards"></div><button id="boxOk">TAKE IT ALL</button></div>
 <div id="loading"><h1>DOWNSTAIRS</h1><div id="loadMsg">Loading…</div><div id="loadBox"><div id="loadBar"></div></div>
   <div class="help"><b>WASD</b> move · <b>Mouse</b> look · <b>Shift</b> sprint · <b>Space</b> jump · <b>Left click</b> Firebolt · <b>Right click / R</b> Fireball · <b>Q</b> Flame Ward · <b>E</b> pick up loot / talk / use table · <b>G</b> throw bomb · <b>F</b> parry (tap as the red warning fills) / block (hold) · <b>V</b> dodge<br><b>H</b> Crash Pad (from a safe zone) · <b>B</b> crafting · <b>I</b> inventory &amp; gear · <b>C</b> character stats · <b>K</b> skill tree · <b>M</b> map · <b>J</b> achievements · <b>O</b> toggle ink outlines (faster) · <b>Esc</b> close / release mouse<br><span class="sm">Desktop browser with keyboard and mouse required.</span></div>
-  <button id="startBtn" disabled>BUILDING THE FLOOR…</button><div class="help" id="floorPick">Floor: <a href="#floor-1" style="color:#F5C518">1 · The Undercroft</a> · <a href="#floor-2" style="color:#3affea">2 · Spin City</a> · <a href="#floor-3" style="color:#ffb040">3 · The Soup District</a> · <a href="#pad" style="color:#ff8a2a">Crash Pad</a> · <a href="#new" style="color:#9a9a9a">New game</a></div></div>
+  <button id="startBtn" disabled>BUILDING THE FLOOR…</button><div class="help" id="floorPick">Floor: <a href="#floor-1" style="color:#F5C518">1 · The Undercroft</a> · <a href="#floor-2" style="color:#3affea">2 · Spin City</a> · <a href="#floor-3" style="color:#ffb040">3 · The Soup District</a> · <a href="#pad" style="color:#ff8a2a">Crash Pad</a> · <a href="#new" style="color:#9a9a9a">New game</a> · <a href="#intro" style="color:#9a9a9a">Watch intro</a></div></div>
 <script type="module" src="./game/play.js"></script>
 </body></html>

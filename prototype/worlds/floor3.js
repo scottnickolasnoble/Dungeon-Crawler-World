@@ -158,7 +158,7 @@ export function buildFloor3(ink, col, onProgress = () => {}) {
     { id: 'wickley', named: 'wickley', kind: 'quest', title: 'Soup cook · Soup Feud', x: Math.cos(0.3) * 14.5, z: Math.sin(0.3) * 14.5, yaw: -0.3 - Math.PI / 2 + Math.PI, voice: 'wickley' },
     { id: 'ash', named: 'ash', kind: 'quest', title: 'Monk of the Last Light', x: -8, z: 8, yaw: 2.3, voice: 'ash' },
     { id: 'vrask', kind: 'quest', role: 'quest', race: 'lumen', variant: 2, name: 'Judge Vrask', title: 'Food critic (visiting)', x: 7, z: -9, yaw: -0.6, voice: 'vrask', static: true },
-    { id: 'bix', kind: 'quest', role: 'trader', race: 'stoneblood', variant: 0, name: 'Bix', title: 'Table merchant', x: Math.cos(2.9) * 14.5, z: Math.sin(2.9) * 14.5, yaw: 1.4, voice: 'merchant', static: true },
+    { id: 'bix', kind: 'quest', role: 'trader', race: 'stoneblood', variant: 0, name: 'Bix', title: 'Table merchant', x: Math.cos(2.9) * 14.5, z: Math.sin(2.9) * 14.5, yaw: 1.4, voice: 'bix', static: true },
     ...townFillers({ x: 0, z: 0, r: 22, r0: 7, count: 12, races: ['ogrekin', 'human', 'gutterkin', 'bogling', 'fennix'], seed: 3 }),
     ...townFillers({ x: CANDLE[0], z: CANDLE[1], r: 14, r0: 3, count: 5, races: ['lumen', 'human'], seed: 5 }),
   ];

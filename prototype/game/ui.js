@@ -1,4 +1,5 @@
 // In-game UI: HUD updates, inventory + equipment, character sheet, skill tree, map, achievements, loot boxes.
+import { artImg } from './lootart.js';
 import { STATS, STAT_INFO, CLASS, SKILLS, SLOTS, SLOT_NAMES, RARITIES, STAT_LABEL, ACHIEVEMENTS, BOXES } from './data.js';
 
 const $ = (id) => document.getElementById(id);
@@ -31,7 +32,7 @@ export function createUI(G) {
   function showTip(item, x, y, equippedCmp = true) {
     if (!item) return hideTip();
     const cur = item.kind === 'gear' && equippedCmp ? state.equip[item.slot === 'ring1' && state.equip.ring1 && !state.equip.ring2 ? 'ring2' : item.slot] : null;
-    let h = `<div class="tn" style="color:${rcol(item.rarity)}">${esc(item.name)}</div>`;
+    let h = `<div class="tart">${artImg(item, 128)}</div><div class="tn" style="color:${rcol(item.rarity)}">${esc(item.name)}</div>`;
     if (item.kind === 'gear') h += `<div class="tr">${(RARITIES.find((r) => r.id === item.rarity) || {}).name} ${SLOT_NAMES[item.slot]} · iLvl ${item.level} · ${item.family}</div>` + statLines(item.stats, cur && cur !== item ? cur.stats : null) + (cur && cur !== item ? `<div class="tc">Compared with equipped: ${esc(cur.name)}</div>` : '');
     if (item.kind === 'consumable') h += `<div class="tr">Consumable</div>` + Object.entries(item.effect).map(([k, v]) => `<div class="sl">+${v} ${k}</div>`).join('');
     if (item.kind === 'book') { const s = SKILLS.find((q) => q.id === item.skill); h += `<div class="tr">Skill book · Pyromancer</div><div class="sl">${state.skills[item.skill] ? 'Known: +1 skill level' : 'Teaches: ' + esc(s.name)}</div><div class="sl">${esc(s.desc)}</div>`; }
@@ -55,13 +56,13 @@ export function createUI(G) {
   function renderInv() {
     const doll = $('doll'); doll.innerHTML = '';
     for (const slot of SLOTS) { const it = state.equip[slot]; const [c, r] = DOLL[slot]; const el = document.createElement('button'); el.className = 'eq'; el.style.gridColumn = c + 1; el.style.gridRow = r + 1; el.style.borderColor = it ? rcol(it.rarity) : '#3a3448';
-      el.innerHTML = `${icon(slot === 'ring2' ? 'ring1' : slot, it ? rcol(it.rarity) : '#5a5068')}<span>${it ? '' : SLOT_NAMES[slot]}</span>`; el.setAttribute('aria-label', it ? it.name : SLOT_NAMES[slot] + ' (empty)');
+      el.innerHTML = it ? artImg(it, 72) : `${icon(slot === 'ring2' ? 'ring1' : slot, '#5a5068')}<span>${SLOT_NAMES[slot]}</span>`; el.setAttribute('aria-label', it ? it.name : SLOT_NAMES[slot] + ' (empty)');
       if (it) bindItem(el, it, () => G.unequip(slot)); doll.appendChild(el); }
     const D = G.derived(); $('invStats').innerHTML = `<b>${state.name}</b> · Lv ${state.level} ${CLASS.name}<br>HP ${Math.round(D.maxHp)} · Mana ${Math.round(D.maxMana)} · Armour ${D.armor} · Spell ${D.spell} · Fire +${D.fire}%<br>Gold <span style="color:#F5C518">${state.gold}</span> · Scrap ${state.scrap}`;
     document.querySelectorAll('#invTabs button').forEach((b) => b.classList.toggle('on', b.dataset.tab === tab));
     const grid = $('grid'); grid.innerHTML = '';
     const list = state.inv.filter((it) => (tab === 'gear' ? it.kind === 'gear' : tab === 'cons' ? it.kind === 'consumable' : tab === 'books' ? it.kind === 'book' : it.kind === 'box'));
-    for (let i = 0; i < 48; i++) { const it = list[i]; const el = document.createElement('button'); el.className = 'cell'; if (it) { el.style.borderColor = rcol(it.rarity || 'common'); el.style.background = `linear-gradient(180deg, ${rcol(it.rarity || 'common')}22, #120e18)`; el.innerHTML = icon(it.kind === 'gear' ? it.slot : it.kind === 'box' ? 'box' : it.kind, it.kind === 'box' ? BOXES[it.box].color : rcol(it.rarity || 'common')); el.setAttribute('aria-label', it.name);
+    for (let i = 0; i < 48; i++) { const it = list[i]; const el = document.createElement('button'); el.className = 'cell'; if (it) { el.style.borderColor = rcol(it.rarity || 'common'); el.style.background = `linear-gradient(180deg, ${rcol(it.rarity || 'common')}22, #120e18)`; el.innerHTML = artImg(it, 72); el.setAttribute('aria-label', it.name);
       bindItem(el, it, () => G.useItem(it), it.kind === 'gear' ? () => G.scrap(it) : null); } grid.appendChild(el); }
     $('invCount').textContent = `${state.inv.length} / 48`;
   }
@@ -105,7 +106,7 @@ export function createUI(G) {
     const m = $('boxModal'); m.classList.add('show'); $('boxTitle').textContent = boxName; $('boxTitle').style.color = color;
     const cards = $('boxCards'); cards.innerHTML = '';
     items.forEach((it, i) => { const c = document.createElement('div'); c.className = 'bcard'; c.style.animationDelay = (0.25 + i * 0.35) + 's'; c.style.borderColor = rcol(it.rarity || 'common');
-      c.innerHTML = `<div class="bi2">${icon(it.kind === 'gear' ? it.slot : it.kind, rcol(it.rarity || 'common'))}</div><div class="bn" style="color:${rcol(it.rarity || 'common')}">${esc(it.name)}</div><div class="sm">${it.kind === 'gear' ? (RARITIES.find((r) => r.id === it.rarity) || {}).name + ' ' + SLOT_NAMES[it.slot] : it.kind === 'book' ? 'Skill book!' : 'Consumable'}</div>`;
+      c.innerHTML = `<div class="bi2">${artImg(it, 120)}</div><div class="bn" style="color:${rcol(it.rarity || 'common')}">${esc(it.name)}</div><div class="sm">${it.kind === 'gear' ? (RARITIES.find((r) => r.id === it.rarity) || {}).name + ' ' + SLOT_NAMES[it.slot] : it.kind === 'book' ? 'Skill book!' : 'Consumable'}</div>`;
       c.addEventListener('mouseenter', (e) => showTip(it, e.clientX, e.clientY)); c.addEventListener('mouseleave', hideTip); cards.appendChild(c); });
     $('boxOk').onclick = () => { m.classList.remove('show'); hideTip(); onDone && onDone(); render(); };
   }
