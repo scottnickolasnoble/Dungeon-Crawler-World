@@ -5,9 +5,11 @@ import { makeGoblin } from '../creature.js';
 import { mopWight } from '../monsters/tier1.js';
 import { SKILLS, CLASS, STATS, makeItem, makeRng, openBox, BOXES, ACHIEVEMENTS, CONSUMABLES } from './data.js';
 import { createUI } from './ui.js';
+import { createCrafting, createCraftUI, MATS, TABLES } from './crafting.js';
 
 const $ = (id) => document.getElementById(id);
-const FLOOR = new URLSearchParams(location.search).get('floor') || '1';
+const QS = new URLSearchParams(location.search); const FLOOR = QS.get('floor') || '1';
+const SAVE_KEY = 'downstairs_save_v1';
 const rng = makeRng(Date.now() & 0xffff);
 const FIRE_SKILLS = ['firebolt', 'fireball', 'flamewave', 'emberdarts', 'combust', 'heatray', 'lavapool', 'livingflame', 'inferno', 'flamestep'];
 
@@ -19,25 +21,30 @@ const state = {
   equip: {}, inv: [], ach: {}, counters: { walked: 0, kills: 0, burned: 0, wardAbsorb: 0, boxes: 0 }, discovered: new Set(),
   skills: { firebolt: { lvl: 7, ups: [1] }, flameward: { lvl: 5, ups: [0] }, kindle: { lvl: 3, ups: [] }, fireball: { lvl: 4, ups: [] } },
 };
+state.mats = { scrapmetal: 14, plastic: 6, wire: 6, rubber: 3, glass: 6, cloth: 8, coneplastic: 4, gristle: 6, hide: 3, sulphur: 5, saltpetre: 3, charcoal: 2, salt: 3, dirtywater: 6, grease: 3, herbs: 4, mushroom: 5, mysterymeat: 2, lampreymeat: 1, spring: 2, battery: 1, paper: 2, ember: 4, frost: 1, roughruby: 1 };
+state.tables = { workbench: { tier: 1, slot: 2 }, still: { tier: 1, slot: 3 } }; state.craftXP = {}; state.invCap = 48; state.buffs = []; state.gold = 520; state.lastFloor = '1';
+function saveGame() { try { const o = { ...state, discovered: [...state.discovered] }; delete o.equipped; localStorage.setItem(SAVE_KEY, JSON.stringify(o)); } catch (e) {} }
+function loadGame() { try { const raw = localStorage.getItem(SAVE_KEY); if (!raw) return false; const o = JSON.parse(raw); Object.assign(state, o); state.discovered = new Set(o.discovered || []); return true; } catch (e) { return false; } }
+const LOADED = !QS.has('newgame') && loadGame();
 state.equipped = (it) => Object.values(state.equip).includes(it);
 const xpFor = (lv) => Math.round(80 * lv ** 1.45);
 state.xpNext = xpFor(state.level);
-// starting kit: a few pieces equipped, some in the bag, and a box to open
-for (const slot of ['head', 'chest', 'main', 'boots', 'gloves']) state.equip[slot] = makeItem(rng, { level: 8, slot, minRarity: 1 });
-for (let i = 0; i < 6; i++) state.inv.push(makeItem(rng, { level: 8 }));
+// starting kit (new game only): a few pieces equipped, some in the bag, and a box to open
+if (!LOADED) for (const slot of ['head', 'chest', 'main', 'boots', 'gloves']) state.equip[slot] = makeItem(rng, { level: 8, slot, minRarity: 1 });
+if (!LOADED) { for (let i = 0; i < 6; i++) state.inv.push(makeItem(rng, { level: 8 }));
 state.inv.push({ uid: 9001, kind: 'box', box: 'silver', name: 'Silver Box', rarity: 'rare', host: 'A welcome gift. From us. To you. Enjoy it while you can.' });
-state.inv.push({ ...CONSUMABLES[0], uid: 9002, rarity: 'common' }, { ...CONSUMABLES[1], uid: 9003, rarity: 'common' }, { ...CONSUMABLES[2], uid: 9004, rarity: 'uncommon' });
+state.inv.push({ ...CONSUMABLES[0], uid: 9002, rarity: 'common' }, { ...CONSUMABLES[1], uid: 9003, rarity: 'common' }, { ...CONSUMABLES[2], uid: 9004, rarity: 'uncommon' }); }
 
 function gearTotals() { const t = {}; for (const it of Object.values(state.equip)) if (it) for (const [k, v] of Object.entries(it.stats)) t[k] = (t[k] || 0) + v; return t; }
 function derived() {
-  const g = gearTotals(); const S = (k) => state.base[k] + (g[k] || 0);
+  const g = gearTotals(); const now = performance.now() / 1000; for (const b of state.buffs || []) if (b.until > now) g[b.stat] = (g[b.stat] || 0) + b.amount; const S = (k) => state.base[k] + (g[k] || 0);
   return { gearStats: g, maxHp: 60 + S('CON') * 8 + (g.hp || 0), maxMana: 40 + S('INT') * 6 + (g.mana || 0), maxStamina: 80 + S('CON') * 2 + S('DEX'), manaRegen: 2 + S('WIS') * 0.35,
     armor: g.armor || 0, spell: S('INT') * 2 + (g.spell || 0), fire: g.fire || 0, crit: 5 + Math.floor(S('DEX') / 3) + (g.crit || 0), castSpeed: g.castSpeed || 0, moveSpeed: g.moveSpeed || 0 };
 }
 const gearSkillBonus = (id) => { const g = gearTotals(); return (g['skill_' + id] || 0) + (FIRE_SKILLS.includes(id) ? g.skill_fire || 0 : 0); };
 const effLevel = (id) => (state.skills[id] ? state.skills[id].lvl + gearSkillBonus(id) : 0);
 function spellDamage(id) { const D = derived(), L = effLevel(id); const base = id === 'fireball' ? 34 + L * 7 : id === 'firebolt' ? 12 + L * 3.2 : 0; return (base + D.spell * (id === 'fireball' ? 0.9 : 0.55)) * (1 + D.fire / 100); }
-{ const D = derived(); state.hp = D.maxHp * 0.85; state.mana = D.maxMana; }
+if (!LOADED) { const D = derived(); state.hp = D.maxHp * 0.85; state.mana = D.maxMana; }
 
 // ---------------- scene ----------------
 const ink = createInk($('stage'), { fov: 72 });
@@ -52,17 +59,49 @@ const G = { state, derived, gearSkillBonus, spellDamage, cooldownFrac, onPanel: 
   addStat(s) { if (state.statPoints > 0) { state.base[s]++; state.statPoints--; } },
   levelSkill(id) { const k = state.skills[id]; if (k && state.skillPoints > 0 && k.lvl < 15) { k.lvl++; state.skillPoints--; if (k.lvl % 5 === 0) ui.toast(`<b>${SKILLS.find((s) => s.id === id).name}</b> reached Lv ${k.lvl}: choose an upgrade!`, '#b46cff'); } },
   chooseUpgrade(id, t, c) { const k = state.skills[id]; if (k && k.lvl >= (t + 1) * 5 && k.ups[t] === undefined) { k.ups[t] = c; ui.toast(`Upgrade chosen: <b>${SKILLS.find((s) => s.id === id).ups[t][c]}</b>`, '#b46cff'); } },
-  unequip(slot) { const it = state.equip[slot]; if (!it) return; if (state.inv.length >= 48) return ui.toast('Inventory full!', '#E5484D'); delete state.equip[slot]; state.inv.push(it); clampVitals(); },
+  unequip(slot) { const it = state.equip[slot]; if (!it) return; if (state.inv.length >= state.invCap) return ui.toast('Inventory full!', '#E5484D'); delete state.equip[slot]; state.inv.push(it); clampVitals(); },
   useItem(it) {
     if (it.kind === 'gear') { let slot = it.slot; if (slot === 'ring1' && state.equip.ring1 && !state.equip.ring2) slot = 'ring2'; const old = state.equip[slot]; state.equip[slot] = it; state.inv.splice(state.inv.indexOf(it), 1); if (old) state.inv.push(old); clampVitals(); checkAch(); }
-    else if (it.kind === 'consumable') { const D = derived(); const e = it.effect; if (e.hp) state.hp = Math.min(D.maxHp, state.hp + e.hp); if (e.mana) state.mana = Math.min(D.maxMana, state.mana + e.mana); if (e.hunger) state.hunger = Math.min(100, state.hunger + e.hunger); if (e.thirst) state.thirst = Math.min(100, state.thirst + e.thirst); state.inv.splice(state.inv.indexOf(it), 1); ui.toast(`Used <b>${it.name}</b>`, '#5ad86a'); }
+    else if (it.kind === 'consumable' && it.effect.bomb) { ui.toast(`${it.name}: press G to throw`, '#ff8a2a', 1800); return; }
+    else if (it.kind === 'consumable' && it.effect.turret) { ui.toast(`${it.name}: deployable turrets come with the combat update`, '#3ac8ff', 2000); return; }
+    else if (it.kind === 'consumable') { const D = derived(); const e = it.effect; if (e.buff) { state.buffs.push({ stat: e.buff, amount: e.amount, until: performance.now() / 1000 + e.mins * 60 }); ui.toast(`+${e.amount} ${e.buff} for ${e.mins} min`, '#5ad86a'); } if (e.bag) { state.invCap = Math.min(96, state.invCap + e.bag); ui.toast(`Inventory +${e.bag} slots (${state.invCap})`, '#c86aa8'); } if (e.scroll) { state.mana += 30; cds.fireball = 0; setTimeout(() => cast('fireball'), 50); } if (e.map) { world.map.pois.forEach((p) => state.discovered.add(p.name)); for (let x = -30; x < 30; x++) for (let z = -30; z < 30; z++) visited.add(`${x},${z}`); ui.toast('The map reveals the whole area', '#F5C518'); } if (e.hp) state.hp = Math.min(D.maxHp, state.hp + e.hp); if (e.mana) state.mana = Math.min(D.maxMana, state.mana + e.mana); if (e.hunger) state.hunger = Math.min(100, state.hunger + e.hunger); if (e.thirst) state.thirst = Math.min(100, state.thirst + e.thirst); state.inv.splice(state.inv.indexOf(it), 1); ui.toast(`Used <b>${it.name}</b>`, '#5ad86a'); }
     else if (it.kind === 'book') { const s = SKILLS.find((q) => q.id === it.skill); state.inv.splice(state.inv.indexOf(it), 1); if (state.skills[s.id]) { if (state.skills[s.id].lvl < 15) state.skills[s.id].lvl++; ui.toast(`Duplicate book: <b>${s.name}</b> +1 level`, '#b46cff'); } else { state.skills[s.id] = { lvl: 1, ups: [] }; ui.banner(`NEW SKILL: ${s.name.toUpperCase()}`, '#b46cff'); ui.host(`You learned ${s.name}. From a book. In a dungeon. Truly the hero we deserve.`); } }
     else if (it.kind === 'box') { state.inv.splice(state.inv.indexOf(it), 1); const items = openBox(rng, it.box, Math.max(3, state.level)); items.forEach((x) => state.inv.push(x)); state.counters.boxes++; ui.revealBox(BOXES[it.box].name, BOXES[it.box].color, items, checkAch); const best = items.find((x) => x.rarity === 'legendary' || x.rarity === 'epic'); ui.host(best ? `Ooh, ${best.name}! The audience is jealous. I'm jealous.` : 'Unboxing! The purest form of content.'); }
   },
-  scrap(it) { state.inv.splice(state.inv.indexOf(it), 1); state.scrap += 1 + ['junk', 'common', 'uncommon', 'rare', 'epic', 'legendary'].indexOf(it.rarity); state.gold += Math.round(it.value / 4); ui.toast(`Scrapped ${it.name}`, '#9a9a9a', 1800); },
+  scrap(it) { state.inv.splice(state.inv.indexOf(it), 1); const r = ['junk', 'common', 'uncommon', 'rare', 'epic', 'legendary'].indexOf(it.rarity); state.scrap += 1 + r; state.gold += Math.round((it.value || 10) / 4); const got = { scrapmetal: 1 + r, [['plastic', 'wire', 'cloth', 'rubber', 'glass'][it.uid % 5]]: 1 + (r >> 1) }; if (r >= 3) got[['ember', 'frost', 'storm', 'light'][it.uid % 4]] = r - 2; if (it.stats && it.stats.fire) got.ember = (got.ember || 0) + 1; for (const [m, n] of Object.entries(got)) state.mats[m] = (state.mats[m] || 0) + n; ui.toast(`Scrapped ${it.name}<div class="sm">${Object.entries(got).map(([m, n]) => `+${n} ${MATS[m]}`).join(' · ')}</div>`, '#9a9a9a', 2200); },
   scrapJunk() { const j = state.inv.filter((i) => i.kind === 'gear' && i.rarity === 'junk'); j.forEach((i) => G.scrap(i)); if (!j.length) ui.toast('No junk to scrap', '#9a9a9a', 1500); },
 };
 const ui = createUI(G);
+const CR = createCrafting(G); const craftUI = createCraftUI(G, CR);
+G.toast = (...a) => ui.toast(...a); G.renderCraft = () => craftUI.render();
+G.onTables = () => { if (world && world.refreshTables) world.refreshTables(state); saveGame(); };
+G.onCraft = () => { state.counters.crafted = (state.counters.crafted || 0) + 1; if (state.counters.crafted === 1) ui.host('You made a thing! With your hands! The audience is moved. Mildly.'); saveGame(); };
+function inSafe() { return FLOOR === 'pad' || (lastPOI && lastPOI.safe); }
+function goPad() { if (FLOOR === 'pad') { saveGame(); location.search = `?floor=${state.lastFloor || '1'}`; return; } if (!inSafe()) return ui.toast('You can only open your Crash Pad door from a safe zone (settlement or camp).', '#E5484D', 2200); state.lastFloor = FLOOR; saveGame(); location.search = '?floor=pad'; }
+function nearSlot() { if (FLOOR !== 'pad' || !world.slots) return -1; let bi = -1, bd = 2.6; world.slots.forEach(([x, z], i) => { const d = Math.hypot(P.pos.x - x, P.pos.z - z); if (d < bd) { bd = d; bi = i; } }); return bi; }
+function useSlot(i) { const id = Object.keys(state.tables).find((k) => state.tables[k].slot === i); if (id) craftUI.open(id, null); else { const first = Object.keys(TABLES_REF).find((k) => !state.tables[k]); craftUI.open(first, i); } ui.toggle('craft'); }
+const TABLES_REF = TABLES;
+const throwables = [];
+function throwBomb() {
+  const it = state.inv.find((i) => i.kind === 'consumable' && i.effect.bomb); if (!it) return ui.toast('No bombs. Craft some at the Boom Bench.', '#9a9a9a', 1600);
+  state.inv.splice(state.inv.indexOf(it), 1);
+  const g = new THREE.Mesh(new THREE.SphereGeometry(0.14, 12, 10), new THREE.MeshPhysicalMaterial({ color: '#2a2a2a', roughness: 0.5 })); const spark = new THREE.Mesh(new THREE.SphereGeometry(0.05, 6, 4), new THREE.MeshBasicMaterial({ color: new THREE.Color('#ffd040').multiplyScalar(3) })); spark.position.y = 0.16; g.add(spark); fx.push(spark);
+  const dir = new THREE.Vector3(0, 0, -1).applyQuaternion(camera.quaternion);
+  g.position.copy(camera.position).addScaledVector(dir, 0.6); scene.add(g);
+  throwables.push({ g, v: dir.multiplyScalar(14).add(new THREE.Vector3(0, 4, 0)), e: it.effect, t: 0 }); castAnim = 0.25;
+  ui.toast(`Threw <b>${it.name}</b>`, '#ff8a2a', 900);
+}
+function tickThrowables(dt) {
+  for (let i = throwables.length - 1; i >= 0; i--) { const b = throwables[i]; b.t += dt; b.v.y -= 15 * dt; b.g.position.addScaledVector(b.v, dt); b.g.rotation.x += dt * 8;
+    const q = b.g.position.clone(); col.resolve(q, 0.1, q.y); const hitWall = q.distanceToSquared(b.g.position) > 1e-6; const hitMob = mobs.some((m) => !m.dead && m.g.position.distanceTo(b.g.position.clone().setY(m.g.position.y)) < 0.8 && b.g.position.y < 2.2);
+    if (b.g.position.y < 0.15 || hitWall || hitMob || b.t > 4) { scene.remove(b.g); throwables.splice(i, 1); bombBlast(b.g.position.clone().setY(Math.max(0.3, b.g.position.y)), b.e); } }
+}
+function bombBlast(p, e) {
+  const r = e.radius || 4, dmg = (e.dmg || 60) * (1 + state.base.DEX / 100);
+  burstAt(p, e.burn ? '#ff7a1a' : e.freeze ? '#9ae8ff' : '#ffd040', 60, 1.4); shake = Math.max(shake, 0.35);
+  for (const m of mobs) { if (m.dead) continue; const d = m.g.position.distanceTo(p.clone().setY(m.g.position.y)); if (d < r) { hurtMob(m, Math.round(dmg * (1 - d / r * 0.5)), e.burn ? 4 : 0); if ((e.freeze || e.root) && !m.dead) m.stun = e.freeze || e.root; } }
+  const pd = P.pos.distanceTo(p); if (pd < r * 0.6) { state.hp -= Math.round(dmg * 0.25); ui.toast('You were in the blast radius. Classic.', '#E5484D', 1400); }
+}
 function clampVitals() { const D = derived(); state.hp = Math.min(state.hp, D.maxHp); state.mana = Math.min(state.mana, D.maxMana); }
 
 // ---------------- achievements ----------------
@@ -87,9 +126,9 @@ const keys = {}; let locked = false;
 document.addEventListener('keydown', (e) => {
   keys[e.code] = true; if (e.repeat) return;
   const k = e.code;
-  if (k === 'KeyI') ui.toggle('inv'); else if (k === 'KeyC') ui.toggle('char'); else if (k === 'KeyK') ui.toggle('skills'); else if (k === 'KeyM') ui.toggle('map'); else if (k === 'KeyJ') ui.toggle('ach');
+  if (k === 'KeyI') ui.toggle('inv'); else if (k === 'KeyB') { if (FLOOR === 'pad') ui.toggle('craft'); else ui.toast('Crafting happens in your Crash Pad. Press H in a safe zone.', '#9a9a9a', 1800); } else if (k === 'KeyH' && !ui.isOpen()) goPad(); else if (k === 'KeyC') ui.toggle('char'); else if (k === 'KeyK') ui.toggle('skills'); else if (k === 'KeyM') ui.toggle('map'); else if (k === 'KeyJ') ui.toggle('ach');
   else if (k === 'Escape') ui.close(); else if (k === 'KeyO') { ink.state.outline = !ink.state.outline; ui.toast(`Ink outlines ${ink.state.outline ? 'on' : 'off'}`, '#9a9a9a', 1200); }
-  else if (!ui.isOpen()) { if (k === 'Digit1') cast('firebolt'); if (k === 'Digit2' || k === 'KeyR') cast('fireball'); if (k === 'Digit3' || k === 'KeyQ') cast('flameward'); if (k === 'Digit4') cast('kindle'); if (k === 'KeyE') interact(); if (k === 'Space' && P.onGround) { P.vel.y = 5.2; P.onGround = false; } }
+  else if (!ui.isOpen()) { if (k === 'Digit1') cast('firebolt'); if (k === 'Digit2' || k === 'KeyR') cast('fireball'); if (k === 'Digit3' || k === 'KeyQ') cast('flameward'); if (k === 'Digit4') cast('kindle'); if (k === 'KeyE') { const si = nearSlot(); if (si >= 0) useSlot(si); else interact(); } if (k === 'KeyG') throwBomb(); if (k === 'Space' && P.onGround) { P.vel.y = 5.2; P.onGround = false; } }
 });
 document.addEventListener('keyup', (e) => { keys[e.code] = false; });
 $('stage').addEventListener('click', () => { if (!ui.isOpen() && started) $('stage').requestPointerLock(); });
@@ -161,8 +200,8 @@ function killMob(m) {
   m.dead = true; m.hp = 0; m.bar.remove(); state.counters.kills++; gainXP(28 + m.lvl * 6); state.gold += 2 + Math.floor(Math.random() * 6);
   if (state.counters.kills === 1) ui.host('Your first kill on camera! Our legal team has been notified.');
   // loot pouch with 1-2 items
-  const items = [makeItem(rng, { level: state.level - 1 })]; if (Math.random() < 0.5) items.push(makeItem(rng, { level: state.level - 1 })); if (Math.random() < 0.35) items.push({ ...CONSUMABLES[Math.floor(Math.random() * CONSUMABLES.length)], uid: Math.floor(Math.random() * 1e9), rarity: 'common' });
-  const best = items.reduce((b, i) => (['junk', 'common', 'uncommon', 'rare', 'epic', 'legendary'].indexOf(i.rarity) > ['junk', 'common', 'uncommon', 'rare', 'epic', 'legendary'].indexOf(b.rarity) ? i : b), items[0]);
+  const items = [makeItem(rng, { level: state.level - 1 })]; const matDrop = m.kind === 'wight' ? { bonedust: 2, cloth: 2, dirtywater: 1, frost: Math.random() < 0.3 ? 1 : 0 } : { coneplastic: 1 + (Math.random() < 0.5 ? 1 : 0), gristle: 2, hide: 1, scrapmetal: 1, ember: Math.random() < 0.25 ? 1 : 0, sulphur: Math.random() < 0.4 ? 1 : 0 }; items.push({ kind: 'mat', mats: matDrop, rarity: 'common', name: 'Materials' }); if (Math.random() < 0.5) items.push(makeItem(rng, { level: state.level - 1 })); if (Math.random() < 0.35) items.push({ ...CONSUMABLES[Math.floor(Math.random() * CONSUMABLES.length)], uid: Math.floor(Math.random() * 1e9), rarity: 'common' });
+  const best = items.filter((i) => i.kind !== 'mat').reduce((b, i) => (['junk', 'common', 'uncommon', 'rare', 'epic', 'legendary'].indexOf(i.rarity) > ['junk', 'common', 'uncommon', 'rare', 'epic', 'legendary'].indexOf(b.rarity) ? i : b), items.find((i) => i.kind !== 'mat'));
   const colr = { junk: '#9a9a9a', common: '#f4eedc', uncommon: '#5ad86a', rare: '#4a9aff', epic: '#b46cff', legendary: '#ff9a2a' }[best.rarity];
   const pouch = new THREE.Group(); const bag = new THREE.Mesh(new THREE.SphereGeometry(0.18, 12, 10), new THREE.MeshPhysicalMaterial({ color: '#7a5a3a', roughness: 0.8 })); bag.scale.y = 0.8; pouch.add(bag);
   const beam = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.2, 3, 10, 1, true), new THREE.MeshBasicMaterial({ color: colr, transparent: true, opacity: 0.45, blending: THREE.AdditiveBlending, depthWrite: false, side: THREE.DoubleSide })); beam.position.y = 1.5; pouch.add(beam); fx.push(beam);
@@ -170,7 +209,7 @@ function killMob(m) {
 }
 function interact() {
   let best = null, bd = 2.2; for (const d of drops) { const dd = d.g.position.distanceTo(P.pos.clone().setY(0.15)); if (dd < bd) { bd = dd; best = d; } }
-  if (!best) return; for (const it of best.items) { if (state.inv.length >= 48) { ui.toast('Inventory full! Scrap some junk (I).', '#E5484D'); break; } state.inv.push(it); ui.toast(`<span style="color:${{ junk: '#9a9a9a', common: '#f4eedc', uncommon: '#5ad86a', rare: '#4a9aff', epic: '#b46cff', legendary: '#ff9a2a' }[it.rarity] || '#fff'}">${it.name}</span>`, '#3a3448', 2200); }
+  if (!best) return; for (const it of best.items) { if (it.kind === 'mat') { const got = Object.entries(it.mats).filter(([, n]) => n > 0); got.forEach(([mm, n]) => { state.mats[mm] = (state.mats[mm] || 0) + n; }); ui.toast(`<span class="sm">${got.map(([mm, n]) => `+${n} ${MATS[mm]}`).join(' · ')}</span>`, '#3a3448', 2400); continue; } if (state.inv.length >= state.invCap) { ui.toast('Inventory full! Scrap some junk (I).', '#E5484D'); break; } state.inv.push(it); ui.toast(`<span style="color:${{ junk: '#9a9a9a', common: '#f4eedc', uncommon: '#5ad86a', rare: '#4a9aff', epic: '#b46cff', legendary: '#ff9a2a' }[it.rarity] || '#fff'}">${it.name}</span>`, '#3a3448', 2200); }
   scene.remove(best.g); drops.splice(drops.indexOf(best), 1);
 }
 
@@ -195,7 +234,7 @@ function drawMap(cv, big = false) {
 }
 
 // ---------------- loop ----------------
-let started = false, shake = 0, lastPOI = null, lowHpT = 0;
+let saveT = 0; let started = false, shake = 0, lastPOI = null, lowHpT = 0;
 const v3 = new THREE.Vector3();
 function project(p) { v3.copy(p).project(camera); return [(v3.x * 0.5 + 0.5) * window.innerWidth, (-v3.y * 0.5 + 0.5) * window.innerHeight, v3.z]; }
 let last = performance.now();
@@ -265,7 +304,7 @@ function frame(now) {
       if (m.state === 'idle' && dist < 16) { m.state = 'chase'; if (Math.random() < 0.5) ui.host(m.kind === 'wight' ? 'A Mop Wight. Still on shift. Forever. Put it out of its misery.' : 'A goblin noticed you. It has a cone. You have a lighter. Fight!'); }
       if (m.state === 'chase' && dist > 40) m.state = 'return';
       let move = new THREE.Vector3();
-      if (m.state === 'chase') { if (dist > 1.5) move = toP.clone().normalize().multiplyScalar(3.4); m.atk -= dt; if (dist < 1.9 && m.atk <= 0) { m.atk = 1.3; let dmg = 6 + m.lvl * 1.5; dmg *= 1 - Math.min(0.6, D.armor / 200); if (state.ward > 0) { const a = Math.min(state.ward, dmg); state.ward -= a; dmg -= a; state.counters.wardAbsorb += a; } state.hp -= dmg; shake = Math.max(shake, 0.15); if (dmg > 0) { dmgNumber(P.pos.clone().add(new THREE.Vector3(0, 1.4, 0)).add(fwdVec().multiplyScalar(0.8)), '-' + Math.round(dmg), 'hurt'); $('vign').style.opacity = 0.7; } } }
+      if (m.stun > 0) { m.stun -= dt; } else if (m.state === 'chase') { if (dist > 1.5) move = toP.clone().normalize().multiplyScalar(3.4); m.atk -= dt; if (dist < 1.9 && m.atk <= 0) { m.atk = 1.3; let dmg = 6 + m.lvl * 1.5; dmg *= 1 - Math.min(0.6, D.armor / 200); if (state.ward > 0) { const a = Math.min(state.ward, dmg); state.ward -= a; dmg -= a; state.counters.wardAbsorb += a; } state.hp -= dmg; shake = Math.max(shake, 0.15); if (dmg > 0) { dmgNumber(P.pos.clone().add(new THREE.Vector3(0, 1.4, 0)).add(fwdVec().multiplyScalar(0.8)), '-' + Math.round(dmg), 'hurt'); $('vign').style.opacity = 0.7; } } }
       else if (m.state === 'return') { const back = m.home.clone().sub(g.position).setY(0); if (back.length() > 0.5) move = back.normalize().multiplyScalar(2.5); else m.state = 'idle'; }
       else { m.wander += dt; g.rotation.y += Math.sin(m.wander * 0.7) * dt * 0.5; }
       g.position.addScaledVector(move, dt); col.resolve(g.position, 0.4, 0);
@@ -279,7 +318,9 @@ function frame(now) {
     }
     // drop bobbing + prompt
     let near = false; for (const d of drops) { d.g.children[0].position.y = Math.sin(t * 3) * 0.05; if (d.g.position.distanceTo(P.pos.clone().setY(0.15)) < 2.2) near = true; }
-    $('prompt').style.display = near ? 'block' : 'none';
+    const si = nearSlot(); if (si >= 0) { const tid = Object.keys(state.tables).find((k) => state.tables[k].slot === si); $('prompt').innerHTML = tid ? `<b>[E]</b> Use ${TABLES[tid].name}` : `<b>[E]</b> Install a table in slot ${si + 1}`; } else $('prompt').innerHTML = '<b>[E]</b> Pick up';
+    $('prompt').style.display = near || si >= 0 ? 'block' : 'none';
+    tickThrowables(dt); saveT += dt; if (saveT > 5) { saveT = 0; saveGame(); }
     if (state.ward <= 0) state.ward = 0;
     world.tick(t);
   }
@@ -297,10 +338,10 @@ const fwdVec = () => new THREE.Vector3(-Math.sin(P.yaw), 0, -Math.cos(P.yaw));
 async function boot() {
   const setP = (p, msg) => { $('loadBar').style.width = Math.round(p * 100) + '%'; if (msg) $('loadMsg').textContent = msg; };
   await new Promise((r) => setTimeout(r, 50));
-  const mod = FLOOR === '2' ? await import('../worlds/floor2.js') : await import('../worlds/floor1.js');
-  const def = FLOOR === '2' ? mod.FLOOR2 : mod.FLOOR1;
+  const mod = FLOOR === 'pad' ? await import('../worlds/crashpad.js') : FLOOR === '2' ? await import('../worlds/floor2.js') : await import('../worlds/floor1.js');
+  const def = FLOOR === 'pad' ? mod.CRASHPAD : FLOOR === '2' ? mod.FLOOR2 : mod.FLOOR1;
   setP(0.02, 'Sculpting the floor…');
-  const built = (FLOOR === '2' ? mod.buildFloor2 : mod.buildFloor1)(ink, col, (p) => setP(p * 0.8));
+  const built = (FLOOR === 'pad' ? mod.buildCrashPad : FLOOR === '2' ? mod.buildFloor2 : mod.buildFloor1)(ink, col, (p) => setP(p * 0.8), state);
   world = { ...built, name: def.name, spawn: def.spawn };
   setP(0.85, 'Waking up the goblins…'); await new Promise((r) => setTimeout(r, 30));
   spawnMobs(built.mobs);
@@ -309,6 +350,7 @@ async function boot() {
   $('startBtn').disabled = false; $('startBtn').textContent = 'CLICK TO ENTER';
   requestAnimationFrame(frame);
 }
-$('startBtn').addEventListener('click', () => { $('loading').style.display = 'none'; started = true; $('stage').requestPointerLock(); ui.host(FLOOR === '2' ? 'Welcome to Spin City! Mind the floor, it\u2019s wet. Everything is wet. Forever.' : 'Welcome back to the Undercroft, Dale! Try not to die before the commercial break.'); });
+$('startBtn').addEventListener('click', () => { $('loading').style.display = 'none'; started = true; $('stage').requestPointerLock(); ui.host(FLOOR === 'pad' ? 'Your Crash Pad! Buy tables, craft weird things, and remember: tables next to each other can work together.' : FLOOR === '2' ? 'Welcome to Spin City! Mind the floor, it\u2019s wet. Everything is wet. Forever.' : 'Welcome back to the Undercroft, Dale! Try not to die before the commercial break.'); });
 boot().catch((e) => { $('loadMsg').textContent = 'Error: ' + e.message; console.error(e); });
-window.__game = { state, P, mobs, cast, ui, G };
+window.addEventListener('beforeunload', saveGame);
+window.__game = { state, P, mobs, cast, ui, G, CR, craftUI, throwBomb, saveGame };

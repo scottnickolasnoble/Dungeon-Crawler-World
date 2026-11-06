@@ -134,12 +134,32 @@ button{font-family:inherit}
 @keyframes flip{0%{opacity:0;transform:rotateY(90deg) scale(.7)}100%{opacity:1;transform:rotateY(0) scale(1)}}
 #boxOk{font-family:Bangers;font-size:26px;letter-spacing:2px;background:var(--gold);color:var(--ink);border:4px solid #fff;padding:6px 24px;cursor:pointer}
 @media (max-width:700px){#minimapWrap{transform:scale(.7);transform-origin:top right}#host{width:280px}#toasts{right:10px;top:200px}}
+#pCraft{width:min(1280px,100%)}
+#craftTables{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin:8px 0}
+.ctab{background:#1a1622;border:2px solid;border-left-width:6px;color:var(--paper,#F4EEDC);padding:6px 8px;text-align:left;cursor:pointer;font:600 14px 'Barlow Condensed',sans-serif;display:flex;flex-direction:column}
+.ctab span{font-size:12px;opacity:.75}.ctab.unowned{opacity:.55}.ctab.on{background:#2e2640;opacity:1;box-shadow:0 0 0 2px #F5C518}
+#craftHead{background:#16121e;border:2px solid #000;padding:10px 12px;margin-bottom:8px}
+.ctitle{font:800 26px 'Bangers','Barlow Condensed',sans-serif;letter-spacing:1px}.ctitle2{font:800 20px 'Barlow Condensed',sans-serif;color:#F5C518;margin-bottom:6px}
+.buy{margin:6px 0;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.cbtn{background:#F5C518;color:#111;border:3px solid #000;font:800 15px 'Barlow Condensed',sans-serif;padding:5px 12px;cursor:pointer;box-shadow:3px 3px 0 #000}.cbtn:disabled{background:#5a5460;color:#2a2630;cursor:not-allowed}.cbtn.big{font-size:20px;padding:8px 26px}
+.craftWrap{display:grid;grid-template-columns:330px 1fr;gap:12px}
+#craftFilter{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:6px}#craftFilter button{background:#1a1622;color:#ccc;border:2px solid #000;font:600 13px 'Barlow Condensed',sans-serif;padding:3px 8px;cursor:pointer}#craftFilter button.on{background:#F5C518;color:#111}
+#recipeList{max-height:420px;overflow:auto;display:flex;flex-direction:column;gap:3px}
+.rrow{display:flex;justify-content:space-between;gap:8px;background:#1a1622;border:2px solid #000;color:#8a8494;padding:6px 8px;cursor:pointer;font:600 15px 'Barlow Condensed',sans-serif;text-align:left}.rrow.ok{color:#F4EEDC}.rrow.on{background:#2e2640;box-shadow:inset 4px 0 0 #F5C518}.rt{font-size:12px;opacity:.7;white-space:nowrap}
+#recipeDetail{background:#16121e;border:2px solid #000;padding:12px;min-height:260px}
+.ins{display:flex;flex-wrap:wrap;gap:6px}.in{padding:4px 8px;border:2px solid #000;background:#221c2c;font:600 15px 'Barlow Condensed',sans-serif}.in.have{color:#7BE38A}.in.miss{color:#ff7a6a}
+.arrow{font-size:26px;color:#F5C518;margin:4px 0 2px 10px}.res{font:700 18px 'Barlow Condensed',sans-serif;padding:8px;background:#221c2c;border:2px solid #F5C518}
+.tgts{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}.tgt{display:flex;align-items:center;gap:6px;background:#1a1622;border:2px solid;color:#F4EEDC;padding:4px 8px;cursor:pointer;font:600 13px 'Barlow Condensed',sans-serif;text-align:left}.tgt svg{width:22px;height:22px}.tgt.on{background:#3a3050;box-shadow:0 0 0 2px #F5C518}.tgt i{opacity:.7;color:#F5C518}
+.cfoot{display:flex;gap:10px;align-items:center;margin-top:12px}
+#matList{display:flex;flex-wrap:wrap;gap:5px;margin-top:10px}.mat{background:#221c2c;border:1px solid #000;padding:2px 7px;font:600 13px 'Barlow Condensed',sans-serif;color:#cfc8d8}.mat b{color:#F5C518}
+#craftGold{color:#F5C518;font:800 18px 'Barlow Condensed',sans-serif;margin-left:12px}
+@media (max-width:900px){#craftTables{grid-template-columns:repeat(3,1fr)}.craftWrap{grid-template-columns:1fr}}
 </style></head><body>
 <div id="stage"></div>
 <div id="hud">
   <div id="vign"></div>
   <div id="topl"><div class="ink"><span id="loc">LOADING</span><span id="safe">SAFE ZONE</span></div>
-    <div id="keys" class="ink">WASD move · Shift sprint · Space jump · LMB Firebolt · RMB/R Fireball · Q Flame Ward · E pick up<br>I inventory · C character · K skills · M map · J achievements · O outlines</div></div>
+    <div id="keys" class="ink">WASD move · Shift sprint · Space jump · LMB Firebolt · RMB/R Fireball · Q Flame Ward · E pick up / use · G bomb<br>I inventory · C character · K skills · M map · J achievements · H Crash Pad · B craft · O outlines</div></div>
   <div id="minimapWrap"><canvas id="mini" width="180" height="180" aria-label="Minimap"></canvas><div id="compass"></div></div>
   <div id="toasts"></div>
   <div id="cross"></div>
@@ -173,11 +193,15 @@ button{font-family:inherit}
   <section class="panel" id="pSkills"><div class="ph"><h2>SKILL TREE · PYROMANCER</h2><span class="keys">K or Esc to close</span></div><div id="skPts"></div><div id="skillTree"></div></section>
   <section class="panel" id="pMap"><div class="ph"><h2>MAP</h2><span class="keys">M or Esc to close</span></div><canvas id="bigMap" width="820" height="820" aria-label="Floor map"></canvas></section>
   <section class="panel" id="pAch"><div class="ph"><h2>ACHIEVEMENTS</h2><span class="keys">Each one awards a loot box · J or Esc to close</span></div><div id="achList"></div></section>
+  <section class="panel" id="pCraft"><div class="ph"><h2>CRASH PAD · CRAFTING<span id="craftGold"></span></h2><span class="keys">Pick a table · tables placed next to each other unlock combo recipes (⇄) · B or Esc to close</span></div>
+    <div id="craftTables"></div><div id="craftHead"></div>
+    <div class="craftWrap"><div><div id="craftFilter"><button data-f="all">ALL</button><button data-f="can">CAN MAKE</button><button data-f="Component">COMPONENTS</button><button data-f="Gear">GEAR</button><button data-f="Consumable">CONSUMABLES</button><button data-f="Imbue">IMBUE</button><button data-f="Combo">COMBO</button></div><div id="recipeList"></div></div>
+      <div><div id="recipeDetail"></div><div class="sm" style="margin-top:8px">MATERIALS</div><div id="matList"></div></div></div></section>
 </div>
 <div id="tip"></div>
 <div id="boxModal"><div id="boxTitle">LOOT BOX</div><div id="boxCards"></div><button id="boxOk">TAKE IT ALL</button></div>
 <div id="loading"><h1>DOWNSTAIRS</h1><div id="loadMsg">Loading…</div><div id="loadBox"><div id="loadBar"></div></div>
-  <div class="help"><b>WASD</b> move · <b>Mouse</b> look · <b>Shift</b> sprint · <b>Space</b> jump · <b>Left click</b> Firebolt · <b>Right click / R</b> Fireball · <b>Q</b> Flame Ward · <b>E</b> pick up loot<br><b>I</b> inventory &amp; gear · <b>C</b> character stats · <b>K</b> skill tree · <b>M</b> map · <b>J</b> achievements · <b>O</b> toggle ink outlines (faster) · <b>Esc</b> close / release mouse<br><span class="sm">Desktop browser with keyboard and mouse required.</span></div>
-  <button id="startBtn" disabled>BUILDING THE FLOOR…</button><div class="help" id="floorPick">Floor: <a href="?floor=1" style="color:#F5C518">1 · The Undercroft</a> · <a href="?floor=2" style="color:#3affea">2 · Spin City</a></div></div>
+  <div class="help"><b>WASD</b> move · <b>Mouse</b> look · <b>Shift</b> sprint · <b>Space</b> jump · <b>Left click</b> Firebolt · <b>Right click / R</b> Fireball · <b>Q</b> Flame Ward · <b>E</b> pick up loot / use table · <b>G</b> throw bomb<br><b>H</b> Crash Pad (from a safe zone) · <b>B</b> crafting · <b>I</b> inventory &amp; gear · <b>C</b> character stats · <b>K</b> skill tree · <b>M</b> map · <b>J</b> achievements · <b>O</b> toggle ink outlines (faster) · <b>Esc</b> close / release mouse<br><span class="sm">Desktop browser with keyboard and mouse required.</span></div>
+  <button id="startBtn" disabled>BUILDING THE FLOOR…</button><div class="help" id="floorPick">Floor: <a href="?floor=1" style="color:#F5C518">1 · The Undercroft</a> · <a href="?floor=2" style="color:#3affea">2 · Spin City</a> · <a href="?floor=pad" style="color:#ff8a2a">Crash Pad</a> · <a href="?newgame" style="color:#9a9a9a">New game</a></div></div>
 <script type="module" src="./game/play.js"></script>
 </body></html>

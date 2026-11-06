@@ -17,10 +17,10 @@ export function createUI(G) {
   const state = G.state;
   let open = null, tab = 'gear', hoverEl = null;
   // ---------- panels ----------
-  const panels = { inv: $('pInv'), char: $('pChar'), skills: $('pSkills'), map: $('pMap'), ach: $('pAch') };
+  const panels = { inv: $('pInv'), char: $('pChar'), skills: $('pSkills'), map: $('pMap'), ach: $('pAch'), craft: $('pCraft') };
   function toggle(p) { if (open === p) return close(); open = p; Object.entries(panels).forEach(([k, el]) => el.classList.toggle('show', k === p)); $('panelWrap').classList.add('show'); render(); G.onPanel(true); }
   function close() { open = null; Object.values(panels).forEach((el) => el.classList.remove('show')); $('panelWrap').classList.remove('show'); hideTip(); G.onPanel(false); }
-  function render() { if (open === 'inv') renderInv(); if (open === 'char') renderChar(); if (open === 'skills') renderSkills(); if (open === 'map') G.drawMap($('bigMap'), true); if (open === 'ach') renderAch(); }
+  function render() { if (open === 'inv') renderInv(); if (open === 'char') renderChar(); if (open === 'skills') renderSkills(); if (open === 'map') G.drawMap($('bigMap'), true); if (open === 'ach') renderAch(); if (open === 'craft') G.renderCraft(); }
 
   // ---------- tooltip ----------
   const tip = $('tip');
