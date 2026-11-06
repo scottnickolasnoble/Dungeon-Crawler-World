@@ -9,13 +9,23 @@ import * as T6 from './monsters/tier6.js';
 import * as BO1 from './monsters/bosses1.js';
 import * as N1 from './npcs/floor1to3.js';
 import * as BO2 from './monsters/bosses2.js';
+import * as N2 from './npcs/floor4to6.js';
+import { poolNPC } from './npcs/races.js';
 import { grimeTex, canvasTex, rnd, applyVariant, buildMesh } from './sculpt.js';
 import { humanoid } from './anatomy.js';
 
 // name -> [builder, camera position, look-at target, fov]
 const pack = (make, n, spacing) => () => { const g = new THREE.Group(); for (let i = 0; i < n; i++) { const m = make.variants ? make({ variant: i }) : applyVariant(make({ variant: i }), i); m.position.set((i - (n - 1) / 2) * spacing, 0, -Math.abs(i - (n - 1) / 2) * 0.35); m.rotation.y = (i - (n - 1) / 2) * -0.12; g.add(m); } return g; };
 makeGoblin.variants = true;
+const poolLineup = () => { const g = new THREE.Group(); const L = [['human', 'trader'], ['gutterkin', 'cook'], ['stoneblood', 'guard'], ['fennix', 'gossip'], ['ogrekin', 'cook'], ['lumen', 'healer'], ['bogling', 'trader'], ['clanker', 'guard'], ['grimhide', 'quest']]; L.forEach(([race, role], i) => { const n = poolNPC({ race, role, variant: i }); n.position.set((i - 4) * 1.15, 0, -Math.abs(i - 4) * 0.25); n.rotation.y = (i - 4) * -0.06; g.add(n); }); return g; };
 const MONSTERS = {
+  prickle: [N2.madamePrickle, [1.3, 1.2, 2.6], [0.3, 0.75, 0.2], 36],
+  sunny: [N2.sunnySponsorRep, [1.2, 1.6, 3.2], [0, 1.25, 0.1], 36],
+  deb: [N2.bigDeb, [1.5, 1.6, 3.4], [0.2, 1.15, 0.2], 36],
+  watch: [N2.neighbourhoodWatch, [0.8, 1.6, 4.6], [0.3, 1.15, 0], 40],
+  gusset: [N2.gusset, [1.1, 1.5, 2.9], [0, 1.15, 0], 38],
+  lantern: [N2.elderLantern, [1.2, 1.6, 3.2], [0, 1.2, 0], 38],
+  pool: [poolLineup, [0, 1.5, 6.4], [0, 1.0, 0], 46],
   kevlar: [BO2.captainKevlar, [3.0, 3.0, 6.6], [0, 1.9, 0.3], 40, -2.6, -2.2],
   fetch: [BO2.mrFetch, [3.4, 2.4, 4.6], [0, 1.1, 0.4], 40, -3.0, -2.4],
   sludge: [BO2.auntieSludge, [2.6, 2.4, 5.0], [-0.2, 1.5, 0.4], 40, -2.6, -2.2],
