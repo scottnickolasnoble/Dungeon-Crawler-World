@@ -330,6 +330,7 @@ const HEADGEAR = ['cone', 'coneYellow', 'bucket', 'hardhat', 'coneBroken', 'cone
 const WEAPONS = ['club', 'pipe', 'stopSign', 'club'];
 const SKIN_TINTS = ['#ffffff', '#e4f0cc', '#d6dcff', '#ffe4cc', '#c8d8b0'];
 const CLOTH = ['#8a7058', '#5a6a7a', '#7a3a2a', '#4a5a3a'];
+export { EYE as GOBLIN_EYE };
 export function makeGoblin(opts = {}) {
   const v = opts.variant ?? 0;
   const pick = (arr, k) => arr[(v + k * 7) % arr.length]; // each attribute steps once per goblin, so pack-mates differ
@@ -359,7 +360,7 @@ export function makeGoblin(opts = {}) {
   for (const [dx, dy] of [[-0.25, -0.1], [0, -0.15], [0.25, -0.2], [0.5, -0.1]]) claw(0.34 + dx * 0.11, 0.91 + dy * 0.11 - 0.02, 0.36 + 0.11 * 0.95 + 0.015, 1.9, 0);
   // traffic-cone helmet, real plastic
   const gear = pick(HEADGEAR, 2);
-  const helmet = new THREE.Group();
+  const helmet = new THREE.Group(); helmet.name = 'helmet';
   if (gear.startsWith('cone')) {
     const coneMat = new THREE.MeshPhysicalMaterial({ map: coneTex, roughness: 0.55, clearcoat: 0.3, clearcoatRoughness: 0.6, color: gear === 'coneYellow' ? '#ffe070' : '#ffffff' });
     const h = gear === 'coneBroken' ? 0.22 : 0.36;
@@ -384,7 +385,7 @@ export function makeGoblin(opts = {}) {
   // hubcap shoulder armour on some goblins
   if (pick([0, 1, 0], 3)) {
     const cap = new THREE.Mesh(new THREE.CylinderGeometry(0.11, 0.12, 0.025, 24), new THREE.MeshStandardMaterial({ map: grime('#b0b4ba'), metalness: 0.95, roughness: 0.3 }));
-    cap.position.set(0.25, 1.36, 0.0); cap.rotation.set(0, 0, -0.9); g.add(cap);
+    cap.position.set(0.25, 1.36, 0.0); cap.rotation.set(0, 0, -0.9); cap.name = 'hubcap'; g.add(cap);
   }
   // leather belt, straps and loincloth
   const leather = new THREE.MeshPhysicalMaterial({ map: leatherTex, roughness: 0.8, sheen: 0.3, sheenColor: new THREE.Color('#704a30') });
@@ -401,7 +402,7 @@ export function makeGoblin(opts = {}) {
   const rag = new THREE.Mesh(cloth, new THREE.MeshPhysicalMaterial({ map: leatherTex, color: pick(CLOTH, 4), roughness: 0.95, side: THREE.DoubleSide }));
   rag.position.set(0, 0.74, 0.16); g.add(rag);
   // weapon in the right hand
-  const club = new THREE.Group();
+  const club = new THREE.Group(); club.name = 'weapon';
   const weapon = pick(WEAPONS, 5);
   if (weapon === 'pipe') {
     const steel = new THREE.MeshStandardMaterial({ map: grime('#6a6c70'), metalness: 0.9, roughness: 0.5 });
