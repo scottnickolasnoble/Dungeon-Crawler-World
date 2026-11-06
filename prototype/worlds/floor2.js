@@ -1,7 +1,7 @@
 // FLOOR 2 — SPIN CITY. An endless laundromat-and-sewer maze: humid fog, soap-slick tiles, sewer canals.
 import * as THREE from '../node_modules/three/build/three.module.js';
 import { toon, canvasTex, inkLine, woodTex, rnd, seeded } from '../engine/ink.js';
-import { spinCycle, oldReggie } from '../npcs/floor1to3.js';
+import { townFillers } from '../game/npcs.js';
 import { roamingPacks } from './spawns.js';
 
 export const FLOOR2 = { name: 'FLOOR 2 · SPIN CITY', size: 360, spawn: [0, 1.7, 40], spawnYaw: 0 };
@@ -91,9 +91,7 @@ export function buildFloor2(ink, col, onProgress = () => {}) {
   for (const sx of [-3.5, 3.5]) { add(at(new THREE.Mesh(new THREE.BoxGeometry(0.3, 4.6, 0.3), toon('#4a3020')), sx, 2.3, 22.2)); col.circle(sx, 22.2, 0.3); }
   const benchM = toon('#ffffff', { map: woodTex() });
   for (const [x, z] of [[-8, 6], [8, 6], [-12, 12], [12, 12]]) { add(at(new THREE.Mesh(new THREE.BoxGeometry(3, 0.5, 0.9), benchM), x, 0.45, z)); col.box(x, z, 1.5, 0.45); }
-  const sp = spinCycle(); sp.position.set(-5, 0, 4); sp.rotation.y = 0.4; add(sp); col.circle(-5, 4, 0.5);
   onProgress(0.62);
-  const rg = oldReggie(); rg.position.set(7, 0, 8); rg.rotation.y = -0.6; add(rg); col.circle(7, 8, 0.5);
   onProgress(0.72);
 
   // BOILER ROOM 0 (Mop Wight encampment): boilers, steam, wet-floor signs, a punch clock, Head Custodian Ebb
@@ -150,5 +148,12 @@ export function buildFloor2(ink, col, onProgress = () => {}) {
     for (let i = 0; i < bub.length; i++) { const b = bub[i]; const y = ((b.y + t * b.s) % 10) + 0.4; dm.position.set(b.x + Math.sin(t * 0.5 + i) * 0.8, y, b.z + Math.cos(t * 0.4 + i) * 0.8); dm.rotation.set(0, 0, 0); dm.scale.setScalar(b.r); dm.updateMatrix(); bubbles.setMatrixAt(i, dm.matrix); }
     bubbles.instanceMatrix.needsUpdate = true; dm.scale.setScalar(1); falls.rotation.y = t * 0.4;
   };
-  return { map, mobs, tick, size: SIZE, ceiling: CEIL };
+  const npcs = [
+    { id: 'spin', named: 'spin', kind: 'quest', title: 'Laundromat owner', x: -5, z: 4, yaw: 0.4, voice: 'spin' },
+    { id: 'reggie', named: 'reggie', kind: 'quest', title: 'Retired custodian', x: 7, z: 8, yaw: -0.6, voice: 'reggie' },
+    { id: 'bev', kind: 'quest', role: 'trader', race: 'fennix', variant: 1, name: 'Bev', title: 'Table merchant', x: -10, z: 9, yaw: 0.8, voice: 'merchant', static: true },
+    ...townFillers({ x: 0, z: 8, r: 19, r0: 5, count: 10, races: ['gutterkin', 'fennix', 'human', 'bogling'], seed: 2 }),
+  ];
+  const stairs = { x: 16, z: 2, r: 2.6, to: '3', flag: 'ebb_handled', locked: 'The service stairs to Floor 3 are behind the Boiler Room’s pressure door. Deal with Ebb first.' };
+  return { map, mobs, npcs, stairs, tick, size: SIZE, ceiling: CEIL };
 }

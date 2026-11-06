@@ -3,6 +3,8 @@ import * as THREE from '../node_modules/three/build/three.module.js';
 import { createInk, Collision } from '../engine/ink.js';
 import { createMobSystem, MOBDEFS, scaleDmg } from './mobs.js';
 import { createAudio } from './audio.js';
+import { createNPCSystem, FILLER_LINES } from './npcs.js';
+import { createStory } from './story.js';
 const AU = createAudio();
 import { SKILLS, CLASS, STATS, makeItem, makeRng, openBox, BOXES, ACHIEVEMENTS, CONSUMABLES } from './data.js';
 import { createUI } from './ui.js';
@@ -11,7 +13,7 @@ import { createCrafting, createCraftUI, MATS, TABLES } from './crafting.js';
 const $ = (id) => document.getElementById(id);
 const QS = new URLSearchParams(location.search); const HASH = location.hash.slice(1);
 // floors are chosen by #hash (artifact pages drop query strings); ?floor= still works for local tests
-const FLOOR = QS.get('floor') || (HASH === 'pad' ? 'pad' : HASH === 'floor-2' ? '2' : '1');
+const FLOOR = QS.get('floor') || (HASH === 'pad' ? 'pad' : HASH === 'floor-2' ? '2' : HASH === 'floor-3' ? '3' : '1');
 function goFloor(f) { if (QS.get('floor')) { location.search = `?floor=${f}`; return; } location.hash = f === 'pad' ? 'pad' : `floor-${f}`; }
 window.addEventListener('hashchange', () => location.reload());
 const SAVE_KEY = 'downstairs_save_v2';
@@ -27,7 +29,7 @@ const state = {
   skills: { firebolt: { lvl: 1, ups: [] }, flameward: { lvl: 1, ups: [] }, kindle: { lvl: 1, ups: [] }, fireball: { lvl: 1, ups: [] } },
 };
 state.mats = { scrapmetal: 14, plastic: 6, wire: 6, rubber: 3, glass: 6, cloth: 8, coneplastic: 4, gristle: 6, hide: 3, sulphur: 5, saltpetre: 3, charcoal: 2, salt: 3, dirtywater: 6, grease: 3, herbs: 4, mushroom: 5, mysterymeat: 2, lampreymeat: 1, spring: 2, battery: 1, paper: 2, ember: 4, frost: 1, roughruby: 1 };
-state.tables = { workbench: { tier: 1, slot: 2 }, still: { tier: 1, slot: 3 } }; state.craftXP = {}; state.invCap = 48; state.buffs = []; state.gold = 520; state.lastFloor = '1';
+state.tables = { workbench: { tier: 1, slot: 2 }, still: { tier: 1, slot: 3 } }; state.tableStock = []; state.craftXP = {}; state.invCap = 48; state.buffs = []; state.gold = 520; state.lastFloor = '1';
 function saveGame() { try { const o = { ...state, discovered: [...state.discovered] }; delete o.equipped; localStorage.setItem(SAVE_KEY, JSON.stringify(o)); } catch (e) {} }
 function loadGame() { try { const raw = localStorage.getItem(SAVE_KEY); if (!raw) return false; const o = JSON.parse(raw); Object.assign(state, o); state.discovered = new Set(o.discovered || []); return true; } catch (e) { return false; } }
 const LOADED = !QS.has('newgame') && HASH !== 'new' && loadGame();
@@ -69,8 +71,8 @@ const G = { state, derived, gearSkillBonus, spellDamage, cooldownFrac, onPanel: 
   useItem(it) {
     if (it.kind === 'gear') { let slot = it.slot; if (slot === 'ring1' && state.equip.ring1 && !state.equip.ring2) slot = 'ring2'; const old = state.equip[slot]; state.equip[slot] = it; state.inv.splice(state.inv.indexOf(it), 1); if (old) state.inv.push(old); clampVitals(); checkAch(); }
     else if (it.kind === 'consumable' && it.effect.bomb) { ui.toast(`${it.name}: press G to throw`, '#ff8a2a', 1800); return; }
-    else if (it.kind === 'consumable' && it.effect.turret) { ui.toast(`${it.name}: deployable turrets come with the combat update`, '#3ac8ff', 2000); return; }
-    else if (it.kind === 'consumable') { const D = derived(); const e = it.effect; if (e.buff) { state.buffs.push({ stat: e.buff, amount: e.amount, until: performance.now() / 1000 + e.mins * 60 }); ui.toast(`+${e.amount} ${e.buff} for ${e.mins} min`, '#5ad86a'); } if (e.bag) { state.invCap = Math.min(96, state.invCap + e.bag); ui.toast(`Inventory +${e.bag} slots (${state.invCap})`, '#c86aa8'); } if (e.scroll) { state.mana += 30; cds.fireball = 0; setTimeout(() => cast('fireball'), 50); } if (e.map) { world.map.pois.forEach((p) => state.discovered.add(p.name)); for (let x = -30; x < 30; x++) for (let z = -30; z < 30; z++) visited.add(`${x},${z}`); ui.toast('The map reveals the whole area', '#F5C518'); } if (e.hp) state.hp = Math.min(D.maxHp, state.hp + e.hp); if (e.mana) state.mana = Math.min(D.maxMana, state.mana + e.mana); if (e.hunger) state.hunger = Math.min(100, state.hunger + e.hunger); if (e.thirst) state.thirst = Math.min(100, state.thirst + e.thirst); state.inv.splice(state.inv.indexOf(it), 1); ui.toast(`Used <b>${it.name}</b>`, '#5ad86a'); }
+    else if (it.kind === 'consumable' && it.effect.turret) { deployTurret(it); state.inv.splice(state.inv.indexOf(it), 1); ui.close(); return; }
+    else if (it.kind === 'consumable') { const D = derived(); const e = it.effect; if (e.buff) { state.buffs.push({ stat: e.buff, amount: e.amount, until: performance.now() / 1000 + e.mins * 60 }); ui.toast(`+${e.amount} ${e.buff} for ${e.mins} min`, '#5ad86a'); } if (e.bag) { state.invCap = Math.min(96, state.invCap + e.bag); ui.toast(`Inventory +${e.bag} slots (${state.invCap})`, '#c86aa8'); } if (e.scroll) { state.mana += 30; cds.fireball = 0; setTimeout(() => cast('fireball'), 50); } if (e.map) { world.map.pois.forEach((p) => state.discovered.add(p.name)); for (let x = -30; x < 30; x++) for (let z = -30; z < 30; z++) visited.add(`${x},${z}`); ui.toast('The map reveals the whole area', '#F5C518'); } if (e.stamina) state.stamina = Math.min(D.maxStamina, state.stamina + e.stamina); if (e.recall && world.spawn) { P.pos.set(world.spawn[0], 0, world.spawn[2]); ui.banner('RECALLED TO TOWN', '#7BE38A'); } if (e.hp) state.hp = Math.min(D.maxHp, state.hp + e.hp); if (e.mana) state.mana = Math.min(D.maxMana, state.mana + e.mana); if (e.hunger) state.hunger = Math.min(100, state.hunger + e.hunger); if (e.thirst) state.thirst = Math.min(100, state.thirst + e.thirst); state.inv.splice(state.inv.indexOf(it), 1); ui.toast(`Used <b>${it.name}</b>`, '#5ad86a'); }
     else if (it.kind === 'book') { const s = SKILLS.find((q) => q.id === it.skill); state.inv.splice(state.inv.indexOf(it), 1); if (state.skills[s.id]) { if (state.skills[s.id].lvl < 15) state.skills[s.id].lvl++; ui.toast(`Duplicate book: <b>${s.name}</b> +1 level`, '#b46cff'); } else { state.skills[s.id] = { lvl: 1, ups: [] }; ui.banner(`NEW SKILL: ${s.name.toUpperCase()}`, '#b46cff'); ui.host(`You learned ${s.name}. From a book. In a dungeon. Truly the hero we deserve.`); } }
     else if (it.kind === 'box') { state.inv.splice(state.inv.indexOf(it), 1); const items = openBox(rng, it.box, Math.max(3, state.level)); items.forEach((x) => state.inv.push(x)); state.counters.boxes++; ui.revealBox(BOXES[it.box].name, BOXES[it.box].color, items, checkAch); const best = items.find((x) => x.rarity === 'legendary' || x.rarity === 'epic'); ui.host(best ? `Ooh, ${best.name}! The audience is jealous. I'm jealous.` : 'Unboxing! The purest form of content.'); }
   },
@@ -80,6 +82,13 @@ const G = { state, derived, gearSkillBonus, spellDamage, cooldownFrac, onPanel: 
 const ui = createUI(G);
 { const h = ui.host; ui.host = (t) => { h(t); AU.say(t, 'host'); }; const tg = ui.toggle; ui.toggle = (p) => { SFX('ui'); tg(p); }; }
 const CR = createCrafting(G); const craftUI = createCraftUI(G, CR);
+G.closeCraft = () => ui.close();
+const NPCS = createNPCSystem({ scene, col, get nav() { return MS.nav; } });
+const STORY = createStory({ state, floor: FLOOR, CR, derived, toast: (...a) => ui.toast(...a), host: (t) => ui.host(t), sfx: (n) => SFX(n), gainXP: (n) => gainXP(n), save: () => saveGame(),
+  uid: () => Math.floor(Math.random() * 1e9), makeItem: (o) => makeItem(rng, o), give: (it) => { state.inv.push(it); ui.toast(`<span style="color:${RCOL[it.rarity] || '#fff'}">${it.name}</span> added`, '#3a3448', 2500); }, giveCons: (i) => state.inv.push({ ...CONSUMABLES[i], uid: Math.floor(Math.random() * 1e9), rarity: 'common' }),
+  say: (t, v, p) => AU.say(t, v, p), openShop: (id, title) => {}, openPanel: (p) => { ui.toggle(p); }, onOpen: (o) => { if (o && document.pointerLockElement) document.exitPointerLock(); }, rcol: (r) => RCOL[r] || '#fff' });
+G.renderShop = () => STORY.renderShop(); G.renderLog = () => STORY.renderLog();
+const RCOL = { junk: '#9a9a9a', common: '#f4eedc', uncommon: '#5ad86a', rare: '#4a9aff', epic: '#b46cff', legendary: '#ff9a2a' };
 G.toast = (...a) => ui.toast(...a);
 G.renderSettings = () => { const S = AU.settings; $('setList').innerHTML = ['master', 'music', 'sfx', 'voice'].map((k) => `<label class="setRow" for="set_${k}"><span>${{ master: 'Master volume', music: 'Music', sfx: 'Sound effects', voice: 'Voices' }[k]}</span><input type="range" id="set_${k}" min="0" max="1" step="0.05" value="${S[k]}"></label>`).join('') + `<label class="setRow" for="set_hostSpeech"><span>Host voice: spoken (uses your browser's speech voice) instead of babble</span><input type="checkbox" id="set_hostSpeech" ${S.hostSpeech ? 'checked' : ''}></label><button class="cbtn" id="setTest">TEST VOICE</button>`; ['master', 'music', 'sfx', 'voice'].forEach((k) => { $('set_' + k).oninput = (e) => { S[k] = +e.target.value; AU.apply(); }; }); $('set_hostSpeech').onchange = (e) => { S.hostSpeech = e.target.checked; AU.apply(); }; $('setTest').onclick = () => { AU.init(); AU.say('Welcome back, contestant! Please keep your limbs inside the dungeon at all times.', 'host'); }; }; G.renderCraft = () => craftUI.render();
 G.onTables = () => { if (world && world.refreshTables) world.refreshTables(state); saveGame(); };
@@ -87,7 +96,7 @@ G.onCraft = () => { SFX('craft'); state.counters.crafted = (state.counters.craft
 function inSafe() { return FLOOR === 'pad' || (lastPOI && lastPOI.safe); }
 function goPad() { if (FLOOR === 'pad') { saveGame(); goFloor(state.lastFloor || '1'); return; } if (!inSafe()) return ui.toast('You can only open your Crash Pad door from a safe zone (settlement or camp).', '#E5484D', 2200); state.lastFloor = FLOOR; saveGame(); goFloor('pad'); }
 function nearSlot() { if (FLOOR !== 'pad' || !world.slots) return -1; let bi = -1, bd = 2.6; world.slots.forEach(([x, z], i) => { const d = Math.hypot(P.pos.x - x, P.pos.z - z); if (d < bd) { bd = d; bi = i; } }); return bi; }
-function useSlot(i) { const id = Object.keys(state.tables).find((k) => state.tables[k].slot === i); if (id) craftUI.open(id, null); else { const first = Object.keys(TABLES_REF).find((k) => !state.tables[k]); craftUI.open(first, i); } ui.toggle('craft'); }
+function useSlot(i) { const id = Object.keys(state.tables).find((k) => state.tables[k].slot === i); craftUI.open(id || null, i); ui.toggle('craft'); }
 const TABLES_REF = TABLES;
 const throwables = [];
 function throwBomb() {
@@ -109,6 +118,19 @@ function bombBlast(p, e) {
   burstAt(p, e.burn ? '#ff7a1a' : e.freeze ? '#9ae8ff' : '#ffd040', 60, 1.4); SFX('bomb', p); shake = Math.max(shake, 0.35);
   for (const m of mobs) { if (m.dead) continue; const d = m.g.position.distanceTo(p.clone().setY(m.g.position.y)); if (d < r) { hurtMob(m, Math.round(dmg * (1 - d / r * 0.5)), e.burn ? 4 : 0); if ((e.freeze || e.root) && !m.dead) m.stun = e.freeze || e.root; } }
   const pd = P.pos.distanceTo(p); if (pd < r * 0.6) { state.hp -= Math.round(dmg * 0.25); ui.toast('You were in the blast radius. Classic.', '#E5484D', 1400); }
+}
+const turrets = [];
+function deployTurret(it) {
+  const e = it.effect, g = new THREE.Group(); const col0 = { flame: '#ff7a1a', frost: '#9ae8ff', shock: '#ffe040', nail: '#c8c8c8', decoy: '#e8a0ff', drone: '#3affea' }[e.turret] || '#ffffff';
+  g.add(Object.assign(new THREE.Mesh(new THREE.CylinderGeometry(0.35, 0.45, 0.6, 10), new THREE.MeshStandardMaterial({ color: '#5a5a62', metalness: 0.6, roughness: 0.4 })))); const head = new THREE.Mesh(new THREE.BoxGeometry(0.4, 0.3, 0.6), new THREE.MeshStandardMaterial({ color: col0, emissive: new THREE.Color(col0), emissiveIntensity: 0.4 })); head.position.y = 0.55; g.add(head);
+  const f = fwdVec(); g.position.set(P.pos.x + f.x * 1.6, e.turret === 'drone' ? 1.8 : 0.3, P.pos.z + f.z * 1.6); scene.add(g); turrets.push({ g, head, e, t: e.secs || 20, cd: 0, col: col0 }); ui.toast(`${it.name} deployed`, col0, 1400); SFX('craft', g.position);
+  if (e.turret === 'decoy') for (const m of mobs) if (!m.dead && m.g.position.distanceTo(g.position) < 18) MS.aggro(m);
+}
+function tickTurrets(dt) {
+  for (let i = turrets.length - 1; i >= 0; i--) { const T = turrets[i]; T.t -= dt; T.cd -= dt; if (T.e.turret === 'drone') { T.g.position.x += (P.pos.x + 1 - T.g.position.x) * dt * 2; T.g.position.z += (P.pos.z + 1 - T.g.position.z) * dt * 2; }
+    let best = null, bd = 14; for (const m of mobs) { if (m.dead) continue; const d = m.g.position.distanceTo(T.g.position); if (d < bd) { bd = d; best = m; } }
+    if (best) { T.head.lookAt(best.g.position.x, T.g.position.y + 0.55, best.g.position.z); if (T.cd <= 0 && T.e.dmg > 0) { T.cd = 0.8; hurtMob(best, T.e.dmg * (1 + state.level * 0.05), T.e.turret === 'flame' ? 2 : 0); if (T.e.turret === 'frost') best.slow = 2; if (T.e.turret === 'shock') best.stun = 0.4; burstAt(best.g.position.clone().setY(1.2), T.col, 8, 0.5); SFX('firebolt', T.g.position); } }
+    if (T.t <= 0) { scene.remove(T.g); turrets.splice(i, 1); burstAt(T.g.position, '#9a9a9a', 12, 0.4); } }
 }
 function clampVitals() { const D = derived(); state.hp = Math.min(state.hp, D.maxHp); state.mana = Math.min(state.mana, D.maxMana); }
 
@@ -134,9 +156,10 @@ const keys = {}; let locked = false;
 document.addEventListener('keydown', (e) => {
   keys[e.code] = true; if (e.repeat) return;
   const k = e.code;
-  if (k === 'KeyI') ui.toggle('inv'); else if (k === 'KeyB') { if (FLOOR === 'pad') ui.toggle('craft'); else ui.toast('Crafting happens in your Crash Pad. Press H in a safe zone.', '#9a9a9a', 1800); } else if (k === 'KeyH' && !ui.isOpen()) goPad(); else if (k === 'KeyC') ui.toggle('char'); else if (k === 'KeyK') ui.toggle('skills'); else if (k === 'KeyM') ui.toggle('map'); else if (k === 'KeyJ') ui.toggle('ach'); else if (k === 'KeyP') ui.toggle('settings');
+  if (STORY.isOpen()) { STORY.key(k); return; }
+  if (k === 'KeyI') ui.toggle('inv'); else if (k === 'KeyL') ui.toggle('quests'); else if (k === 'KeyB') ui.toast(FLOOR === 'pad' ? 'Walk up to a table and press E.' : 'Crafting happens at the tables in your Crash Pad. Press H in a safe zone.', '#9a9a9a', 1800); else if (k === 'KeyH' && !ui.isOpen()) goPad(); else if (k === 'KeyC') ui.toggle('char'); else if (k === 'KeyK') ui.toggle('skills'); else if (k === 'KeyM') ui.toggle('map'); else if (k === 'KeyJ') ui.toggle('ach'); else if (k === 'KeyP') ui.toggle('settings');
   else if (k === 'Escape') ui.close(); else if (k === 'KeyO') { ink.state.outline = !ink.state.outline; ui.toast(`Ink outlines ${ink.state.outline ? 'on' : 'off'}`, '#9a9a9a', 1200); }
-  else if (!ui.isOpen()) { if (k === 'Digit1') cast('firebolt'); if (k === 'Digit2' || k === 'KeyR') cast('fireball'); if (k === 'Digit3' || k === 'KeyQ') cast('flameward'); if (k === 'Digit4') cast('kindle'); if (k === 'KeyE') { const si = nearSlot(); if (si >= 0) useSlot(si); else interact(); } if (k === 'KeyG') throwBomb(); if (k === 'KeyF') { DEF.parryT = performance.now() / 1000; DEF.blockHeld = true; SFX('parryTry', P.pos); } if (k === 'KeyV') dodge(); if (k === 'Space' && P.onGround) { P.vel.y = 5.2; P.onGround = false; } }
+  else if (!ui.isOpen()) { if (k === 'Digit1') cast('firebolt'); if (k === 'Digit2' || k === 'KeyR') cast('fireball'); if (k === 'Digit3' || k === 'KeyQ') cast('flameward'); if (k === 'Digit4') cast('kindle'); if (k === 'KeyE') use(); if (k === 'KeyG') throwBomb(); if (k === 'KeyF') { DEF.parryT = performance.now() / 1000; DEF.blockHeld = true; SFX('parryTry', P.pos); } if (k === 'KeyV') dodge(); if (k === 'Space' && P.onGround) { P.vel.y = 5.2; P.onGround = false; } }
 });
 document.addEventListener('keyup', (e) => { keys[e.code] = false; if (e.code === 'KeyF') DEF.blockHeld = false; });
 function dodge() { const now = performance.now() / 1000; if (now - DEF.dodgeT < 0.7 || state.stamina < 20) return; state.stamina -= 20; DEF.dodgeT = now; const fwd = new THREE.Vector3(-Math.sin(P.yaw), 0, -Math.cos(P.yaw)), right = new THREE.Vector3(-fwd.z, 0, fwd.x); const d = new THREE.Vector3(); if (keys.KeyW) d.add(fwd); if (keys.KeyS) d.sub(fwd); if (keys.KeyD) d.add(right); if (keys.KeyA) d.sub(right); if (!d.lengthSq()) d.copy(fwd).negate(); DEF.dodgeDir.copy(d.normalize()); SFX('dodge', P.pos); }
@@ -187,7 +210,7 @@ function explode(p, radius, dmgFn) {
 // ---------------- mobs ----------------
 const LVL_COL = (d) => (d >= 5 ? '#ff3a3a' : d >= 3 ? '#ff8a3a' : d >= -2 ? '#f4eedc' : '#8a8a8a');
 const MS = createMobSystem({ scene, fx, col, P, makeBar,
-  playerSafe: () => inSafe(), hitPlayer, kill: (m) => killMob(m), hurt: (m, d, b) => hurtMob(m, d, b),
+  playerSafe: () => inSafe(), truce: (camp) => STORY.truceOn(camp), hitPlayer, kill: (m) => killMob(m), hurt: (m, d, b) => hurtMob(m, d, b),
   burst: (...a) => burstAt(...a), shake: (v) => { shake = Math.max(shake, v); }, banner: (...a) => ui.banner(...a),
   bark: (m, txt) => { floatText(m.g.position.clone().setY(2.2 * m.bodyScale + 0.3), txt, 'bark', 2.6); AU.say(txt, m.kind, m.g.position, { seed: m.spawnSpec.variant || 0, max: 8 }); },
   floatText: (p, t, c) => floatText(p, t, c), zoneTick: (d) => { state.hp -= d; },
@@ -206,6 +229,7 @@ function hurtMob(m, dmg, burnSec = 0) {
   if (m.dead) return; const D = derived(); const crit = Math.random() * 100 < D.crit || m.state === 'stagger'; const diff = lvlDiff(m);
   const mult = Math.max(0.35, Math.min(1.3, 1 - diff * 0.08)) * (m.state === 'stagger' ? 1.5 : 1);
   const d = Math.max(1, Math.round(dmg * mult * (crit ? 1.8 : 1) * (0.9 + Math.random() * 0.2)));
+  if (m.camp && STORY.truceOn(m.camp)) STORY.breakTruce(m.camp);
   m.hp -= d; m.flash = 0.12; MS.aggro(m); dmgNumber(m.g.position.clone().add(new THREE.Vector3(0, 2.0 * m.bodyScale, 0)), (crit ? 'CRIT ' : '') + d, crit ? 'crit' : '');
   SFX('hit', m.g.position);
   if (burnSec > 0) { if (m.burn <= 0) state.counters.burned++; m.burn = Math.max(m.burn, burnSec); m.burnDps = Math.max(m.burnDps, (4 + effLevel('firebolt') * 0.8) * mult); }
@@ -229,7 +253,7 @@ const drops = [];
 function killMob(m) {
   m.dead = true; m.hp = 0; MS.endAct(m); if (m.bar) { m.bar.remove(); m.bar = null; } state.counters.kills++; SFX('death', m.g.position, m);
   const diff = lvlDiff(m); const xpMul = diff <= -6 ? 0.1 : diff < 0 ? 1 + diff * 0.12 : 1 + diff * 0.15; gainXP(Math.round((m.def.xp + m.lvl * 6) * Math.max(0.1, xpMul) * (m.summoned ? 0.3 : 1))); state.gold += (m.def.boss ? 120 : 2) + Math.floor(Math.random() * 6) * m.lvl;
-  if (m.def.boss) bossDown(m); else if (m.camp) campCheck(m.camp);
+  STORY.Q.event('kill', m); if (m.def.boss) { STORY.Q.event('boss', m.kind); state.flags[m.kind + '_handled'] = true; if (m.kind === 'pylon') state.flags.pylon_handled = true; bossDown(m); } else if (m.camp) campCheck(m.camp);
   if (state.counters.kills === 1) ui.host('Your first kill on camera! Our legal team has been notified.');
   // loot pouch with 1-2 items
   const items = [makeItem(rng, { level: m.lvl, minRarity: m.def.boss ? 3 : m.def.elite ? 2 : 0 })]; if (m.def.boss) { items.push(makeItem(rng, { level: m.lvl + 1, minRarity: 3 }), makeItem(rng, { level: m.lvl, minRarity: 2 }), { uid: Math.floor(Math.random() * 1e9), kind: 'box', box: 'boss', name: 'Boss Box', rarity: 'epic', host: 'You killed a boss. Here is a box. Inside the box: more boxes? No. Loot.' }); } const matDrop = m.kind === 'wight' || m.kind === 'ebb' ? { bonedust: 2, cloth: 2, dirtywater: 1, frost: Math.random() < 0.3 ? 1 : 0 } : { coneplastic: 1 + (Math.random() < 0.5 ? 1 : 0), gristle: 2, hide: 1, scrapmetal: 1, ember: Math.random() < 0.25 ? 1 : 0, sulphur: Math.random() < 0.4 ? 1 : 0 }; items.push({ kind: 'mat', mats: matDrop, rarity: 'common', name: 'Materials' }); if (Math.random() < 0.5) items.push(makeItem(rng, { level: m.lvl })); if (Math.random() < 0.35) items.push({ ...CONSUMABLES[Math.floor(Math.random() * CONSUMABLES.length)], uid: Math.floor(Math.random() * 1e9), rarity: 'common' });
@@ -241,7 +265,7 @@ function killMob(m) {
 }
 function bossDown(m) {
   ui.banner(`${m.def.name.toUpperCase()} DEFEATED`, '#F5C518'); SFX('victory', P.pos); MUSIC('explore'); activeBoss = null;
-  ui.host({ pylon: 'Sergeant Pylon is down! Somebody tell the cones. Actually, don\u2019t. They\u2019ll riot.', ebb: 'Head Custodian Ebb has clocked out. Permanently. Spin City is a little drier tonight.' }[m.kind] || 'A boss is dead! Sponsors are thrilled. Mostly about the explosions.');
+  ui.host({ pylon: 'Sergeant Pylon is down! Somebody tell the cones. Actually, don\u2019t. They\u2019ll riot.', ebb: 'Head Custodian Ebb has clocked out. Permanently. Spin City is a little drier tonight.', bulbQueen: 'The Bulb Queen is out! Lights out! Somebody find the switch!', coo: 'Old Man Coo has flown the coop. Permanently. Get it? The writers are very tired.', coneKing: 'THE CONE KING IS DEAD! Long live… nobody. The cones are leaderless. Chaos. Beautiful chaos.' }[m.kind] || 'A boss is dead! Sponsors are thrilled. Mostly about the explosions.');
   state.inv.push({ uid: Math.floor(Math.random() * 1e9), kind: 'consumable', name: `District Map: ${world.map.pois.find((p) => p.boss === m.kind)?.name || 'Unknown'}`, rarity: 'rare', effect: { map: 1 }, host: 'A map of this district, with everything still alive on it. Mostly.' });
   ui.toast(`<div class="ta">BOSS LOOT</div>District Map + Boss Box dropped<div class="sm">Pick up the pouch (E)</div>`, '#F5C518', 4500);
   if (m.camp) { state.conquered[m.camp] = true; setTimeout(() => campCheck(m.camp), 400); }
@@ -252,6 +276,13 @@ function campCheck(camp) {
   if (left === 0 && poi && !state.ach['camp_' + camp]) { state.ach['camp_' + camp] = true; state.conquered[camp] = true; ui.banner(`ENCAMPMENT CONQUERED: ${poi.name.toUpperCase()}`, '#7BE38A'); gainXP(300); state.inv.push({ uid: Math.floor(Math.random() * 1e9), kind: 'box', box: 'gold', name: 'Gold Box', rarity: 'epic', host: 'Conquest bonus. The camp is yours. Please do not move in, the cones smell.' }); ui.toast('<div class="ta">CONQUEST</div>Gold Box added to your inventory', '#F5C518', 4000); }
   else if (poi && left > 0 && left <= 3) ui.toast(`${poi.name}: ${left} defender${left > 1 ? 's' : ''} left`, '#ff7a3a', 1800);
 }
+function use() {
+  const n = NPCS.nearest(P, 2.8); if (n) { if (n.kind === 'filler') { const L = FILLER_POOL(n); fillerSay(n, L, 1); n.talking = 2.5; } else if (!STORY.open(n)) fillerSay(n, 'Hm?', 1); return; }
+  if (world.stairs && Math.hypot(P.pos.x - world.stairs.x, P.pos.z - world.stairs.z) < world.stairs.r) { if (state.flags && state.flags[world.stairs.flag] && world.stairs.to === '4') ui.toast('Floor 4 (The Endless Mall) is still being built by the network. You cleared Floor 3!', '#F5C518', 4000); else if (state.flags && state.flags[world.stairs.flag]) { SFX('door'); state.lastFloor = world.stairs.to; saveGame(); ui.banner(`DESCENDING TO FLOOR ${world.stairs.to}`, '#F5C518'); setTimeout(() => goFloor(world.stairs.to), 900); } else ui.toast(world.stairs.locked, '#E5484D', 3000); return; }
+  const si = nearSlot(); if (si >= 0) return useSlot(si); interact();
+}
+const FILLER_POOL = (n) => { const L = FILLER_LINES[n.role] || FILLER_LINES.gossip; return L[Math.floor(Math.random() * L.length)]; };
+function fillerSay(n, line, vol) { floatText(n.g.position.clone().setY(2.0 * n.baseScale + 0.35), line, 'bark', 3.2); AU.say(line, n.voice || 'villager', n.g.position, { seed: n.variant || 0, max: 14 }); }
 function interact() {
   let best = null, bd = 2.2; for (const d of drops) { const dd = d.g.position.distanceTo(P.pos.clone().setY(0.15)); if (dd < bd) { bd = dd; best = d; } }
   if (!best) return; for (const it of best.items) { if (it.kind === 'mat') { const got = Object.entries(it.mats).filter(([, n]) => n > 0); got.forEach(([mm, n]) => { state.mats[mm] = (state.mats[mm] || 0) + n; }); ui.toast(`<span class="sm">${got.map(([mm, n]) => `+${n} ${MATS[mm]}`).join(' · ')}</span>`, '#3a3448', 2400); continue; } if (state.inv.length >= state.invCap) { ui.toast('Inventory full! Scrap some junk (I).', '#E5484D'); break; } state.inv.push(it); ui.toast(`<span style="color:${{ junk: '#9a9a9a', common: '#f4eedc', uncommon: '#5ad86a', rare: '#4a9aff', epic: '#b46cff', legendary: '#ff9a2a' }[it.rarity] || '#fff'}">${it.name}</span>`, '#3a3448', 2200); }
@@ -269,7 +300,7 @@ function drawMap(cv, big = false) {
   c.fillStyle = '#2a4a5a'; for (const [x, z, rx, rz] of m.water) { c.beginPath(); c.ellipse(X(x), Z(z), rx * scale, rz * scale, 0, 0, 7); c.fill(); }
   c.fillStyle = '#5a5060'; for (const [x, z] of m.pillars) c.fillRect(X(x) - 1, Z(z) - 1, 2.2, 2.2);
   c.fillStyle = '#6a4a4a'; for (const [x, z] of m.cars) c.fillRect(X(x) - 1.5, Z(z) - 3, 3, 6);
-  for (const p of m.pois) { const known = state.discovered.has(p.name) || p.safe; const conq = p.camp && state.conquered[p.camp];
+  for (const p of m.pois) { if (p.kind === 'secret' && !state.discovered.has(p.name)) continue; const known = state.discovered.has(p.name) || p.safe; const conq = p.camp && state.conquered[p.camp];
     if (p.safe) { c.fillStyle = 'rgba(90,216,106,0.18)'; c.beginPath(); c.arc(X(p.x), Z(p.z), p.r * scale, 0, 7); c.fill(); }
     if (p.kind === 'camp' && known && !conq) { c.fillStyle = 'rgba(229,72,77,0.16)'; c.beginPath(); c.arc(X(p.x), Z(p.z), p.r * scale, 0, 7); c.fill(); }
     c.strokeStyle = !known ? '#4a4058' : p.safe ? '#5ad86a' : p.kind === 'camp' ? (conq ? '#9a9a9a' : '#ff5a3a') : '#7BE38A'; c.lineWidth = p.safe ? 3 : 2; c.setLineDash(p.kind === 'camp' && !conq ? [6, 4] : []); c.beginPath(); c.arc(X(p.x), Z(p.z), Math.max(5, p.r * scale * (big ? 1 : 0.4)), 0, 7); c.stroke(); c.setLineDash([]);
@@ -286,13 +317,13 @@ function drawMap(cv, big = false) {
 }
 
 // ---------------- loop ----------------
-let saveT = 0, musicT = 0; let started = false, shake = 0, lastPOI = null, lowHpT = 0;
+let saveT = 0, musicT = 0; const FAST = QS.has('fast'); let fastN = 0; let started = false, shake = 0, lastPOI = null, lowHpT = 0;
 const v3 = new THREE.Vector3();
 function project(p) { v3.copy(p).project(camera); return [(v3.x * 0.5 + 0.5) * window.innerWidth, (-v3.y * 0.5 + 0.5) * window.innerHeight, v3.z]; }
 let last = performance.now();
 function frame(now) {
   const dt = Math.min(0.05, (now - last) / 1000); last = now; const t = now / 1000;
-  const D = derived(); const paused = ui.isOpen();
+  const D = derived(); const paused = ui.isOpen() || STORY.isOpen();
   if (started && !paused) {
     // movement
     const fwd = new THREE.Vector3(-Math.sin(P.yaw), 0, -Math.cos(P.yaw)), right = new THREE.Vector3(-fwd.z, 0, fwd.x);
@@ -318,8 +349,8 @@ function frame(now) {
     if (state.hp <= 0) { state.hp = D.maxHp * 0.5; P.pos.set(...world.spawn); ui.banner('YOU DIED', '#E5484D'); ui.host('You died! Don’t worry, our revival sponsor has you covered. This time.'); MS.clearAll(); mobs.forEach((m) => { if (!m.dead) { m.state = 'idle'; m.hp = m.maxHp; m.g.position.copy(m.home); } }); activeBoss = null; }
     // discovery + fog
     for (let dx = -2; dx <= 2; dx++) for (let dz = -2; dz <= 2; dz++) visited.add(`${Math.floor(P.pos.x / VCELL) + dx},${Math.floor(P.pos.z / VCELL) + dz}`);
-    let inPOI = null; for (const p of world.map.pois) if (Math.hypot(P.pos.x - p.x, P.pos.z - p.z) < p.r) { inPOI = p; if (!state.discovered.has(p.name)) { state.discovered.add(p.name); ui.banner(`DISCOVERED: ${p.name.toUpperCase()}`, '#7BE38A'); gainXP(40); if (p.name === 'The Exit Sign') award('exit'); } }
-    if (inPOI !== lastPOI) { lastPOI = inPOI; $('loc').textContent = inPOI ? inPOI.name.toUpperCase() : world.name; $('safe').style.display = inPOI && inPOI.safe ? 'inline-block' : 'none'; }
+    let inPOI = null; for (const p of world.map.pois) if (Math.hypot(P.pos.x - p.x, P.pos.z - p.z) < p.r) { inPOI = p; if (!state.discovered.has(p.name)) { state.discovered.add(p.name); ui.banner(`DISCOVERED: ${p.name.toUpperCase()}`, '#7BE38A'); gainXP(40); if (p.name === 'The Exit Sign') award('exit'); if (p.kind === 'secret') { state.flags['unnamed_' + FLOOR] = true; ui.host('Those scratches on the wall? We… did not put those there. Moving on!'); } } }
+    if (inPOI !== lastPOI) { if (inPOI) STORY.Q.event('visit', inPOI.name); lastPOI = inPOI; $('loc').textContent = inPOI ? inPOI.name.toUpperCase() : world.name; $('safe').style.display = inPOI && inPOI.safe ? 'inline-block' : 'none'; }
     checkAch();
   }
   // camera
@@ -351,6 +382,10 @@ function frame(now) {
     for (let i = sparks.length - 1; i >= 0; i--) { const s = sparks[i]; s.life -= dt; s.v.y -= s.g * dt; s.m.position.addScaledVector(s.v, dt); if (s.life <= 0) { scene.remove(s.m); sparks.splice(i, 1); } }
     // mobs
     if (!window.__freeze) MS.update(dt, t, state.level);
+    NPCS.update(dt, t, P, (n, line, v) => fillerSay(n, line, v)); NPCS.pushPlayer(P);
+    for (const n of NPCS.npcs) { const qm = n.kind !== 'filler' ? STORY.hasQuestFor(n.id) : null; const d = n.g.position.distanceTo(P.pos); const [sx, sy, sz] = project(n.g.position.clone().setY(2.1 * n.baseScale + 0.4)); if (!n.mark) { n.mark = document.createElement('div'); n.mark.className = 'qmark'; $('hud').appendChild(n.mark); n.label = document.createElement('div'); n.label.className = 'npcName'; $('hud').appendChild(n.label); }
+      const vis = sz < 1 && d < 30; n.mark.style.display = vis && qm ? 'block' : 'none'; if (vis && qm) { n.mark.textContent = qm; n.mark.classList.toggle('ready', qm === '?'); n.mark.style.transform = `translate(${sx - 8}px, ${sy - 52 + Math.sin(t * 3) * 4}px)`; }
+      const lv = sz < 1 && d < (n.kind === 'filler' ? 7 : 14); n.label.style.display = lv ? 'block' : 'none'; if (lv) { n.label.textContent = n.title ? `${n.name} · ${n.title}` : n.name; n.label.style.transform = `translate(${sx - n.label.offsetWidth / 2}px, ${sy - 10}px)`; } }
     for (const m of mobs) { if (m.dead || !m.bar) continue; const g = m.g; const dist = g.position.distanceTo(P.pos);
       const [sx, sy, sz] = project(g.position.clone().setY(2.3 * m.bodyScale)); const show = sz < 1 && dist < 30 && (m.state !== 'idle' || m.hp < m.maxHp || dist < 12);
       m.bar.style.display = show ? 'block' : 'none'; if (show) { const d = lvlDiff(m); m.bar.style.transform = `translate(${sx - 50}px, ${sy - 20}px)`; const mn = m.bar.querySelector('.mn'); mn.innerHTML = `${m.name} · <span style="color:${LVL_COL(d)}">Lv ${m.lvl}</span>${m.burn > 0 ? ' · BURNING' : ''}${m.state === 'stagger' ? ' · STAGGERED' : ''}`; m.bar.querySelector('i').style.width = (m.hp / m.maxHp) * 100 + '%'; m.bar.classList.toggle('elite', !!m.def.elite); } }
@@ -359,9 +394,10 @@ function frame(now) {
     $('bossBar').style.display = activeBoss ? 'block' : 'none'; if (activeBoss) { $('bossName').textContent = `${activeBoss.def.name.toUpperCase()} · LV ${activeBoss.lvl}`; $('bossTitle').textContent = activeBoss.def.title + (activeBoss.enraged ? ' · ENRAGED' : ''); $('bossFill').style.width = (activeBoss.hp / activeBoss.maxHp) * 100 + '%'; }
     // drop bobbing + prompt
     let near = false; for (const d of drops) { d.g.children[0].position.y = Math.sin(t * 3) * 0.05; if (d.g.position.distanceTo(P.pos.clone().setY(0.15)) < 2.2) near = true; }
-    const si = nearSlot(); if (si >= 0) { const tid = Object.keys(state.tables).find((k) => state.tables[k].slot === si); $('prompt').innerHTML = tid ? `<b>[E]</b> Use ${TABLES[tid].name}` : `<b>[E]</b> Install a table in slot ${si + 1}`; } else $('prompt').innerHTML = '<b>[E]</b> Pick up';
-    $('prompt').style.display = near || si >= 0 ? 'block' : 'none';
-    tickThrowables(dt); saveT += dt; if (saveT > 5) { saveT = 0; saveGame(); }
+    const si = nearSlot(), nn = NPCS.nearest(P, 2.8), st = world.stairs && Math.hypot(P.pos.x - world.stairs.x, P.pos.z - world.stairs.z) < world.stairs.r;
+    let pr = null; if (nn) pr = `<b>[E]</b> ${nn.kind === 'filler' ? 'Chat with' : 'Talk to'} ${nn.name}`; else if (st) pr = `<b>[E]</b> ${state.flags && state.flags[world.stairs.flag] ? `Descend to Floor ${world.stairs.to}` : 'Stairwell door (locked)'}`; else if (si >= 0) { const tid = Object.keys(state.tables).find((k) => state.tables[k].slot === si); pr = tid ? `<b>[E]</b> Use ${TABLES[tid].name}` : `<b>[E]</b> Empty slot ${si + 1}: install a table`; } else if (near) pr = '<b>[E]</b> Pick up';
+    $('prompt').innerHTML = pr || ''; $('prompt').style.display = pr ? 'block' : 'none';
+    tickThrowables(dt); tickTurrets(dt); saveT += dt; if (saveT > 5) { saveT = 0; saveGame(); }
     if (state.ward <= 0) state.ward = 0;
     world.tick(t);
   }
@@ -370,7 +406,7 @@ function frame(now) {
   $('vign').style.opacity = Math.max(0, parseFloat($('vign').style.opacity || 0) - dt * 2);
   $('compass').style.backgroundPositionX = `${(P.yaw / (Math.PI * 2)) * 720}px`;
   ui.hud(D); if (started) drawMap($('mini'));
-  ink.render();
+  if (!FAST || (++fastN % 12) === 0) ink.render();
   requestAnimationFrame(frame);
 }
 const fwdVec = () => new THREE.Vector3(-Math.sin(P.yaw), 0, -Math.cos(P.yaw));
@@ -379,20 +415,23 @@ const fwdVec = () => new THREE.Vector3(-Math.sin(P.yaw), 0, -Math.cos(P.yaw));
 async function boot() {
   const setP = (p, msg) => { $('loadBar').style.width = Math.round(p * 100) + '%'; if (msg) $('loadMsg').textContent = msg; };
   await new Promise((r) => setTimeout(r, 50));
-  const mod = FLOOR === 'pad' ? await import('../worlds/crashpad.js') : FLOOR === '2' ? await import('../worlds/floor2.js') : await import('../worlds/floor1.js');
-  const def = FLOOR === 'pad' ? mod.CRASHPAD : FLOOR === '2' ? mod.FLOOR2 : mod.FLOOR1;
+  const mod = FLOOR === 'pad' ? await import('../worlds/crashpad.js') : FLOOR === '3' ? await import('../worlds/floor3.js') : FLOOR === '2' ? await import('../worlds/floor2.js') : await import('../worlds/floor1.js');
+  const def = FLOOR === 'pad' ? mod.CRASHPAD : FLOOR === '3' ? mod.FLOOR3 : FLOOR === '2' ? mod.FLOOR2 : mod.FLOOR1;
   setP(0.02, 'Sculpting the floor…');
-  const built = (FLOOR === 'pad' ? mod.buildCrashPad : FLOOR === '2' ? mod.buildFloor2 : mod.buildFloor1)(ink, col, (p) => setP(p * 0.8), state);
+  const built = (FLOOR === 'pad' ? mod.buildCrashPad : FLOOR === '3' ? mod.buildFloor3 : FLOOR === '2' ? mod.buildFloor2 : mod.buildFloor1)(ink, col, (p) => setP(p * 0.8), state);
   world = { ...built, name: def.name, spawn: def.spawn };
   setP(0.85, 'Waking up the goblins…'); await new Promise((r) => setTimeout(r, 30));
   setP(0.88, 'Teaching goblins to walk around cars…'); await new Promise((r) => setTimeout(r, 20)); MS.buildNav(built.size);
   spawnMobs(built.mobs.filter((s) => !(s.camp && state.conquered[s.camp])));
+  setP(0.93, 'Waking the townsfolk…'); await new Promise((r) => setTimeout(r, 20)); for (const n of built.npcs || []) NPCS.spawn(n);
+  if (built.stairs) { const sg = new THREE.Mesh(new THREE.PlaneGeometry(2.2, 0.6), new THREE.MeshBasicMaterial({ map: (() => { const c = document.createElement('canvas'); c.width = 256; c.height = 72; const g = c.getContext('2d'); g.fillStyle = '#0a3a12'; g.fillRect(0, 0, 256, 72); g.fillStyle = '#5aff7a'; g.font = 'bold 34px sans-serif'; g.fillText(`▼ FLOOR ${built.stairs.to}`, 30, 50); const tx = new THREE.CanvasTexture(c); tx.colorSpace = THREE.SRGBColorSpace; return tx; })(), side: THREE.DoubleSide, color: new THREE.Color(1.6, 1.6, 1.6) })); sg.position.set(built.stairs.x, 2.8, built.stairs.z); scene.add(sg); fx.push(sg); world.stairSign = sg; }
+  STORY.renderTracker();
   P.pos.set(def.spawn[0], 0, def.spawn[2]); P.yaw = def.spawnYaw;
   $('loc').textContent = world.name; setP(1, 'Ready.');
   $('startBtn').disabled = false; $('startBtn').textContent = 'CLICK TO ENTER';
   requestAnimationFrame(frame);
 }
-$('startBtn').addEventListener('click', () => { AU.init(); AU.setFloor(FLOOR); $('loading').style.display = 'none'; started = true; $('stage').requestPointerLock(); ui.host(FLOOR === 'pad' ? 'Your Crash Pad! Buy tables, craft weird things, and remember: tables next to each other can work together.' : FLOOR === '2' ? 'Welcome to Spin City! Mind the floor, it\u2019s wet. Everything is wet. Forever.' : 'Welcome back to the Undercroft, Dale! Try not to die before the commercial break.'); });
+$('startBtn').addEventListener('click', () => { AU.init(); AU.setFloor(FLOOR); $('loading').style.display = 'none'; started = true; $('stage').requestPointerLock(); ui.host(FLOOR === '3' ? 'Welcome to the Soup District! Everything is delicious and one in five things is cursed. Bon appétit!' : FLOOR === 'pad' ? 'Your Crash Pad! Buy tables, craft weird things, and remember: tables next to each other can work together.' : FLOOR === '2' ? 'Welcome to Spin City! Mind the floor, it\u2019s wet. Everything is wet. Forever.' : 'Welcome back to the Undercroft, Dale! Try not to die before the commercial break.'); });
 boot().catch((e) => { $('loadMsg').textContent = 'Error: ' + e.message; console.error(e); });
 window.addEventListener('beforeunload', saveGame);
-window.__game = { state, P, mobs, cast, ui, G, CR, craftUI, throwBomb, saveGame, MS, DEF, world: () => world };
+window.__game = { state, P, mobs, cast, ui, G, CR, craftUI, throwBomb, saveGame, MS, DEF, NPCS, STORY, AU, use, world: () => world };

@@ -162,12 +162,31 @@ button{font-family:inherit}
 #matList{display:flex;flex-wrap:wrap;gap:5px;margin-top:10px}.mat{background:#221c2c;border:1px solid #000;padding:2px 7px;font:600 13px 'Barlow Condensed',sans-serif;color:#cfc8d8}.mat b{color:#F5C518}
 #craftGold{color:#F5C518;font:800 18px 'Barlow Condensed',sans-serif;margin-left:12px}
 @media (max-width:900px){#craftTables{grid-template-columns:repeat(3,1fr)}.craftWrap{grid-template-columns:1fr}}
+
+#craftGold,#shopGold{color:var(--gold);font:800 18px 'Barlow Condensed',sans-serif;margin-left:12px;margin-right:auto}
+.hrow{display:flex;gap:16px;align-items:flex-start;justify-content:space-between}.tierPips{display:flex;gap:4px}.pip{width:34px;height:26px;display:grid;place-items:center;border:2px solid var(--c);color:var(--c);font:800 14px 'Barlow Condensed';opacity:.35}.pip.on{background:var(--c);color:#111;opacity:1}
+.buy .have{color:#7BE38A}.buy .miss{color:#ff7a6a}.cbtn.ghost{background:transparent;color:var(--paper);border-color:var(--line);box-shadow:none}
+.tierHdr{font:800 13px 'Barlow Condensed';letter-spacing:1px;color:var(--gold);padding:6px 4px 2px}.tierHdr.locked{color:#6a6474}.rrow.lock{opacity:.45}
+.stockGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px}.stock{display:flex;flex-direction:column;gap:4px;text-align:left;background:#1a1622;border:2px solid;border-left-width:8px;color:var(--paper);padding:10px 12px;cursor:pointer;font:600 15px 'Barlow Condensed',sans-serif}.stock i{font-style:normal;color:var(--gold);font-weight:800;margin-top:4px}.stock:hover{background:#2a2236}
+.emptyStock{padding:24px;font-size:18px;line-height:1.5;background:#16121e;border:2px dashed var(--line)}
+#pShop{width:min(760px,100%)}#pQuests{width:min(760px,100%)}
+#shopTabs{display:flex;gap:6px;margin-bottom:8px}#shopTabs button{background:#1a1622;color:#ccc;border:2px solid #000;font:800 14px 'Barlow Condensed';padding:5px 14px;cursor:pointer}#shopTabs button.on{background:var(--gold);color:#111}
+.srow{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:8px 10px;background:#1a1622;border:2px solid #000;border-left:6px solid var(--line);margin-bottom:4px;font-size:16px}
+#quests{position:absolute;right:16px;top:300px;width:250px;display:none}.qt{background:rgba(13,11,18,.78);border:2px solid var(--ink);border-left:5px solid #7BE38A;padding:6px 9px;margin-bottom:6px;font-size:14px}.qt.main{border-left-color:var(--gold)}.qt b{display:block;font-size:15px}.qo{color:#cfc8d8}.qo.ok{color:#7BE38A}
+.ql{background:#1a1622;border:2px solid #000;border-left:6px solid #7BE38A;padding:10px 12px;margin-bottom:8px}.ql.done{opacity:.55;border-left-color:#6a6474}.qh{display:flex;justify-content:space-between;gap:10px;font-size:17px}.qh span{font-size:12px;color:var(--gold);font-weight:800}
+#dialog{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);width:min(860px,calc(100vw - 32px));background:var(--panel);border:4px solid var(--ink);box-shadow:0 0 0 3px var(--gold),8px 8px 0 #000;padding:14px 18px;display:none;z-index:12}
+#dialog.show{display:block}.dHead{display:flex;gap:12px;align-items:baseline}#dName{font-family:Bangers;font-size:28px;color:var(--gold);letter-spacing:1px}#dRole{font-size:14px;color:#cfc8d8}
+#dText{font-size:20px;line-height:1.4;min-height:64px;margin:6px 0 10px;cursor:pointer;max-width:72ch}
+#dChoices{display:flex;flex-direction:column;gap:5px}.dch{text-align:left;background:#1a1622;color:var(--paper);border:2px solid #000;font:700 17px 'Barlow Condensed',sans-serif;padding:7px 10px;cursor:pointer;display:flex;gap:10px;align-items:center}.dch:hover,.dch:focus-visible{background:#2e2640;outline:2px solid var(--gold)}.dch i{color:var(--gold);font-style:normal;font-size:14px}
+.dk{display:inline-grid;place-items:center;width:24px;height:24px;background:var(--gold);color:#111;font-weight:800;flex:none}.dHint{font-size:12px;color:#8a8494;margin-top:8px}
+.qmark{position:absolute;left:0;top:0;font-family:Bangers;font-size:38px;color:var(--gold);-webkit-text-stroke:2px var(--ink);paint-order:stroke fill;display:none;pointer-events:none}.qmark.ready{color:#7BE38A}
+.npcName{position:absolute;left:0;top:0;font-weight:800;font-size:13px;color:var(--paper);text-shadow:0 2px 0 #000,0 0 4px #000;white-space:nowrap;display:none;pointer-events:none}
 </style></head><body>
 <div id="stage"></div>
-<div id="hud"><div id="bossBar"><div id="bossName"></div><div id="bossTitle"></div><div id="bossTrack"><div id="bossFill"></div></div></div>
+<div id="hud"><div id="quests"></div><div id="bossBar"><div id="bossName"></div><div id="bossTitle"></div><div id="bossTrack"><div id="bossFill"></div></div></div>
   <div id="vign"></div>
   <div id="topl"><div class="ink"><span id="loc">LOADING</span><span id="safe">SAFE ZONE</span></div>
-    <div id="keys" class="ink">WASD move · Shift sprint · Space jump · LMB Firebolt · RMB/R Fireball · Q Flame Ward · F parry (tap) / block (hold) · V dodge · E use · G bomb<br>I inventory · C character · K skills · M map · J achievements · H Crash Pad · B craft · P sound · O outlines</div></div>
+    <div id="keys" class="ink">WASD move · Shift sprint · Space jump · LMB Firebolt · RMB/R Fireball · Q Flame Ward · F parry (tap) / block (hold) · V dodge · E use · G bomb<br>I inventory · C character · K skills · L quests · M map · J achievements · H Crash Pad · B craft · P sound · O outlines</div></div>
   <div id="minimapWrap"><canvas id="mini" width="180" height="180" aria-label="Minimap"></canvas><div id="compass"></div></div>
   <div id="toasts"></div>
   <div id="cross"></div>
@@ -202,15 +221,19 @@ button{font-family:inherit}
   <section class="panel" id="pMap"><div class="ph"><h2>MAP</h2><span class="keys">M or Esc to close</span></div><canvas id="bigMap" width="820" height="820" aria-label="Floor map"></canvas></section>
   <section class="panel" id="pAch"><div class="ph"><h2>ACHIEVEMENTS</h2><span class="keys">Each one awards a loot box · J or Esc to close</span></div><div id="achList"></div></section>
   <section class="panel" id="pSettings"><div class="ph"><h2>SOUND</h2><span class="keys">P or Esc to close</span></div><div id="setList"></div></section>
-  <section class="panel" id="pCraft"><div class="ph"><h2>CRASH PAD · CRAFTING<span id="craftGold"></span></h2><span class="keys">Pick a table · tables placed next to each other unlock combo recipes (⇄) · B or Esc to close</span></div>
-    <div id="craftTables"></div><div id="craftHead"></div>
-    <div class="craftWrap"><div><div id="craftFilter"><button data-f="all">ALL</button><button data-f="can">CAN MAKE</button><button data-f="Component">COMPONENTS</button><button data-f="Gear">GEAR</button><button data-f="Consumable">CONSUMABLES</button><button data-f="Imbue">IMBUE</button><button data-f="Combo">COMBO</button></div><div id="recipeList"></div></div>
-      <div><div id="recipeDetail"></div><div class="sm" style="margin-top:8px">MATERIALS</div><div id="matList"></div></div></div></section>
+  <section class="panel" id="pCraft"><div class="ph"><h2 id="craftTitle">CRAFTING</h2><span id="craftGold"></span><span class="keys">Esc to close</span></div>
+    <div id="craftInstall"></div>
+    <div id="craftMain"><div id="craftHead"></div>
+    <div class="craftWrap"><div><div id="craftFilter"></div><div id="recipeList"></div></div>
+      <div><div id="recipeDetail"></div><div class="sm" style="margin-top:8px">MATERIALS</div><div id="matList"></div></div></div></div></section>
+  <section class="panel" id="pShop"><div class="ph"><h2 id="shopTitle">SHOP</h2><span id="shopGold"></span><span class="keys">Esc to close</span></div><div id="shopTabs"></div><div id="shopList"></div></section>
+  <section class="panel" id="pQuests"><div class="ph"><h2>QUEST LOG</h2><span class="keys">L or Esc to close</span></div><div id="questLog"></div></section>
 </div>
 <div id="tip"></div>
+<div id="dialog"><div class="dHead"><b id="dName"></b><span id="dRole"></span></div><div id="dText"></div><div id="dChoices"></div><div class="dHint">1-5 choose · Space skip · Esc leave</div></div>
 <div id="boxModal"><div id="boxTitle">LOOT BOX</div><div id="boxCards"></div><button id="boxOk">TAKE IT ALL</button></div>
 <div id="loading"><h1>DOWNSTAIRS</h1><div id="loadMsg">Loading…</div><div id="loadBox"><div id="loadBar"></div></div>
   <div class="help"><b>WASD</b> move · <b>Mouse</b> look · <b>Shift</b> sprint · <b>Space</b> jump · <b>Left click</b> Firebolt · <b>Right click / R</b> Fireball · <b>Q</b> Flame Ward · <b>E</b> pick up loot / talk / use table · <b>G</b> throw bomb · <b>F</b> parry (tap as the red warning fills) / block (hold) · <b>V</b> dodge<br><b>H</b> Crash Pad (from a safe zone) · <b>B</b> crafting · <b>I</b> inventory &amp; gear · <b>C</b> character stats · <b>K</b> skill tree · <b>M</b> map · <b>J</b> achievements · <b>O</b> toggle ink outlines (faster) · <b>Esc</b> close / release mouse<br><span class="sm">Desktop browser with keyboard and mouse required.</span></div>
-  <button id="startBtn" disabled>BUILDING THE FLOOR…</button><div class="help" id="floorPick">Floor: <a href="#floor-1" style="color:#F5C518">1 · The Undercroft</a> · <a href="#floor-2" style="color:#3affea">2 · Spin City</a> · <a href="#pad" style="color:#ff8a2a">Crash Pad</a> · <a href="#new" style="color:#9a9a9a">New game</a></div></div>
+  <button id="startBtn" disabled>BUILDING THE FLOOR…</button><div class="help" id="floorPick">Floor: <a href="#floor-1" style="color:#F5C518">1 · The Undercroft</a> · <a href="#floor-2" style="color:#3affea">2 · Spin City</a> · <a href="#floor-3" style="color:#ffb040">3 · The Soup District</a> · <a href="#pad" style="color:#ff8a2a">Crash Pad</a> · <a href="#new" style="color:#9a9a9a">New game</a></div></div>
 <script type="module" src="./game/play.js"></script>
 </body></html>

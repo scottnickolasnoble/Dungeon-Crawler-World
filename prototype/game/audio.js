@@ -94,6 +94,9 @@ export function createAudio() {
     captain: { pitch: 210, speed: 10, formant: 1.2, rough: 0.5 },
     wight: { pitch: 85, speed: 4, formant: 0.8, rough: 0.2, breath: 0.08, wave: 'triangle' },
     pylon: { pitch: 140, speed: 9, formant: 1.1, rough: 0.6 }, ebb: { pitch: 70, speed: 5, formant: 0.75, rough: 0.4, breath: 0.1 },
+    moth: { pitch: 420, speed: 15, formant: 1.6, rough: 0.2, wave: 'square', breath: 0.05 }, pigeon: { pitch: 260, speed: 9, formant: 0.9, rough: 0.3, inflect: -0.2 }, mimic: { pitch: 120, speed: 8, formant: 1.3, wave: 'square', rough: 0.6 },
+    bulbQueen: { pitch: 300, speed: 8, formant: 1.4, wave: 'triangle', breath: 0.06 }, coo: { pitch: 150, speed: 7, formant: 0.85, rough: 0.4, breath: 0.05 }, coneKing: { pitch: 120, speed: 8, formant: 1.05, rough: 0.7 },
+    wickley: { pitch: 230, speed: 13, formant: 1.2 }, ash: { pitch: 120, speed: 6, formant: 0.9, breath: 0.03 }, vrask: { pitch: 330, speed: 9, formant: 1.5, wave: 'triangle' },
     marta: { pitch: 210, speed: 10, formant: 1.12 }, pickles: { pitch: 260, speed: 14, formant: 1.25, rough: 0.15 }, spin: { pitch: 240, speed: 12, formant: 1.2, wave: 'square' }, reggie: { pitch: 110, speed: 7, formant: 0.92, breath: 0.04 },
     merchant: { pitch: 150, speed: 10, formant: 1 }, villager: { pitch: 180, speed: 10, formant: 1.05 },
   };

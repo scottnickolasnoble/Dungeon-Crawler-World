@@ -2,8 +2,8 @@
 // ranged throwers, elites, bosses with telegraphed abilities, encampment groups, level scaling and respawns.
 import * as THREE from '../node_modules/three/build/three.module.js';
 import { makeGoblin } from '../creature.js';
-import { mopWight } from '../monsters/tier1.js';
-import { sergeantPylon, headCustodianEbb, trafficCone } from '../monsters/bosses1.js';
+import { mopWight, fluorescentMoth, pigeonGhoul, vendingMimic } from '../monsters/tier1.js';
+import { sergeantPylon, headCustodianEbb, trafficCone, bulbQueen, oldManCoo, coneKing } from '../monsters/bosses1.js';
 
 // ---------------- definitions ----------------
 // windup = how long the attack is telegraphed (parry window is the last 0.35 s of it plus the swing)
@@ -16,9 +16,15 @@ export const MOBDEFS = {
     barks: ['HALT! This is a CONE ZONE!', 'Lads! Fall in!', 'You are parked in MY spot.', 'I have twenty years on the force. Okay, two. In cones.'], enrage: 'SERGEANT PYLON BLOWS HIS WHISTLE IN RAGE' },
   ebb: { name: 'Head Custodian Ebb', title: 'Neighbourhood Boss · Boiler Room 0', model: 'ebb', boss: true, hp: 620, dmg: 18, speed: 2.9, reach: 3.0, arc: 2.6, windup: 0.9, swing: 0.25, recover: 0.8, xp: 800, aggro: 18, leash: 30, abilities: ['sweep', 'puddle', 'clockin', 'keys'],
     barks: ['You are tracking mud on my floor.', 'Shift change, wights! Clock in!', 'Forty years. Not one dry day.'], enrage: 'HEAD CUSTODIAN EBB HAS HAD IT WITH YOU' },
+  moth: { name: 'Fluorescent Moth', model: 'moth', hp: 42, dmg: 10, speed: 4.2, reach: 2.0, arc: 1.4, windup: 0.5, swing: 0.16, recover: 0.6, xp: 26, aggro: 17, barks: ['bzzzt… LIGHT…', 'The Queen sees you…', 'bzz bzz BZZ'] },
+  pigeon: { name: 'Pigeon Ghoul', model: 'pigeon', hp: 52, dmg: 11, speed: 3.7, reach: 1.9, arc: 1.4, windup: 0.55, swing: 0.18, recover: 0.6, xp: 28, aggro: 15, ranged: { min: 5, max: 13, windup: 0.7, speed: 12, cd: 3 }, proj: 'crumb', barks: ['COO. COO. COO.', 'Got any bread?', 'Mine! MINE! COO!'] },
+  mimic: { name: 'Vending Mimic', model: 'mimic', hp: 95, dmg: 17, speed: 2.4, reach: 2.3, arc: 1.3, windup: 0.95, swing: 0.2, recover: 0.9, xp: 40, aggro: 6, elite: true, barks: ['INSERT COIN.', 'OUT OF ORDER. OUT OF PATIENCE.', 'Exact change only. Exact. CHANGE.'] },
+  bulbQueen: { name: 'The Bulb Queen', title: 'Neighbourhood Boss · The Lamp Market', model: 'bulbQueen', boss: true, hp: 640, dmg: 22, speed: 3.6, reach: 3.2, arc: 1.8, windup: 0.75, swing: 0.2, recover: 0.7, xp: 1300, aggro: 20, leash: 30, abilities: ['nova', 'barrage', 'summon', 'charge'], summon: 'moth', proj: 'orb', barks: ['You stand in MY light.', 'Children! A new lamp has come to play!', 'Every flame belongs to me.'], enrage: 'THE BULB QUEEN BURNS WHITE-HOT' },
+  coo: { name: 'Old Man Coo', title: 'Neighbourhood Boss · The Rooftop Roost', model: 'coo', boss: true, hp: 600, dmg: 21, speed: 3.4, reach: 3.0, arc: 1.7, windup: 0.8, swing: 0.2, recover: 0.75, xp: 1200, aggro: 18, leash: 30, abilities: ['charge', 'barrage', 'summon', 'slam'], summon: 'pigeon', proj: 'crumb', barks: ['Off my roof, you whippersnapper!', 'In my day we ate gravel and liked it.', 'Flock! FLOCK!'], enrage: 'OLD MAN COO HAS LOST HIS FLAT CAP' },
+  coneKing: { name: 'The Cone King', title: 'Borough Boss · The Cone Cathedral', model: 'coneKing', boss: true, hp: 900, dmg: 26, speed: 3.4, reach: 3.4, arc: 1.8, windup: 0.85, swing: 0.22, recover: 0.75, xp: 2200, aggro: 20, leash: 32, abilities: ['slam', 'charge', 'barrage', 'summon'], summon: 'captain', proj: 'cone', barks: ['KNEEL before the CONE.', 'Pylon was my sergeant. You will pay his toll in full.', 'Long live the cone!'], enrage: 'THE CONE KING TAKES OFF HIS CROWN. THAT IS BAD.' },
 };
 const ABIL = {
-  slam: { cd: 9, windup: 1.2, range: 4.5 }, charge: { cd: 8, windup: 1.0, range: 14 }, whistle: { cd: 26, windup: 0.9, uses: 2 }, barrage: { cd: 11, windup: 0.9, range: 18 },
+  slam: { cd: 9, windup: 1.2, range: 4.5 }, nova: { cd: 9, windup: 1.2, range: 6 }, summon: { cd: 22, windup: 0.9, uses: 2 }, charge: { cd: 8, windup: 1.0, range: 14 }, whistle: { cd: 26, windup: 0.9, uses: 2 }, barrage: { cd: 11, windup: 0.9, range: 18 },
   sweep: { cd: 8, windup: 1.1, range: 4.0 }, puddle: { cd: 12, windup: 1.0, range: 16 }, clockin: { cd: 24, windup: 0.9, uses: 2 }, keys: { cd: 9, windup: 0.8, range: 18 },
 };
 export const scaleHp = (base, lvl) => Math.round(base * (1 + 0.24 * (lvl - 1)));
@@ -68,6 +74,9 @@ export function createMobSystem(ctx) {
       return g;
     }
     if (d.model === 'wight') { if (!tmpl.w) tmpl.w = mopWight(); const g = tmpl.w.clone(); g.scale.setScalar(0.95 + (variant % 3) * 0.06); return g; }
+    const T1 = { moth: fluorescentMoth, pigeon: pigeonGhoul, mimic: vendingMimic };
+    if (T1[d.model]) { if (!tmpl[d.model]) tmpl[d.model] = T1[d.model](); const g = tmpl[d.model].clone(); g.scale.multiplyScalar(0.95 + (variant % 3) * 0.06); return g; }
+    if (d.model === 'bulbQueen') return bulbQueen(); if (d.model === 'coo') return oldManCoo(); if (d.model === 'coneKing') return coneKing();
     if (d.model === 'pylon') return sergeantPylon();
     if (d.model === 'ebb') return headCustodianEbb();
   }
@@ -77,9 +86,9 @@ export function createMobSystem(ctx) {
     const d = MOBDEFS[s.kind]; const lvl = s.lvl || 1; let [x, z] = nav ? nav.nearestFree(s.x, s.z) : [s.x, s.z];
     const root = new THREE.Group(); const body = modelFor(s.kind, s.variant || 0); root.add(body); root.position.set(x, 0, z); root.rotation.y = Math.random() * 6; scene.add(root);
     const mats = []; body.traverse((o) => { if (o.isMesh && o.material && (o.material.isMeshPhysicalMaterial || o.material.isMeshStandardMaterial) && o.material.emissive) { o.material = o.material.clone(); mats.push(o.material); } });
-    const weapon = body.getObjectByName('weapon') || body.getObjectByName('held'); const wBase = weapon ? weapon.rotation.clone() : null; const bodyScale = body.scale.x;
+    const baseY = body.position.y, baseZ = body.position.z; const weapon = body.getObjectByName('weapon') || body.getObjectByName('held'); const wBase = weapon ? weapon.rotation.clone() : null; const bodyScale = body.scale.x;
     const hp = scaleHp(d.hp, lvl);
-    const m = { def: d, kind: s.kind, g: root, body, bodyScale, weapon, wBase, mats, lvl, hp, maxHp: hp, home: new THREE.Vector3(x, 0, z), camp: s.camp || null, roam: !s.camp && !d.boss, state: 'idle', act: null, atkCd: 0.5 + Math.random(), abCd: {}, abUses: {}, burn: 0, burnDps: 0, flash: 0, stun: 0, stagger: 0, slow: 0, dead: false, deadT: 0, wander: Math.random() * 10, wanderTarget: null, name: d.name, bar: d.boss ? null : ctx.makeBar(), barkT: 0, enraged: false, spawnSpec: s, respawnT: 0 };
+    const m = { def: d, kind: s.kind, g: root, body, bodyScale, baseY, baseZ, weapon, wBase, mats, lvl, hp, maxHp: hp, home: new THREE.Vector3(x, 0, z), camp: s.camp || null, roam: !s.camp && !d.boss, state: 'idle', act: null, atkCd: 0.5 + Math.random(), abCd: {}, abUses: {}, burn: 0, burnDps: 0, flash: 0, stun: 0, stagger: 0, slow: 0, dead: false, deadT: 0, wander: Math.random() * 10, wanderTarget: null, name: d.name, bar: d.boss ? null : ctx.makeBar(), barkT: 0, enraged: false, spawnSpec: s, respawnT: 0 };
     for (const a of d.abilities || []) m.abCd[a] = ABIL[a].cd * (0.4 + Math.random() * 0.4);
     mobs.push(m); return m;
   }
@@ -106,7 +115,7 @@ export function createMobSystem(ctx) {
   function throwProj(m, target, opts = {}) {
     const from = m.g.position.clone().setY(1.5 * m.bodyScale); const to = target.clone().setY(1.0); const flat = Math.hypot(to.x - from.x, to.z - from.z); const spd = opts.speed || 13; const T = Math.max(0.35, flat / spd);
     const vel = new THREE.Vector3((to.x - from.x) / T, (to.y - from.y) / T + 0.5 * 12 * T, (to.z - from.z) / T);
-    let mesh; if (opts.keys) { mesh = new THREE.Mesh(new THREE.TorusGeometry(0.22, 0.04, 6, 16), new THREE.MeshStandardMaterial({ color: '#c8a040', metalness: 1, roughness: 0.3 })); } else { mesh = trafficCone(0.45); }
+    const pk = opts.kind || (m.def.proj); let mesh; if (pk === 'orb') { mesh = new THREE.Mesh(new THREE.SphereGeometry(0.25, 12, 8), new THREE.MeshBasicMaterial({ color: new THREE.Color('#e8f4ff').multiplyScalar(2.5) })); fx.push(mesh); } else if (pk === 'crumb') { mesh = new THREE.Mesh(new THREE.BoxGeometry(0.3, 0.2, 0.25), new THREE.MeshStandardMaterial({ color: '#d8b070', roughness: 0.9 })); } else if (opts.keys) { mesh = new THREE.Mesh(new THREE.TorusGeometry(0.22, 0.04, 6, 16), new THREE.MeshStandardMaterial({ color: '#c8a040', metalness: 1, roughness: 0.3 })); } else { mesh = trafficCone(0.45); }
     mesh.position.copy(from); scene.add(mesh);
     projs.push({ mesh, vel, dmg: scaleDmg(m.def.dmg, m.lvl) * (opts.mult || 1), src: m, life: 3, spin: 8 + Math.random() * 6, deflected: false });
     ctx.sfx && ctx.sfx('throw', from);
@@ -126,10 +135,10 @@ export function createMobSystem(ctx) {
     const d = m.def, sp = m.enraged ? 0.78 : 1; const act = { type, t: 0, hit: false, yaw: m.g.rotation.y, ...extra };
     if (type === 'melee') { act.windup = d.windup * sp; act.swing = d.swing; act.recover = d.recover * sp; act.tele = telegraph('sector', m.g.position, m.g.rotation.y, d.reach + 0.3, d.arc); }
     else { const A = ABIL[type]; act.windup = A.windup * sp; act.swing = type === 'charge' ? 0.9 : 0.25; act.recover = 0.8 * sp;
-      if (type === 'slam' || type === 'sweep') act.tele = telegraph('circle', m.g.position, 0, A.range);
+      if (type === 'slam' || type === 'sweep' || type === 'nova') act.tele = telegraph('circle', m.g.position, 0, A.range);
       if (type === 'charge') { const yaw = Math.atan2(P().x - m.g.position.x, P().z - m.g.position.z); act.yaw = yaw; m.g.rotation.y = yaw; act.tele = telegraph('rect', m.g.position, yaw, A.range, 2.4); }
       if (type === 'puddle') { act.spots = [0, 1, 2].map((i) => { const a = Math.random() * 6.28, r = i === 0 ? 0 : 2.5 + Math.random() * 3; return new THREE.Vector3(P().x + Math.cos(a) * r, 0, P().z + Math.sin(a) * r); }); act.teles = act.spots.map((p) => telegraph('circle', p, 0, 2.2)); }
-      if (type === 'whistle' || type === 'clockin') bark(m, type === 'whistle' ? 'FWEEEET! LADS! TO ME!' : 'Clock in, you lot! Overtime!');
+      if (type === 'whistle' || type === 'clockin' || type === 'summon') bark(m, type === 'whistle' ? 'FWEEEET! LADS! TO ME!' : type === 'clockin' ? 'Clock in, you lot! Overtime!' : m.def.barks[1]);
       m.abCd[type] = A.cd; m.abUses[type] = (m.abUses[type] || 0) + 1; }
     m.act = act; m.state = 'attack'; ctx.sfx && ctx.sfx(d.boss ? 'bossWindup' : 'windup', m.g.position);
   }
@@ -141,9 +150,9 @@ export function createMobSystem(ctx) {
     const a = m.act, d = m.def, dmg = scaleDmg(d.dmg, m.lvl);
     if (a.type === 'melee') { swingTrail(m, d.reach + 0.3, d.arc); ctx.sfx && ctx.sfx('swing', m.g.position);
       if (inSector(m, d.reach + 0.5, d.arc, a.yaw)) { const r = ctx.hitPlayer(dmg, m, { kind: 'melee' }); if (r === 'parried') stagger(m, d.boss ? 1.4 : 1.8); } }
-    if (a.type === 'slam' || a.type === 'sweep') { const R = ABIL[a.type].range; ctx.shake(0.45); ctx.burst(m.g.position.clone().setY(0.2), a.type === 'slam' ? '#e8a060' : '#7ac8e8', 50, 1.3); ctx.sfx && ctx.sfx('slam', m.g.position); if (m.g.position.distanceTo(P().clone().setY(0)) < R + 0.3) ctx.hitPlayer(dmg * 1.6, m, { kind: 'aoe', knock: 7 }); }
-    if (a.type === 'whistle' || a.type === 'clockin') { const kind = a.type === 'whistle' ? 'goblin' : 'wight'; for (let i = 0; i < 3; i++) { const ang = Math.random() * 6.28; const s = spawn({ kind, variant: Math.floor(Math.random() * 8), lvl: Math.max(1, m.lvl - 3), x: m.g.position.x + Math.cos(ang) * 4, z: m.g.position.z + Math.sin(ang) * 4, camp: m.camp || 'boss' + mobs.indexOf(m) }); s.summoned = true; s.state = 'chase'; ctx.burst(s.g.position.clone().setY(0.5), '#ffd040', 20, 0.6); } }
-    if (a.type === 'barrage' || a.type === 'keys') { const n = a.type === 'barrage' ? 5 : 3; for (let i = 0; i < n; i++) { const off = (i - (n - 1) / 2) * 2.2; const right = new THREE.Vector3(Math.cos(a.yaw), 0, -Math.sin(a.yaw)); throwProj(m, P().clone().addScaledVector(right, off), { speed: 14, keys: a.type === 'keys', mult: 0.8 }); } }
+    if (a.type === 'slam' || a.type === 'sweep' || a.type === 'nova') { const R = ABIL[a.type].range; ctx.shake(0.45); ctx.burst(m.g.position.clone().setY(0.2), a.type === 'slam' ? '#e8a060' : a.type === 'nova' ? '#f0f8ff' : '#7ac8e8', 50, 1.3); ctx.sfx && ctx.sfx('slam', m.g.position); if (m.g.position.distanceTo(P().clone().setY(0)) < R + 0.3) ctx.hitPlayer(dmg * 1.6, m, { kind: 'aoe', knock: 7 }); }
+    if (a.type === 'whistle' || a.type === 'clockin' || a.type === 'summon') { const kind = a.type === 'whistle' ? 'goblin' : a.type === 'clockin' ? 'wight' : d.summon; for (let i = 0; i < 3; i++) { const ang = Math.random() * 6.28; const s = spawn({ kind, variant: Math.floor(Math.random() * 8), lvl: Math.max(1, m.lvl - 3), x: m.g.position.x + Math.cos(ang) * 4, z: m.g.position.z + Math.sin(ang) * 4, camp: m.camp || 'boss' + mobs.indexOf(m) }); s.summoned = true; s.state = 'chase'; ctx.burst(s.g.position.clone().setY(0.5), '#ffd040', 20, 0.6); } }
+    if (a.type === 'barrage' || a.type === 'keys') { const n = a.type === 'barrage' ? 5 : 3; for (let i = 0; i < n; i++) { const off = (i - (n - 1) / 2) * 2.2; const right = new THREE.Vector3(Math.cos(a.yaw), 0, -Math.sin(a.yaw)); throwProj(m, P().clone().addScaledVector(right, off), { speed: 14, keys: a.type === 'keys', kind: d.proj, mult: 0.8 }); } }
     if (a.type === 'puddle') { a.spots.forEach((p) => { const geo = new THREE.CircleGeometry(2.2, 32); geo.rotateX(-Math.PI / 2); const mesh = new THREE.Mesh(geo, new THREE.MeshPhysicalMaterial({ color: '#4a8aa8', roughness: 0.02, clearcoat: 1, transparent: true, opacity: 0.75 })); mesh.position.set(p.x, 0.04, p.z); scene.add(mesh); zones.push({ mesh, p, r: 2.2, t: 10, dps: scaleDmg(3, m.lvl) }); }); ctx.sfx && ctx.sfx('splash', m.g.position); }
   }
 
@@ -162,7 +171,7 @@ export function createMobSystem(ctx) {
       const d = m.def, spd = d.speed * (m.enraged ? 1.25 : 1) * (m.slow > 0 ? 0.5 : 1); m.slow -= dt;
       let move = new THREE.Vector3();
       if (m.state === 'idle') {
-        if (dist < d.aggro && (dist < 6 || nav.los(g.position.x, g.position.z, pp.x, pp.z)) && !ctx.playerSafe()) aggro(m);
+        if (dist < d.aggro && (dist < 6 || nav.los(g.position.x, g.position.z, pp.x, pp.z)) && !ctx.playerSafe() && !(m.camp && ctx.truce && ctx.truce(m.camp))) aggro(m);
         m.wander -= dt; if (m.roam && m.wander <= 0) { m.wander = 3 + Math.random() * 5; const a = Math.random() * 6.28, r = Math.random() * 7; m.wanderTarget = new THREE.Vector3(m.home.x + Math.cos(a) * r, 0, m.home.z + Math.sin(a) * r); }
         if (m.wanderTarget && nav.free(m.wanderTarget.x, m.wanderTarget.z)) { const w = m.wanderTarget.clone().sub(g.position).setY(0); if (w.length() > 0.5) move = w.normalize().multiplyScalar(1.3); else m.wanderTarget = null; }
       } else if (m.state === 'stagger') { m.stagger -= dt; if (m.stagger <= 0) m.state = 'chase'; }
@@ -173,7 +182,7 @@ export function createMobSystem(ctx) {
           m.atkCd -= dt; for (const k in m.abCd) m.abCd[k] -= dt;
           // pick an action
           let acted = false;
-          if (m.atkCd <= 0 && d.abilities) { for (const a of d.abilities) { const A = ABIL[a]; if (m.abCd[a] > 0 || (A.uses && (m.abUses[a] || 0) >= A.uses)) continue; const ok = a === 'slam' || a === 'sweep' ? dist < A.range * 0.8 : a === 'charge' ? dist > 5 && dist < A.range && nav.los(g.position.x, g.position.z, pp.x, pp.z) : a === 'whistle' || a === 'clockin' ? m.hp < m.maxHp * 0.75 : dist < A.range; if (ok && Math.random() < 0.6) { startAct(m, a); acted = true; break; } } }
+          if (m.atkCd <= 0 && d.abilities) { for (const a of d.abilities) { const A = ABIL[a]; if (m.abCd[a] > 0 || (A.uses && (m.abUses[a] || 0) >= A.uses)) continue; const ok = a === 'slam' || a === 'sweep' || a === 'nova' ? dist < A.range * 0.8 : a === 'charge' ? dist > 5 && dist < A.range && nav.los(g.position.x, g.position.z, pp.x, pp.z) : a === 'whistle' || a === 'clockin' || a === 'summon' ? m.hp < m.maxHp * 0.75 : dist < A.range; if (ok && Math.random() < 0.6) { startAct(m, a); acted = true; break; } } }
           if (!acted && d.ranged && m.atkCd <= 0 && dist > d.ranged.min * 0.7 && dist < d.ranged.max && nav.los(g.position.x, g.position.z, pp.x, pp.z)) { m.act = { type: 'throw', t: 0, windup: d.ranged.windup, swing: 0.2, recover: 0.6, yaw: g.rotation.y }; m.state = 'attack'; acted = true; }
           if (!acted && m.atkCd <= 0 && dist < d.reach * 0.9) { face(m, pp.x, pp.z, 20, 1); startAct(m, 'melee'); acted = true; }
           if (!acted) {
@@ -188,10 +197,10 @@ export function createMobSystem(ctx) {
         const a = m.act; a.t += dt; const W = a.windup, S = a.swing, R = a.recover;
         if (a.type === 'melee' && a.t < W * 0.6) { face(m, pp.x, pp.z, 5, dt); a.yaw = g.rotation.y; if (a.tele) a.tele.g.rotation.y = a.yaw - Math.PI / 2; if (a.tele) a.tele.g.position.set(g.position.x, 0.05, g.position.z); }
         if (a.type === 'throw' && a.t < W) face(m, pp.x, pp.z, 8, dt);
-        if (a.type === 'slam' || a.type === 'sweep') { if (a.tele) a.tele.g.position.set(g.position.x, 0.05, g.position.z); }
+        if (a.type === 'slam' || a.type === 'sweep' || a.type === 'nova') { if (a.tele) a.tele.g.position.set(g.position.x, 0.05, g.position.z); }
         if (a.t < W) { setTele(a.tele, a.t / W); (a.teles || []).forEach((tt) => setTele(tt, a.t / W)); }
         else if (!a.hit) { a.hit = true; killTele(a.tele); (a.teles || []).forEach(killTele);
-          if (a.type === 'throw') { throwProj(m, pp.clone().addScaledVector(ctx.P.vel, 0.4), { speed: d.ranged.speed }); const h = m.body.getObjectByName('held'); if (h) h.visible = false; }
+          if (a.type === 'throw') { throwProj(m, pp.clone().addScaledVector(ctx.P.vel, 0.4), { speed: d.ranged.speed, kind: d.proj }); const h = m.body.getObjectByName('held'); if (h) h.visible = false; }
           else if (a.type !== 'charge') doStrike(m); }
         if (a.type === 'charge' && a.t >= W && a.t < W + S) { const v = new THREE.Vector3(Math.sin(a.yaw), 0, Math.cos(a.yaw)).multiplyScalar(18); const before = g.position.clone(); g.position.addScaledVector(v, dt); col.resolve(g.position, 0.6 * m.bodyScale, 0); if (g.position.distanceTo(before) < 18 * dt * 0.4) a.t = W + S; if (!a.struck && g.position.distanceTo(pp.clone().setY(0)) < 1.6 * m.bodyScale) { a.struck = true; ctx.hitPlayer(scaleDmg(d.dmg, m.lvl) * 1.4, m, { kind: 'aoe', knock: 9 }); } if (Math.random() < dt * 30) ctx.burst(g.position.clone().setY(0.2), '#c8b8a0', 2, 0.4); }
         if (a.t >= W + S + R) { if (a.type === 'throw') { const h = m.body.getObjectByName('held'); if (h) h.visible = true; m.atkCd = d.ranged.cd * (0.8 + Math.random() * 0.5); m.act = null; m.state = 'chase'; } else endAct(m); }
@@ -211,7 +220,7 @@ export function createMobSystem(ctx) {
       let gone = p.life <= 0 || p.mesh.position.y < 0.05;
       if (!gone && !p.deflected && p.mesh.position.distanceTo(pp.clone().setY(1.1)) < 0.75) { const r = ctx.hitPlayer(p.dmg, p.src, { kind: 'proj' }); if (r === 'parried' && !p.src.dead) { p.deflected = true; const to = p.src.g.position.clone().setY(1.2); p.vel = to.sub(p.mesh.position).normalize().multiplyScalar(22); p.vel.y += 1; } else gone = true; }
       if (!gone && p.deflected) { for (const m of mobs) if (!m.dead && m.g.position.clone().setY(1.1 * m.bodyScale).distanceTo(p.mesh.position) < 0.9 * m.bodyScale) { ctx.hurt(m, p.dmg * 2.5, 0); gone = true; break; } }
-      if (gone) { scene.remove(p.mesh); projs.splice(i, 1); ctx.burst(p.mesh.position, '#e8590c', 8, 0.4); } }
+      if (gone) { scene.remove(p.mesh); const fi = fx.indexOf(p.mesh); if (fi >= 0) fx.splice(fi, 1); projs.splice(i, 1); ctx.burst(p.mesh.position, '#e8590c', 8, 0.4); } }
     // trails + zones
     for (let i = trails.length - 1; i >= 0; i--) { const tr = trails[i]; tr.t += dt; tr.mesh.material.opacity = 0.75 * (1 - tr.t / 0.22); tr.mesh.rotation.y += dt * 4; if (tr.t > 0.22) { scene.remove(tr.mesh); fx.splice(fx.indexOf(tr.mesh), 1); trails.splice(i, 1); } }
     for (let i = zones.length - 1; i >= 0; i--) { const z = zones[i]; z.t -= dt; z.mesh.material.opacity = Math.min(0.75, z.t * 0.4); if (Math.hypot(pp.x - z.p.x, pp.z - z.p.z) < z.r) { ctx.zoneTick(z.dps * dt); } if (z.t <= 0) { scene.remove(z.mesh); zones.splice(i, 1); } }
@@ -223,11 +232,11 @@ export function createMobSystem(ctx) {
     const moving = move.lengthSq() > 0.05;
     if (moving) { hop = Math.abs(Math.sin(t * 9 + m.wander)) * 0.08 * s; sway = Math.sin(t * 9 + m.wander) * 0.06; lean = 0.08; }
     if (a) { const W = a.windup, S = a.swing; const p = Math.min(1, a.t / W);
-      if (a.t < W) { lean = -0.32 * p; wRot = -2.1 * p; glow = 0.06 + 0.16 * p * (0.6 + 0.4 * Math.sin(t * 30)); squash = 1 + 0.06 * p; if (a.type === 'slam' || a.type === 'sweep') { hop = 0.5 * p * s; } }
+      if (a.t < W) { lean = -0.32 * p; wRot = -2.1 * p; glow = 0.06 + 0.16 * p * (0.6 + 0.4 * Math.sin(t * 30)); squash = 1 + 0.06 * p; if (a.type === 'slam' || a.type === 'sweep' || a.type === 'nova') { hop = 0.5 * p * s; } }
       else if (a.t < W + S) { const q = (a.t - W) / S; lean = 0.45; wRot = -2.1 + 3.5 * Math.min(1, q * 1.6); lunge = 0.35 * Math.sin(q * Math.PI) * s; glow = 0.08; if (a.type === 'slam' || a.type === 'sweep') { hop = 0; squash = 0.85; } }
       else { const q = Math.min(1, (a.t - W - S) / a.recover); lean = 0.45 * (1 - q); wRot = 1.4 * (1 - q); } }
     if (m.state === 'stagger') { lean = -0.25 + Math.sin(t * 14) * 0.08; sway = Math.sin(t * 9) * 0.15; }
-    b.rotation.x = lean; b.rotation.z = sway; b.position.y = hop; b.position.z = lunge; b.scale.set(s, s * squash, s);
+    b.rotation.x = lean; b.rotation.z = sway; b.position.y = m.baseY + hop; b.position.z = m.baseZ + lunge; b.scale.set(s, s * squash, s);
     if (m.weapon && m.wBase) m.weapon.rotation.set(m.wBase.x + wRot, m.wBase.y, m.wBase.z + (a && a.type === 'sweep' ? wRot * 0.6 : 0));
     m.flash = Math.max(0, m.flash - dt); const f = m.flash / 0.12, bn = m.burn > 0 ? 0.25 : 0;
     for (const mt of m.mats) mt.emissive.setRGB(0.8 * f + bn + glow, 0.1 * f + bn * 0.35 + glow * 0.25, 0.05 * f);

@@ -1,7 +1,7 @@
 // FLOOR 1 — THE UNDERCROFT. Builds the walkable chunk into an ink scene and registers collision.
 import * as THREE from '../node_modules/three/build/three.module.js';
 import { toon, canvasTex, inkLine, woodTex, rnd, seeded } from '../engine/ink.js';
-import { martaVance, pickles } from '../npcs/floor1to3.js';
+import { townFillers } from '../game/npcs.js';
 import { roamingPacks } from './spawns.js';
 
 export const FLOOR1 = { name: 'FLOOR 1 · THE UNDERCROFT', size: 360, spawn: [30, 1.7, 2], spawnYaw: Math.PI / 2 };
@@ -111,9 +111,10 @@ export function buildFloor1(ink, col, onProgress = () => {}) {
   const bulb = new THREE.MeshBasicMaterial({ color: new THREE.Color('#ffe8a0').multiplyScalar(3) });
   for (let k = 0; k < 8; k++) { const a = (k / 8) * Math.PI * 2; for (let i = 1; i < 14; i++) { const t = i / 14; const b = add(new THREE.Mesh(new THREE.SphereGeometry(0.08, 6, 4), bulb)); b.position.set(Math.cos(a) * (4.5 + t * 18), 7.5 - Math.sin(t * Math.PI) * 2.2, Math.sin(a) * (4.5 + t * 18)); fx.push(b); } }
   onProgress(0.5);
-  const marta = martaVance(); marta.position.set(-12.5, 0, 12.2); marta.rotation.y = 2.4; add(marta); col.circle(-12.5, 12.2, 0.45);
   onProgress(0.6);
-  const pick = pickles(); pick.position.set(13.8, 0, -4.8); pick.rotation.y = -1.2; add(pick); col.circle(13.8, -4.8, 0.45);
+  // Bo's Benches: a stall of crated tables by the inner ring
+  { const crate = toon('#ffffff', { map: wt }); for (const [x, z, sc, ry] of [[5.6, -9.4, 1, 0.2], [7, -10, 0.8, -0.3], [6.2, -10.6, 0.7, 0.5], [6.3, -9.6, 0.55, 0.1]]) { const c = add(new THREE.Mesh(new THREE.BoxGeometry(1.2 * sc, 1.2 * sc, 1.2 * sc), crate)); c.position.set(x, 0.6 * sc + (sc < 0.6 ? 1.2 : 0), z); c.rotation.y = ry; }
+    col.circle(6.3, -10, 1.3); const bs = add(new THREE.Mesh(new THREE.PlaneGeometry(2.6, 0.7), new THREE.MeshBasicMaterial({ map: stallTex("BO'S BENCHES", '#3a2a1a'), side: THREE.DoubleSide }))); bs.position.set(6.3, 2.6, -8.8); bs.rotation.y = Math.PI + 0.25; pl('#ffd080', 6, 10, 5.5, 2.5, -8); }
   onProgress(0.7);
 
   // PYLON POINT
@@ -162,7 +163,16 @@ export function buildFloor1(ink, col, onProgress = () => {}) {
   mobs.push(...roamingPacks({ size: SIZE, seed: 1, count: 26, avoid: (x, z) => inZone(x, z) || Math.hypot(x - PX, z - PZ) < 34,
     kinds: (r, d, i) => (d > 120 && i === 0 && r < 0.4 ? 'captain' : r < 0.25 ? 'thrower' : 'goblin'),
     levelAt: (d) => (d < 70 ? [1, 2] : d < 110 ? [2, 4] : d < 150 ? [4, 6] : [5, 7]) }));
+  // townsfolk: quest NPCs at their posts, the table merchant, and filler NPCs on routines
+  const npcs = [
+    { id: 'marta', named: 'marta', kind: 'quest', title: 'Camp leader · Med tent', x: -12.5, z: 12.2, yaw: 2.4, voice: 'marta' },
+    { id: 'pickles', named: 'pickles', kind: 'quest', title: 'Junk trader', x: 13.8, z: -4.8, yaw: -1.2, voice: 'pickles' },
+    { id: 'bo', kind: 'quest', role: 'trader', race: 'stoneblood', variant: 2, name: 'Benchwright Bo', title: 'Table merchant', x: 5.2, z: -7.6, yaw: Math.PI + 0.4, voice: 'merchant', static: true },
+    ...townFillers({ x: 0, z: 0, r: 20, r0: 6.5, count: 11, races: ['human', 'gutterkin', 'fennix', 'human', 'bogling'], seed: 1 }),
+  ];
+  // the stairwell door (descend once Marta gives you the key)
+  const stairs = { x: 0, z: 4.2, r: 3.2, to: '2', flag: 'f1_stairs', locked: 'The stairwell door is chained. Marta knows why.' };
   // animated bits the game loop ticks
   const tick = (t) => { flame.scale.y = 1 + Math.sin(t * 9) * 0.12; fireLight.intensity = 28 + Math.sin(t * 13) * 4; flames.forEach((f, i) => { f.scale.y = 1 + Math.sin(t * 7 + i) * 0.2; }); busLight.intensity = 46 + Math.sin(t * 11) * 6; };
-  return { map, mobs, tick, size: SIZE, ceiling: CEIL };
+  return { map, mobs, npcs, stairs, tick, size: SIZE, ceiling: CEIL };
 }

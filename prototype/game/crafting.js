@@ -2,6 +2,7 @@
 // adjacency combos, imbuing existing gear, crafting levels and quality rolls. Includes the crafting UI.
 import { RARITIES, SLOT_NAMES, STAT_LABEL } from './data.js';
 import { icon } from './ui.js';
+import { generateRecipes, extraMaterialRecipes, MATS_EXTRA } from './recipes_gen.js';
 
 export const TABLES = {
   workbench: { name: 'Workbench', cost: 0, color: '#c8a070', stat: 'STR', desc: 'Scrap processing, repairs, tools, smelting.' },
@@ -24,6 +25,7 @@ export const MATS = {
   // components (made at tables)
   steel: 'Steel Ingot', strap: 'Leather Strap', gunpowder: 'Gunpowder', burnoil: 'Burning Oil', frostoil: 'Frost Oil', poison: 'Gristle Poison', cleanwater: 'Clean Water', ruby: 'Cut Ruby', sapphire: 'Cut Sapphire', circuit: 'Jury-Rigged Circuit', bolt: 'Bolts & Screws', fabric: 'Treated Fabric', vial: 'Glass Vial', ice: 'Ice', holywater: 'Holy Water',
 };
+Object.assign(MATS, MATS_EXTRA);
 // r(table, tier, name, inputs, out, extra)
 const R = (table, tier, name, inputs, out, extra = {}) => ({ id: name.toLowerCase().replace(/[^a-z0-9]+/g, '_'), table, tier, name, inputs, out, cat: extra.cat || (out.mat ? 'Component' : out.gear ? 'Gear' : out.imbue ? 'Imbue' : 'Consumable'), ...extra });
 const C = (name, effect, host, extra = {}) => ({ cons: { name, effect, host, ...extra } });
@@ -83,6 +85,8 @@ export const RECIPES = [
   R('scribe', 1, 'Scroll of Fireball', { paper: 1, ink: 1, ember: 1 }, C('Scroll of Fireball', { scroll: 'fireball' }, 'Reading is fundamental. And explosive.')), R('scribe', 1, 'Ink', { charcoal: 1, cleanwater: 1 }, { mat: 'ink', n: 3 }),
   R('scribe', 2, 'Treasure Map', { paper: 2, ink: 1, shadow: 1 }, C('Treasure Map', { map: 1 }, 'X marks the spot. The spot is probably a trap.')),
 ];
+RECIPES.push(...extraMaterialRecipes(R)); RECIPES.push(...generateRecipes(RECIPES, R, C, Gr));
+export const MAX_TIER = 5; const ROMAN = ['I', 'II', 'III', 'IV', 'V'];
 export const QUALITY = [['Crude', 0.8, '#9a9a9a'], ['Standard', 1, '#f4eedc'], ['Fine', 1.15, '#5ad86a'], ['Masterwork', 1.3, '#4a9aff'], ['Legendary', 1.5, '#ff9a2a']];
 
 // ---------------- logic ----------------
@@ -109,50 +113,66 @@ export function createCrafting(G) {
     else if (r.out.cons) { S.inv.push({ uid: Math.floor(Math.random() * 1e9), kind: 'consumable', rarity: 'uncommon', crafted: true, ...r.out.cons }); if (r.out.cons.effect.bag) { S.bagBonus = (S.bagBonus || 0); } msg = r.out.cons.name; }
     else if (r.out.gear) { const q = rollQuality(r.table), [qn, qm, qc] = QUALITY[q]; const g = r.out.gear; const stats = {}; for (const [k, v] of Object.entries(g.stats)) stats[k] = Math.max(1, Math.round(v * qm * (1 + 0.1 * (S.tables[r.table].tier - 1)))); if (q >= 3) { const bonus = ['INT', 'CON', 'crit', 'fire', 'hp'][Math.floor(Math.random() * 5)]; stats[bonus] = (stats[bonus] || 0) + (bonus === 'hp' ? 20 : 3); }
       const rar = ['common', 'common', 'uncommon', 'rare', 'legendary'][q];
-      S.inv.push({ uid: Math.floor(Math.random() * 1e9), kind: 'gear', slot: g.slot, name: `${qn === 'Standard' ? '' : qn + ' '}${g.name}`, rarity: rar, family: g.family, level: S.level, stats, tags: ['Forged'], quality: qn, crafted: true, host: q >= 3 ? 'Handmade! The audience applauds your arts and crafts.' : 'Handmade. You can tell.', value: 20 * (q + 1) });
+      S.inv.push({ uid: Math.floor(Math.random() * 1e9), kind: 'gear', slot: g.slot, name: `${qn === 'Standard' ? '' : qn + ' '}${g.name}`, rarity: rar, family: g.family, level: Math.max(S.level, r.tier * 4), stats, tags: ['Forged'], quality: qn, crafted: true, host: q >= 3 ? 'Handmade! The audience applauds your arts and crafts.' : 'Handmade. You can tell.', value: 20 * (q + 1) });
       msg = `<span style="color:${qc}">${qn}</span> ${g.name}`; }
     else if (r.out.imbue) { const im = r.out.imbue; for (const [k, v] of Object.entries(im.add)) target.stats[k] = (target.stats[k] || 0) + v; target.tags = [...(target.tags || []), im.tag]; if (!/★/.test(target.name) && target.tags.length >= 3) target.name = target.name + ' ★'; target.host = `${im.tag}. Now it does more stuff. Science!`; msg = `${target.name}: ${im.tag}`; }
     G.toast(`<div class="ta">CRAFTED</div>${msg}<div class="sm">${TABLES[r.table].name} · crafting Lv ${craftLevel(r.table)}</div>`, TABLES[r.table].color, 3000);
     G.onCraft && G.onCraft(r);
     return true;
   }
-  function buyTable(id, slot) { const T = TABLES[id]; if (S.tables[id]) return; if (S.gold < T.cost) return G.toast(`Need ${T.cost} gold`, '#E5484D'); if (Object.values(S.tables).some((t) => t.slot === slot)) return G.toast('Slot taken', '#E5484D'); S.gold -= T.cost; S.tables[id] = { tier: 1, slot }; G.toast(`<div class="ta">TABLE INSTALLED</div>${T.name}`, T.color); G.onTables && G.onTables(); }
-  const upgradeCost = (id) => { const t = S.tables[id].tier; return { gold: Math.round((TABLES[id].cost || 80) * 0.8 * t + 60 * t), mats: t === 1 ? { steel: 2, bolt: 4 } : { steel: 4, circuit: 1, ember: 2 } }; };
-  function upgradeTable(id) { const t = S.tables[id]; if (!t || t.tier >= 3) return; const c = upgradeCost(id); if (S.gold < c.gold) return G.toast(`Need ${c.gold} gold`, '#E5484D'); for (const [m, n] of Object.entries(c.mats)) if (have(m) < n) return G.toast(`Need ${n} ${MATS[m]}`, '#E5484D'); S.gold -= c.gold; for (const [m, n] of Object.entries(c.mats)) S.mats[m] -= n; t.tier++; G.toast(`${TABLES[id].name} upgraded to Tier ${['I', 'II', 'III'][t.tier - 1]}`, TABLES[id].color); }
-  return { have, canCraft, craft, buyTable, upgradeTable, upgradeCost, craftLevel, adjacent };
+  S.tableStock = S.tableStock || [];
+  const owns = (id) => !!S.tables[id] || S.tableStock.includes(id);
+  // bought from a table merchant: delivered to your Crash Pad, install it in any empty slot there
+  function buyTable(id, price) { const T = TABLES[id]; if (owns(id)) return G.toast('You already own that table', '#E5484D'); const cost = price ?? T.cost; if (S.gold < cost) return G.toast(`Need ${cost} gold`, '#E5484D'); S.gold -= cost; S.tableStock.push(id); G.toast(`<div class="ta">TABLE BOUGHT</div>${T.name}<div class="sm">Delivered to your Crash Pad. Install it in an empty slot (E).</div>`, T.color, 3500); G.onTables && G.onTables(); return true; }
+  function installTable(id, slot) { const k = S.tableStock.indexOf(id); if (k < 0) return; if (Object.values(S.tables).some((t) => t.slot === slot)) return G.toast('Slot taken', '#E5484D'); S.tableStock.splice(k, 1); S.tables[id] = { tier: (S.tableTiers && S.tableTiers[id]) || 1, slot }; G.toast(`<div class="ta">TABLE INSTALLED</div>${TABLES[id].name} in slot ${slot + 1}`, TABLES[id].color); G.onTables && G.onTables(); }
+  function packTable(id) { if (!S.tables[id]) return; S.tableTiers = S.tableTiers || {}; S.tableTiers[id] = S.tables[id].tier; delete S.tables[id]; S.tableStock.push(id); G.toast(`${TABLES[id].name} packed up. Install it in another slot to move it.`, TABLES[id].color); G.onTables && G.onTables(); }
+  const upgradeCost = (id) => { const t = S.tables[id].tier; const base = TABLES[id].cost || 80; return { gold: Math.round(base * 0.7 * t + 80 * t * t), mats: [{ steel: 2, bolt: 4 }, { steel: 4, circuit: 1, ember: 2 }, { alloy: 2, circuit: 2, gearbox: 1 }, { alloy: 4, prism: 1, bosscore: 1 }][t - 1] || {} }; };
+  function upgradeTable(id) { const t = S.tables[id]; if (!t || t.tier >= MAX_TIER) return; const c = upgradeCost(id); if (S.gold < c.gold) return G.toast(`Need ${c.gold} gold`, '#E5484D'); for (const [m, n] of Object.entries(c.mats)) if (have(m) < n) return G.toast(`Need ${n} ${MATS[m]}`, '#E5484D'); S.gold -= c.gold; for (const [m, n] of Object.entries(c.mats)) S.mats[m] -= n; t.tier++; G.toast(`${TABLES[id].name} upgraded to Tier ${ROMAN[t.tier - 1]}`, TABLES[id].color); }
+  return { have, canCraft, craft, buyTable, installTable, packTable, owns, upgradeTable, upgradeCost, craftLevel, adjacent };
 }
 
 // ---------------- UI ----------------
+// The panel shows ONE table: its upgrades and its own 60 recipes. An empty slot shows the install screen.
 export function createCraftUI(G, CR) {
   const S = G.state, $ = (id) => document.getElementById(id);
-  let table = 'workbench', sel = null, filter = 'all', target = null, buySlot = null;
-  const roman = ['I', 'II', 'III'];
-  function open(t, slot = null) { buySlot = slot; if (t) table = t; sel = null; target = null; render(); }
+  let table = null, sel = null, filter = 'all', target = null, slot = null;
+  function open(t, sl = null) { table = t; slot = sl; sel = null; target = null; filter = 'all'; render(); }
   function render() {
-    const owned = Object.keys(S.tables);
-    $('craftTables').innerHTML = Object.entries(TABLES).map(([id, T]) => `<button class="ctab ${id === table ? 'on' : ''} ${S.tables[id] ? '' : 'unowned'}" data-t="${id}" style="border-color:${T.color}"><b>${T.name}</b><span>${S.tables[id] ? `Tier ${roman[S.tables[id].tier - 1]} · Lv ${CR.craftLevel(id)}` : `${T.cost} g`}</span></button>`).join('');
-    document.querySelectorAll('#craftTables .ctab').forEach((b) => b.addEventListener('click', () => { table = b.dataset.t; sel = null; target = null; render(); }));
-    const T = TABLES[table], t = S.tables[table];
-    let head = `<div class="ctitle" style="color:${T.color}">${T.name}</div><div class="sm">${T.desc} Quality uses ${T.stat}.</div>`;
-    if (!t) head += `<div class="buy">${buySlot === null ? 'Walk up to an empty table slot in your Crash Pad (E) to install it there, or buy now for the next free slot.' : `Installing in slot ${buySlot + 1}.`}<button class="cbtn" id="buyBtn" ${S.gold >= T.cost ? '' : 'disabled'}>BUY · ${T.cost} GOLD</button></div>`;
-    else if (t.tier < 3) { const c = CR.upgradeCost(table); head += `<div class="buy">Upgrade to Tier ${roman[t.tier]}: ${c.gold} g + ${Object.entries(c.mats).map(([m, n]) => `${n} ${m}`).join(', ')}<button class="cbtn" id="upBtn">UPGRADE</button></div>`; }
-    const nb = Object.entries(TABLES).filter(([id]) => id !== table && CR.adjacent(table, id)).map(([, x]) => x.name); head += `<div class="sm">Next to: ${nb.length ? nb.join(', ') : 'nothing yet'}</div>`;
+    if (!table) return renderInstall();
+    $('craftInstall').style.display = 'none'; $('craftMain').style.display = '';
+    const T = TABLES[table], t = S.tables[table]; if (!t) { table = null; return renderInstall(); }
+    $('craftTitle').innerHTML = `<span style="color:${T.color}">${T.name.toUpperCase()}</span>`;
+    let head = `<div class="hrow"><div><div class="sm">${T.desc} Quality uses ${T.stat}. Crafting Lv ${CR.craftLevel(table)}.</div>`;
+    const nb = Object.keys(TABLES).filter((id) => id !== table && CR.adjacent(table, id)).map((id) => TABLES[id].name); head += `<div class="sm">Next to: ${nb.length ? nb.join(', ') : 'nothing'} · combo recipes (⇄) need the right neighbour</div></div>`;
+    head += `<div class="tierPips">${ROMAN.map((r, i) => `<span class="pip ${i < t.tier ? 'on' : ''}" style="--c:${T.color}">${r}</span>`).join('')}</div></div>`;
+    if (t.tier < MAX_TIER) { const c = CR.upgradeCost(table); const okM = Object.entries(c.mats).every(([m, n]) => CR.have(m) >= n); head += `<div class="buy">Upgrade to Tier ${ROMAN[t.tier]}: <b>${c.gold} g</b> + ${Object.entries(c.mats).map(([m, n]) => `<span class="${CR.have(m) >= n ? 'have' : 'miss'}">${n} ${MATS[m]}</span>`).join(', ')} <button class="cbtn" id="upBtn" ${S.gold >= c.gold && okM ? '' : 'disabled'}>UPGRADE</button><span style="flex:1"></span><button class="cbtn ghost" id="packBtn">PACK UP (MOVE)</button></div>`; }
+    else head += `<div class="buy">Fully upgraded. <span style="flex:1"></span><button class="cbtn ghost" id="packBtn">PACK UP (MOVE)</button></div>`;
     $('craftHead').innerHTML = head;
-    if ($('buyBtn')) $('buyBtn').onclick = () => { let slot = buySlot; if (slot === null) { const used = Object.values(S.tables).map((x) => x.slot); for (let i = 0; i < 10; i++) if (!used.includes(i)) { slot = i; break; } } CR.buyTable(table, slot); render(); };
     if ($('upBtn')) $('upBtn').onclick = () => { CR.upgradeTable(table); render(); };
-    const list = RECIPES.filter((r) => r.table === table && (filter === 'all' || (filter === 'can' && CR.canCraft(r).ok) || r.cat === filter));
-    document.querySelectorAll('#craftFilter button').forEach((b) => b.classList.toggle('on', b.dataset.f === filter));
-    $('recipeList').innerHTML = list.map((r) => { const c = CR.canCraft(r); return `<button class="rrow ${sel === r ? 'on' : ''} ${c.ok ? 'ok' : ''}" data-r="${r.id}"><span>${r.name}</span><span class="rt">T${roman[r.tier - 1]} · ${r.cat}${r.needs ? ' ⇄' : ''}</span></button>`; }).join('') || '<div class="sm" style="padding:10px">No recipes match.</div>';
-    document.querySelectorAll('#recipeList .rrow').forEach((b) => b.addEventListener('click', () => { sel = RECIPES.find((r) => r.id === b.dataset.r && r.table === table); target = null; render(); }));
+    $('packBtn').onclick = () => { CR.packTable(table); G.closeCraft && G.closeCraft(); };
+    const mine = RECIPES.filter((r) => r.table === table);
+    $('craftFilter').innerHTML = [['all', `ALL ${mine.length}`], ['can', 'CAN MAKE'], ...ROMAN.map((r, i) => [String(i + 1), `TIER ${r}`]), ['Combo', 'COMBO ⇄']].map(([f, l]) => `<button data-f="${f}" class="${filter === f ? 'on' : ''}">${l}</button>`).join('');
+    document.querySelectorAll('#craftFilter button').forEach((b) => b.addEventListener('click', () => { filter = b.dataset.f; render(); }));
+    const list = mine.filter((r) => filter === 'all' || (filter === 'can' && CR.canCraft(r).ok) || (filter === 'Combo' && r.needs) || String(r.tier) === filter);
+    let lastTier = 0; $('recipeList').innerHTML = list.map((r) => { const c = CR.canCraft(r); const hdr = r.tier !== lastTier ? `<div class="tierHdr ${t.tier >= r.tier ? '' : 'locked'}">TIER ${ROMAN[r.tier - 1]}${t.tier >= r.tier ? '' : ' · upgrade to unlock'}</div>` : ''; lastTier = r.tier; return `${hdr}<button class="rrow ${sel === r ? 'on' : ''} ${c.ok ? 'ok' : ''} ${t.tier < r.tier ? 'lock' : ''}" data-r="${r.id}"><span>${r.name}</span><span class="rt">${r.cat}${r.needs ? ' ⇄' : ''}</span></button>`; }).join('') || '<div class="sm" style="padding:10px">Nothing matches.</div>';
+    document.querySelectorAll('#recipeList .rrow').forEach((b) => b.addEventListener('click', () => { sel = mine.find((r) => r.id === b.dataset.r); target = null; render(); }));
     renderDetail();
-    $('matList').innerHTML = Object.entries(S.mats).filter(([, n]) => n > 0).sort((a, b) => MATS[a[0]].localeCompare(MATS[b[0]])).map(([m, n]) => `<span class="mat">${MATS[m]} <b>${n}</b></span>`).join('') || '<span class="sm">No materials. Kill mobs, scrap gear (right-click in inventory), search the floor.</span>';
+    $('matList').innerHTML = Object.entries(S.mats).filter(([, n]) => n > 0).sort((a, b) => (MATS[a[0]] || a[0]).localeCompare(MATS[b[0]] || b[0])).map(([m, n]) => `<span class="mat">${MATS[m] || m} <b>${n}</b></span>`).join('') || '<span class="sm">No materials. Kill mobs, scrap gear (right-click in inventory), loot camps.</span>';
     $('craftGold').textContent = `${S.gold} gold`;
   }
+  function renderInstall() {
+    $('craftMain').style.display = 'none'; const el = $('craftInstall'); el.style.display = '';
+    $('craftTitle').textContent = `EMPTY SLOT ${slot === null ? '' : slot + 1}`; $('craftGold').textContent = `${S.gold} gold`;
+    const stock = S.tableStock || [];
+    el.innerHTML = stock.length ? `<div class="sm" style="margin-bottom:8px">Tables you own that aren't installed. Pick one for this slot. Neighbouring tables unlock combo recipes.</div><div class="stockGrid">${stock.map((id) => `<button class="stock" data-t="${id}" style="border-color:${TABLES[id].color}"><b style="color:${TABLES[id].color}">${TABLES[id].name}</b><span>${TABLES[id].desc}</span><span class="sm">${RECIPES.filter((r) => r.table === id).length} recipes · combos with ${[...new Set(RECIPES.filter((r) => r.table === id && r.needs).map((r) => TABLES[r.needs].name))].join(', ') || 'none'}</span><i>INSTALL HERE</i></button>`).join('')}</div>`
+      : `<div class="emptyStock"><b>No tables in storage.</b><br>Buy tables from <b>Benchwright Bo</b> in Stairwell Camp (Floor 1) or <b>Bev</b> at the Laundromat (Floor 2). They're delivered here.</div>`;
+    el.querySelectorAll('.stock').forEach((b) => b.addEventListener('click', () => { CR.installTable(b.dataset.t, slot); open(b.dataset.t, null); }));
+  }
   function renderDetail() {
-    const d = $('recipeDetail'); if (!sel) { d.innerHTML = '<div class="sm" style="padding:10px">Pick a recipe. ⇄ means it needs another table placed next to this one, so tables work together.</div>'; return; }
+    const d = $('recipeDetail'); if (!sel) { d.innerHTML = '<div class="sm" style="padding:10px">Pick a recipe. Higher tiers need upgrades and rarer materials: components from other tables, essences, Reinforced Alloy and Boss Cores.</div>'; return; }
     const c = CR.canCraft(sel); const o = sel.out;
     let res = o.mat ? `${o.n}× ${MATS[o.mat]} <span class="sm">(component for other tables)</span>` : o.cons ? `${o.cons.name}<div class="sm">${Object.entries(o.cons.effect).map(([k, v]) => `${k}: ${v}`).join(' · ')}</div>` : o.gear ? `${o.gear.name} <span class="sm">(${SLOT_NAMES[o.gear.slot]})</span><div class="sm">${Object.entries(o.gear.stats).map(([k, v]) => `+${v} ${STAT_LABEL[k] || k}`).join(' · ')} · quality rolls Crude → Legendary</div>` : `${o.imbue.tag}<div class="sm">Adds ${Object.entries(o.imbue.add).map(([k, v]) => `+${v} ${STAT_LABEL[k] || k}`).join(', ')} to an existing ${o.imbue.target === 'weapon' ? 'weapon' : 'item'}. 3 finishing passes earn a ★.</div>`;
-    let h = `<div class="ctitle2">${sel.name}</div><div class="ins">${Object.entries(sel.inputs).map(([m, n]) => `<div class="in ${CR.have(m) >= n ? 'have' : 'miss'}">${MATS[m]} <b>${CR.have(m)}/${n}</b></div>`).join('')}</div><div class="arrow">↓</div><div class="res">${res}</div>`;
+    let h = `<div class="ctitle2">${sel.name} <span class="sm">Tier ${ROMAN[sel.tier - 1]}</span></div><div class="ins">${Object.entries(sel.inputs).map(([m, n]) => `<div class="in ${CR.have(m) >= n ? 'have' : 'miss'}">${MATS[m] || m} <b>${CR.have(m)}/${n}</b></div>`).join('')}</div><div class="arrow">↓</div><div class="res">${res}</div>`;
     if (sel.needs) h += `<div class="sm" style="color:${CR.adjacent(sel.table, sel.needs) ? '#5ad86a' : '#ff8a6a'}">Combo recipe: needs ${TABLES[sel.needs].name} next to this table.</div>`;
     if (o.imbue) { const cands = [...Object.values(S.equip).filter(Boolean), ...S.inv.filter((i) => i.kind === 'gear')].filter((i) => o.imbue.target !== 'weapon' || i.slot === 'main'); h += `<div class="sm" style="margin-top:8px">Choose the item:</div><div class="tgts">${cands.map((i) => `<button class="tgt ${target === i ? 'on' : ''}" data-u="${i.uid}" style="border-color:${(RARITIES.find((r) => r.id === i.rarity) || {}).color}">${icon(i.slot)}<span>${i.name}${i.tags ? `<br><i>${i.tags.join(' · ')}</i>` : ''}</span></button>`).join('') || '<span class="sm">No gear.</span>'}</div>`; }
     h += `<div class="cfoot"><button class="cbtn big" id="craftBtn" ${c.ok ? '' : 'disabled'}>CRAFT</button>${o.mat || o.cons ? '<button class="cbtn" id="craft5">×5</button>' : ''}<span class="sm">${c.ok ? '' : c.why}</span></div>`;
@@ -161,6 +181,5 @@ export function createCraftUI(G, CR) {
     $('craftBtn').onclick = () => { CR.craft(sel, target); render(); };
     if ($('craft5')) $('craft5').onclick = () => { for (let i = 0; i < 5; i++) if (!CR.craft(sel)) break; render(); };
   }
-  document.querySelectorAll('#craftFilter button').forEach((b) => b.addEventListener('click', () => { filter = b.dataset.f; render(); }));
   return { open, render };
 }
