@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Downstairs — Walkable Floor</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Barlow+Condensed:wght@500;700;800&family=Permanent+Marker&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0D0B12;--paper:#F4EEDC;--gold:#F5C518;--red:#E5484D;--panel:#16121e;--line:#3a3448}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:#000;overflow:hidden;font-family:'Barlow Condensed',sans-serif;color:var(--paper)}
+#stage{position:fixed;inset:0}
+#hud{position:fixed;inset:0;pointer-events:none;overflow:hidden}
+.ink{text-shadow:2px 2px 0 var(--ink),-1px -1px 0 var(--ink),1px -1px 0 var(--ink),-1px 1px 0 var(--ink)}
+.bar{height:14px;background:var(--ink);border:3px solid var(--ink);transform:skewX(-14deg);position:relative;overflow:hidden}
+.bar>i{position:absolute;left:0;top:0;bottom:0;display:block}
+#vitals{position:absolute;left:20px;bottom:20px;width:320px}
+#vitals .row{display:flex;align-items:center;gap:8px;margin-top:5px;font-weight:800;font-size:15px}
+#vitals .lab{width:26px}#vitals .bar{flex:1}
+#vitals .small{display:flex;gap:10px;margin-top:6px}#vitals .small>div{flex:1}
+#name{font-family:Bangers;font-size:22px;letter-spacing:2px}
+#lvl{display:inline-block;background:var(--gold);color:var(--ink);font-family:Bangers;font-size:16px;padding:0 6px;margin-left:6px;letter-spacing:1px}
+#xp{position:absolute;left:0;right:0;bottom:0;height:5px;background:#0008}#xpF{display:block;height:100%;background:var(--gold)}
+#hotbar{position:absolute;left:50%;bottom:18px;transform:translateX(-50%);display:flex;gap:10px}
+.hk{width:68px;height:68px;background:#2a1a12;border:4px solid var(--ink);box-shadow:4px 4px 0 var(--ink);display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:800;font-size:12px;line-height:1.05;text-align:center;position:relative;overflow:hidden;color:#ffcf8a}
+.hk b{font-family:Bangers;font-size:15px;letter-spacing:1px;font-weight:400;color:#fff4d0}
+.hk .k{position:absolute;left:4px;top:1px;font-size:11px;color:#c8b090}
+.hk .cdo{position:absolute;left:0;right:0;bottom:0;background:#000a;height:0}
+.hk.locked{filter:grayscale(1) brightness(.5)}.hk.nomana{box-shadow:4px 4px 0 var(--ink),inset 0 0 0 3px #4a9aff}
+#topl{position:absolute;left:20px;top:16px}
+#loc{font-family:Bangers;font-size:28px;letter-spacing:2px}
+#safe{display:none;background:#5ad86a;color:var(--ink);font-weight:800;font-size:13px;padding:1px 7px;margin-left:8px;vertical-align:middle}
+#keys{margin-top:4px;font-size:14px;font-weight:700;color:#d9d2bf}
+#minimapWrap{position:absolute;right:18px;top:16px;width:190px;text-align:center}
+#mini{width:180px;height:180px;border-radius:50%;border:4px solid var(--ink);box-shadow:0 0 0 3px var(--gold),5px 5px 0 6px #0006;background:#14101a}
+#compass{margin:8px auto 0;width:180px;height:24px;border:3px solid var(--ink);background:#14101aee url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='720' height='24'%3E%3Cg font-family='sans-serif' font-weight='800' font-size='15' fill='%23F4EEDC' text-anchor='middle'%3E%3Ctext x='0' y='18' fill='%23F5C518'%3EN%3C/text%3E%3Ctext x='180' y='18'%3EE%3C/text%3E%3Ctext x='360' y='18'%3ES%3C/text%3E%3Ctext x='540' y='18'%3EW%3C/text%3E%3Ctext x='720' y='18' fill='%23F5C518'%3EN%3C/text%3E%3C/g%3E%3Cg stroke='%235a5068' stroke-width='2'%3E%3Cpath d='M90 6v12M270 6v12M450 6v12M630 6v12'/%3E%3C/g%3E%3C/svg%3E") repeat-x;background-position-y:0}
+#cross{position:absolute;left:50%;top:50%;width:8px;height:8px;margin:-4px 0 0 -4px;border:2px solid var(--paper);border-radius:50%;box-shadow:0 0 0 2px var(--ink)}
+#host{position:absolute;right:20px;bottom:110px;width:380px;background:var(--paper);color:var(--ink);border:4px solid var(--ink);box-shadow:6px 6px 0 var(--ink);padding:9px 13px;transform:rotate(-1deg) translateX(440px);transition:transform .35s}
+#host.show{transform:rotate(-1deg) translateX(0)}
+#host .who{display:flex;justify-content:space-between;font-family:Bangers;font-size:18px;letter-spacing:2px;color:#B4441A}
+#host .live{background:var(--red);color:#fff;font-family:'Barlow Condensed';font-weight:800;font-size:12px;padding:0 6px;letter-spacing:0}
+#hostTxt{font-family:'Permanent Marker',cursive;font-size:17px;line-height:1.3}
+#toasts{position:absolute;right:220px;top:16px;width:300px;display:flex;flex-direction:column;gap:8px}
+.toast{background:#16121ef2;border:3px solid var(--gold);box-shadow:4px 4px 0 var(--ink);padding:7px 10px;font-weight:700;font-size:15px;transition:opacity .5s,transform .5s}
+.toast.out{opacity:0;transform:translateX(30px)}
+.toast .ta{font-family:Bangers;letter-spacing:2px;color:var(--gold);font-size:15px}
+.sm{font-size:13px;color:#c8c0b0;font-weight:600}
+#banner{position:absolute;left:0;right:0;top:22%;text-align:center;font-family:Bangers;font-size:58px;letter-spacing:3px;-webkit-text-stroke:3px var(--ink);paint-order:stroke fill;opacity:0}
+#banner.go{animation:ban 2.4s ease-out}
+@keyframes ban{0%{opacity:0;transform:scale(1.5)}10%{opacity:1;transform:scale(1)}75%{opacity:1}100%{opacity:0}}
+#prompt{position:absolute;left:50%;top:58%;transform:translateX(-50%);background:var(--ink);border:2px solid var(--gold);padding:4px 12px;font-weight:800;display:none}
+#ptsBadge,#boxBadge{position:absolute;left:20px;bottom:150px;background:#b46cff;color:#fff;border:3px solid var(--ink);box-shadow:3px 3px 0 var(--ink);padding:2px 9px;font-weight:800;font-size:14px;display:none}
+#boxBadge{bottom:180px;background:#c88a4a}
+#vign{position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(0,0,0,0) 45%,rgba(200,10,10,.85) 100%);opacity:0}
+.mbar{position:absolute;left:0;top:0;width:100px;display:none;text-align:center}
+.mbar .mn{font-weight:800;font-size:12px;white-space:nowrap;margin-left:-40px;margin-right:-40px}
+.mbar .mb{height:7px;background:var(--ink);border:2px solid var(--ink)}.mbar .mb i{display:block;height:100%;background:var(--red)}
+.dn{position:absolute;left:0;top:0;font-family:Bangers;font-size:30px;color:var(--paper);-webkit-text-stroke:2px var(--ink);paint-order:stroke fill;white-space:nowrap}
+.dn.crit{color:var(--gold);font-size:38px}.dn.hurt{color:#ff5a5a}
+/* loading + click hint */
+#loading{position:fixed;inset:0;background:#0d0b12;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;z-index:20;padding:16px;text-align:center}
+#loading h1{font-family:Bangers;font-size:64px;letter-spacing:4px;color:var(--gold);margin:0;-webkit-text-stroke:3px #000;paint-order:stroke fill}
+#loadBox{width:min(420px,90vw);height:16px;border:3px solid var(--paper)}#loadBar{height:100%;width:0;background:var(--gold)}
+#loading .help{max-width:640px;font-size:17px;line-height:1.5;color:#d9d2bf}
+#loading .help b{color:var(--gold)}
+#startBtn{font-family:Bangers;font-size:28px;letter-spacing:2px;background:var(--gold);color:var(--ink);border:4px solid var(--paper);box-shadow:5px 5px 0 #000;padding:8px 26px;cursor:pointer}
+#startBtn:disabled{opacity:.5;cursor:wait}
+#clickHint{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:#0006;font-family:Bangers;font-size:34px;letter-spacing:2px;pointer-events:none;z-index:5}
+/* panels */
+#panelWrap{position:fixed;inset:0;background:#0008;display:none;align-items:center;justify-content:center;z-index:10;padding:16px}
+#panelWrap.show{display:flex}
+.panel{display:none;background:var(--panel);border:4px solid var(--ink);box-shadow:0 0 0 3px var(--gold),10px 10px 0 #000;width:min(1180px,100%);max-height:calc(100vh - 40px);overflow:auto;padding:18px 22px}
+.panel.show{display:block}
+.ph{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+.ph h2{font-family:Bangers;font-size:36px;letter-spacing:3px;color:var(--gold);margin:0}
+.ph .keys{font-size:14px;color:#a8a0b0;font-weight:700}
+button{font-family:inherit}
+/* inventory */
+.invWrap{display:flex;gap:24px;flex-wrap:wrap}
+#doll{display:grid;grid-template-columns:repeat(3,78px);grid-template-rows:repeat(6,78px);gap:8px;background:#0d0b12;padding:12px;border:3px solid var(--line)}
+.eq,.cell{background:#120e18;border:3px solid var(--line);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;color:#8a8098;font-size:11px;font-weight:700;padding:4px}
+.eq svg{width:38px;height:38px}.cell svg{width:30px;height:30px}
+.eq:hover,.cell:hover{filter:brightness(1.4)}
+#invStats{margin-top:10px;font-size:15px;line-height:1.5;max-width:270px}
+.right{flex:1;min-width:300px}
+#invTabs{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap}
+#invTabs button,.btn{background:#241e30;color:var(--paper);border:3px solid var(--line);padding:5px 12px;font-weight:800;font-size:15px;cursor:pointer}
+#invTabs button.on{background:var(--gold);color:var(--ink);border-color:var(--ink)}
+#grid{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:6px}
+.cell{aspect-ratio:1}
+#tip{position:fixed;z-index:30;display:none;max-width:320px;background:#0d0b12f5;border:3px solid var(--gold);box-shadow:5px 5px 0 #000;padding:9px 12px;pointer-events:none}
+#tip .tn{font-family:Bangers;font-size:22px;letter-spacing:1px;line-height:1.05}
+#tip .tr{font-size:13px;color:#a8a0b0;font-weight:700;margin:2px 0 6px}
+#tip .sl{font-size:15px;font-weight:700}#tip .up{color:#5ad86a}#tip .dn{color:#ff6a6a}
+#tip .tc{font-size:12px;color:#8a8098;margin-top:5px}#tip .th{font-family:'Permanent Marker';font-size:14px;color:#e8d8b0;margin-top:7px}#tip .tk{font-size:12px;color:var(--gold);margin-top:6px;font-weight:800}
+/* character */
+.charWrap{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:22px}
+@media (max-width:820px){.charWrap{grid-template-columns:1fr}}
+#charHead .big{font-family:Bangers;font-size:34px;letter-spacing:2px}
+.xpbar{height:10px;background:#000;border:2px solid var(--ink);margin:6px 0 2px;max-width:380px}.xpbar i{display:block;height:100%;background:var(--gold)}
+.pts{margin-top:8px;font-size:18px}.pts b{color:#b46cff;font-size:22px}
+.srow{display:grid;grid-template-columns:70px 70px 40px 1fr;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid #2a2434}
+.sn{font-family:Bangers;font-size:22px;letter-spacing:1px}.main{display:inline-block;background:#E5484D;color:#fff;font-family:'Barlow Condensed';font-size:10px;font-weight:800;padding:0 4px;margin-left:4px;vertical-align:middle}
+.sv{font-size:20px;font-weight:800}.gear{color:#5ad86a;font-size:15px}
+.plus{width:34px;height:34px;background:#b46cff;border:3px solid var(--ink);color:#fff;font-size:22px;font-weight:800;cursor:pointer}.plus:disabled{background:#3a3448;color:#6a6078;cursor:default}
+.sd{font-size:13px;color:#a8a0b0}
+.dr{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid #2a2434;font-size:16px}.dr b{color:var(--gold)}
+.mixbar{display:flex;height:14px;border:2px solid var(--ink);margin:14px 0 4px}.mixbar i{display:block;height:100%}
+/* skills */
+#skPts{font-size:16px;margin-bottom:10px;color:#d9d2bf}#skPts b{color:#b46cff;font-size:22px}
+.sgroup{margin-bottom:14px}.sgh{font-family:Bangers;font-size:22px;letter-spacing:3px;margin-bottom:6px}
+.scards{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px}
+.scard{background:#120e18;border:3px solid;padding:9px 10px}
+.scard.locked{opacity:.55}
+.st{display:flex;justify-content:space-between;align-items:center;font-size:18px}.bi{font-size:10px;background:var(--gold);color:var(--ink);padding:0 4px;font-weight:800}
+.slv{font-size:14px;margin:2px 0}.lk{color:#a8a0b0}
+.pips{display:flex;gap:2px;margin:4px 0}.pips i{flex:1;height:7px;background:#2a2434}.pips i.f{background:#ff9a2a}.pips i.g{background:#5ad86a}.pips i.m{margin-right:4px}
+.sdsc{font-size:13px;color:#c8c0b0;margin-bottom:5px}
+.tier{display:flex;align-items:center;gap:4px;margin-top:4px;opacity:.5;flex-wrap:wrap}.tier.open{opacity:1}
+.tl{font-size:11px;font-weight:800;color:#a8a0b0;width:34px}.or{font-size:11px;color:#6a6078}
+.up{flex:1;min-width:70px;background:#241e30;color:var(--paper);border:2px solid var(--line);font-size:12px;font-weight:700;padding:3px 4px;cursor:pointer}
+.up:disabled{cursor:default}.up.chosen{background:#b46cff;border-color:#fff;color:#fff}
+.lvl{margin-top:7px;width:100%;background:#b46cff;color:#fff;border:3px solid var(--ink);font-weight:800;font-size:14px;padding:4px;cursor:pointer}.lvl:disabled{background:#3a3448;color:#6a6078;cursor:default}
+/* map + achievements */
+#bigMap{width:100%;max-width:820px;aspect-ratio:1;display:block;margin:0 auto;border:3px solid var(--line)}
+.ach{display:grid;grid-template-columns:44px 1fr auto;align-items:center;gap:12px;padding:8px;border-bottom:1px solid #2a2434;opacity:.65}.ach.done{opacity:1}
+.ab{width:40px;height:40px;border:3px solid var(--ink);display:flex;align-items:center;justify-content:center}.ab svg{width:26px;height:26px}
+.ar{font-weight:800;font-size:14px;color:#a8a0b0}.ach.done .ar{color:#5ad86a}
+/* loot box modal */
+#boxModal{position:fixed;inset:0;background:#000c;display:none;flex-direction:column;align-items:center;justify-content:center;z-index:25;padding:16px}
+#boxModal.show{display:flex}
+#boxTitle{font-family:Bangers;font-size:54px;letter-spacing:3px;-webkit-text-stroke:2px #000;paint-order:stroke fill}
+#boxCards{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin:18px 0}
+.bcard{width:170px;min-height:200px;background:#16121e;border:4px solid;box-shadow:6px 6px 0 #000;padding:12px;text-align:center;animation:flip .5s backwards}
+.bcard .bi2 svg{width:70px;height:70px}.bcard .bn{font-family:Bangers;font-size:20px;letter-spacing:1px;margin:6px 0}
+@keyframes flip{0%{opacity:0;transform:rotateY(90deg) scale(.7)}100%{opacity:1;transform:rotateY(0) scale(1)}}
+#boxOk{font-family:Bangers;font-size:26px;letter-spacing:2px;background:var(--gold);color:var(--ink);border:4px solid #fff;padding:6px 24px;cursor:pointer}
+@media (max-width:700px){#minimapWrap{transform:scale(.7);transform-origin:top right}#host{width:280px}#toasts{right:10px;top:200px}}
+</style></head><body>
+<div id="stage"></div>
+<div id="hud">
+  <div id="vign"></div>
+  <div id="topl"><div class="ink"><span id="loc">LOADING</span><span id="safe">SAFE ZONE</span></div>
+    <div id="keys" class="ink">WASD move · Shift sprint · Space jump · LMB Firebolt · RMB/R Fireball · Q Flame Ward · E pick up<br>I inventory · C character · K skills · M map · J achievements · O outlines</div></div>
+  <div id="minimapWrap"><canvas id="mini" width="180" height="180" aria-label="Minimap"></canvas><div id="compass"></div></div>
+  <div id="toasts"></div>
+  <div id="cross"></div>
+  <div id="banner"></div>
+  <div id="prompt">[E] Pick up loot</div>
+  <div id="ptsBadge"></div><div id="boxBadge"></div>
+  <div id="vitals">
+    <div class="ink"><span id="name">DALE</span><span id="lvl">LV 9</span> <span class="sm">Pyromancer</span></div>
+    <div class="row ink"><span class="lab">HP</span><div class="bar"><i id="hpF" style="background:#E5484D"></i><i id="wardF" style="background:#ff9a2a88"></i></div><span id="hpT" style="width:74px;font-size:13px"></span></div>
+    <div class="row ink"><span class="lab">MP</span><div class="bar"><i id="mpF" style="background:#4a9aff"></i></div><span style="width:74px"></span></div>
+    <div class="row ink"><span class="lab">ST</span><div class="bar" style="height:10px"><i id="stF" style="background:#7BE38A"></i></div><span style="width:74px"></span></div>
+    <div class="small ink"><div><span class="sm">HUNGER</span><div class="bar" style="height:9px"><i id="hunF" style="background:#ff8a2a"></i></div></div><div><span class="sm">THIRST</span><div class="bar" style="height:9px"><i id="thiF" style="background:#3ac8ff"></i></div></div></div>
+  </div>
+  <div id="hotbar">
+    <div class="hk" id="h1"><span class="k">1 / LMB</span><b>FIREBOLT</b>8 mp<div class="cdo"></div></div>
+    <div class="hk" id="h2"><span class="k">2 / RMB</span><b>FIREBALL</b>30 mp<div class="cdo"></div></div>
+    <div class="hk" id="h3"><span class="k">3 / Q</span><b>WARD</b>25 mp<div class="cdo"></div></div>
+    <div class="hk" id="h4"><span class="k">4</span><b>KINDLE</b>5 mp<div class="cdo"></div></div>
+  </div>
+  <div id="host"><div class="who"><span>THE HOST</span><span class="live">LIVE · 2.4M</span></div><div id="hostTxt"></div></div>
+  <div id="xp"><i id="xpF"></i></div>
+</div>
+<div id="clickHint">CLICK TO LOOK AROUND</div>
+<div id="panelWrap">
+  <section class="panel" id="pInv"><div class="ph"><h2>INVENTORY</h2><span class="keys">Click to equip / use / read / open · Right-click gear to scrap · Hover to compare · I or Esc to close</span></div>
+    <div class="invWrap"><div><div id="doll"></div><div id="invStats"></div></div>
+      <div class="right"><div id="invTabs"><button data-tab="gear">GEAR</button><button data-tab="cons">CONSUMABLES</button><button data-tab="books">SKILL BOOKS</button><button data-tab="boxes">LOOT BOXES</button><span style="flex:1"></span><button class="btn" id="scrapJunk">SCRAP ALL JUNK</button></div>
+        <div id="grid"></div><div class="sm" style="margin-top:6px" id="invCount"></div></div></div></section>
+  <section class="panel" id="pChar"><div class="ph"><h2>CHARACTER</h2><span class="keys">5 stat points per level · C or Esc to close</span></div>
+    <div class="charWrap"><div><div id="charHead"></div><div id="statRows"></div></div><div><div id="derived"></div><div id="mix"></div></div></div></section>
+  <section class="panel" id="pSkills"><div class="ph"><h2>SKILL TREE · PYROMANCER</h2><span class="keys">K or Esc to close</span></div><div id="skPts"></div><div id="skillTree"></div></section>
+  <section class="panel" id="pMap"><div class="ph"><h2>MAP</h2><span class="keys">M or Esc to close</span></div><canvas id="bigMap" width="820" height="820" aria-label="Floor map"></canvas></section>
+  <section class="panel" id="pAch"><div class="ph"><h2>ACHIEVEMENTS</h2><span class="keys">Each one awards a loot box · J or Esc to close</span></div><div id="achList"></div></section>
+</div>
+<div id="tip"></div>
+<div id="boxModal"><div id="boxTitle">LOOT BOX</div><div id="boxCards"></div><button id="boxOk">TAKE IT ALL</button></div>
+<div id="loading"><h1>DOWNSTAIRS</h1><div id="loadMsg">Loading…</div><div id="loadBox"><div id="loadBar"></div></div>
+  <div class="help"><b>WASD</b> move · <b>Mouse</b> look · <b>Shift</b> sprint · <b>Space</b> jump · <b>Left click</b> Firebolt · <b>Right click / R</b> Fireball · <b>Q</b> Flame Ward · <b>E</b> pick up loot<br><b>I</b> inventory &amp; gear · <b>C</b> character stats · <b>K</b> skill tree · <b>M</b> map · <b>J</b> achievements · <b>O</b> toggle ink outlines (faster) · <b>Esc</b> close / release mouse<br><span class="sm">Desktop browser with keyboard and mouse required.</span></div>
+  <button id="startBtn" disabled>BUILDING THE FLOOR…</button></div>
+<script type="module" src="./game/play.js"></script>
+</body></html>
