@@ -52,7 +52,7 @@ export function raceBody(race, { arms = ['down', 'down'], outfit = null, variant
   const [mn, mx] = B.bbox; mn[2] -= R.tail ? 0.5 : 0.05; mx[2] += R.snout ? 0.2 : 0.05; mx[1] += R.ears === 'fox' ? 0.2 : 0.02; mn[0] -= 0.05; mx[0] += 0.05;
   const mat = R.metal ? new THREE.MeshPhysicalMaterial({ vertexColors: true, metalness: 0.85, roughness: 0.32, clearcoat: 0.4 }) : skinMaterial({ roughness: R.wet ? 0.25 : 0.62, clearcoat: R.wet ? 1 : 0.15, sheen: race === 'fennix' || race === 'gutterkin' ? 1 : 0.3, sheenColor: '#c8b8a8', pore: R.wet ? 0.3 : 0.6 });
   if (R.glow && !R.metal) { mat.emissive = C(R.glow); mat.emissiveIntensity = 0.3; }
-  const step = Math.max(0.0068, 0.0068 * s);
+  const step = Math.max(0.0068, 0.0068 * s) * (globalThis.__NPC_STEP || 1);
   g.add(new THREE.Mesh(buildMesh(sdf, mn, mx, step, col), mat));
   // eyes
   if (R.metal) for (const p of B.eyes) g.add(P(new THREE.SphereGeometry(B.eyeR * 0.8, 10, 8), glow(R.glow, 3.5), p));

@@ -64,12 +64,12 @@ export function buildFloor3(ink, col, onProgress = () => {}) {
 
   // street clutter: food carts, bins, crates, steam vents
   const cartM = [toon('#c84a2a'), toon('#2a8a6a'), toon('#d8a030'), toon('#6a3a8a')];
-  const steamM = new THREE.MeshBasicMaterial({ color: '#f0e8e0', transparent: true, opacity: 0.16, depthWrite: false });
+  const steamM = new THREE.MeshBasicMaterial({ color: '#f0e8e0', transparent: true, opacity: 0.08, depthWrite: false });
   const vents = [];
   for (let i = 0; i < 90; i++) { const x = (seeded(i, 41) - 0.5) * SIZE * 0.92, z = (seeded(i, 42) - 0.5) * SIZE * 0.92; if (inZone(x, z) || col.blocked(x, z, 1.2)) continue;
     const t = i % 3; if (t === 0) { const c = new THREE.Group(); c.add(at(new THREE.Mesh(new THREE.BoxGeometry(1.8, 1, 1), cartM[i % 4]), 0, 0.9, 0)); c.add(at(new THREE.Mesh(new THREE.CylinderGeometry(0.4, 0.4, 0.1, 12), toon('#1a1a1a')), -0.7, 0.4, 0.55)); c.add(at(new THREE.Mesh(new THREE.CylinderGeometry(0.3, 0.25, 0.5, 12), toon('#9aa0a8')), 0.4, 1.6, 0)); const um = new THREE.Mesh(new THREE.ConeGeometry(1.3, 0.5, 8), cartM[(i + 1) % 4]); um.position.y = 2.6; c.add(um); c.position.set(x, 0, z); c.rotation.y = seeded(i, 43) * 6; add(c); col.circle(x, z, 1.1); }
     else if (t === 1) { const b = add(new THREE.Mesh(new THREE.CylinderGeometry(0.4, 0.35, 1, 10), toon('#3a4a3a'))); b.position.set(x, 0.5, z); col.circle(x, z, 0.45); }
-    else { const v = add(new THREE.Mesh(new THREE.CylinderGeometry(0.5, 0.5, 0.08, 12), toon('#2a2a2a'))); v.position.set(x, 0.04, z); for (let k = 0; k < 4; k++) { const s = add(new THREE.Mesh(new THREE.SphereGeometry(0.7 + k * 0.3, 10, 8), steamM)); s.position.set(x, 0.8 + k * 1.2, z); vents.push({ s, k, x, z, o: i }); } } }
+    else { const v = add(new THREE.Mesh(new THREE.CylinderGeometry(0.5, 0.5, 0.08, 12), toon('#2a2a2a'))); v.position.set(x, 0.04, z); for (let k = 0; k < 4; k++) { const s = add(new THREE.Mesh(new THREE.SphereGeometry(0.45 + k * 0.2, 10, 8), steamM)); s.position.set(x, 0.8 + k * 1.2, z); fx.push(s); vents.push({ s, k, x, z, o: i }); } } }
   onProgress(0.4);
 
   // grease rain: falling drops recycled each frame
@@ -83,7 +83,7 @@ export function buildFloor3(ink, col, onProgress = () => {}) {
   const fireC = new THREE.Mesh(new THREE.ConeGeometry(2.4, 1.6, 12), new THREE.MeshBasicMaterial({ color: new THREE.Color('#ff8a2a').multiplyScalar(2.4) })); fireC.position.y = 0.8; cauldron.add(fireC); fx.push(fireC);
   const ladle = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.12, 9, 8), woodM()); ladle.position.set(1.5, 5.5, 0); ladle.rotation.z = -0.5; cauldron.add(ladle);
   add(cauldron); col.circle(0, 0, 4.3); const cauldLight = pl('#ff8a3a', 40, 26, 0, 5, 0);
-  const hubSteam = []; for (let k = 0; k < 10; k++) { const s = add(new THREE.Mesh(new THREE.SphereGeometry(1.4 + k * 0.4, 12, 8), steamM)); s.position.set(0, 5 + k, 0); hubSteam.push(s); }
+  const hubSteam = []; for (let k = 0; k < 10; k++) { const s = add(new THREE.Mesh(new THREE.SphereGeometry(0.9 + k * 0.18, 12, 8), steamM)); s.position.set(0, 5 + k, 0); fx.push(s); hubSteam.push(s); }
   const stallT = (txt, c) => canvasTex(256, 96, (g) => { g.fillStyle = c; g.fillRect(0, 0, 256, 96); g.fillStyle = '#f4eedc'; g.font = 'bold 34px sans-serif'; g.textAlign = 'center'; g.fillText(txt, 128, 60); g.strokeStyle = '#0d0b12'; g.lineWidth = 6; g.strokeRect(0, 0, 256, 96); });
   const wt = woodTex();
   for (const [a, txt, c] of [[0.3, "WICKLEY'S", '#5a2a10'], [1.2, 'BONE BROTH', '#3a2a1a'], [2.0, 'NOODLES', '#2a4a5a'], [2.9, 'BENCHES', '#3a2a1a'], [3.7, 'HOT POT', '#7a1a1a'], [4.5, 'TEA', '#2a5a2a'], [5.4, 'PIES', '#6a4a1a']]) {
@@ -165,7 +165,7 @@ export function buildFloor3(ink, col, onProgress = () => {}) {
   const stairs = { x: CATH[0], z: CATH[1] - 8, r: 3, to: '4', flag: 'coneKing_handled', locked: 'The stairs to Floor 4 are under the Cone King’s throne.' };
   const tick = (t) => {
     for (let i = 0; i < rainN; i++) { const d = drops[i]; d.y -= d.v * 0.016; if (d.y < 0) d.y += CEIL - 1; dm.position.set(ink.camera.position.x + d.x, d.y, ink.camera.position.z + d.z); dm.rotation.set(0, 0, 0); dm.updateMatrix(); rain.setMatrixAt(i, dm.matrix); } rain.instanceMatrix.needsUpdate = true;
-    for (const v of vents) { const k = (v.k + t * 0.6 + v.o) % 4; v.s.position.y = 0.6 + k * 1.3; v.s.scale.setScalar(0.6 + k * 0.4); v.s.material.opacity = 0.16; }
+    for (const v of vents) { const k = (v.k + t * 0.6 + v.o) % 4; v.s.position.y = 0.6 + k * 1.3; v.s.scale.setScalar(0.6 + k * 0.3); }
     hubSteam.forEach((s, k) => { s.position.y = 5 + ((k + t * 0.5) % 10); s.position.x = Math.sin(t * 0.3 + k) * 1.5; });
     fireC.scale.y = 1 + Math.sin(t * 9) * 0.12; cauldLight.intensity = 38 + Math.sin(t * 13) * 5; soup.rotation.z = t * 0.2;
   };

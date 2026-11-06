@@ -55,6 +55,7 @@ function spellDamage(id) { const D = derived(), L = effLevel(id); const base = i
 if (!LOADED) { const D = derived(); state.hp = D.maxHp * 0.85; state.mana = D.maxMana; }
 
 // ---------------- scene ----------------
+globalThis.__SDF_STEP = 1.5; globalThis.__NPC_STEP = 1.6; // in-game sculpt resolution: faster loads, lighter meshes
 const ink = createInk($('stage'), { fov: 72 });
 const { scene, camera, fx } = ink;
 const col = new Collision(8);

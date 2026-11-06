@@ -90,7 +90,7 @@ export function surfaceNets(f, min, max, step) {
 }
 
 // Mesh an SDF. colorFn(x,y,z,nx,ny,nz,ao,color) writes the vertex colour.
-export function buildMesh(f, min, max, step, colorFn) {
+export function buildMesh(f, min, max, step, colorFn) { step *= globalThis.__SDF_STEP || 1;
   const t0 = performance.now();
   const { pos, ind } = surfaceNets(f, min, max, step);
   const n = pos.length / 3, nor = new Float32Array(pos.length), col = new Float32Array(pos.length);
