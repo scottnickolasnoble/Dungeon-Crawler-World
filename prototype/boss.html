@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Boss fight demo</title>
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Barlow+Condensed:wght@500;700;800&family=Permanent+Marker&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#000;overflow:hidden}
+#stage{position:absolute;left:0;top:0;width:1280px;height:720px}
+#hud{position:absolute;left:0;top:0;width:1280px;height:720px;font-family:'Barlow Condensed',sans-serif;color:#F4EEDC;pointer-events:none;overflow:hidden}
+.ink{text-shadow:2px 2px 0 #0D0B12,-1px -1px 0 #0D0B12,1px -1px 0 #0D0B12,-1px 1px 0 #0D0B12}
+.bar{height:16px;background:#0D0B12;border:3px solid #0D0B12;transform:skewX(-14deg);position:relative;overflow:hidden}
+.bar>div{position:absolute;left:0;top:0;bottom:0}
+#bossBar{position:absolute;left:340px;top:20px;width:600px;text-align:center}
+#bossBar .name{font-family:Bangers,cursive;font-size:30px;letter-spacing:2px}
+#bossBar .bar{height:22px}
+.tag{display:inline-flex;align-items:center;background:#E5484D;color:#fff;border:2px solid #0D0B12;font-weight:800;font-size:14px;padding:0 6px;margin-left:6px;vertical-align:middle;letter-spacing:1px}
+#player{position:absolute;left:24px;bottom:22px;width:330px}
+#player .row{display:flex;align-items:center;gap:8px;margin-top:5px;font-weight:800;font-size:16px}
+#player .row .lab{width:30px}
+#player .bar{flex:1}
+.icons{display:flex;gap:6px;margin-bottom:6px;height:52px}
+.icon{width:46px;height:46px;border:3px solid #0D0B12;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:800;font-size:12px;box-shadow:3px 3px 0 #0D0B12;position:relative}
+.icon svg{width:24px;height:24px}
+.icon .t{position:absolute;bottom:-1px;right:2px;font-size:12px}
+.buff{background:#F5C518;color:#0D0B12}.debuff{background:#7a1018;color:#fff}
+#hotbar{position:absolute;left:50%;bottom:22px;transform:translateX(-50%);display:flex;gap:10px}
+.key{width:74px;height:66px;background:#F4EEDC;color:#0D0B12;border:4px solid #0D0B12;box-shadow:4px 4px 0 #0D0B12;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:800;font-size:13px;line-height:1.05;text-align:center;position:relative;transition:none}
+.key b{font-family:Bangers,cursive;font-size:17px;letter-spacing:1px;font-weight:400}
+.key .k{position:absolute;left:4px;top:1px;font-size:11px}
+.key.on{background:#F5C518;transform:translateY(-6px) scale(1.06)}
+.key.special{background:#2a1a3a;color:#F5C518}.key.special.on{background:#ff9a2a;color:#0D0B12}
+#cross{position:absolute;left:640px;top:360px;width:50px;height:50px;margin:-25px 0 0 -25px}
+#host{position:absolute;right:22px;bottom:110px;width:400px;background:#F4EEDC;color:#0D0B12;border:4px solid #0D0B12;box-shadow:6px 6px 0 #0D0B12;padding:10px 14px;transform:rotate(-1deg)}
+#host .who{display:flex;justify-content:space-between;font-family:Bangers,cursive;font-size:19px;letter-spacing:2px;color:#B4441A}
+#host .live{background:#E5484D;color:#fff;font-family:'Barlow Condensed';font-weight:800;font-size:12px;padding:0 6px;letter-spacing:0}
+#hostTxt{font-family:'Permanent Marker',cursive;font-size:18px;line-height:1.3}
+.dmg{position:absolute;left:0;top:0;font-family:Bangers,cursive;font-size:40px;color:#F4EEDC;-webkit-text-stroke:3px #0D0B12;paint-order:stroke fill;opacity:0;white-space:nowrap}
+.dmg.crit{color:#F5C518;font-size:50px}.dmg.huge{color:#ff9a2a;font-size:84px}
+#pDmgOld{position:absolute;left:120px;bottom:150px;font-family:Bangers,cursive;font-size:44px;color:#ff4a4a;-webkit-text-stroke:3px #0D0B12;paint-order:stroke fill;opacity:0}
+.banner{position:absolute;left:0;right:0;text-align:center;font-family:Bangers,cursive;letter-spacing:3px;-webkit-text-stroke:3px #0D0B12;paint-order:stroke fill;opacity:0}
+#warn{top:120px;font-size:44px;color:#ff4a3a}
+#furyTxt{top:150px;font-size:52px;color:#F5C518}
+#cleaveTxt{top:150px;font-size:52px;color:#ff9a2a}
+#kill{top:230px;font-size:80px;color:#F5C518}
+#loot{position:absolute;left:50%;top:330px;transform:translateX(-50%);background:#0D0B12cc;border:3px solid #A06CF0;padding:8px 18px;font-weight:800;font-size:20px;opacity:0;text-align:center}
+#loot .ep{color:#C79BFF}
+#combo{position:absolute;right:40px;top:220px;font-family:Bangers,cursive;color:#F5C518;-webkit-text-stroke:2px #0D0B12;paint-order:stroke fill;text-align:right;opacity:0}
+#combo #comboN{font-size:64px;line-height:.9;display:block}#combo span{font-size:24px;letter-spacing:2px}
+#vign{position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(0,0,0,0) 45%,rgba(200,10,10,.9) 100%);opacity:0}
+#furyFlash{position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(255,180,40,0) 30%,rgba(255,170,40,.8) 100%);opacity:0}
+.pdmg{position:absolute;left:120px;bottom:160px;font-family:Bangers,cursive;font-size:44px;color:#ff4a4a;-webkit-text-stroke:3px #0D0B12;paint-order:stroke fill;opacity:0}
+#map{position:absolute;right:28px;top:110px;width:250px;background:#0D0B12e0;border:3px solid #F5C518;padding:10px 12px;opacity:0;font-weight:800;font-size:15px}
+#map .t{font-family:Bangers,cursive;font-size:22px;letter-spacing:1px;color:#F5C518}
+#combo{top:300px}
+</style></head><body>
+<div id="stage"></div>
+<div id="hud">
+  <div id="vign"></div><div id="bright" style="position:absolute;inset:0;background:#fff6d0;opacity:0"></div>
+  <div id="frostOv" style="position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(150,220,255,0) 35%,rgba(160,225,255,.85) 100%);opacity:0"></div>
+  <svg id="netOv" viewBox="0 0 1280 720" preserveAspectRatio="none" style="position:absolute;inset:0;width:1280px;height:720px;opacity:0" aria-hidden="true"><g stroke="#c8b890" stroke-width="5" fill="none" opacity=".85"><path d="M0 120 Q640 260 1280 110 M0 300 Q640 380 1280 290 M0 480 Q640 470 1280 500 M0 640 Q640 560 1280 660 M150 0 Q300 360 120 720 M420 0 Q520 360 400 720 M860 0 Q760 360 880 720 M1130 0 Q980 360 1160 720"/></g><g fill="#6a5a3a"><circle cx="150" cy="120" r="9"/><circle cx="420" cy="170" r="9"/><circle cx="860" cy="170" r="9"/><circle cx="1130" cy="120" r="9"/><circle cx="160" cy="300" r="9"/><circle cx="440" cy="350" r="9"/><circle cx="840" cy="350" r="9"/><circle cx="1110" cy="300" r="9"/><circle cx="180" cy="480" r="9"/><circle cx="450" cy="470" r="9"/><circle cx="830" cy="470" r="9"/><circle cx="1100" cy="500" r="9"/></g></svg>
+  <div id="bossBar">
+    <div class="name ink">ULTI-MAX · LV 26 <span class="tag" style="background:#A06CF0">NEIGHBOURHOOD BOSS</span><span class="tag" id="tOver" style="background:#ff3a1a;display:none">OVERCLOCKED</span><span class="tag" id="tStun" style="background:#e8b020;color:#0D0B12;display:none">STUNNED</span><span class="tag" id="tFroz" style="background:#4aa8e8;display:none">FROZEN</span><span class="tag" id="tShock" style="background:#5ab8ff;color:#0D0B12;display:none">SHOCKED</span><span class="tag" id="tP2" style="background:#7a1018;display:none">PHASE 2</span></div>
+    <div class="bar"><div id="bHpGhost" style="background:#F4EEDC;width:100%"></div><div id="bHp" style="background:#A06CF0;width:100%"></div><div style="position:absolute;left:50%;top:0;bottom:0;width:3px;background:#0D0B12"></div></div>
+    <div class="ink" style="font-weight:800;font-size:15px;margin-top:3px" id="bHpTxt">760 / 760</div>
+  </div>
+  <svg id="cross" viewBox="0 0 50 50" aria-hidden="true">
+    <circle cx="25" cy="25" r="22" fill="none" stroke="#0D0B12" stroke-width="6" opacity=".55"/>
+    <circle id="cdRing" cx="25" cy="25" r="22" fill="none" stroke="#F5C518" stroke-width="3.5" stroke-dasharray="138" stroke-dashoffset="0" transform="rotate(-90 25 25)"/>
+    <circle cx="25" cy="25" r="2.5" fill="#F4EEDC" stroke="#0D0B12" stroke-width="1"/>
+  </svg>
+  <div id="loot"><div>+1,250 XP · +340 FANS</div><div class="ep" style="color:#7ab8ff">RARE: Servo Arm (+4 STR)</div><div>Arena Tokens x12 · Champion Crest</div></div>
+  <div id="map"><div class="t">DISTRICT MAP UNLOCKED</div><div>Gladiator Quarter</div>
+    <svg viewBox="0 0 220 120" style="width:220px;height:120px;margin:6px 0" aria-hidden="true"><rect x="2" y="2" width="216" height="116" fill="#1a1424" stroke="#F4EEDC" stroke-width="2"/><g stroke="#F4EEDC" stroke-width="3" fill="none"><path d="M20 60 H90 V20 H190 V100 H120 V60"/><path d="M90 60 V100 H40"/></g><circle cx="140" cy="22" r="4" fill="#E5484D"/><circle cx="170" cy="40" r="4" fill="#E5484D"/><circle cx="185" cy="80" r="4" fill="#E5484D"/><circle cx="60" cy="100" r="4" fill="#E5484D"/><circle cx="130" cy="100" r="4" fill="#E5484D"/><circle cx="100" cy="30" r="4" fill="#E5484D"/><circle cx="150" cy="60" r="4" fill="#E5484D"/><circle cx="45" cy="60" r="4" fill="#E5484D"/><circle cx="70" cy="40" r="4" fill="#E5484D"/><circle cx="175" cy="100" r="4" fill="#E5484D"/><circle cx="110" cy="90" r="4" fill="#E5484D"/><circle cx="30" cy="80" r="4" fill="#E5484D"/><circle cx="160" cy="25" r="4" fill="#E5484D"/><circle cx="185" cy="55" r="4" fill="#E5484D"/><rect x="80" y="52" width="14" height="14" fill="#3FD0E0"/><rect x="176" y="14" width="12" height="12" fill="#F5C518"/><rect x="34" y="94" width="12" height="12" fill="#F5C518"/></svg>
+    <div><span style="color:#E5484D">14</span> monsters left · <span style="color:#F5C518">2</span> loot caches · <span style="color:#3FD0E0">1</span> safe room</div></div>
+  <div id="combo"><span id="comboN">0x</span><span>COMBO</span></div>
+  <div id="player">
+    <div class="icons">
+      <div class="icon buff" id="bHaste" style="display:none"><svg viewBox="0 0 24 24" fill="none" stroke="#0D0B12" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg><span class="t">HST</span></div>
+      <div class="icon buff" id="bBrand" style="display:none;background:#5ab8ff"><svg viewBox="0 0 24 24" fill="none" stroke="#0D0B12" stroke-width="2.4" stroke-linecap="round"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg><span class="t">8s</span></div>
+      <div class="icon debuff" id="dRoot" style="display:none"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M3 3l18 18M21 3L3 21M3 12h18M12 3v18"/></svg><span class="t" id="dRootT">2s</span></div>
+    </div>
+    <div class="ink" style="font-family:Bangers,cursive;font-size:24px;letter-spacing:2px">DALE · LV 9 SPELLSWORD</div>
+    <div class="row ink"><span class="lab">HP</span><div class="bar"><div id="pHp" style="background:#E5484D;width:100%"></div></div><span id="pHpTxt" style="width:62px">100 / 100</span></div>
+    <div class="row ink"><span class="lab">ST</span><div class="bar" style="height:11px"><div id="pSt" style="background:#7BE38A;width:100%"></div></div><span style="width:62px"></span></div>
+    <div class="row ink"><span class="lab">MP</span><div class="bar" style="height:11px"><div id="pMp" style="background:#5B8DEF;width:80%"></div></div><span style="width:62px"></span></div>
+  </div>
+  <div id="hotbar">
+    <div class="key" id="k1"><span class="k">LMB</span><b>STRIKE</b>combo</div>
+    <div class="key" id="k2"><span class="k">RMB</span><b>BLOCK</b>parry</div>
+    <div class="key" id="k3"><span class="k">SPACE</span><b>DODGE</b>roll</div>
+    <div class="key special" id="k4" style="background:#123048;color:#9ae8ff"><span class="k">F</span><b>FROST</b>nova<div id="k4cd" style="position:absolute;left:0;right:0;bottom:0;background:#0008;height:0"></div></div>
+    <div class="key special" id="k5" style="background:#102040;color:#9ad8ff"><span class="k">R</span><b>BRAND</b>lightning<div id="k5cd" style="position:absolute;left:0;right:0;bottom:0;background:#0008;height:0"></div></div>
+  </div>
+  <div id="host"><div class="who"><span>THE HOST</span><span class="live">LIVE · 3.4M</span></div><div id="hostTxt"></div></div>
+</div>
+<script type="module" src="./boss.js"></script>
+</body></html>
