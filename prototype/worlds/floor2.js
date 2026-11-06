@@ -2,7 +2,7 @@
 import * as THREE from '../node_modules/three/build/three.module.js';
 import { toon, canvasTex, inkLine, woodTex, rnd, seeded } from '../engine/ink.js';
 import { spinCycle, oldReggie } from '../npcs/floor1to3.js';
-import { headCustodianEbb } from '../monsters/bosses1.js';
+import { roamingPacks } from './spawns.js';
 
 export const FLOOR2 = { name: 'FLOOR 2 · SPIN CITY', size: 360, spawn: [0, 1.7, 40], spawnYaw: 0 };
 
@@ -104,7 +104,6 @@ export function buildFloor2(ink, col, onProgress = () => {}) {
   for (let i = 0; i < 24; i++) { const s = add(new THREE.Mesh(new THREE.SphereGeometry(1 + seeded(i, 91) * 1.5, 10, 8), steam)); s.position.set(BX + (seeded(i, 92) - 0.5) * 24, 2 + seeded(i, 93) * 8, BZ + (seeded(i, 94) - 0.5) * 24); fx.push(s); }
   const signTex = canvasTex(128, 192, (g) => { g.fillStyle = '#f0c818'; g.fillRect(0, 0, 128, 192); g.fillStyle = '#111'; g.font = 'bold 26px sans-serif'; g.fillText('CAUTION', 10, 40); g.font = 'bold 22px sans-serif'; g.fillText('WET FLOOR', 4, 170); g.beginPath(); g.arc(64, 100, 26, 0, 7); g.fill(); });
   for (let i = 0; i < 26; i++) { const a = (i / 26) * Math.PI * 2; const s = add(new THREE.Mesh(new THREE.PlaneGeometry(0.6, 0.9), new THREE.MeshPhysicalMaterial({ map: signTex, roughness: 0.4, side: THREE.DoubleSide }))); s.position.set(BX + Math.cos(a) * 20, 0.45, BZ + Math.sin(a) * 20); s.rotation.y = -a; }
-  const ebb = headCustodianEbb(); ebb.position.set(BX, 0, BZ); ebb.rotation.y = 0.8; add(ebb); col.circle(BX, BZ, 1.2);
   const bsign = add(new THREE.Mesh(new THREE.PlaneGeometry(9, 1.6), new THREE.MeshBasicMaterial({ map: canvasTex(512, 96, (g) => { g.fillStyle = '#2a2a2a'; g.fillRect(0, 0, 512, 96); g.fillStyle = '#ff8a3a'; g.font = 'bold 62px sans-serif'; g.fillText('BOILER ROOM 0', 40, 70); }), side: THREE.DoubleSide }))); bsign.position.set(BX, 9.5, BZ - 4);
   onProgress(0.82);
 
@@ -135,14 +134,17 @@ export function buildFloor2(ink, col, onProgress = () => {}) {
 
   map.pois = [
     { name: 'The Laundromat', x: 0, z: 0, r: 28, kind: 'hub', safe: true },
-    { name: 'Boiler Room 0', x: BX, z: BZ, r: 24, kind: 'camp' },
+    { name: 'Boiler Room 0', x: BX, z: BZ, r: 24, kind: 'camp', camp: 'boiler', boss: 'ebb', level: '11-15' },
     { name: 'The Great Dryer', x: DX, z: DZ, r: 28, kind: 'landmark' },
     { name: 'Soap Falls', x: FX, z: FZ, r: 18, kind: 'landmark' },
     { name: 'Sock Mountain', x: SX2, z: SZ2, r: 22, kind: 'landmark' },
   ];
   const mobs = [];
-  for (let i = 0; i < 7; i++) { const a = (i / 7) * Math.PI * 2, r = 8 + (i % 2) * 5; mobs.push({ kind: 'wight', variant: i, x: BX + Math.cos(a) * r, z: BZ + Math.sin(a) * r + 6 }); }
-  for (const [x, z] of [[30, 60], [-40, 40], [50, -20], [-30, -40], [20, -80], [-60, 20]]) mobs.push({ kind: 'goblin', variant: Math.abs(Math.floor(x - z)) % 6, x, z });
+  for (let i = 0; i < 10; i++) { const a = (i / 10) * Math.PI * 2, r = 7 + (i % 2) * 5; mobs.push({ kind: 'wight', variant: i, lvl: 11 + (i % 3), camp: 'boiler', x: BX + Math.cos(a) * r, z: BZ + Math.sin(a) * r + 4 }); }
+  mobs.push({ kind: 'ebb', variant: 0, lvl: 15, camp: 'boiler', x: BX, z: BZ });
+  mobs.push(...roamingPacks({ size: SIZE, seed: 2, count: 24, avoid: (x, z) => Math.hypot(x, z) < 34 || Math.hypot(x - BX, z - BZ) < 32 || Math.hypot(x - DX, z - DZ) < 26 || Math.hypot(x - FX, z - FZ) < 16 || Math.hypot(x - SX2, z - SZ2) < 20,
+    kinds: (r, d, i) => (r < 0.45 ? 'wight' : r < 0.6 ? 'thrower' : d > 110 && i === 0 ? 'captain' : 'goblin'),
+    levelAt: (d) => (d < 70 ? [8, 9] : d < 120 ? [9, 11] : [11, 13]) }));
   const tick = (t) => {
     tumble.rotation.z = t * 0.6; door.material.color.setRGB(1.5 + Math.sin(t * 3) * 0.2, 1.05, 0.55);
     for (let i = 0; i < bub.length; i++) { const b = bub[i]; const y = ((b.y + t * b.s) % 10) + 0.4; dm.position.set(b.x + Math.sin(t * 0.5 + i) * 0.8, y, b.z + Math.cos(t * 0.4 + i) * 0.8); dm.rotation.set(0, 0, 0); dm.scale.setScalar(b.r); dm.updateMatrix(); bubbles.setMatrixAt(i, dm.matrix); }

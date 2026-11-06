@@ -86,6 +86,7 @@ export class Collision {
   box(cx, cz, hx, hz, rot = 0, h = 99) { // rotated box -> store as oriented box
     const o = { t: 'box', cx, cz, hx, hz, c: Math.cos(rot), s: Math.sin(rot), h }; const r = Math.hypot(hx, hz); this._add(o, cx - r, cx + r, cz - r, cz + r); return o; }
   circle(x, z, r, h = 99) { const o = { t: 'circle', x, z, r, h }; this._add(o, x - r, x + r, z - r, z + r); return o; }
+  blocked(x, z, radius = 0.4, y = 0.5) { const q = { x, z }; const v = { x, z }; this.resolve(v, radius, y); return Math.abs(v.x - x) + Math.abs(v.z - z) > 1e-4; }
   resolve(p, radius, y = 0) { // pushes p (Vector3) out of anything it overlaps
     const near = new Set(); for (let dx = -1; dx <= 1; dx++) for (let dz = -1; dz <= 1; dz++) { const a = this.map.get(`${Math.floor(p.x / this.cell) + dx},${Math.floor(p.z / this.cell) + dz}`); if (a) a.forEach((o) => near.add(o)); }
     for (const o of near) {

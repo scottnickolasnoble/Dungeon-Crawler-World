@@ -2,7 +2,7 @@
 import * as THREE from '../node_modules/three/build/three.module.js';
 import { toon, canvasTex, inkLine, woodTex, rnd, seeded } from '../engine/ink.js';
 import { martaVance, pickles } from '../npcs/floor1to3.js';
-import { sergeantPylon } from '../monsters/bosses1.js';
+import { roamingPacks } from './spawns.js';
 
 export const FLOOR1 = { name: 'FLOOR 1 · THE UNDERCROFT', size: 360, spawn: [30, 1.7, 2], spawnYaw: Math.PI / 2 };
 
@@ -64,7 +64,19 @@ export function buildFloor1(ink, col, onProgress = () => {}) {
 
   // scenery: carts, ticket machines, puddles, debris
   const steel = toon('#9a9ca0');
-  for (let i = 0; i < 70; i++) { const x = (seeded(i, 11) - 0.5) * SIZE * 0.9, z = (seeded(i, 12) - 0.5) * SIZE * 0.9; if (inZone(x, z)) continue; const g = new THREE.Group(); g.add(at(new THREE.Mesh(new THREE.BoxGeometry(0.6, 0.45, 0.9, 3, 3, 4), new THREE.MeshBasicMaterial({ color: '#8a8c90', wireframe: true })), 0, 0.75, 0)); const h = new THREE.Mesh(new THREE.CylinderGeometry(0.02, 0.02, 0.6, 6), steel); h.rotation.z = Math.PI / 2; h.position.set(0, 1.05, -0.5); g.add(h); g.position.set(x, 0, z); g.rotation.y = seeded(i, 13) * 6; if (seeded(i, 14) > 0.7) { g.rotation.z = Math.PI / 2; g.position.y = 0.3; } add(g); col.circle(x, z, 0.5, 1.0); }
+  // shopping carts: wire basket (alpha-tested grid texture), tubular frame, handle with a red grip, casters, child seat
+  const wireTex = canvasTex(128, 128, (g, w, h) => { g.clearRect(0, 0, w, h); g.strokeStyle = '#b8bcc4'; g.lineWidth = 5; for (let k = 0; k <= 8; k++) { g.beginPath(); g.moveTo(k * 16, 0); g.lineTo(k * 16, h); g.stroke(); g.beginPath(); g.moveTo(0, k * 16); g.lineTo(w, k * 16); g.stroke(); } });
+  const wireMat = new THREE.MeshStandardMaterial({ map: wireTex, alphaTest: 0.5, side: THREE.DoubleSide, metalness: 0.7, roughness: 0.4 });
+  const tube = new THREE.MeshStandardMaterial({ color: '#9aa0a8', metalness: 0.85, roughness: 0.35 }), grip = toon('#c8281e'), wheelM = toon('#1a1a1a');
+  const makeCart = () => { const c = new THREE.Group(); const L = 0.95, W = 0.58, H = 0.5, y0 = 0.42;
+    for (const [w, h, x, y, z, ry, rx] of [[L, H, W / 2, y0 + H / 2, 0, Math.PI / 2, 0], [L, H, -W / 2, y0 + H / 2, 0, Math.PI / 2, 0], [W, H * 1.1, 0, y0 + H / 2, -L / 2, 0, 0.12], [W, H * 0.8, 0, y0 + H * 0.4, L / 2, 0, 0], [W, L, 0, y0, 0, 0, Math.PI / 2]]) { const m = new THREE.Mesh(new THREE.PlaneGeometry(w, h), wireMat); m.position.set(x, y, z); m.rotation.set(rx, ry, 0); c.add(m); }
+    const bar = (len, x, y, z, rx, rz, ry = 0, mat = tube, r = 0.014) => { const b = new THREE.Mesh(new THREE.CylinderGeometry(r, r, len, 8), mat); b.position.set(x, y, z); b.rotation.set(rx, ry, rz); c.add(b); return b; };
+    for (const sx of [-1, 1]) { bar(L, sx * W / 2, y0 + H, 0, Math.PI / 2, 0); bar(L * 1.05, sx * W / 2, 0.12, -0.03, Math.PI / 2, 0); bar(0.5, sx * W / 2, 0.3, -L / 2 + 0.05, 0.25, 0); bar(0.42, sx * W / 2, 0.28, L / 2 - 0.05, -0.1, 0); bar(0.45, sx * W / 2, y0 + H + 0.18, -L / 2 - 0.08, -0.5, 0); }
+    bar(W, 0, y0 + H, L / 2, 0, Math.PI / 2); bar(W, 0, y0 + H * 1.1, -L / 2 - 0.02, 0, Math.PI / 2); bar(W + 0.06, 0, y0 + H + 0.38, -L / 2 - 0.2, 0, Math.PI / 2, 0, grip, 0.022);
+    for (const [x, z] of [[-W / 2, -L / 2], [W / 2, -L / 2], [-W / 2, L / 2], [W / 2, L / 2]]) { const wh = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.06, 0.035, 12), wheelM); wh.rotation.z = Math.PI / 2; wh.position.set(x, 0.06, z); c.add(wh); bar(0.05, x, 0.11, z, 0, 0); }
+    const seat = new THREE.Mesh(new THREE.BoxGeometry(W * 0.9, 0.03, 0.22), toon('#c8281e')); seat.position.set(0, y0 + H * 0.95, -L / 2 + 0.14); c.add(seat); return c; };
+  const cartProto = makeCart();
+  for (let i = 0; i < 70; i++) { const x = (seeded(i, 11) - 0.5) * SIZE * 0.9, z = (seeded(i, 12) - 0.5) * SIZE * 0.9; if (inZone(x, z)) continue; const g = cartProto.clone(); g.position.set(x, 0, z); g.rotation.y = seeded(i, 13) * 6; if (seeded(i, 14) > 0.7) { g.rotation.z = Math.PI / 2; g.position.y = 0.32; } add(g); col.circle(x, z, 0.55, 1.0); }
   const ticketTex = canvasTex(128, 256, (g) => { g.fillStyle = '#c8a020'; g.fillRect(0, 0, 128, 256); g.fillStyle = '#0d0b12'; g.fillRect(14, 30, 100, 60); g.fillStyle = '#3affea'; g.font = 'bold 16px monospace'; g.fillText('RIDDLE?', 24, 66); g.fillStyle = '#0d0b12'; g.font = 'bold 20px sans-serif'; g.fillText('PAY HERE', 14, 200); });
   for (let i = 0; i < 14; i++) { const x = (seeded(i, 21) - 0.5) * SIZE * 0.8, z = (seeded(i, 22) - 0.5) * SIZE * 0.8; if (inZone(x, z)) continue; const m = add(new THREE.Mesh(new THREE.BoxGeometry(0.7, 1.6, 0.5), toon('#ffffff', { map: ticketTex }))); m.position.set(x, 0.8, z); m.rotation.y = seeded(i, 23) * 6; col.circle(x, z, 0.5); }
   const water = new THREE.MeshPhysicalMaterial({ color: '#1a3038', roughness: 0.03, metalness: 0.3, clearcoat: 1, transparent: true, opacity: 0.85 });
@@ -115,9 +127,8 @@ export function buildFloor1(ink, col, onProgress = () => {}) {
   const cones = new THREE.InstancedMesh(coneGeo, toon('#ffffff', { map: coneTex }), conePos.length); conePos.forEach(([x, y, z], i) => { dm.position.set(x, y, z); dm.rotation.set(0, i * 0.7, 0); dm.updateMatrix(); cones.setMatrixAt(i, dm.matrix); }); pylon.add(cones);
   for (const [tx, tz] of towers) { const plat = new THREE.Mesh(new THREE.BoxGeometry(3, 0.2, 3), toon('#ffffff', { map: wt })); plat.position.set(tx, 6.8, tz); pylon.add(plat); }
   for (let i = 0; i < 10; i++) { const a = (i / 10) * Math.PI * 2 + 0.3; const c = new THREE.Group(); c.add(new THREE.Mesh(carBody, carMats[(i + 3) % 9]), new THREE.Mesh(carCab, carMats[(i + 3) % 9])); c.position.set(Math.cos(a) * 9, (i % 2) * 1.3, Math.sin(a) * 9); c.rotation.set((i % 2) * 0.4, -a + 1.57, (i % 3) * 0.3); pylon.add(c); col.box(PX + Math.cos(a) * 9, PZ + Math.sin(a) * 9, 0.95, 2.15, a - 1.57); }
-  const stage = new THREE.Mesh(new THREE.CylinderGeometry(3.5, 3.8, 0.8, 24), toon('#5a5450')); stage.position.y = 0.4; pylon.add(stage); col.circle(PX, PZ, 3.8);
+  const stage = new THREE.Mesh(new THREE.CylinderGeometry(3.5, 3.8, 0.12, 24), toon('#5a5450')); stage.position.y = 0.06; pylon.add(stage);
   const banner = new THREE.Mesh(new THREE.PlaneGeometry(6, 1.4), new THREE.MeshBasicMaterial({ map: canvasTex(512, 128, (g) => { g.fillStyle = '#e8590c'; g.fillRect(0, 0, 512, 128); g.fillStyle = '#0d0b12'; g.font = 'bold 76px sans-serif'; g.fillText('PYLON POINT', 30, 92); }), side: THREE.DoubleSide })); banner.position.set(0, 5.5, -4); pylon.add(banner);
-  const sarge = sergeantPylon(); sarge.position.set(0, 0.8, 0); sarge.rotation.y = 0.6; pylon.add(sarge);
   pl('#ffa040', 22, 30, PX, 5, PZ);
   onProgress(0.85);
 
@@ -136,15 +147,21 @@ export function buildFloor1(ink, col, onProgress = () => {}) {
 
   map.pois = [
     { name: 'Stairwell Camp', x: 0, z: 0, r: 26, kind: 'hub', safe: true },
-    { name: 'Pylon Point', x: PX, z: PZ, r: 24, kind: 'camp' },
+    { name: 'Pylon Point', x: PX, z: PZ, r: 24, kind: 'camp', camp: 'pylon', boss: 'pylon', level: '6-10' },
     { name: 'The Ramp Spiral', x: SX, z: SZ, r: 16, kind: 'landmark' },
     { name: 'The Burning Bus', x: BX, z: BZ, r: 14, kind: 'landmark' },
     { name: 'The Exit Sign', x: 0, z: -SIZE / 2 + 6, r: 18, kind: 'landmark' },
   ];
-  // goblin spawns: a pack inside Pylon Point, and a few roaming patrols
+  // Pylon Point is an encampment: Lv 6-8 guards, two Cone Captains, Cone Chuckers on the towers, Sergeant Pylon (Lv 10) on the stage.
+  // Everything else roams in packs whose level rises the further you go from Stairwell Camp.
   const mobs = [];
-  for (let i = 0; i < 8; i++) { const a = (i / 8) * Math.PI * 2 + 0.4, r = 6 + (i % 3) * 2.5; mobs.push({ kind: 'goblin', variant: i, x: PX + Math.cos(a) * r, z: PZ + Math.sin(a) * r }); }
-  for (const [x, z] of [[40, -20], [55, -35], [-40, -50], [-55, -40], [30, 50], [-60, 60]]) mobs.push({ kind: 'goblin', variant: Math.floor(Math.abs(x + z)) % 6, x, z });
+  for (let i = 0; i < 10; i++) { const a = (i / 10) * Math.PI * 2 + 0.4, r = 7 + (i % 3) * 2.8; mobs.push({ kind: 'goblin', variant: i, lvl: 6 + (i % 3), camp: 'pylon', x: PX + Math.cos(a) * r, z: PZ + Math.sin(a) * r }); }
+  for (const [tx, tz] of towers) mobs.push({ kind: 'thrower', variant: tx > 0 ? 2 : 5, lvl: 7, camp: 'pylon', x: PX + tx + 1.5, z: PZ + tz + 1.5 });
+  mobs.push({ kind: 'captain', variant: 1, lvl: 9, camp: 'pylon', x: PX - 15, z: PZ - 2 }, { kind: 'captain', variant: 4, lvl: 9, camp: 'pylon', x: PX - 5, z: PZ + 6 });
+  mobs.push({ kind: 'pylon', variant: 3, lvl: 10, camp: 'pylon', x: PX, z: PZ });
+  mobs.push(...roamingPacks({ size: SIZE, seed: 1, count: 26, avoid: (x, z) => inZone(x, z) || Math.hypot(x - PX, z - PZ) < 34,
+    kinds: (r, d, i) => (d > 120 && i === 0 && r < 0.4 ? 'captain' : r < 0.25 ? 'thrower' : 'goblin'),
+    levelAt: (d) => (d < 70 ? [1, 2] : d < 110 ? [2, 4] : d < 150 ? [4, 6] : [5, 7]) }));
   // animated bits the game loop ticks
   const tick = (t) => { flame.scale.y = 1 + Math.sin(t * 9) * 0.12; fireLight.intensity = 28 + Math.sin(t * 13) * 4; flames.forEach((f, i) => { f.scale.y = 1 + Math.sin(t * 7 + i) * 0.2; }); busLight.intensity = 46 + Math.sin(t * 11) * 6; };
   return { map, mobs, tick, size: SIZE, ceiling: CEIL };

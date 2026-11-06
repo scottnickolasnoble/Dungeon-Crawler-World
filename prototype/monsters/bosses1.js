@@ -11,7 +11,7 @@ const glow = (hex, k = 2.5) => new THREE.MeshBasicMaterial({ color: new THREE.Co
 const strip = (g, ...names) => names.forEach((n) => { const o = g.getObjectByName(n); if (o) o.parent.remove(o); });
 const coneTexture = (base = '#e8590c') => canvasTex(256, 256, (c, w, h) => { c.fillStyle = base; c.fillRect(0, 0, w, h); c.fillStyle = '#eeeae0'; c.fillRect(0, h * 0.35, w, h * 0.14); c.fillRect(0, h * 0.62, w, h * 0.09); for (let i = 0; i < 400; i++) { c.fillStyle = `rgba(40,25,10,${rnd() * 0.25})`; c.fillRect(rnd() * w, rnd() * h, 2 + rnd() * 10, 1 + rnd() * 3); } });
 const coneMat = (base) => new THREE.MeshPhysicalMaterial({ map: coneTexture(base), roughness: 0.5, clearcoat: 0.4 });
-function trafficCone(h = 0.45, base) { const g = new THREE.Group(); const m = coneMat(base); const c = new THREE.Mesh(new THREE.ConeGeometry(h * 0.33, h, 24, 1, true), m); c.position.y = h / 2 + 0.02; g.add(c); const b = new THREE.Mesh(new THREE.BoxGeometry(h * 0.8, 0.03, h * 0.8), new THREE.MeshPhysicalMaterial({ color: '#c94a0a', roughness: 0.7 })); b.position.y = 0.015; g.add(b); return g; }
+export function trafficCone(h = 0.45, base) { const g = new THREE.Group(); const m = coneMat(base); const c = new THREE.Mesh(new THREE.ConeGeometry(h * 0.33, h, 24, 1, true), m); c.position.y = h / 2 + 0.02; g.add(c); const b = new THREE.Mesh(new THREE.BoxGeometry(h * 0.8, 0.03, h * 0.8), new THREE.MeshPhysicalMaterial({ color: '#c94a0a', roughness: 0.7 })); b.position.y = 0.015; g.add(b); return g; }
 const hiVis = canvasTex(512, 256, (c, w, h) => { c.fillStyle = '#d8f020'; c.fillRect(0, 0, w, h); c.fillStyle = '#c8c8c8'; c.fillRect(0, h * 0.3, w, h * 0.1); c.fillRect(0, h * 0.62, w, h * 0.1); for (let i = 0; i < 700; i++) { c.fillStyle = `rgba(60,50,20,${rnd() * 0.25})`; c.fillRect(rnd() * w, rnd() * h, 2 + rnd() * 18, 1 + rnd() * 4); } });
 
 // ============ SERGEANT PYLON (Traffic-Cone Goblin boss) ============
@@ -32,7 +32,7 @@ export function sergeantPylon() {
   const st = new THREE.Mesh(new THREE.PlaneGeometry(0.4, 0.2), new THREE.MeshPhysicalMaterial({ map: stopTxt, roughness: 0.5 })); st.position.set(0.38, 0.95, 0.432); g.add(st);
   const barrierTex = canvasTex(512, 64, (c, w, h) => { for (let i = 0; i < 8; i++) { c.fillStyle = i % 2 ? '#f0f0f0' : '#e8410c'; c.beginPath(); c.moveTo(i * 64, 0); c.lineTo(i * 64 + 64, 0); c.lineTo(i * 64 + 32, h); c.lineTo(i * 64 - 32, h); c.fill(); } });
   const barrier = new THREE.Mesh(new THREE.BoxGeometry(0.16, 1.1, 0.04), new THREE.MeshPhysicalMaterial({ map: barrierTex, roughness: 0.5 }));
-  barrier.position.set(RIGHT_HAND[0], RIGHT_HAND[1] + 0.4, RIGHT_HAND[2] + 0.05); barrier.rotation.set(-0.35, 0, 0.55); g.add(barrier);
+  const wpn = new THREE.Group(); wpn.name = 'weapon'; wpn.position.set(...RIGHT_HAND); wpn.rotation.set(-0.35, 0, 0.55); barrier.position.set(0, 0.42, 0.02); wpn.add(barrier); g.add(wpn);
   const flasher = new THREE.Mesh(new THREE.SphereGeometry(0.04, 12, 8), glow('#ffb020', 3)); flasher.position.set(RIGHT_HAND[0] - 0.25, RIGHT_HAND[1] + 0.85, RIGHT_HAND[2] - 0.1); g.add(flasher);
   g.scale.setScalar(1.75);
   const gl = new THREE.PointLight('#ffb020', 3, 3); gl.position.set(-1.0, 3.2, 0.3); g.add(gl);

@@ -55,6 +55,13 @@ html,body{margin:0;height:100%;background:#000;overflow:hidden;font-family:'Barl
 .mbar .mb{height:7px;background:var(--ink);border:2px solid var(--ink)}.mbar .mb i{display:block;height:100%;background:var(--red)}
 .dn{position:absolute;left:0;top:0;font-family:Bangers;font-size:30px;color:var(--paper);-webkit-text-stroke:2px var(--ink);paint-order:stroke fill;white-space:nowrap}
 .dn.crit{color:var(--gold);font-size:38px}.dn.hurt{color:#ff5a5a}
+.dn.parry{color:#ffd040;font-size:34px}
+.dn.bark{font-family:'Permanent Marker',cursive;font-size:17px;-webkit-text-stroke:0;color:#111;background:#f4eedc;border:3px solid var(--ink);padding:3px 10px;border-radius:14px;box-shadow:3px 3px 0 #000;max-width:280px;white-space:normal;text-align:center}
+.mbar.elite .mn{color:#ffb040}.mbar.elite .mb{border-color:#ffb040}
+#bossBar{position:absolute;top:74px;left:50%;transform:translateX(-50%);width:min(640px,70vw);display:none;text-align:center;z-index:3}
+#bossName{font-family:Bangers;font-size:30px;letter-spacing:1px;color:var(--paper);-webkit-text-stroke:2px var(--ink);paint-order:stroke fill}
+#bossTitle{font-weight:800;font-size:14px;color:var(--gold);text-shadow:0 2px 0 #000}
+#bossTrack{height:16px;background:var(--ink);border:3px solid var(--ink);box-shadow:0 0 0 2px var(--gold);margin-top:4px}#bossFill{height:100%;background:linear-gradient(#ff5a4a,#a8180e);width:100%;transition:width .15s}
 /* loading + click hint */
 #loading{position:fixed;inset:0;background:#0d0b12;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;z-index:20;padding:16px;text-align:center}
 #loading h1{font-family:Bangers;font-size:64px;letter-spacing:4px;color:var(--gold);margin:0;-webkit-text-stroke:3px #000;paint-order:stroke fill}
@@ -156,10 +163,10 @@ button{font-family:inherit}
 @media (max-width:900px){#craftTables{grid-template-columns:repeat(3,1fr)}.craftWrap{grid-template-columns:1fr}}
 </style></head><body>
 <div id="stage"></div>
-<div id="hud">
+<div id="hud"><div id="bossBar"><div id="bossName"></div><div id="bossTitle"></div><div id="bossTrack"><div id="bossFill"></div></div></div>
   <div id="vign"></div>
   <div id="topl"><div class="ink"><span id="loc">LOADING</span><span id="safe">SAFE ZONE</span></div>
-    <div id="keys" class="ink">WASD move · Shift sprint · Space jump · LMB Firebolt · RMB/R Fireball · Q Flame Ward · E pick up / use · G bomb<br>I inventory · C character · K skills · M map · J achievements · H Crash Pad · B craft · O outlines</div></div>
+    <div id="keys" class="ink">WASD move · Shift sprint · Space jump · LMB Firebolt · RMB/R Fireball · Q Flame Ward · F parry (tap) / block (hold) · V dodge · E use · G bomb<br>I inventory · C character · K skills · M map · J achievements · H Crash Pad · B craft · O outlines</div></div>
   <div id="minimapWrap"><canvas id="mini" width="180" height="180" aria-label="Minimap"></canvas><div id="compass"></div></div>
   <div id="toasts"></div>
   <div id="cross"></div>
@@ -201,7 +208,7 @@ button{font-family:inherit}
 <div id="tip"></div>
 <div id="boxModal"><div id="boxTitle">LOOT BOX</div><div id="boxCards"></div><button id="boxOk">TAKE IT ALL</button></div>
 <div id="loading"><h1>DOWNSTAIRS</h1><div id="loadMsg">Loading…</div><div id="loadBox"><div id="loadBar"></div></div>
-  <div class="help"><b>WASD</b> move · <b>Mouse</b> look · <b>Shift</b> sprint · <b>Space</b> jump · <b>Left click</b> Firebolt · <b>Right click / R</b> Fireball · <b>Q</b> Flame Ward · <b>E</b> pick up loot / use table · <b>G</b> throw bomb<br><b>H</b> Crash Pad (from a safe zone) · <b>B</b> crafting · <b>I</b> inventory &amp; gear · <b>C</b> character stats · <b>K</b> skill tree · <b>M</b> map · <b>J</b> achievements · <b>O</b> toggle ink outlines (faster) · <b>Esc</b> close / release mouse<br><span class="sm">Desktop browser with keyboard and mouse required.</span></div>
+  <div class="help"><b>WASD</b> move · <b>Mouse</b> look · <b>Shift</b> sprint · <b>Space</b> jump · <b>Left click</b> Firebolt · <b>Right click / R</b> Fireball · <b>Q</b> Flame Ward · <b>E</b> pick up loot / talk / use table · <b>G</b> throw bomb · <b>F</b> parry (tap as the red warning fills) / block (hold) · <b>V</b> dodge<br><b>H</b> Crash Pad (from a safe zone) · <b>B</b> crafting · <b>I</b> inventory &amp; gear · <b>C</b> character stats · <b>K</b> skill tree · <b>M</b> map · <b>J</b> achievements · <b>O</b> toggle ink outlines (faster) · <b>Esc</b> close / release mouse<br><span class="sm">Desktop browser with keyboard and mouse required.</span></div>
   <button id="startBtn" disabled>BUILDING THE FLOOR…</button><div class="help" id="floorPick">Floor: <a href="#floor-1" style="color:#F5C518">1 · The Undercroft</a> · <a href="#floor-2" style="color:#3affea">2 · Spin City</a> · <a href="#pad" style="color:#ff8a2a">Crash Pad</a> · <a href="#new" style="color:#9a9a9a">New game</a></div></div>
 <script type="module" src="./game/play.js"></script>
 </body></html>
