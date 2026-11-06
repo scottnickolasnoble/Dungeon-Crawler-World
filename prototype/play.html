@@ -1,10 +1,10 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Downstairs — Walkable Floor</title>
+<title>Downstairs</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Barlow+Condensed:wght@500;700;800&family=Permanent+Marker&display=swap" rel="stylesheet">
 <style>
-:root{--ink:#0D0B12;--paper:#F4EEDC;--gold:#F5C518;--red:#E5484D;--panel:#16121e;--line:#3a3448}
+:root{color-scheme:dark;--ink:#0D0B12;--paper:#F4EEDC;--gold:#F5C518;--red:#E5484D;--panel:#16121e;--line:#3a3448}
 *{box-sizing:border-box}
 html,body{margin:0;height:100%;background:#000;overflow:hidden;font-family:'Barlow Condensed',sans-serif;color:var(--paper)}
 #stage{position:fixed;inset:0}
@@ -202,6 +202,6 @@ button{font-family:inherit}
 <div id="boxModal"><div id="boxTitle">LOOT BOX</div><div id="boxCards"></div><button id="boxOk">TAKE IT ALL</button></div>
 <div id="loading"><h1>DOWNSTAIRS</h1><div id="loadMsg">Loading…</div><div id="loadBox"><div id="loadBar"></div></div>
   <div class="help"><b>WASD</b> move · <b>Mouse</b> look · <b>Shift</b> sprint · <b>Space</b> jump · <b>Left click</b> Firebolt · <b>Right click / R</b> Fireball · <b>Q</b> Flame Ward · <b>E</b> pick up loot / use table · <b>G</b> throw bomb<br><b>H</b> Crash Pad (from a safe zone) · <b>B</b> crafting · <b>I</b> inventory &amp; gear · <b>C</b> character stats · <b>K</b> skill tree · <b>M</b> map · <b>J</b> achievements · <b>O</b> toggle ink outlines (faster) · <b>Esc</b> close / release mouse<br><span class="sm">Desktop browser with keyboard and mouse required.</span></div>
-  <button id="startBtn" disabled>BUILDING THE FLOOR…</button><div class="help" id="floorPick">Floor: <a href="?floor=1" style="color:#F5C518">1 · The Undercroft</a> · <a href="?floor=2" style="color:#3affea">2 · Spin City</a> · <a href="?floor=pad" style="color:#ff8a2a">Crash Pad</a> · <a href="?newgame" style="color:#9a9a9a">New game</a></div></div>
+  <button id="startBtn" disabled>BUILDING THE FLOOR…</button><div class="help" id="floorPick">Floor: <a href="#floor-1" style="color:#F5C518">1 · The Undercroft</a> · <a href="#floor-2" style="color:#3affea">2 · Spin City</a> · <a href="#pad" style="color:#ff8a2a">Crash Pad</a> · <a href="#new" style="color:#9a9a9a">New game</a></div></div>
 <script type="module" src="./game/play.js"></script>
 </body></html>

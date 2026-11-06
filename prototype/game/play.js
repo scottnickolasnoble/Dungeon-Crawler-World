@@ -8,7 +8,11 @@ import { createUI } from './ui.js';
 import { createCrafting, createCraftUI, MATS, TABLES } from './crafting.js';
 
 const $ = (id) => document.getElementById(id);
-const QS = new URLSearchParams(location.search); const FLOOR = QS.get('floor') || '1';
+const QS = new URLSearchParams(location.search); const HASH = location.hash.slice(1);
+// floors are chosen by #hash (artifact pages drop query strings); ?floor= still works for local tests
+const FLOOR = QS.get('floor') || (HASH === 'pad' ? 'pad' : HASH === 'floor-2' ? '2' : '1');
+function goFloor(f) { if (QS.get('floor')) { location.search = `?floor=${f}`; return; } location.hash = f === 'pad' ? 'pad' : `floor-${f}`; }
+window.addEventListener('hashchange', () => location.reload());
 const SAVE_KEY = 'downstairs_save_v1';
 const rng = makeRng(Date.now() & 0xffff);
 const FIRE_SKILLS = ['firebolt', 'fireball', 'flamewave', 'emberdarts', 'combust', 'heatray', 'lavapool', 'livingflame', 'inferno', 'flamestep'];
@@ -25,7 +29,8 @@ state.mats = { scrapmetal: 14, plastic: 6, wire: 6, rubber: 3, glass: 6, cloth: 
 state.tables = { workbench: { tier: 1, slot: 2 }, still: { tier: 1, slot: 3 } }; state.craftXP = {}; state.invCap = 48; state.buffs = []; state.gold = 520; state.lastFloor = '1';
 function saveGame() { try { const o = { ...state, discovered: [...state.discovered] }; delete o.equipped; localStorage.setItem(SAVE_KEY, JSON.stringify(o)); } catch (e) {} }
 function loadGame() { try { const raw = localStorage.getItem(SAVE_KEY); if (!raw) return false; const o = JSON.parse(raw); Object.assign(state, o); state.discovered = new Set(o.discovered || []); return true; } catch (e) { return false; } }
-const LOADED = !QS.has('newgame') && loadGame();
+const LOADED = !QS.has('newgame') && HASH !== 'new' && loadGame();
+if (HASH === 'new') { try { history.replaceState(null, '', '#floor-1'); } catch (e) {} }
 state.equipped = (it) => Object.values(state.equip).includes(it);
 const xpFor = (lv) => Math.round(80 * lv ** 1.45);
 state.xpNext = xpFor(state.level);
@@ -77,7 +82,7 @@ G.toast = (...a) => ui.toast(...a); G.renderCraft = () => craftUI.render();
 G.onTables = () => { if (world && world.refreshTables) world.refreshTables(state); saveGame(); };
 G.onCraft = () => { state.counters.crafted = (state.counters.crafted || 0) + 1; if (state.counters.crafted === 1) ui.host('You made a thing! With your hands! The audience is moved. Mildly.'); saveGame(); };
 function inSafe() { return FLOOR === 'pad' || (lastPOI && lastPOI.safe); }
-function goPad() { if (FLOOR === 'pad') { saveGame(); location.search = `?floor=${state.lastFloor || '1'}`; return; } if (!inSafe()) return ui.toast('You can only open your Crash Pad door from a safe zone (settlement or camp).', '#E5484D', 2200); state.lastFloor = FLOOR; saveGame(); location.search = '?floor=pad'; }
+function goPad() { if (FLOOR === 'pad') { saveGame(); goFloor(state.lastFloor || '1'); return; } if (!inSafe()) return ui.toast('You can only open your Crash Pad door from a safe zone (settlement or camp).', '#E5484D', 2200); state.lastFloor = FLOOR; saveGame(); goFloor('pad'); }
 function nearSlot() { if (FLOOR !== 'pad' || !world.slots) return -1; let bi = -1, bd = 2.6; world.slots.forEach(([x, z], i) => { const d = Math.hypot(P.pos.x - x, P.pos.z - z); if (d < bd) { bd = d; bi = i; } }); return bi; }
 function useSlot(i) { const id = Object.keys(state.tables).find((k) => state.tables[k].slot === i); if (id) craftUI.open(id, null); else { const first = Object.keys(TABLES_REF).find((k) => !state.tables[k]); craftUI.open(first, i); } ui.toggle('craft'); }
 const TABLES_REF = TABLES;
