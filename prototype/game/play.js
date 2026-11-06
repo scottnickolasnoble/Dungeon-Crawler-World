@@ -1,4 +1,4 @@
-// Walkable floor: first-person Pyromancer with spells, goblins, loot, stats, skills and achievements.
+// Walkable floor: first-person contestant with spells, goblins, loot, stats, skills and achievements.
 import * as THREE from '../node_modules/three/build/three.module.js';
 import { createInk, Collision } from '../engine/ink.js';
 import { createMobSystem, MOBDEFS, scaleDmg } from './mobs.js';

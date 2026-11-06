@@ -119,7 +119,7 @@ export function createUI(G) {
     $('mpF').style.width = (p.mana / D.maxMana) * 100 + '%'; $('stF').style.width = (p.stamina / D.maxStamina) * 100 + '%';
     $('wardF').style.width = p.ward > 0 ? (p.ward / p.wardMax) * 100 + '%' : '0%';
     $('hunF').style.width = p.hunger + '%'; $('thiF').style.width = p.thirst + '%';
-    $('xpF').style.width = (p.xp / p.xpNext) * 100 + '%'; $('lvl').textContent = 'LV ' + p.level;
+    $('xpF').style.width = (p.xp / p.xpNext) * 100 + '%'; $('lvl').textContent = 'LV ' + p.level; { const c = G.cls && G.cls(); const rn = p.race && G.races && G.races[p.race] ? G.races[p.race].name + ' ' : ''; const cn = (c && c.name) || 'Contestant'; if ($('clsName').textContent !== rn + cn) $('clsName').textContent = rn + cn; }
     for (const sk of G.hotbarIds()) { const el = $('hk_' + sk); if (!el) continue; const cd = G.cooldownFrac(sk); el.querySelector('.cdo').style.height = cd * 100 + '%'; const d = G.skillDef(sk); el.classList.toggle('nomana', !!d && p.mana < (d.cost || 0)); }
     $('ptsBadge').style.display = p.statPoints || p.skillPoints ? 'block' : 'none'; $('ptsBadge').textContent = `${p.statPoints ? p.statPoints + ' stat' : ''}${p.statPoints && p.skillPoints ? ' · ' : ''}${p.skillPoints ? p.skillPoints + ' skill' : ''} point${p.statPoints + p.skillPoints > 1 ? 's' : ''} to spend (C / K)`;
     $('boxBadge').style.display = p.inv.some((i) => i.kind === 'box') ? 'block' : 'none'; $('boxBadge').textContent = `${p.inv.filter((i) => i.kind === 'box').length} loot box(es) · press I`;
