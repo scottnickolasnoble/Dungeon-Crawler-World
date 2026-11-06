@@ -146,13 +146,16 @@ export function quadruped(P = {}) {
     d = smax(d, -sph(Math.abs(lx), ly, lz, 0.018, -0.03, 0.06 + 0.17 * sn, 0.012), 0.006); // nostrils
     return d;
   };
+  const legs = P.legs ?? 1, LH = 0.62, lift = LH * (1 - legs);
   const sdf = (x, y, zz) => {
-    const ux = x / s, uy = y / s, uz = zz / s;
+    const ux = x / s, uz = zz / s; let uy = y / s;
+    uy = uy < LH * legs ? uy / legs : uy + lift; // shorter legs squash the lower body only
     let d = smin(body(ux, uy, uz), head(ux, uy, uz), 0.04);
+    if (uy < LH) d *= legs;
     if (d < 0.03 && d > -0.03) d += fbm(ux * 10, uy * 10, uz * 10) * 0.005 + (Math.abs(vnoise(ux * 40, uy * 60, uz * 40)) - 0.3) * 0.002;
     return d * s;
   };
-  const S = (p) => p.map((q) => q * s);
+  const S = (p) => [p[0] * s, (p[1] - (p[1] > LH ? lift : p[1] * (1 - legs))) * s, p[2] * s];
   return {
     sdf, scale: s,
     eyes: [S([HD[0] + 0.05, HD[1] + 0.03, HD[2] + 0.055]), S([HD[0] - 0.05, HD[1] + 0.03, HD[2] + 0.055])], eyeR: 0.02 * s,

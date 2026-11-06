@@ -2,12 +2,19 @@ import * as THREE from './node_modules/three/build/three.module.js';
 import { makeGoblin } from './creature.js';
 import * as T1 from './monsters/tier1.js';
 import * as T2 from './monsters/tier2.js';
+import * as T3 from './monsters/tier3.js';
 import { grimeTex, canvasTex, rnd, applyVariant } from './sculpt.js';
 
 // name -> [builder, camera position, look-at target, fov]
 const pack = (make, n, spacing) => () => { const g = new THREE.Group(); for (let i = 0; i < n; i++) { const m = make.variants ? make({ variant: i }) : applyVariant(make({ variant: i }), i); m.position.set((i - (n - 1) / 2) * spacing, 0, -Math.abs(i - (n - 1) / 2) * 0.35); m.rotation.y = (i - (n - 1) / 2) * -0.12; g.add(m); } return g; };
 makeGoblin.variants = true;
 const MONSTERS = {
+  wyrm: [T3.sewerWyrm, [1.9, 1.35, 2.5], [0, 0.55, 0.1], 40],
+  collector: [T3.debtCollector, [1.3, 1.7, 3.0], [0, 1.35, 0.1], 36],
+  choir: [T3.fungalChoir, [1.7, 1.4, 2.8], [0, 0.55, 0], 38],
+  molekin: [T3.moleKin, [1.0, 1.05, 2.1], [0, 0.75, 0.15], 36],
+  grease: [T3.greaseGolem, [1.8, 1.8, 4.0], [0, 1.2, 0.2], 36],
+  ratking: [T3.ratkingChoir, [0.6, 0.45, 0.75], [0, 0.06, 0], 38],
   ogre: [T2.mallCopOgre, [2.0, 2.0, 4.6], [0, 1.4, 0.2], 36],
   hound: [T2.culDeSacHound, [1.5, 1.0, 1.9], [0, 0.55, 0.15], 34],
   hag: [T2.gutterHag, [1.4, 1.3, 2.7], [0.2, 0.95, 0.2], 36],
