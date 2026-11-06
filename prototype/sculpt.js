@@ -90,9 +90,30 @@ export function surfaceNets(f, min, max, step) {
 }
 
 // Mesh an SDF. colorFn(x,y,z,nx,ny,nz,ao,color) writes the vertex colour.
-export function buildMesh(f, min, max, step, colorFn) { step *= globalThis.__SDF_STEP || 1;
+// head: optional { c: [x, y, z], hs } (a humanoid's headCenter and headScale). The head is then meshed separately at
+// a finer step, so faces come out clean even when the graphics preset coarsens bodies.
+export function buildMesh(f, min, max, step, colorFn, head = null) {
+  if (head && head.c) return buildMeshWithHead(f, min, max, step, colorFn, head);
+  return meshCore(f, f, min, max, step * (globalThis.__SDF_STEP || 1), colorFn);
+}
+function buildMeshWithHead(f, min, max, step, colorFn, { c, hs }) {
+  const k = globalThis.__SDF_STEP || 1; const coarse = step * k, fine = Math.min(coarse, 0.0042 * Math.sqrt(k) * Math.max(0.8, hs / 0.22));
+  const cutY = c[1] - 0.2 * hs, rx = 0.32 * hs, z0 = c[2] - 0.3 * hs, z1 = c[2] + 0.45 * hs, top = Math.min(max[1], c[1] + 0.5 * hs);
+  const inCol = (x, z) => Math.abs(x - c[0]) < rx && z > z0 && z < z1;
+  const fBody = (x, y, z) => (inCol(x, z) ? Math.max(f(x, y, z), y - cutY) : f(x, y, z));
+  const fHead = (x, y, z) => Math.max(f(x, y, z), cutY - 0.014 - y);
+  const body = meshCore(fBody, f, min, max, coarse, colorFn);
+  const headG = meshCore(fHead, f, [Math.max(min[0], c[0] - rx), cutY - 0.03, Math.max(min[2], z0)], [Math.min(max[0], c[0] + rx), top, Math.min(max[2], z1)], fine, colorFn);
+  // merge the two (same attributes)
+  const a = body.attributes, b = headG.attributes, nA = a.position.count; const cat = (x, y) => { const o = new Float32Array(x.array.length + y.array.length); o.set(x.array); o.set(y.array, x.array.length); return o; };
+  const geo = new THREE.BufferGeometry(); geo.setAttribute('position', new THREE.BufferAttribute(cat(a.position, b.position), 3)); geo.setAttribute('normal', new THREE.BufferAttribute(cat(a.normal, b.normal), 3)); geo.setAttribute('color', new THREE.BufferAttribute(cat(a.color, b.color), 3));
+  const ia = body.index.array, ib = headG.index.array; const idx = new Uint32Array(ia.length + ib.length); idx.set(ia); for (let i = 0; i < ib.length; i++) idx[ia.length + i] = ib[i] + nA; geo.setIndex(new THREE.BufferAttribute(idx, 1));
+  return geo;
+}
+// mesh the surface of `fs` (possibly cut), shading it with the uncut field `f`
+function meshCore(fs, f, min, max, step, colorFn) {
   const t0 = performance.now();
-  const { pos, ind } = surfaceNets(f, min, max, step);
+  const { pos, ind } = surfaceNets(fs, min, max, step);
   const n = pos.length / 3, nor = new Float32Array(pos.length), col = new Float32Array(pos.length);
   const e = step * 0.3, c = new THREE.Color();
   for (let v = 0; v < n; v++) {

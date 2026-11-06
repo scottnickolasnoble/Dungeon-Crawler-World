@@ -32,7 +32,8 @@ export function createInk(container, { fov = 70 } = {}) {
   container.appendChild(renderer.domElement);
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(fov, 1, 0.05, 600); scene.add(camera);
-  const normalMat = new THREE.MeshNormalMaterial();
+  // double-sided so one-sided walls and planes still occlude what is behind them in the outline (depth) pass
+  const normalMat = new THREE.MeshNormalMaterial({ side: THREE.DoubleSide });
   const mk = () => { const rt = new THREE.WebGLRenderTarget(4, 4, { type: THREE.HalfFloatType }); rt.depthTexture = new THREE.DepthTexture(4, 4); return rt; };
   const colorRT = mk(), normalRT = mk(); colorRT.samples = 4;
   const post = new THREE.ShaderMaterial({
@@ -76,7 +77,7 @@ export function createInk(container, { fov = 70 } = {}) {
     scene.overrideMaterial = normalMat; const fog = scene.fog; scene.fog = null;
     renderer.setRenderTarget(normalRT); renderer.render(scene, camera);
     scene.overrideMaterial = null;
-    if (rigged.size) { let i = 0; const mats = []; for (const m of rigged) { m.visible = rv[i++]; mats.push(m.material); m.material = m.userData.normalMat; } const ac = renderer.autoClear; renderer.autoClear = false; camera.layers.set(2); renderer.render(scene, camera); camera.layers.set(0); renderer.autoClear = ac; i = 0; for (const m of rigged) m.material = mats[i++]; }
+    if (rigged.size) { let i = 0; const mats = []; for (const m of rigged) { m.visible = rv[i++]; mats.push(m.material); m.material = m.userData.normalMat; } const ac = renderer.autoClear; renderer.autoClear = false; const bg = scene.background; scene.background = null; /* a Color background force-clears depth, which let rigged outlines show through walls */ camera.layers.set(2); renderer.render(scene, camera); camera.layers.set(0); scene.background = bg; renderer.autoClear = ac; i = 0; for (const m of rigged) m.material = mats[i++]; }
     scene.fog = fog; fx.forEach((o, i) => { o.visible = vis[i]; });
     renderer.setRenderTarget(null); renderer.render(postScene, postCam);
   }

@@ -5,6 +5,7 @@
 // buildCamp: a themed encampment ring (barricade, tents, banner, bonfire, the leader's dais).
 import * as THREE from '../node_modules/three/build/three.module.js';
 import { toon, canvasTex, inkLine, woodTex, seeded } from '../engine/ink.js';
+import { createKit } from './detail.js';
 
 const signTex = (txt, bg, fg = '#f4eedc', w = 512, h = 112, font = 62) => canvasTex(w, h, (g) => { g.fillStyle = bg; g.fillRect(0, 0, w, h); g.fillStyle = fg; g.font = `bold ${font}px sans-serif`; g.textAlign = 'center'; g.fillText(txt, w / 2, h * 0.68, w - 20); g.strokeStyle = '#0d0b12'; g.lineWidth = 8; g.strokeRect(0, 0, w, h); });
 const facade = (base, trim, rows = 2, door = true) => canvasTex(256, 256, (g, w, h) => { g.fillStyle = base; g.fillRect(0, 0, w, h); for (let i = 0; i < 900; i++) { g.fillStyle = `rgba(0,0,0,${Math.random() * 0.08})`; g.fillRect(Math.random() * w, Math.random() * h, 4, 4); }
@@ -49,7 +50,8 @@ export function buildTown(ink, col, o) {
   const pave = add(new THREE.Mesh(new THREE.PlaneGeometry(W, D), toon('#ffffff', { map: paveTex }))); pave.rotation.x = -Math.PI / 2; pave.position.set(X, 0.02, Z);
 
   // ---- districts ----
-  const bld = (bx, bz, bw, bd, bh, label, base, trim, signCol = '#2a1a10', ry = 0) => { const tex = facade(base, trim, bh > 6 ? 3 : 2); const m = add(new THREE.Mesh(new THREE.BoxGeometry(bw, bh, bd), toon('#ffffff', { map: tex }))); m.position.set(bx, bh / 2, bz); m.rotation.y = ry; col.box(bx, bz, bw / 2, bd / 2, -ry);
+  const taken = []; // [x0, z0, x1, z1] footprints (plus door clearance) the house filler must keep clear of
+  const bld = (bx, bz, bw, bd, bh, label, base, trim, signCol = '#2a1a10', ry = 0) => { { const sw = Math.abs(Math.sin(ry)) > 0.5; const hw = (sw ? bd : bw) / 2 + 4.5, hd = (sw ? bw : bd) / 2 + 4.5; taken.push([bx - hw, bz - hd, bx + hw, bz + hd]); } const tex = facade(base, trim, bh > 6 ? 3 : 2); const m = add(new THREE.Mesh(new THREE.BoxGeometry(bw, bh, bd), toon('#ffffff', { map: tex }))); m.position.set(bx, bh / 2, bz); m.rotation.y = ry; col.box(bx, bz, bw / 2, bd / 2, -ry);
     const roof = add(new THREE.Mesh(new THREE.BoxGeometry(bw + 0.6, 0.5, bd + 0.6), toon(trim))); roof.position.set(bx, bh + 0.25, bz); roof.rotation.y = ry;
     if (label) { const s = add(new THREE.Mesh(new THREE.PlaneGeometry(Math.min(bw, 8), 1.2), new THREE.MeshBasicMaterial({ map: signTex(label, signCol), side: THREE.DoubleSide }))); const f = new THREE.Vector3(0, 0, bd / 2 + 0.06).applyAxisAngle(new THREE.Vector3(0, 1, 0), ry); s.position.set(bx + f.x, Math.min(bh - 0.8, 3.6), bz + f.z); s.rotation.y = ry; fx.push(s); }
     const door = new THREE.Vector3(0, 0, bd / 2 + 1.6).applyAxisAngle(new THREE.Vector3(0, 1, 0), ry); return [bx + door.x, bz + door.z]; };
@@ -78,11 +80,8 @@ export function buildTown(ink, col, o) {
     if (floor >= 3) east.push(['guild', bld(...L(0.62, 0.45), 16, 10, 8, 'GUILD HALL', '#5a3a6a', '#e8c040', '#3a1a4a', -Math.PI / 2)]);
     else east.push(['training', null]);
     if (o.callings) east.push(['callings', bld(...L(0, -0.72), 18, 10, 9, 'HALL OF CALLINGS', '#6a5a7a', '#F5C518', '#2a1a3a', 0)]);
-    // houses around the edges
-    for (let i = 0; i < 8; i++) { const fxp = -0.35 + (i % 4) * 0.22, fzp = i < 4 ? -0.82 : 0.82; if (o.callings && i < 4 && Math.abs(fxp) < 0.3) continue; const [hx, hz] = L(fxp, fzp); bld(hx, hz, 8, 7, 5 + (i % 3) * 1.5, null, ['#8a6a5a', '#6a7a8a', '#9a8a6a', '#7a5a6a'][i % 4], ['#3a2a24', '#2a3a4a'][i % 2], null, fzp < 0 ? 0 : Math.PI); }
   } else {
     east.push(['saferoom', bld(...L(0.55, 0), 7, 6, 4, 'SAFE ROOM', '#3a4a5a', '#5ad86a', '#0a3a12', -Math.PI / 2)]);
-    for (let i = 0; i < 3; i++) { const [hx, hz] = L(-0.2 + i * 0.3, -0.7); bld(hx, hz, 6, 5, 4, null, ['#8a6a5a', '#6a7a8a', '#9a8a6a'][i], '#3a2a24', null, 0); }
   }
   for (const [kind, door] of east) if (door) { spots.doors.push({ kind, x: door[0], z: door[1] }); const glow = new THREE.PointLight(kind === 'saferoom' ? '#5aff7a' : '#ffd080', 6, 9, 1.4); glow.position.set(door[0], 3, door[1]); scene.add(glow); }
   spots.inn = (spots.doors.find((d) => d.kind === 'inn') || {}); spots.saferoom = spots.doors.find((d) => d.kind === 'saferoom'); spots.guild = spots.doors.find((d) => d.kind === 'guild'); spots.callings = spots.doors.find((d) => d.kind === 'callings');
@@ -95,9 +94,54 @@ export function buildTown(ink, col, o) {
   const lampM = new THREE.MeshBasicMaterial({ color: new THREE.Color('#ffe0a0').multiplyScalar(2.2) });
   for (let i = 0; i < (big ? 6 : 3); i++) { const lz = Z - D / 2 + (i + 0.5) * D / (big ? 6 : 3); for (const s of [-1, 1]) { const lx = X + s * 5; const p = add(new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.1, 4, 6), toon('#2a2a2e'))); p.position.set(lx, 2, lz); const b = add(new THREE.Mesh(new THREE.SphereGeometry(0.22, 8, 6), lampM)); b.position.set(lx, 4.1, lz); fx.push(b); } }
   for (let i = 0; i < (big ? 3 : 1); i++) { const l = new THREE.PointLight('#ffd8a0', 18, 34, 1.3); l.position.set(X, 7, Z - D / 3 + i * D / 3); scene.add(l); }
+  // reserve the market row, the quest square, the training yard and both avenues, then fill every free lot with houses
+  { const [mx] = L(-0.72, 0); taken.push([mx - 5, Z - D / 2, mx + 7, Z + D / 2]); }
+  taken.push([qx - 17, qz - 14, qx + 17, qz + 14]);
+  if (big) { const [tx, tz] = L(0.45, 0.62); taken.push([tx - 9, tz - 7, tx + 9, tz + 7]); }
+  taken.push([X - 7, Z - D / 2, X + 7, Z + D / 2], [X - W / 2, Z - 6.5, X + W / 2, Z + 6.5]);
+  { const own = !o.kit; const kit = o.kit || createKit(add, TOWN_PALETTE); fillHouses({ kit, add, col, X, Z, W, D, taken, big, seed: Math.round(Math.abs(X * 7 + Z * 13)) + floor * 31 }); if (own) kit.flush(); }
   // townsfolk wander inside an inner rect
   spots.inner = { x: X, z: Z, r: Math.min(W, D) / 2 - 6, r0: 5 };
   return { rect: [X - W / 2 - 1, Z - D / 2 - 1, X + W / 2 + 1, Z + D / 2 + 1], spots, gates: gateAt, poi: { name, x: X, z: Z, r: Math.max(W, D) / 2, rect: [X - W / 2, Z - D / 2, X + W / 2, Z + D / 2], kind: 'hub', safe: true, town: true } };
+}
+
+// ---------------- houses ----------------
+// Streets of houses: rows run east-west, alternately facing a lane or backing onto yards. Along each row the houses
+// vary in width, depth, height, setback and roof, sometimes join into terraces, and now and then leave a yard with
+// a tree or a pile of crates. Pieces go through the shared kit (instanced), so a full town stays cheap to draw.
+export const TOWN_PALETTE = [
+  { base: '#8a5a44', trim: '#e8dcc0', style: 'brick' }, { base: '#6a7a8a', trim: '#f0ece0', style: 'siding' }, { base: '#c8b490', trim: '#5a3a2a', style: 'stucco' },
+  { base: '#7a4a3a', trim: '#d8c8a0', style: 'brick' }, { base: '#5a7a6a', trim: '#e8e0d0', style: 'siding' }, { base: '#b8a8a0', trim: '#4a3a3a', style: 'stucco' }, { base: '#9a8a6a', trim: '#f0e8d8', style: 'siding' },
+];
+function fillHouses({ kit, add, col, X, Z, W, D, taken, big, seed }) {
+  const R = (i, k) => seeded(seed * 0.37 + i, k); const B = kit.B; const box = kit.box, cyl = kit.cyl, cone = kit.cone;
+  const crateM = toon('#9a7a4a'), barrelM = toon('#6a4a2a'), leafM = toon('#3a6a3a'), trunkM = toon('#5a3a24'), fenceM = toon('#7a6a5a');
+  const hit = (r) => taken.some((t) => r[0] < t[2] && r[2] > t[0] && r[1] < t[3] && r[3] > t[1]);
+  const x0 = X - W / 2 + 3.5, x1 = X + W / 2 - 3.5; let z = Z - D / 2 + 3.5; let row = 0, n = 0;
+  while (z < Z + D / 2 - 6) {
+    const faceSouth = row % 2 === 1; const depth = 7 + R(row, 1) * 2; // slot depth
+    let x = x0 + R(row, 2) * 2;
+    while (x < x1 - 4) {
+      const i = n++; const w = 5.2 + R(i, 3) * 4.6, d = Math.min(depth - 0.6, 5.2 + R(i, 4) * 2.6); const terrace = R(i, 5) < 0.35;
+      const gap = terrace ? 0.05 : 0.8 + R(i, 6) * 2.6; const setback = (R(i, 7) - 0.5) * 1.2;
+      const cx = x + w / 2, cz = (faceSouth ? z + depth - d / 2 : z + d / 2) + (faceSouth ? -setback : setback) * 0.5;
+      const nearAve = Math.abs(cz - Z) < 16 || Math.abs(cx - X) < 16; const tall = R(i, 8) < (nearAve ? 0.45 : big ? 0.18 : 0.08);
+      const h = tall ? 7.5 + R(i, 9) * 3.5 : 3.6 + R(i, 9) * 2.4; const ry = (faceSouth ? 0 : Math.PI) + (R(i, 10) - 0.5) * 0.06;
+      const rect = [cx - w / 2 - 0.4, cz - d / 2 - 0.4, cx + w / 2 + 0.4, cz + d / 2 + 0.4];
+      if (cx + w / 2 > x1 || hit(rect)) { x += 2.5; continue; }
+      if (R(i, 11) < 0.1) { // a yard: a tree, a fence and a few crates or barrels
+        B.put('trunk', cyl, trunkM, cx, 1.6, cz, 0, 0.25, 3.2, 0.25); B.put('leaf', cone, leafM, cx, 4.4, cz, R(i, 12), 2 + R(i, 13), 3.2, 2 + R(i, 13)); col.circle(cx, cz, 0.4);
+        B.put('fence', box, fenceM, cx, 0.45, faceSouth ? cz + d / 2 : cz - d / 2, 0, w, 0.9, 0.1);
+        for (let k = 0; k < 3; k++) { const px = cx + (R(i, 20 + k) - 0.5) * (w - 1.5), pz = cz + (R(i, 30 + k) - 0.5) * (d - 1.5); if (Math.hypot(px - cx, pz - cz) < 1.2) continue; if (k % 2) B.put('barrel', cyl, barrelM, px, 0.45, pz, 0, 0.35, 0.9, 0.35); else B.put('crate', box, crateM, px, 0.4, pz, R(i, 40 + k) * 3, 0.85, 0.8, 0.85); col.circle(px, pz, 0.5); }
+        x += w + gap; continue; }
+      kit.building(cx, cz, ry, w, d, h, R(i, 14), { roof: tall ? (R(i, 15) < 0.5 ? 'flat' : 'gable') : undefined });
+      col.box(cx, cz, w / 2, d / 2, -ry);
+      // street clutter in front of some doors
+      if (!terrace && R(i, 16) < 0.4) { const fz = faceSouth ? cz + d / 2 + 1.3 : cz - d / 2 - 1.3; const px = cx + (R(i, 17) > 0.5 ? 1 : -1) * (w / 2 - 0.6); if (R(i, 18) < 0.5) B.put('barrel', cyl, barrelM, px, 0.45, fz, 0, 0.35, 0.9, 0.35); else B.put('crate', box, crateM, px, 0.4, fz, R(i, 19) * 3, 0.85, 0.8, 0.85); col.circle(px, fz, 0.45); }
+      x += w + gap;
+    }
+    z += depth + (faceSouth ? 5.5 + R(row, 3) * 2 : 1.2); row++; // lane after a south-facing row, a narrow yard gap after a north-facing one
+  }
 }
 
 // ---------------- encampments ----------------

@@ -39,7 +39,8 @@ function loadGame() { try { const raw = localStorage.getItem(SAVE_KEY); if (!raw
 const LOADED = !QS.has('newgame') && HASH !== 'new' && loadGame();
 if (HASH === 'new' || HASH === 'intro') { try { history.replaceState(null, '', '#floor-0'); } catch (e) {} }
 state.equipped = (it) => Object.values(state.equip).includes(it);
-const xpFor = (lv) => Math.round(60 * lv ** 1.35);
+// Diablo-style curve: early levels come in ~10 kills, then each level takes longer (L5 ~50 kills, L10 ~100)
+const xpFor = (lv) => Math.round(80 * lv * lv + 120 * lv);
 state.xpNext = xpFor(state.level);
 // starting kit (new game only): no class yet, a basic weapon, a bathrobe, slippers and some supplies
 const STARTER = { main: { name: 'Lead Pipe', family: 'scrap', stats: { dmg: 7 }, host: 'A length of pipe. The oldest weapon in the dungeon.' }, chest: { name: 'Bathrobe', family: 'silly', stats: { armor: 2, CON: 1 }, host: 'You ran out of the house in this. Respect.' }, boots: { name: 'Fuzzy Slippers', family: 'silly', stats: { moveSpeed: 3 }, host: 'Silent, warm, and absolutely not armour.' } };
@@ -258,7 +259,8 @@ function buildWeaponFP() { weaponFP.clear(); const w = state.equip.main; const n
   else add(new THREE.CylinderGeometry(0.022, 0.022, 0.62, 10), metal, 0, 0.28, 0); // the lead pipe
   weaponFP.position.set(0, 0.02, -0.02); weaponFP.rotation.set(-0.5, 0, 0.35); }
 function handGlow(elem) { const c = { fire: '#ffa030', frost: '#bff4ff', storm: '#ffe040', poison: '#9aff5a', holy: '#fff4c0', water: '#5ab8ff', earth: '#e8b060', wind: '#d8fff0', death: '#d8d0ff', shadow: '#c89aff', time: '#ffe8a0', arcane: '#9ad0ff' }[elem] || '#ffa030'; palmFire.material.color.set(c).multiplyScalar(2.5); palmLight.color.set(c); }
-function refreshHand() { const melee = clsDef().attack === 'melee'; weaponFP.visible = melee; palmFire.visible = !melee || state.cls === 'none'; palmFire.scale.setScalar(melee ? 0.5 : 1); handGlow(clsDef().elem || 'fire'); buildWeaponFP(); }
+let handFireIdle = false; // casters keep a flame in the palm; weapon users only flash one when they cast
+function refreshHand() { const melee = clsDef().attack === 'melee'; weaponFP.visible = melee; handFireIdle = !melee; palmFire.visible = handFireIdle; palmFire.scale.setScalar(melee ? 0.7 : 1); handGlow(clsDef().elem || 'fire'); buildWeaponFP(); }
 function rayHit(o, d, max) { const p = o.clone(); for (let t = 0; t < max; t += 0.25) { p.addScaledVector(d, 0.25); const q = p.clone(); col.resolve(q, 0.05, p.y); if (q.distanceToSquared(p) > 1e-6 || p.y < 0.05 || p.y > world.ceiling - 0.1) return p; } return p; }
 const sparks = [];
 function burstAt(p, color, n, spd, grav = 4) { const m = new THREE.MeshBasicMaterial({ color: new THREE.Color(color).multiplyScalar(2.5), transparent: true }); for (let i = 0; i < n; i++) { const s = new THREE.Mesh(new THREE.SphereGeometry(0.03 + Math.random() * 0.04, 5, 4), m); s.position.copy(p); scene.add(s); fx.push(s); sparks.push({ m: s, v: new THREE.Vector3(Math.random() - 0.5, Math.random() * 0.8, Math.random() - 0.5).normalize().multiplyScalar(spd * (2 + Math.random() * 6)), life: 0.4 + Math.random() * 0.5, g: grav }); } }
@@ -311,7 +313,7 @@ function hitPlayer(raw, m, opts = {}) {
 const drops = [];
 function killMob(m) {
   m.dead = true; m.hp = 0; MS.endAct(m); if (m.bar) { m.bar.remove(); m.bar = null; } state.counters.kills++; SFX('death', m.g.position, m);
-  const diff = lvlDiff(m); const xpMul = diff <= -6 ? 0.1 : diff < 0 ? 1 + diff * 0.12 : 1 + diff * 0.15; gainXP(Math.round((m.def.xp + m.lvl * 6) * Math.max(0.1, xpMul) * (m.summoned ? 0.3 : 1))); state.gold += (m.def.boss ? 120 : 2) + Math.floor(Math.random() * 6) * m.lvl;
+  const diff = lvlDiff(m); const xpMul = diff < 0 ? Math.max(0.05, 1 + diff * 0.15) : Math.min(1.25, 1 + diff * 0.05); { const xp = Math.max(1, Math.round(m.def.xp * (1 + 0.4 * (m.lvl - 1)) * xpMul * (m.summoned ? 0.3 : 1))); gainXP(xp); floatText(m.g.position.clone().setY(2.2 * m.bodyScale), `+${xp} XP`, 'xp', 1.3); } state.gold += (m.def.boss ? 120 : 2) + Math.floor(Math.random() * 6) * m.lvl;
   STORY.Q.event('kill', m); if (m.def.boss) { STORY.Q.event('boss', m.kind); state.flags[m.kind + '_handled'] = true; if (m.kind === 'pylon') state.flags.pylon_handled = true; bossDown(m); } else if (m.camp) campCheck(m.camp);
   if (state.counters.kills === 1) ui.host('Your first kill on camera! Our legal team has been notified.');
   // loot pouch with 1-2 items
@@ -429,7 +431,7 @@ function frame(now) {
   if (shake > 0) { camera.position.x += (Math.random() - 0.5) * shake * 0.3; camera.position.y += (Math.random() - 0.5) * shake * 0.3; shake = Math.max(0, shake - dt * 1.5); }
   camera.updateMatrixWorld();
   // hand + ward
-  castAnim = Math.max(0, castAnim - dt); const blk = DEF.blockHeld ? 1 : 0, par = Math.max(0, 1 - (t - DEF.parryT) / 0.35); handFlame.position.set(0.32 - blk * 0.3, -0.3 - (P.onGround ? Math.abs(Math.sin(P.bob)) * 0.015 : 0) + castAnim * 0.3 + blk * 0.18, -0.6 - castAnim * 0.6 + par * 0.15); parryRing.visible = blk > 0 || par > 0; parryRing.material.opacity = 0.25 + par * 0.6; parryRing.scale.setScalar(1 + par * 0.4); palmFire.scale.setScalar(1 + Math.sin(t * 20) * 0.15 + castAnim * 3);
+  castAnim = Math.max(0, castAnim - dt); palmFire.visible = handFireIdle || castAnim > 0; palmLight.intensity = palmFire.visible ? 1.5 : 0; const blk = DEF.blockHeld ? 1 : 0, par = Math.max(0, 1 - (t - DEF.parryT) / 0.35); handFlame.position.set(0.32 - blk * 0.3, -0.3 - (P.onGround ? Math.abs(Math.sin(P.bob)) * 0.015 : 0) + castAnim * 0.3 + blk * 0.18, -0.6 - castAnim * 0.6 + par * 0.15); parryRing.visible = blk > 0 || par > 0; parryRing.material.opacity = 0.25 + par * 0.6; parryRing.scale.setScalar(1 + par * 0.4); palmFire.scale.setScalar(1 + Math.sin(t * 20) * 0.15 + castAnim * 3);
   { const sw = COMBAT.swingT; const k = sw > 0 ? Math.sin((1 - sw / 0.42) * Math.PI) : 0; weaponFP.rotation.set(-0.5 - k * 1.6, k * 0.6, 0.35 - k * 0.9); weaponFP.position.set(-k * 0.15, 0.02 + k * 0.05, -0.02 - k * 0.2); }
   wardBubble.visible = state.ward > 0; wardBubble.material.opacity = 0.08 + Math.sin(t * 6) * 0.03;
   if (!paused) {

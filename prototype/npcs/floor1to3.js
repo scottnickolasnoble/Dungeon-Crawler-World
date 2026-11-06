@@ -34,14 +34,14 @@ export function martaVance() {
   const col = (x, y, z, nx, ny, nz, ao, c) => {
     const u = y / s;
     if (vest(x, y, z) < B.sdf(x, y, z)) { c.copy(C('#5a3a22')).lerp(C('#2a1a10'), clamp01(vnoise(x * 30, y * 30, z * 30) + 0.3)); }
-    else if (u > 1.47) { c.copy(C('#8a6050')).lerp(C('#5a3a30'), clamp01(fbm(x * 20, y * 20, z * 20) + 0.4)); } // skin
+    else if (u > 1.47) { c.copy(C('#8a6050')).lerp(C('#5a3a30'), clamp01(fbm(x * 6, y * 6, z * 6) * 0.25 + 0.15)); } // skin
     else if (u > 0.86) { c.copy(C('#3a8a8a')).lerp(C('#1a4a4a'), clamp01(vnoise(x * 12, y * 12, z * 12) + 0.3)); if (Math.abs(x / s) > 0.3 && u < 1.12) c.copy(C('#8a6050')); } // teal scrub top, bare forearms
     else if (u > 0.1) c.copy(C('#2a5a6a')).lerp(C('#1a2a2a'), clamp01(vnoise(x * 14, y * 14, z * 14) + 0.3)); // scrub trousers
     else c.copy(C('#1a1410'));
     c.multiplyScalar(ao);
   };
   const [mn, mx] = B.bbox;
-  g.add(new THREE.Mesh(buildMesh(sdf, mn, mx, 0.0065, col), skinMaterial({ roughness: 0.65, clearcoat: 0.1, sheen: 0.4, sheenColor: '#a88a7a', pore: 0.5, poreScale: 1.2 })));
+  g.add(new THREE.Mesh(buildMesh(sdf, mn, mx, 0.0065, col, { c: B.headCenter, hs: B.headScale }), skinMaterial({ roughness: 0.65, clearcoat: 0.1, sheen: 0.4, sheenColor: '#a88a7a', pore: 0.25, poreScale: 1.2 })));
   addEyes(g, B, humanEye(['#6a4a2a', '#4a3018', '#2a1a0a', '#000']));
   hair(g, B, { n: 220, len: 0.05, color: '#b8b4ac', droop: 0.012, thick: 0.004, top: 0.05 }); // short grey crop
   const band = new THREE.Mesh(new THREE.TorusGeometry(0.15 * B.headScale, 0.018, 8, 32), new THREE.MeshPhysicalMaterial({ color: '#b01818', roughness: 0.8 })); band.position.set(B.headCenter[0], B.headCenter[1] + 0.05, B.headCenter[2] - 0.01); band.rotation.x = Math.PI / 2 - 0.25; g.add(band);
@@ -75,7 +75,7 @@ export function pickles() {
     c.multiplyScalar(ao);
   };
   const [mn, mx] = B.bbox; mn[2] -= 0.4; mx[2] += 0.2; mn[0] -= 0.2; mx[0] += 0.3;
-  g.add(new THREE.Mesh(buildMesh(sdf, mn, mx, 0.0068, col), skinMaterial({ roughness: 0.8, clearcoat: 0.1, sheen: 1, sheenColor: '#a89888', pore: 0.4 })));
+  g.add(new THREE.Mesh(buildMesh(sdf, mn, mx, 0.0068, col, { c: B.headCenter, hs: B.headScale }), skinMaterial({ roughness: 0.8, clearcoat: 0.1, sheen: 1, sheenColor: '#a89888', pore: 0.25 })));
   const bead = new THREE.MeshPhysicalMaterial({ color: '#050505', roughness: 0.03, clearcoat: 1 });
   for (const p of B.eyes) { const e = new THREE.Mesh(new THREE.SphereGeometry(B.eyeR * 0.7, 12, 8), bead); e.position.set(p[0] * 1.15, p[1] + 0.005, p[2] - 0.005); g.add(e); }
   const tm = toothMat(); tm.color = C('#e8c860'); for (const sx of [-1, 1]) { const t = new THREE.Mesh(new THREE.BoxGeometry(0.012, 0.03, 0.006), tm); t.position.set(sx * 0.007, tip[1] - 0.03, tip[2] - 0.03); g.add(t); }
@@ -100,7 +100,7 @@ export function spinCycle() {
   const s = B.scale;
   const col = (x, y, z, nx, ny, nz, ao, c) => {
     const u = y / s;
-    c.copy(C('#9aa0a8')).lerp(C('#6a7078'), clamp01(fbm(x * 15, y * 15, z * 15) + 0.4)); // vat-grey skin
+    c.copy(C('#9aa0a8')).lerp(C('#6a7078'), clamp01(fbm(x * 6, y * 6, z * 6) * 0.25 + 0.15)); // vat-grey skin
     if (u < 1.35 && u > 0.08 && !(Math.abs(x / s) > 0.29 && u > 0.95 && u < 1.25 && false)) { c.copy(C('#1a2a4a')).lerp(C('#0a1020'), clamp01(vnoise(x * 18, y * 18, z * 18) + 0.3)); if (u > 1.05 && Math.abs(x / s) < 0.12 && z > 0.12 * s) c.copy(C('#c8b020')); } // navy overalls with bib
     if (Math.abs(x / s) > 0.3 && u > 0.82 && u < 1.15) c.copy(C('#9aa0a8')); // bare grey forearms
     if (u < 0.08) c.copy(C('#1a1a1a'));
@@ -108,7 +108,7 @@ export function spinCycle() {
     c.multiplyScalar(ao);
   };
   const [mn, mx] = B.bbox;
-  g.add(new THREE.Mesh(buildMesh(B.sdf, mn, mx, 0.0075, col), skinMaterial({ roughness: 0.5, clearcoat: 0.3, sheen: 0.3, sheenColor: '#c8d0d8', pore: 0.3 })));
+  g.add(new THREE.Mesh(buildMesh(B.sdf, mn, mx, 0.0075, col, { c: B.headCenter, hs: B.headScale }), skinMaterial({ roughness: 0.5, clearcoat: 0.3, sheen: 0.3, sheenColor: '#c8d0d8', pore: 0.25 })));
   addEyes(g, B, eyeTexture({ sclera: '#d8d8d8', iris: ['#c8c8c8', '#a8a8a8', '#787878', '#202020'], pupil: 'round', irisR: 70, veins: 0 }), 0.9);
   // headset, crew lanyard, a heaving laundry sack
   const hc = B.headCenter, hs = B.headScale;
@@ -137,14 +137,14 @@ export function oldReggie() {
   const col = (x, y, z, nx, ny, nz, ao, c) => {
     const u = y / s;
     if (cardi(x, y, z) < B.sdf(x, y, z)) { c.copy(C('#7a5a3a')).lerp(C('#3a2a1a'), clamp01(vnoise(x * 25, y * 25, z * 25) + 0.3)); if (Math.abs(Math.sin(u * 40)) < 0.08) c.lerp(C('#a8803a'), 0.3); }
-    else if (u > 1.45) { c.copy(C('#e0b8a0')).lerp(C('#a87a6a'), clamp01(fbm(x * 18, y * 18, z * 18) + 0.4)); if (vnoise(x * 40, y * 40, z * 40) > 0.55) c.lerp(C('#8a5a3a'), 0.5); } // aged skin with liver spots
+    else if (u > 1.45) { c.copy(C('#e0b8a0')).lerp(C('#a87a6a'), clamp01(fbm(x * 6, y * 6, z * 6) * 0.25 + 0.15)); if (vnoise(x * 40, y * 40, z * 40) > 0.78) c.lerp(C('#8a5a3a'), 0.3); } // aged skin with liver spots
     else if (u > 0.1) c.copy(C('#4a4a42')).lerp(C('#2a2a24'), clamp01(vnoise(x * 14, y * 14, z * 14) + 0.3)); // old trousers
     else c.copy(C('#2a1a10'));
     if (Math.abs(x / s) > 0.3 && u > 0.82 && u < 1.1 && cardi(x, y, z) > B.sdf(x, y, z)) c.copy(C('#e0b8a0'));
     c.multiplyScalar(ao);
   };
   const [mn, mx] = B.bbox; mn[0] -= 0.05; mx[0] += 0.05;
-  g.add(new THREE.Mesh(buildMesh(sdf, mn, mx, 0.0065, col), skinMaterial({ roughness: 0.7, clearcoat: 0.1, sheen: 0.5, sheenColor: '#c8a890', pore: 1.0, poreScale: 1.0 })));
+  g.add(new THREE.Mesh(buildMesh(sdf, mn, mx, 0.0065, col, { c: B.headCenter, hs: B.headScale }), skinMaterial({ roughness: 0.7, clearcoat: 0.1, sheen: 0.5, sheenColor: '#c8a890', pore: 0.25, poreScale: 1.0 })));
   addEyes(g, B, humanEye(['#7a9aaa', '#5a7a8a', '#3a4a5a', '#000']));
   hair(g, B, { n: 70, len: 0.06, color: '#e8e4dc', droop: 0.02, thick: 0.004, top: -0.2, faceClear: 0.2 }); // wispy white fringe around a bald top
   // long white beard

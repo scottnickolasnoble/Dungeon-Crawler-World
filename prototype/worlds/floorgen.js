@@ -3,10 +3,11 @@
 // givers, and its roaming monsters. Around every town there's an "outskirts" buffer with only weak critters.
 import * as THREE from '../node_modules/three/build/three.module.js';
 import { toon, canvasTex, inkLine, woodTex, rnd, seeded } from '../engine/ink.js';
-import { buildTown, buildCamp } from './town.js';
+import { buildTown, buildCamp, TOWN_PALETTE } from './town.js';
+import { createKit, jgrid, cullTiles, resetTiles } from './detail.js';
 import { townFillers } from '../game/npcs.js';
 
-export function buildFloor(ink, col, cfg, onProgress = () => {}) {
+export function buildFloor(ink, col, cfg, onProgress = () => {}) { resetTiles();
   const { scene, fx } = ink; const SIZE = cfg.size || 720, CEIL = cfg.ceil || 10;
   const add = (o) => { scene.add(o); return o; }; const at = (m, x, y, z) => { m.position.set(x, y, z); return m; };
   const pl = (c, i, d, x, y, z) => { const l = new THREE.PointLight(c, i, d, 1.4); l.position.set(x, y, z); scene.add(l); return l; };
@@ -26,18 +27,19 @@ export function buildFloor(ink, col, cfg, onProgress = () => {}) {
   for (const c of cfg.camps || []) zones.push({ c: [c.x, c.z, (c.r || 20) + 8] });
   for (const l of cfg.landmarks || []) zones.push({ c: [l.x, l.z, l.r || 16] });
   const inZone = (x, z, pad = 0) => zones.some((q) => (q.rect ? x > q.rect[0] - pad && x < q.rect[2] + pad && z > q.rect[1] - pad && z < q.rect[3] + pad : Math.hypot(x - q.c[0], z - q.c[1]) < q.c[2] + pad));
-  const H = { scene, fx, col, add, at, pl, toon, canvasTex, inkLine, woodTex, rnd, seeded, SIZE, CEIL, map, inZone, ticks, THREE, ink };
+  const H = { scene, fx, col, add, at, pl, toon, canvasTex, inkLine, woodTex, rnd, seeded, SIZE, CEIL, map, inZone, ticks, THREE, ink, createKit, jgrid };
   // ---- obstacles ----
   cfg.scatter && cfg.scatter(H); onProgress(0.3);
   // ---- hub town ----
-  const hub = buildTown(ink, col, { ...hubCfg, name: cfg.hubName });
+  const townKit = createKit(add, cfg.townPalette || TOWN_PALETTE); // shared by the hub and the villages, drawn instanced
+  const hub = buildTown(ink, col, { ...hubCfg, name: cfg.hubName, kit: townKit });
   map.pois.push(hub.poi); noMob.push(hub.rect); doors.push(...hub.spots.doors.map((d) => ({ ...d, town: cfg.hubName })));
   dummies.push(...hub.spots.dummies);
   cfg.hubDecor && cfg.hubDecor(H, hub); onProgress(0.45);
   // ---- villages ----
   const villageSpots = [];
-  for (const v of cfg.villages || []) { const t = buildTown(ink, col, { x: v.x, z: v.z, w: 64, d: 52, style: v.style || hubCfg.style, gates: v.gates || ['S', 'N'], floor: cfg.floor, big: false, name: v.name }); t.poi.kind = 'hub'; map.pois.push(t.poi); noMob.push(t.rect); doors.push(...t.spots.doors.map((d) => ({ ...d, town: v.name }))); villageSpots.push([v, t]); }
-  onProgress(0.55);
+  for (const v of cfg.villages || []) { const t = buildTown(ink, col, { kit: townKit, x: v.x, z: v.z, w: 64, d: 52, style: v.style || hubCfg.style, gates: v.gates || ['S', 'N'], floor: cfg.floor, big: false, name: v.name }); t.poi.kind = 'hub'; map.pois.push(t.poi); noMob.push(t.rect); doors.push(...t.spots.doors.map((d) => ({ ...d, town: v.name }))); villageSpots.push([v, t]); }
+  townKit.flush(); onProgress(0.55);
   // ---- camps ----
   for (const c of cfg.camps || []) { const cp = buildCamp(ink, col, { ...c }); ticks.push(cp.tick); map.pois.push(cp.poi);
     const n = c.count || 10; for (let i = 0; i < n; i++) { const a = (i / n) * Math.PI * 2 + 0.2, r = (c.r || 20) * (0.35 + (i % 3) * 0.2); const kind = Array.isArray(c.mob) ? c.mob[i % c.mob.length] : c.mob; mobs.push({ kind, variant: i, lvl: c.lvl[0] + (i % (c.lvl[1] - c.lvl[0] + 1)), camp: c.camp, x: c.x + Math.cos(a) * r, z: c.z + Math.sin(a) * r }); }
@@ -68,7 +70,7 @@ export function buildFloor(ink, col, cfg, onProgress = () => {}) {
     for (const q of v.quests || []) npcs.push({ ...q, x: t.spots.quests[0][0], z: t.spots.quests[0][1] });
     npcs.push(...townFillers({ x: v.x, z: v.z, r: 18, r0: 4, count: 5, races: v.races || T.races, seed: Math.abs(v.x) % 7 })); }
   onProgress(0.9);
-  const tick = (t) => { for (const f of ticks) f(t); cfg.tick && cfg.tick(t); };
+  let cullT = 0; const tick = (t) => { for (const f of ticks) f(t); cfg.tick && cfg.tick(t); if (t - cullT > 0.25) { cullT = t; cullTiles(ink.camera.position, Math.max(globalThis.__VIEW || 70, scene.fog ? scene.fog.far * 0.9 : 0)); } }; // fogged-out tiles are invisible anyway
   onProgress(1);
   return { map, mobs, npcs, doors, noMob, dummies, stairs: cfg.stairs, tick, size: SIZE, ceiling: CEIL, hub };
 }

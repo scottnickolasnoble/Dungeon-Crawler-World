@@ -37,23 +37,28 @@ export function raceBody(race, { arms = ['down', 'down'], outfit = null, variant
   if (R.tail === 'rat') parts.push((x, y, z) => chain(x, y, z, [[0, 0.82 * s, -0.12 * s], [0.08, 0.5 * s, -0.4 * s], [0.25, 0.15 * s, -0.5 * s], [0.4, 0.04, -0.35 * s]], [0.035, 0.025, 0.015, 0.008], 0.02));
   if (R.tail === 'fox') parts.push((x, y, z) => chain(x, y, z, [[0, 0.82 * s, -0.12 * s], [0.05, 0.62 * s, -0.42 * s], [0.18, 0.35 * s, -0.58 * s], [0.3, 0.2 * s, -0.5 * s]], [0.06, 0.12, 0.1, 0.03], 0.05));
   const extra = (x, y, z) => { let d = 1e9; for (const f of parts) d = Math.min(d, f(x, y, z)); return d; };
-  const sdf = (x, y, z) => { let d = parts.length ? smin(B.sdf(x, y, z), extra(x, y, z), 0.02) : B.sdf(x, y, z); if (R.cracks && Math.abs(d) < 0.03) d += Math.abs(vnoise(x * 6, y * 6, z * 6)) < 0.04 ? 0.008 : 0; return d; };
+  const sdf = (x, y, z) => { let d = parts.length ? smin(B.sdf(x, y, z), extra(x, y, z), 0.02) : B.sdf(x, y, z); if (R.cracks && Math.abs(d) < 0.03 && Math.hypot(x - hc[0], y - hc[1], z - hc[2]) > 0.24 * hs) d += Math.abs(vnoise(x * 6, y * 6, z * 6)) < 0.04 ? 0.008 : 0; return d; };
   const col = (x, y, z, nx, ny, nz, ao, c) => {
     const u = y / s;
-    c.copy(C(skin[0])).lerp(C(skin[1]), clamp01(fbm(x * (R.metal ? 4 : 14), y * (R.metal ? 4 : 14), z * (R.metal ? 4 : 14)) + 0.4));
+    // even skin tone with only a faint variation (strong noise read as blotches on faces); crevices darken via AO
+    c.copy(C(skin[0])).lerp(C(skin[1]), R.metal ? clamp01(fbm(x * 4, y * 4, z * 4) + 0.4) : clamp01(0.12 + fbm(x * 5, y * 5, z * 5) * 0.18));
+    // painted face: lips, brows, a touch of warmth on the cheeks (races with a human-ish face)
+    if (!R.snout && !R.metal) { const dm = Math.hypot((x - B.mouth[0]) / 1.9, (y - B.mouth[1]) * 1.4, z - B.mouth[2]);
+      if (dm < 0.022 * hs && nz > 0.2) c.lerp(C(R.lips || '#9a4a44'), 0.55 * (1 - dm / (0.022 * hs)));
+      for (const e of B.eyes) { const db = Math.hypot((x - e[0]) * 0.7, (y - (e[1] + 0.034 * hs)) * 2.2, z - e[2] + 0.004); if (db < 0.026 * hs && nz > 0.1) c.lerp(C(R.brow || '#2a1a12'), 0.7); const dc = Math.hypot(x - e[0] * 1.15, y - (e[1] - 0.05 * hs), z - e[2]); if (dc < 0.035 * hs && nz > 0.2 && !R.cracks) c.lerp(C('#d86a5a'), 0.18 * (1 - dc / (0.035 * hs))); } }
     if (R.spots && vnoise(x * 18, y * 18, z * 18) > 0.4) c.lerp(C(R.spots), 0.6);
     if (R.muzzle && (z > hc[2] + 0.1 * hs && y < hc[1]) || (R.muzzle && ny < -0.4 && u > 1.1)) c.lerp(C(R.muzzle), 0.8);
-    if (R.cracks && Math.abs(vnoise(x * 6, y * 6, z * 6)) < 0.04) c.copy(C(R.cracks)).multiplyScalar(1.6);
+    if (R.cracks && Math.hypot(x - hc[0], y - hc[1], z - hc[2]) > 0.24 * hs && Math.abs(vnoise(x * 6, y * 6, z * 6)) < 0.04) c.copy(C(R.cracks)).multiplyScalar(1.6);
     if (R.metal && Math.abs(Math.sin(y * 28)) < 0.05) c.multiplyScalar(0.4); // panel seams
     if (B.snoutTip && Math.hypot(x - B.snoutTip[0], y - B.snoutTip[1], z - B.snoutTip[2]) < 0.04) c.copy(C(race === 'fennix' ? '#1a1410' : '#d88a8a'));
     if (outfit) { const o = outfit(u, x / s, y / s, z / s, c); if (o) c.copy(o); }
     c.multiplyScalar(ao);
   };
   const [mn, mx] = B.bbox; mn[2] -= R.tail ? 0.5 : 0.05; mx[2] += R.snout ? 0.2 : 0.05; mx[1] += R.ears === 'fox' ? 0.2 : 0.02; mn[0] -= 0.05; mx[0] += 0.05;
-  const mat = R.metal ? new THREE.MeshPhysicalMaterial({ vertexColors: true, metalness: 0.85, roughness: 0.32, clearcoat: 0.4 }) : skinMaterial({ roughness: R.wet ? 0.25 : 0.62, clearcoat: R.wet ? 1 : 0.15, sheen: race === 'fennix' || race === 'gutterkin' ? 1 : 0.3, sheenColor: '#c8b8a8', pore: R.wet ? 0.3 : 0.6 });
+  const mat = R.metal ? new THREE.MeshPhysicalMaterial({ vertexColors: true, metalness: 0.85, roughness: 0.32, clearcoat: 0.4 }) : skinMaterial({ roughness: R.wet ? 0.25 : 0.62, clearcoat: R.wet ? 1 : 0.15, sheen: race === 'fennix' || race === 'gutterkin' ? 1 : 0.3, sheenColor: '#c8b8a8', pore: R.wet ? 0.2 : 0.25 });
   if (R.glow && !R.metal) { mat.emissive = C(R.glow); mat.emissiveIntensity = 0.3; }
   const step = Math.max(0.0068, 0.0068 * s) * (globalThis.__NPC_STEP || 1);
-  g.add(new THREE.Mesh(buildMesh(sdf, mn, mx, step, col), mat));
+  g.add(new THREE.Mesh(buildMesh(sdf, mn, mx, step, col, { c: hc, hs }), mat));
   // eyes
   if (R.metal) for (const p of B.eyes) g.add(P(new THREE.SphereGeometry(B.eyeR * 0.8, 10, 8), glow(R.glow, 3.5), p));
   else if (race === 'gutterkin') for (const p of B.eyes) g.add(P(new THREE.SphereGeometry(B.eyeR * 0.7, 10, 8), new THREE.MeshPhysicalMaterial({ color: '#050505', roughness: 0.03, clearcoat: 1 }), [p[0] * 1.15, p[1], p[2]]));

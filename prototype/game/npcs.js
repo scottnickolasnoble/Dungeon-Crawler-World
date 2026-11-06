@@ -36,7 +36,7 @@ export function createNPCSystem(ctx) {
     let [x, z] = ctx.nav ? ctx.nav.nearestFree(spec.x, spec.z) : [spec.x, spec.z];
     const root = new THREE.Group(); const body = model(spec); root.add(body); root.position.set(x, 0, z); root.rotation.y = spec.yaw ?? Math.random() * 6; scene.add(root);
     const sc0 = body.scale.x; body.scale.setScalar(1); const rig = rigCharacter(body, bipedParams(body), [], ctx.rigged); body.scale.setScalar(sc0);
-    const name = spec.name || `${FIRST[(spec.variant * 7 + (spec.seed || 0)) % FIRST.length]}`;
+    const name = spec.name || `${FIRST[((spec.variant || 0) * 7 + (spec.seed || 0)) % FIRST.length]}`;
     const n = { ...spec, name, g: root, body, rig, stride: rig.uHip.value * 1.7, baseScale: body.scale.x, home: new THREE.Vector3(x, 0, z), wp: 0, wait: Math.random() * 3, act: spec.activity || 'idle', t: Math.random() * 10, talkT: 3 + Math.random() * 6, lookAt: 0, route: buildRoute(spec, x, z) };
     npcs.push(n); return n;
   }
