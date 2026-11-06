@@ -7,6 +7,7 @@ import * as T4 from './monsters/tier4.js';
 import * as T5 from './monsters/tier5.js';
 import * as T6 from './monsters/tier6.js';
 import * as BO1 from './monsters/bosses1.js';
+import * as N1 from './npcs/floor1to3.js';
 import { grimeTex, canvasTex, rnd, applyVariant, buildMesh } from './sculpt.js';
 import { humanoid } from './anatomy.js';
 
@@ -14,6 +15,12 @@ import { humanoid } from './anatomy.js';
 const pack = (make, n, spacing) => () => { const g = new THREE.Group(); for (let i = 0; i < n; i++) { const m = make.variants ? make({ variant: i }) : applyVariant(make({ variant: i }), i); m.position.set((i - (n - 1) / 2) * spacing, 0, -Math.abs(i - (n - 1) / 2) * 0.35); m.rotation.y = (i - (n - 1) / 2) * -0.12; g.add(m); } return g; };
 makeGoblin.variants = true;
 const MONSTERS = {
+  marta: [N1.martaVance, [1.0, 1.4, 2.6], [0, 1.0, 0.1], 36],
+  pickles: [N1.pickles, [1.1, 1.2, 2.3], [0, 0.85, 0], 36],
+  spin: [N1.spinCycle, [1.1, 1.5, 3.0], [0, 1.1, 0], 36],
+  reggie: [N1.oldReggie, [1.0, 1.4, 2.6], [0, 1.0, 0.1], 36],
+  wickley: [N1.wickley, [0.9, 1.1, 2.4], [-0.15, 0.7, 0.1], 36],
+  ash: [N1.brotherAsh, [1.0, 1.3, 2.8], [0, 1.0, 0.1], 36],
   pylon: [BO1.sergeantPylon, [2.2, 2.4, 5.4], [0, 1.6, 0.2], 38, -2.2, -1.6],
   bigsucker: [BO1.bigSucker, [3.0, 2.8, 4.2], [0, 1.5, -0.2], 40, -3.5, -2.2],
   ebb: [BO1.headCustodianEbb, [2.2, 2.4, 4.8], [0, 1.6, 0.2], 38, -2.2, -1.8],
