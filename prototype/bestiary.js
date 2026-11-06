@@ -3,12 +3,18 @@ import { makeGoblin } from './creature.js';
 import * as T1 from './monsters/tier1.js';
 import * as T2 from './monsters/tier2.js';
 import * as T3 from './monsters/tier3.js';
+import * as T4 from './monsters/tier4.js';
 import { grimeTex, canvasTex, rnd, applyVariant } from './sculpt.js';
 
 // name -> [builder, camera position, look-at target, fov]
 const pack = (make, n, spacing) => () => { const g = new THREE.Group(); for (let i = 0; i < n; i++) { const m = make.variants ? make({ variant: i }) : applyVariant(make({ variant: i }), i); m.position.set((i - (n - 1) / 2) * spacing, 0, -Math.abs(i - (n - 1) / 2) * 0.35); m.rotation.y = (i - (n - 1) / 2) * -0.12; g.add(m); } return g; };
 makeGoblin.variants = true;
 const MONSTERS = {
+  gladiator: [T4.gladiatorBot, [1.6, 1.8, 3.6], [0, 1.25, 0.2], 36],
+  phantom: [T4.stagePhantom, [1.4, 1.6, 3.6], [0, 1.3, 0.2], 36],
+  imp: [T4.commercialImp, [0.8, 0.9, 1.7], [0, 0.6, 0.05], 36],
+  hype: [T4.hypeBeast, [2.2, 2.2, 5.0], [0, 1.6, 0.3], 36],
+  confetti: [T4.confettiElemental, [1.4, 1.5, 3.4], [0, 1.1, 0], 38],
   wyrm: [T3.sewerWyrm, [1.9, 1.35, 2.5], [0, 0.55, 0.1], 40],
   collector: [T3.debtCollector, [1.3, 1.7, 3.0], [0, 1.35, 0.1], 36],
   choir: [T3.fungalChoir, [1.7, 1.4, 2.8], [0, 0.55, 0], 38],
