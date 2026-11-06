@@ -60,7 +60,7 @@ export function humanoid(P = {}) {
       for (let i = 0; i < 7; i++) d = smin(d, sph(x, y, z, 0, 1.36 - i * 0.065, -0.115 + hz * (1 - i / 7) + Math.sin(i * 0.6) * 0.01, 0.022), 0.03);
       d = smin(d, rcone(ax, y, z, 0.03, 1.34, 0.09 + hz, 0.2 * sw, 1.36, 0.03 + hz, 0.013, 0.012), 0.025);
     }
-    for (const arm of [armL, armR]) {
+    for (const arm of (P.noArms ? [] : [armL, armR])) {
       d = smin(d, chain(x, y, z, arm, [0.062 * b, 0.048 * b, 0.034 * b], 0.05), 0.05);
       const [sh, el, wr] = arm;
       d = smin(d, ell(x, y, z, (sh[0] + el[0]) / 2, (sh[1] + el[1]) / 2, (sh[2] + el[2]) / 2, 0.05 * b, 0.075, 0.05 * b), 0.04); // biceps
@@ -101,6 +101,7 @@ export function humanoid(P = {}) {
   return {
     sdf, scale: s, height: H,
     eyes: [S([eye[0], eye[1], eye[2]]), S([-eye[0], eye[1], eye[2]])], eyeR: 0.027 * hs * s,
+    shoulderL: S(armL[0]), shoulderR: S(armR[0]),
     mouth: S(hp(0, -0.138, 0.2)), headTop: S(top), headCenter: S(HC), headScale: hs * s,
     handL: handOf(armL), handR: handOf(armR),
     bbox: [S([-0.62 * sw * Math.max(1, b * 0.8), -0.02, -0.4 - Math.max(0, k) * 0.1]), S([0.62 * sw * Math.max(1, b * 0.8), 1.86 + (hs - 1) * 0.4, 0.55 + hz * 2 + Math.max(0, k) * 0.2])],

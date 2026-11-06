@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Combat demo</title>
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Barlow+Condensed:wght@500;700;800&family=Permanent+Marker&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#000;overflow:hidden}
+#stage{position:absolute;left:0;top:0;width:1280px;height:720px}
+#hud{position:absolute;left:0;top:0;width:1280px;height:720px;font-family:'Barlow Condensed',sans-serif;color:#F4EEDC;pointer-events:none;overflow:hidden}
+.ink{text-shadow:2px 2px 0 #0D0B12,-1px -1px 0 #0D0B12,1px -1px 0 #0D0B12,-1px 1px 0 #0D0B12}
+.bar{height:16px;background:#0D0B12;border:3px solid #0D0B12;transform:skewX(-14deg);position:relative;overflow:hidden}
+.bar>div{position:absolute;left:0;top:0;bottom:0}
+#trollBar{position:absolute;left:340px;top:20px;width:600px;text-align:center}
+#trollBar .name{font-family:Bangers,cursive;font-size:30px;letter-spacing:2px}
+#trollBar .bar{height:22px}
+.tag{display:inline-flex;align-items:center;background:#E5484D;color:#fff;border:2px solid #0D0B12;font-weight:800;font-size:14px;padding:0 6px;margin-left:6px;vertical-align:middle;letter-spacing:1px}
+#player{position:absolute;left:24px;bottom:22px;width:330px}
+#player .row{display:flex;align-items:center;gap:8px;margin-top:5px;font-weight:800;font-size:16px}
+#player .row .lab{width:30px}
+#player .bar{flex:1}
+.icons{display:flex;gap:6px;margin-bottom:6px;height:52px}
+.icon{width:46px;height:46px;border:3px solid #0D0B12;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:800;font-size:12px;box-shadow:3px 3px 0 #0D0B12;position:relative}
+.icon svg{width:24px;height:24px}
+.icon .t{position:absolute;bottom:-1px;right:2px;font-size:12px}
+.buff{background:#F5C518;color:#0D0B12}.debuff{background:#7a1018;color:#fff}
+#hotbar{position:absolute;left:50%;bottom:22px;transform:translateX(-50%);display:flex;gap:10px}
+.key{width:74px;height:66px;background:#F4EEDC;color:#0D0B12;border:4px solid #0D0B12;box-shadow:4px 4px 0 #0D0B12;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:800;font-size:13px;line-height:1.05;text-align:center;position:relative;transition:none}
+.key b{font-family:Bangers,cursive;font-size:17px;letter-spacing:1px;font-weight:400}
+.key .k{position:absolute;left:4px;top:1px;font-size:11px}
+.key.on{background:#F5C518;transform:translateY(-6px) scale(1.06)}
+.key.special{background:#2a1a3a;color:#F5C518}.key.special.on{background:#ff9a2a;color:#0D0B12}
+#cross{position:absolute;left:640px;top:360px;width:50px;height:50px;margin:-25px 0 0 -25px}
+#host{position:absolute;right:22px;bottom:110px;width:400px;background:#F4EEDC;color:#0D0B12;border:4px solid #0D0B12;box-shadow:6px 6px 0 #0D0B12;padding:10px 14px;transform:rotate(-1deg)}
+#host .who{display:flex;justify-content:space-between;font-family:Bangers,cursive;font-size:19px;letter-spacing:2px;color:#B4441A}
+#host .live{background:#E5484D;color:#fff;font-family:'Barlow Condensed';font-weight:800;font-size:12px;padding:0 6px;letter-spacing:0}
+#hostTxt{font-family:'Permanent Marker',cursive;font-size:18px;line-height:1.3}
+.dmg{position:absolute;left:0;top:0;font-family:Bangers,cursive;font-size:40px;color:#F4EEDC;-webkit-text-stroke:3px #0D0B12;paint-order:stroke fill;opacity:0;white-space:nowrap}
+.dmg.crit{color:#F5C518;font-size:50px}.dmg.huge{color:#ff9a2a;font-size:84px}
+#pDmg{position:absolute;left:120px;bottom:150px;font-family:Bangers,cursive;font-size:44px;color:#ff4a4a;-webkit-text-stroke:3px #0D0B12;paint-order:stroke fill;opacity:0}
+.banner{position:absolute;left:0;right:0;text-align:center;font-family:Bangers,cursive;letter-spacing:3px;-webkit-text-stroke:3px #0D0B12;paint-order:stroke fill;opacity:0}
+#warn{top:120px;font-size:44px;color:#ff4a3a}
+#furyTxt{top:150px;font-size:52px;color:#F5C518}
+#cleaveTxt{top:150px;font-size:52px;color:#ff9a2a}
+#kill{top:230px;font-size:80px;color:#F5C518}
+#loot{position:absolute;left:50%;top:330px;transform:translateX(-50%);background:#0D0B12cc;border:3px solid #A06CF0;padding:8px 18px;font-weight:800;font-size:20px;opacity:0;text-align:center}
+#loot .ep{color:#C79BFF}
+#combo{position:absolute;right:40px;top:220px;font-family:Bangers,cursive;color:#F5C518;-webkit-text-stroke:2px #0D0B12;paint-order:stroke fill;text-align:right;opacity:0}
+#combo #comboN{font-size:64px;line-height:.9;display:block}#combo span{font-size:24px;letter-spacing:2px}
+#vign{position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(0,0,0,0) 45%,rgba(200,10,10,.9) 100%);opacity:0}
+#furyFlash{position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(255,180,40,0) 30%,rgba(255,170,40,.8) 100%);opacity:0}
+</style></head><body>
+<div id="stage"></div>
+<div id="hud">
+  <div id="vign"></div><div id="furyFlash"></div>
+  <div id="trollBar">
+    <div class="name ink">CAVE TROLL · LV 6 <span class="tag">ELITE</span><span class="tag" id="tEnr" style="background:#ff7a1a;display:none">ENRAGED</span></div>
+    <div class="bar"><div id="tHpGhost" style="background:#F4EEDC;width:100%"></div><div id="tHp" style="background:#E5484D;width:100%"></div></div>
+    <div class="ink" style="font-weight:800;font-size:15px;margin-top:3px" id="tHpTxt">620 / 620</div>
+  </div>
+  <svg id="cross" viewBox="0 0 50 50" aria-hidden="true">
+    <circle cx="25" cy="25" r="22" fill="none" stroke="#0D0B12" stroke-width="6" opacity=".55"/>
+    <circle id="cdRing" cx="25" cy="25" r="22" fill="none" stroke="#F5C518" stroke-width="3.5" stroke-dasharray="138" stroke-dashoffset="0" transform="rotate(-90 25 25)"/>
+    <circle cx="25" cy="25" r="2.5" fill="#F4EEDC" stroke="#0D0B12" stroke-width="1"/>
+  </svg>
+  <div id="warn" class="banner">! GROUND SLAM — MOVE !</div>
+  <div id="furyTxt" class="banner">BATTLE FURY · +45% ATTACK SPEED</div>
+  <div id="cleaveTxt" class="banner">WHIRLWIND CLEAVE!</div>
+  <div id="kill" class="banner">TROLL SLAIN!</div>
+  <div id="loot"><div>+180 XP · +12 FANS</div><div class="ep">EPIC: Grudgestone Knuckles</div><div>Troll Hide x3 · Troll Fat (cooking)</div></div>
+  <div id="combo"><span id="comboN">0x</span><span>COMBO</span></div>
+  <div id="pDmg">-32 · STAGGERED</div>
+  <div id="player">
+    <div class="icons">
+      <div class="icon buff" id="bFury" style="display:none"><svg viewBox="0 0 24 24" fill="none" stroke="#0D0B12" stroke-width="2.4" stroke-linecap="round"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg><span class="t" id="bFuryT">12s</span></div>
+      <div class="icon debuff" id="dStag" style="display:none"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M12 3a9 9 0 0 1 9 9M3 12a9 9 0 0 1 9-9M12 21a9 9 0 0 1-9-9"/></svg><span class="t" id="dStagT">2s</span></div>
+      <div class="icon debuff" id="dBleed" style="display:none"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round"><path d="M12 3c3 4 6 7.5 6 11a6 6 0 0 1-12 0c0-3.5 3-7 6-11z"/></svg><span class="t" id="dBleedT">4s</span></div>
+    </div>
+    <div class="ink" style="font-family:Bangers,cursive;font-size:24px;letter-spacing:2px">DALE · LV 9 SPELLSWORD</div>
+    <div class="row ink"><span class="lab">HP</span><div class="bar"><div id="pHp" style="background:#E5484D;width:100%"></div></div><span id="pHpTxt" style="width:62px">100 / 100</span></div>
+    <div class="row ink"><span class="lab">ST</span><div class="bar" style="height:11px"><div id="pSt" style="background:#7BE38A;width:100%"></div></div><span style="width:62px"></span></div>
+    <div class="row ink"><span class="lab">MP</span><div class="bar" style="height:11px"><div id="pMp" style="background:#5B8DEF;width:80%"></div></div><span style="width:62px"></span></div>
+  </div>
+  <div id="hotbar">
+    <div class="key" id="k1"><span class="k">LMB</span><b>SLASH</b>combo</div>
+    <div class="key" id="k2"><span class="k">LMB+W</span><b>CHOP</b>heavy</div>
+    <div class="key" id="k3"><span class="k">RMB</span><b>THRUST</b>pierce</div>
+    <div class="key special" id="k4"><span class="k">Q</span><b>WHIRL</b>special<div id="k4cd" style="position:absolute;left:0;right:0;bottom:0;background:#0006;height:0"></div></div>
+    <div class="key"><span class="k">E</span><b>FURY</b>buff</div>
+  </div>
+  <div id="host"><div class="who"><span>THE HOST</span><span class="live">LIVE · 3.4M</span></div><div id="hostTxt"></div></div>
+</div>
+<script type="module" src="./combat.js"></script>
+</body></html>
