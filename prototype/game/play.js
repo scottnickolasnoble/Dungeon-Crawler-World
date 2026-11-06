@@ -2,6 +2,8 @@
 import * as THREE from '../node_modules/three/build/three.module.js';
 import { createInk, Collision } from '../engine/ink.js';
 import { createMobSystem, MOBDEFS, scaleDmg } from './mobs.js';
+import { createAudio } from './audio.js';
+const AU = createAudio();
 import { SKILLS, CLASS, STATS, makeItem, makeRng, openBox, BOXES, ACHIEVEMENTS, CONSUMABLES } from './data.js';
 import { createUI } from './ui.js';
 import { createCrafting, createCraftUI, MATS, TABLES } from './crafting.js';
@@ -76,10 +78,12 @@ const G = { state, derived, gearSkillBonus, spellDamage, cooldownFrac, onPanel: 
   scrapJunk() { const j = state.inv.filter((i) => i.kind === 'gear' && i.rarity === 'junk'); j.forEach((i) => G.scrap(i)); if (!j.length) ui.toast('No junk to scrap', '#9a9a9a', 1500); },
 };
 const ui = createUI(G);
+{ const h = ui.host; ui.host = (t) => { h(t); AU.say(t, 'host'); }; const tg = ui.toggle; ui.toggle = (p) => { SFX('ui'); tg(p); }; }
 const CR = createCrafting(G); const craftUI = createCraftUI(G, CR);
-G.toast = (...a) => ui.toast(...a); G.renderCraft = () => craftUI.render();
+G.toast = (...a) => ui.toast(...a);
+G.renderSettings = () => { const S = AU.settings; $('setList').innerHTML = ['master', 'music', 'sfx', 'voice'].map((k) => `<label class="setRow" for="set_${k}"><span>${{ master: 'Master volume', music: 'Music', sfx: 'Sound effects', voice: 'Voices' }[k]}</span><input type="range" id="set_${k}" min="0" max="1" step="0.05" value="${S[k]}"></label>`).join('') + `<label class="setRow" for="set_hostSpeech"><span>Host voice: spoken (uses your browser's speech voice) instead of babble</span><input type="checkbox" id="set_hostSpeech" ${S.hostSpeech ? 'checked' : ''}></label><button class="cbtn" id="setTest">TEST VOICE</button>`; ['master', 'music', 'sfx', 'voice'].forEach((k) => { $('set_' + k).oninput = (e) => { S[k] = +e.target.value; AU.apply(); }; }); $('set_hostSpeech').onchange = (e) => { S.hostSpeech = e.target.checked; AU.apply(); }; $('setTest').onclick = () => { AU.init(); AU.say('Welcome back, contestant! Please keep your limbs inside the dungeon at all times.', 'host'); }; }; G.renderCraft = () => craftUI.render();
 G.onTables = () => { if (world && world.refreshTables) world.refreshTables(state); saveGame(); };
-G.onCraft = () => { state.counters.crafted = (state.counters.crafted || 0) + 1; if (state.counters.crafted === 1) ui.host('You made a thing! With your hands! The audience is moved. Mildly.'); saveGame(); };
+G.onCraft = () => { SFX('craft'); state.counters.crafted = (state.counters.crafted || 0) + 1; if (state.counters.crafted === 1) ui.host('You made a thing! With your hands! The audience is moved. Mildly.'); saveGame(); };
 function inSafe() { return FLOOR === 'pad' || (lastPOI && lastPOI.safe); }
 function goPad() { if (FLOOR === 'pad') { saveGame(); goFloor(state.lastFloor || '1'); return; } if (!inSafe()) return ui.toast('You can only open your Crash Pad door from a safe zone (settlement or camp).', '#E5484D', 2200); state.lastFloor = FLOOR; saveGame(); goFloor('pad'); }
 function nearSlot() { if (FLOOR !== 'pad' || !world.slots) return -1; let bi = -1, bd = 2.6; world.slots.forEach(([x, z], i) => { const d = Math.hypot(P.pos.x - x, P.pos.z - z); if (d < bd) { bd = d; bi = i; } }); return bi; }
@@ -92,7 +96,7 @@ function throwBomb() {
   const g = new THREE.Mesh(new THREE.SphereGeometry(0.14, 12, 10), new THREE.MeshPhysicalMaterial({ color: '#2a2a2a', roughness: 0.5 })); const spark = new THREE.Mesh(new THREE.SphereGeometry(0.05, 6, 4), new THREE.MeshBasicMaterial({ color: new THREE.Color('#ffd040').multiplyScalar(3) })); spark.position.y = 0.16; g.add(spark); fx.push(spark);
   const dir = new THREE.Vector3(0, 0, -1).applyQuaternion(camera.quaternion);
   g.position.copy(camera.position).addScaledVector(dir, 0.6); scene.add(g);
-  throwables.push({ g, v: dir.multiplyScalar(14).add(new THREE.Vector3(0, 4, 0)), e: it.effect, t: 0 }); castAnim = 0.25;
+  SFX('throw', P.pos); throwables.push({ g, v: dir.multiplyScalar(14).add(new THREE.Vector3(0, 4, 0)), e: it.effect, t: 0 }); castAnim = 0.25;
   ui.toast(`Threw <b>${it.name}</b>`, '#ff8a2a', 900);
 }
 function tickThrowables(dt) {
@@ -102,7 +106,7 @@ function tickThrowables(dt) {
 }
 function bombBlast(p, e) {
   const r = e.radius || 4, dmg = (e.dmg || 60) * (1 + state.base.DEX / 100);
-  burstAt(p, e.burn ? '#ff7a1a' : e.freeze ? '#9ae8ff' : '#ffd040', 60, 1.4); shake = Math.max(shake, 0.35);
+  burstAt(p, e.burn ? '#ff7a1a' : e.freeze ? '#9ae8ff' : '#ffd040', 60, 1.4); SFX('bomb', p); shake = Math.max(shake, 0.35);
   for (const m of mobs) { if (m.dead) continue; const d = m.g.position.distanceTo(p.clone().setY(m.g.position.y)); if (d < r) { hurtMob(m, Math.round(dmg * (1 - d / r * 0.5)), e.burn ? 4 : 0); if ((e.freeze || e.root) && !m.dead) m.stun = e.freeze || e.root; } }
   const pd = P.pos.distanceTo(p); if (pd < r * 0.6) { state.hp -= Math.round(dmg * 0.25); ui.toast('You were in the blast radius. Classic.', '#E5484D', 1400); }
 }
@@ -111,7 +115,7 @@ function clampVitals() { const D = derived(); state.hp = Math.min(state.hp, D.ma
 // ---------------- achievements ----------------
 function achProgress(id) { const c = state.counters; return { firstSteps: `${Math.min(50, Math.floor(c.walked))}/50 m`, tourist: `${state.discovered.size}/3`, cartographer: `${state.discovered.size}/5`, pyro: `${c.burned}/10`, goblinBane: `${c.kills}/10`, warded: `${Math.floor(c.wardAbsorb)}/50`, fullKit: `${Object.keys(state.equip).length}/10`, hoarder: `${c.boxes}/5`, levelUp: `Lv ${state.level}/10` }[id] || ''; }
 function award(id) {
-  if (state.ach[id]) return; const a = ACHIEVEMENTS.find((q) => q.id === id); state.ach[id] = true;
+  if (state.ach[id]) return; const a = ACHIEVEMENTS.find((q) => q.id === id); state.ach[id] = true; SFX('achieve');
   state.inv.push({ uid: 8000 + Math.floor(rng() * 1e6), kind: 'box', box: a.box, name: BOXES[a.box].name, rarity: a.box === 'gold' ? 'epic' : a.box === 'silver' ? 'rare' : 'uncommon', host: `Earned by: ${a.name}. Allegedly.` });
   ui.toast(`<div class="ta">ACHIEVEMENT</div><b>${a.name}</b><div class="sm">${a.desc}</div><div class="sm" style="color:${BOXES[a.box].color}">Reward: ${BOXES[a.box].name}</div>`, BOXES[a.box].color, 6000);
   ui.host({ firstSteps: 'You walked! Fifty whole metres! Somebody get this contestant a medal. Or a box. Here, a box.', tourist: 'Sightseeing during the apocalypse. Bold.', cartographer: 'You found everything. Well, everything we let you find.', firstBlood: 'First blood! The audience cheers. One of them faints.', pyro: 'Ten enemies on fire. You are what our insurance calls "a problem".', goblinBane: 'Ten goblins down. The cone industry is in shambles.', warded: 'Safety first. Boring, but first.', closeCall: 'So close! Ratings love a near-death experience.', fullKit: 'Fully dressed. Fashion is subjective. Yours is wrong.', hoarder: 'Five boxes opened. You are now legally a streamer.', levelUp: 'Level ten! Your mother would be proud. If she were here. She is not.', exit: 'You touched the Exit Sign. It does nothing. But you touched it.' }[id] || 'Achievement!');
@@ -122,7 +126,7 @@ function checkAch() {
   if (c.kills >= 1) award('firstBlood'); if (c.burned >= 10) award('pyro'); if (c.kills >= 10) award('goblinBane'); if (c.wardAbsorb >= 50) award('warded');
   if (Object.keys(state.equip).length >= 10) award('fullKit'); if (c.boxes >= 5) award('hoarder'); if (state.level >= 10) award('levelUp');
 }
-function gainXP(n) { state.xp += n; while (state.xp >= state.xpNext) { state.xp -= state.xpNext; state.level++; state.xpNext = xpFor(state.level); state.statPoints += 5; state.skillPoints += 1; for (const [k, v] of Object.entries(CLASS.auto)) state.base[k] += v; const D = derived(); state.hp = D.maxHp; state.mana = D.maxMana; ui.banner(`LEVEL ${state.level}!`); ui.toast(`<b>Level ${state.level}</b><div class="sm">+5 stat points · +1 skill point · +1 INT +1 CON</div>`, '#F5C518'); ui.host('Level up! You are now slightly less likely to die. Slightly.'); } checkAch(); }
+function gainXP(n) { state.xp += n; while (state.xp >= state.xpNext) { state.xp -= state.xpNext; state.level++; state.xpNext = xpFor(state.level); state.statPoints += 5; state.skillPoints += 1; for (const [k, v] of Object.entries(CLASS.auto)) state.base[k] += v; const D = derived(); state.hp = D.maxHp; state.mana = D.maxMana; ui.banner(`LEVEL ${state.level}!`); SFX('levelup'); ui.toast(`<b>Level ${state.level}</b><div class="sm">+5 stat points · +1 skill point · +1 INT +1 CON</div>`, '#F5C518'); ui.host('Level up! You are now slightly less likely to die. Slightly.'); } checkAch(); }
 
 // ---------------- player controller ----------------
 const P = { pos: new THREE.Vector3(), vel: new THREE.Vector3(), yaw: 0, pitch: 0, onGround: true, bob: 0 };
@@ -130,7 +134,7 @@ const keys = {}; let locked = false;
 document.addEventListener('keydown', (e) => {
   keys[e.code] = true; if (e.repeat) return;
   const k = e.code;
-  if (k === 'KeyI') ui.toggle('inv'); else if (k === 'KeyB') { if (FLOOR === 'pad') ui.toggle('craft'); else ui.toast('Crafting happens in your Crash Pad. Press H in a safe zone.', '#9a9a9a', 1800); } else if (k === 'KeyH' && !ui.isOpen()) goPad(); else if (k === 'KeyC') ui.toggle('char'); else if (k === 'KeyK') ui.toggle('skills'); else if (k === 'KeyM') ui.toggle('map'); else if (k === 'KeyJ') ui.toggle('ach');
+  if (k === 'KeyI') ui.toggle('inv'); else if (k === 'KeyB') { if (FLOOR === 'pad') ui.toggle('craft'); else ui.toast('Crafting happens in your Crash Pad. Press H in a safe zone.', '#9a9a9a', 1800); } else if (k === 'KeyH' && !ui.isOpen()) goPad(); else if (k === 'KeyC') ui.toggle('char'); else if (k === 'KeyK') ui.toggle('skills'); else if (k === 'KeyM') ui.toggle('map'); else if (k === 'KeyJ') ui.toggle('ach'); else if (k === 'KeyP') ui.toggle('settings');
   else if (k === 'Escape') ui.close(); else if (k === 'KeyO') { ink.state.outline = !ink.state.outline; ui.toast(`Ink outlines ${ink.state.outline ? 'on' : 'off'}`, '#9a9a9a', 1200); }
   else if (!ui.isOpen()) { if (k === 'Digit1') cast('firebolt'); if (k === 'Digit2' || k === 'KeyR') cast('fireball'); if (k === 'Digit3' || k === 'KeyQ') cast('flameward'); if (k === 'Digit4') cast('kindle'); if (k === 'KeyE') { const si = nearSlot(); if (si >= 0) useSlot(si); else interact(); } if (k === 'KeyG') throwBomb(); if (k === 'KeyF') { DEF.parryT = performance.now() / 1000; DEF.blockHeld = true; SFX('parryTry', P.pos); } if (k === 'KeyV') dodge(); if (k === 'Space' && P.onGround) { P.vel.y = 5.2; P.onGround = false; } }
 });
@@ -160,6 +164,7 @@ function cast(id) {
   const origin = camera.position.clone().add(new THREE.Vector3(0.25, -0.2, -0.5).applyQuaternion(camera.quaternion));
   if (id === 'firebolt') { const twin = state.skills.firebolt.ups[0] === 0; const n = twin ? 2 : 1; for (let i = 0; i < n; i++) { const d = dir.clone(); if (twin) d.applyAxisAngle(new THREE.Vector3(0, 1, 0), (i - 0.5) * 0.06); spawnProjectile(origin, d, 'firebolt', twin ? 0.65 : 1); } }
   if (id === 'fireball') spawnProjectile(origin, dir, 'fireball', 1);
+  SFX(id === 'flameward' ? 'ward' : id === 'kindle' ? 'firebolt' : id, P.pos);
   if (id === 'flameward') { const L = effLevel('flameward'), D = derived(); state.wardMax = state.ward = 40 + L * 9 + D.spell * 0.4 * (state.skills.flameward.ups[0] === 1 ? 1.5 : 1); ui.toast('Flame Ward', '#ff8a2a', 900); }
   if (id === 'kindle') { const hit = rayHit(origin, dir, 12); burstAt(hit, '#ffb040', 30, 0.5); ui.toast('Kindle: something nearby is now on fire. Congratulations.', '#ffb040', 1500); }
 }
@@ -175,7 +180,7 @@ const sparks = [];
 function burstAt(p, color, n, spd, grav = 4) { const m = new THREE.MeshBasicMaterial({ color: new THREE.Color(color).multiplyScalar(2.5), transparent: true }); for (let i = 0; i < n; i++) { const s = new THREE.Mesh(new THREE.SphereGeometry(0.03 + Math.random() * 0.04, 5, 4), m); s.position.copy(p); scene.add(s); fx.push(s); sparks.push({ m: s, v: new THREE.Vector3(Math.random() - 0.5, Math.random() * 0.8, Math.random() - 0.5).normalize().multiplyScalar(spd * (2 + Math.random() * 6)), life: 0.4 + Math.random() * 0.5, g: grav }); } }
 function explode(p, radius, dmgFn) {
   const s = new THREE.Mesh(new THREE.SphereGeometry(1, 20, 14), new THREE.MeshBasicMaterial({ color: '#ffb040', transparent: true, opacity: 0.8, blending: THREE.AdditiveBlending, depthWrite: false })); s.position.copy(p); scene.add(s); fx.push(s);
-  blasts.push({ m: s, r: radius, life: 0.4, t: 0 }); burstAt(p, '#ff8a2a', 50, 1.2); shake = Math.max(shake, 0.25);
+  blasts.push({ m: s, r: radius, life: 0.4, t: 0 }); burstAt(p, '#ff8a2a', 50, 1.2); SFX('explode', p); shake = Math.max(shake, 0.25);
   for (const m of mobs) if (!m.dead && m.g.position.distanceTo(p) < radius + 0.6) dmgFn(m);
 }
 
@@ -184,12 +189,12 @@ const LVL_COL = (d) => (d >= 5 ? '#ff3a3a' : d >= 3 ? '#ff8a3a' : d >= -2 ? '#f4
 const MS = createMobSystem({ scene, fx, col, P, makeBar,
   playerSafe: () => inSafe(), hitPlayer, kill: (m) => killMob(m), hurt: (m, d, b) => hurtMob(m, d, b),
   burst: (...a) => burstAt(...a), shake: (v) => { shake = Math.max(shake, v); }, banner: (...a) => ui.banner(...a),
-  bark: (m, txt) => { floatText(m.g.position.clone().setY(2.2 * m.bodyScale + 0.3), txt, 'bark', 2.6); SFX('bark', m.g.position, m); },
+  bark: (m, txt) => { floatText(m.g.position.clone().setY(2.2 * m.bodyScale + 0.3), txt, 'bark', 2.6); AU.say(txt, m.kind, m.g.position, { seed: m.spawnSpec.variant || 0, max: 8 }); },
   floatText: (p, t, c) => floatText(p, t, c), zoneTick: (d) => { state.hp -= d; },
   sfx: (n, p) => SFX(n, p), onBossAggro: (m) => { activeBoss = m; ui.banner(m.def.name.toUpperCase(), '#E5484D'); MUSIC('boss'); }, onBossReset: (m) => { if (activeBoss === m) activeBoss = null; MUSIC('explore'); } });
 const mobs = MS.mobs;
 let activeBoss = null;
-let SFX = () => {}, MUSIC = () => {}; // replaced by the audio module when it loads
+const SFX = (n, p) => AU.play(n, p); const MUSIC = (m) => AU.setMood(m);
 function spawnMobs(list) { for (const s of list) MS.spawn(s); }
 function makeBar() { const el = document.createElement('div'); el.className = 'mbar'; el.innerHTML = '<div class="mn"></div><div class="mb"><i></i></div>'; $('hud').appendChild(el); return el; }
 const dmgNums = [];
@@ -250,7 +255,7 @@ function campCheck(camp) {
 function interact() {
   let best = null, bd = 2.2; for (const d of drops) { const dd = d.g.position.distanceTo(P.pos.clone().setY(0.15)); if (dd < bd) { bd = dd; best = d; } }
   if (!best) return; for (const it of best.items) { if (it.kind === 'mat') { const got = Object.entries(it.mats).filter(([, n]) => n > 0); got.forEach(([mm, n]) => { state.mats[mm] = (state.mats[mm] || 0) + n; }); ui.toast(`<span class="sm">${got.map(([mm, n]) => `+${n} ${MATS[mm]}`).join(' · ')}</span>`, '#3a3448', 2400); continue; } if (state.inv.length >= state.invCap) { ui.toast('Inventory full! Scrap some junk (I).', '#E5484D'); break; } state.inv.push(it); ui.toast(`<span style="color:${{ junk: '#9a9a9a', common: '#f4eedc', uncommon: '#5ad86a', rare: '#4a9aff', epic: '#b46cff', legendary: '#ff9a2a' }[it.rarity] || '#fff'}">${it.name}</span>`, '#3a3448', 2200); }
-  scene.remove(best.g); drops.splice(drops.indexOf(best), 1);
+  scene.remove(best.g); drops.splice(drops.indexOf(best), 1); SFX('pickup');
 }
 
 // ---------------- map ----------------
@@ -281,7 +286,7 @@ function drawMap(cv, big = false) {
 }
 
 // ---------------- loop ----------------
-let saveT = 0; let started = false, shake = 0, lastPOI = null, lowHpT = 0;
+let saveT = 0, musicT = 0; let started = false, shake = 0, lastPOI = null, lowHpT = 0;
 const v3 = new THREE.Vector3();
 function project(p) { v3.copy(p).project(camera); return [(v3.x * 0.5 + 0.5) * window.innerWidth, (-v3.y * 0.5 + 0.5) * window.innerHeight, v3.z]; }
 let last = performance.now();
@@ -301,7 +306,8 @@ function frame(now) {
     P.pos.addScaledVector(P.vel, dt); const sinceDodge = t - DEF.dodgeT; if (sinceDodge < 0.25) P.pos.addScaledVector(DEF.dodgeDir, 16 * dt); if (DEF.knock.lengthSq() > 0.01) { P.pos.addScaledVector(DEF.knock, dt); DEF.knock.multiplyScalar(Math.max(0, 1 - dt * 6)); }
     if (P.pos.y <= 0) { P.pos.y = 0; P.vel.y = 0; P.onGround = true; }
     col.resolve(P.pos, 0.4, P.pos.y); const h = world.size / 2 - 1; P.pos.x = Math.max(-h, Math.min(h, P.pos.x)); P.pos.z = Math.max(-h, Math.min(h, P.pos.z));
-    const moved = Math.hypot(P.pos.x - before.x, P.pos.z - before.z); state.counters.walked += moved; P.bob += moved * 2.2;
+    const moved = Math.hypot(P.pos.x - before.x, P.pos.z - before.z); state.counters.walked += moved; const pb = P.bob; P.bob += moved * 2.2; if (P.onGround && Math.floor(P.bob / Math.PI) !== Math.floor(pb / Math.PI)) SFX('step');
+    AU.setListener(P.pos.x, P.pos.z, P.yaw); musicT -= dt; const fighting = mobs.some((m) => !m.dead && (m.state === 'chase' || m.state === 'attack') && m.g.position.distanceTo(P.pos) < 28); if (fighting) musicT = 4; MUSIC(activeBoss ? 'boss' : musicT > 0 ? 'combat' : inSafe() ? 'town' : 'explore');
     state.stamina = Math.max(0, Math.min(D.maxStamina, state.stamina + (sprint ? -22 : 14) * dt));
     // vitals
     state.mana = Math.min(D.maxMana, state.mana + D.manaRegen * dt);
@@ -386,7 +392,7 @@ async function boot() {
   $('startBtn').disabled = false; $('startBtn').textContent = 'CLICK TO ENTER';
   requestAnimationFrame(frame);
 }
-$('startBtn').addEventListener('click', () => { $('loading').style.display = 'none'; started = true; $('stage').requestPointerLock(); ui.host(FLOOR === 'pad' ? 'Your Crash Pad! Buy tables, craft weird things, and remember: tables next to each other can work together.' : FLOOR === '2' ? 'Welcome to Spin City! Mind the floor, it\u2019s wet. Everything is wet. Forever.' : 'Welcome back to the Undercroft, Dale! Try not to die before the commercial break.'); });
+$('startBtn').addEventListener('click', () => { AU.init(); AU.setFloor(FLOOR); $('loading').style.display = 'none'; started = true; $('stage').requestPointerLock(); ui.host(FLOOR === 'pad' ? 'Your Crash Pad! Buy tables, craft weird things, and remember: tables next to each other can work together.' : FLOOR === '2' ? 'Welcome to Spin City! Mind the floor, it\u2019s wet. Everything is wet. Forever.' : 'Welcome back to the Undercroft, Dale! Try not to die before the commercial break.'); });
 boot().catch((e) => { $('loadMsg').textContent = 'Error: ' + e.message; console.error(e); });
 window.addEventListener('beforeunload', saveGame);
 window.__game = { state, P, mobs, cast, ui, G, CR, craftUI, throwBomb, saveGame, MS, DEF, world: () => world };
