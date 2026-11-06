@@ -141,7 +141,7 @@ export function theLandlord() {
   g.add(P(new THREE.CylinderGeometry(0.5, 0.5, 1.4, 20), new THREE.MeshPhysicalMaterial({ color: '#141418', roughness: 0.4 }), [0, 7.0, 0])); g.add(P(new THREE.CylinderGeometry(0.85, 0.85, 0.08, 20), new THREE.MeshPhysicalMaterial({ color: '#141418' }), [0, 6.33, 0]));
   const rent = plate('RENT DUE', '#b01010', '#f0f0f0', 1.6, 0.4, 90); rent.position.set(0, 6.6, 1.02); g.add(rent);
   for (const sx of [-1, 1]) { g.add(P(new THREE.SphereGeometry(0.12, 12, 8), glow('#ff3a1a', 3), [sx * 0.6, 5.9, 1.02])); }
-  L(g, '#ff5a2a', 6, 6, [0, 5.8, 2.2]);
+  L(g, '#ff5a2a', 6, 6, [0, 5.8, 2.2]); L(g, '#ffe4c8', 60, 26, [4, 8, 8]);
   const smoke = new THREE.MeshBasicMaterial({ color: '#4a4448', transparent: true, opacity: 0.25, depthWrite: false }); for (let i = 0; i < 8; i++) g.add(P(new THREE.SphereGeometry(0.4 + i * 0.12, 10, 8), smoke, [Math.sin(i) * 0.3, 7.9 + i * 0.45, -i * 0.15]));
   return shadowAll(g);
 }
@@ -163,7 +163,7 @@ export function pipeOrganWyrm() {
   head.add(P(new THREE.PlaneGeometry(1.8, 0.22), new THREE.MeshPhysicalMaterial({ map: keys, roughness: 0.3 }), [0, -0.37, 0.93], [-1.07, 0, 0]));
   for (let i = 0; i < 10; i++) head.add(P(new THREE.CylinderGeometry(0.05, 0.05, 0.35, 8), br, [-0.85 + i * 0.19, -0.05, 0.75], [Math.PI, 0, 0]));
   for (const sx of [-1, 1]) { head.add(P(new THREE.CylinderGeometry(0.15, 0.15, 0.1, 16), glow('#ff3a2a', 2.5), [sx * 0.55, 0.55, 0.81], [Math.PI / 2, 0, 0])); }
-  g.add(head); L(g, '#ff7a3a', 6, 8, end.clone().add(new THREE.Vector3(0, 0, 2)).toArray());
+  g.add(head); L(g, '#ff7a3a', 6, 8, end.clone().add(new THREE.Vector3(0, 0, 2)).toArray()); L(g, '#ffe4c8', 40, 22, [4, 4, 8]);
   return shadowAll(g);
 }
 
@@ -255,7 +255,7 @@ export function sanitationKing() {
   const truck = new THREE.Group(); truck.add(P(new THREE.BoxGeometry(2.0, 2.0, 3.6), new THREE.MeshPhysicalMaterial({ map: grimeTex('#2a7a3a', { rust: 60 }), roughness: 0.5 }), [0, 0, 0])); truck.add(P(new THREE.BoxGeometry(1.9, 1.4, 1.2), new THREE.MeshPhysicalMaterial({ color: '#e8e8e0', roughness: 0.5 }), [0, -0.3, 2.3]));
   truck.position.set(B.handR[0], B.handR[1] - 0.6, B.handR[2] + 0.6); g.add(truck);
   const fly = new THREE.MeshBasicMaterial({ color: '#111' }); for (let i = 0; i < 80; i++) g.add(P(new THREE.SphereGeometry(0.03, 4, 3), fly, [(rnd() - 0.5) * 6, 1 + rnd() * 7, (rnd() - 0.5) * 4]));
-  L(g, '#9aff3a', 8, 10, [0, 6, 3]);
+  L(g, '#9aff3a', 8, 10, [0, 6, 3]); L(g, '#ffe4c8', 40, 22, [3, 5, 8]);
   return shadowAll(g);
 }
 

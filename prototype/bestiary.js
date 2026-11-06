@@ -9,6 +9,7 @@ import * as T6 from './monsters/tier6.js';
 import * as BO1 from './monsters/bosses1.js';
 import * as N1 from './npcs/floor1to3.js';
 import * as BO2 from './monsters/bosses2.js';
+import * as BO3 from './monsters/bosses3.js';
 import * as N2 from './npcs/floor4to6.js';
 import { poolNPC } from './npcs/races.js';
 import { grimeTex, canvasTex, rnd, applyVariant, buildMesh } from './sculpt.js';
@@ -41,6 +42,21 @@ const MONSTERS = {
   mallmother: [BO2.mallMother, [8.5, 6.0, 13], [0, 4.0, 0], 46, -8, -5.5],
   mayor: [BO2.mayorEternal, [4.0, 3.6, 8.0], [0, 2.4, 0.4], 42, -3.5, -2.2],
   culdesac: [BO2.culDeSac, [0, 16, 26], [0, 1.5, 0], 50, -30, 3.0],
+  bathwater: [BO3.oldLadyBathwater, [2.4, 2.4, 6.4], [0, 0.9, -1.0], 42, -6.2, -3.2],
+  repo: [BO3.repossessorMk9, [2.2, 2.8, 7.5], [0.2, 1.8, -0.8], 42, -3.2, -3.8],
+  soloist: [BO3.theSoloist, [2.3, 3.0, 7.8], [0.4, 1.9, -0.1], 42, -2.6, -2.4],
+  grubtooth: [BO3.chiefGrubtooth, [1.0, 1.8, 6.2], [-0.2, 1.0, 0.2], 42, -2.1, -3.1],
+  deepfryer: [BO3.deepFryer, [1.6, 2.7, 6.9], [0.0, 1.7, 0.3], 42, -1.6, -2.1],
+  ratthrone: [BO3.ratThrone, [1.5, 2.5, 6.6], [0.0, 1.5, -0.6], 42, -3.5, -2.7],
+  landlord: [BO3.theLandlord, [4.6, 5.0, 12.5], [-0.2, 5.6, -0.3], 46, -3.0, -4.2],
+  organ: [BO3.pipeOrganWyrm, [4.6, 3.4, 10.5], [0.3, 3.0, -0.8], 46, -6.2, -3.5],
+  drill: [BO3.drillProphet, [2.3, 3.7, 9.1], [0.0, 2.4, 0.0], 42, -2.3, -3.0],
+  baron: [BO3.fryerBaron, [2.2, 3.1, 7.6], [0.4, 1.9, -0.4], 42, -3.1, -2.3],
+  senate: [BO3.ratSenate, [1.8, 2.4, 6.6], [0.0, 1.2, 0.1], 42, -2.6, -4.0],
+  lockjaw: [BO3.lockjaw, [1.8, 2.8, 9.3], [0.1, 1.8, 1.1], 42, -2.3, -2.4],
+  sanking: [BO3.sanitationKing, [3.0, 4.4, 11.0], [-0.2, 3.8, 1.1], 44, -2.8, -3.9],
+  mold: [BO3.bigMommaMold, [4.4, 6.6, 20.7], [0.0, 4.5, -0.2], 42, -8.3, -7.8],
+  undermayor: [BO3.undermayor, [1.9, 3.4, 8.5], [-0.3, 2.2, -0.2], 42, -2.6, -3.2],
   marta: [N1.martaVance, [1.0, 1.4, 2.6], [0, 1.0, 0.1], 36],
   pickles: [N1.pickles, [1.1, 1.2, 2.3], [0, 0.85, 0], 36],
   spin: [N1.spinCycle, [1.1, 1.5, 3.0], [0, 1.1, 0], 36],
