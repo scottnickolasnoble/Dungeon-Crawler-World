@@ -49,5 +49,5 @@ export function buildFloor0(ink, col, onProgress = () => {}) {
   const npcs = [{ id: 'pip', kind: 'quest', role: 'quest', race: 'human', variant: 1, name: 'Intern Pip', title: 'Network Orientation', x: 0, z: 28.4, yaw: 0, voice: 'spin', static: true },
     { kind: 'filler', role: 'guard', race: 'human', variant: 3, x: -10, z: 44, static: true, activity: 'look', town: { x: 0, z: 0, r: 4, r0: 1 } }, { kind: 'filler', role: 'gossip', race: 'gutterkin', variant: 5, x: 9, z: 20, static: true, activity: 'talk', town: { x: 0, z: 0, r: 4, r0: 1 } }];
   const doors = [{ kind: 'fountain', x: -12, z: 18 }];
-  return { map, mobs, npcs, doors, noMob: [], dummies: [[-6, 5], [0, 5], [6, 5]], tutorialArena: true, stairs: { x: 0, z: -64, r: 3.4, to: '1', flag: 'tut_arena_done', locked: 'Pip wants a word before you go down.' }, tick: () => {}, size: 140, ceiling: CEIL };
+  return { map, mobs, npcs, doors, noMob: [], dummies: [[-6, 5], [0, 5], [6, 5]], tutorialArena: true, stairs: { x: 0, z: -64, r: 3.4, to: '1', flag: 'tut_arena_done', how: 'Finish Intern Pip’s orientation: drink from the fountain, open your box, hit the training dummies, then beat the 3 cardboard goblins in the Practice Arena.', locked: 'Pip wants a word before you go down.' }, tick: () => {}, size: 140, ceiling: CEIL };
 }

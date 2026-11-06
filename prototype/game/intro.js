@@ -1,9 +1,10 @@
 // Opening cutscene: painted comic-ink panels (canvas), slow camera moves, subtitles and spoken narration.
-// Dale is asleep at 3:17 AM, the TV turns itself on, the Host announces Earth has been acquired and every building
-// is folding into the ground, explains the show, and Dale runs for the stairwell. Space = next line, Esc = skip.
+// The player is asleep at 3:17 AM, the TV turns itself on, the Host announces Earth has been acquired and every building
+// is folding into the ground, explains the show, and the player runs for the stairwell. Space = next line, Esc = skip.
 const INK = '#0d0b12';
 
-export function playIntro({ say, sfx, music, onDone, startShot = 0 }) {
+export function playIntro({ say, sfx, music, onDone, startShot = 0, name = 'You' }) {
+  const NAME = name;
   const wrap = document.createElement('div'); wrap.id = 'intro';
   wrap.innerHTML = `<canvas id="introCv"></canvas><div id="introSub"><b id="introWho"></b><span id="introTxt"></span></div><div id="introHint">Space: next line · Esc: skip intro</div>`;
   document.body.appendChild(wrap);
@@ -52,7 +53,7 @@ export function playIntro({ say, sfx, music, onDone, startShot = 0 }) {
       R(120, 120, 420, 360, null, 10); g.strokeStyle = INK; g.lineWidth = 8; g.beginPath(); g.moveTo(330, 120); g.lineTo(330, 480); g.moveTo(120, 300); g.lineTo(540, 300); g.stroke();
       // poster
       R(650, 150, 200, 260, '#c84a2a'); txt('BOOM!', 750, 300, 70, '#ffd040'); txt('FIREWORKS', 750, 360, 30, '#fff');
-      // bed with Dale asleep
+      // bed with the player asleep
       R(700, 560, 820, 260, '#5a3a2a', 6, 20); R(720, 520, 780, 140, '#3a5a8a', 6, 40); E(820, 560, 90, 50, '#e8e4dc'); E(860, 520, 70, 60, '#c8987a'); P([[800, 480], [850, 450], [920, 470], [930, 510], [870, 490], [820, 510]], '#4a2a1a', 5);
       g.beginPath(); g.moveTo(900, 640); g.quadraticCurveTo(1150, 520 + Math.sin(t * 1.5) * 8, 1480, 600); g.lineTo(1480, 700); g.lineTo(900, 700); g.closePath(); g.fillStyle = '#3a5a8a'; g.fill(); g.strokeStyle = INK; g.lineWidth = 6; g.stroke();
       for (let i = 0; i < 3; i++) { const zt = (t * 0.6 + i * 0.33) % 1; g.globalAlpha = 1 - zt; txt('Z', 960 + zt * 120 + i * 20, 430 - zt * 200, 40 + i * 14, '#c8d8ff'); } g.globalAlpha = 1;
@@ -85,7 +86,7 @@ export function playIntro({ say, sfx, music, onDone, startShot = 0 }) {
       const grabbed = t > 2.2; const lx = grabbed ? 700 - (t - 2.2) * 30 : 700, ly = grabbed ? 560 - (t - 2.2) * 40 : 600;
       R(lx - 40, ly - 80, 80, 130, '#c81a14', 6, 12); R(lx - 32, ly - 110, 64, 34, '#c8ccd2', 5, 6);
       if (grabbed) { const f = 1 + Math.sin(t * 20) * 0.1; P([[lx, ly - 210 * f], [lx + 30, ly - 140], [lx + 20, ly - 112], [lx - 20, ly - 112], [lx - 30, ly - 140]], '#ff7a1a', 5); P([[lx, ly - 170 * f], [lx + 14, ly - 130], [lx - 14, ly - 130]], '#ffe060', 0); }
-      // Dale's hand reaching in
+      // the player's hand reaching in
       const hx = grabbed ? lx + 90 : 1500 - Math.min(1, t / 2.2) * 700; g.save(); g.translate(hx, ly + 10); E(0, 0, 90, 64, '#c8987a'); for (let i = 0; i < 4; i++) E(-80, -40 + i * 26, 40, 14, '#c8987a', 5); R(60, -50, 500, 100, '#7a4a8a', 6, 30); g.restore();
       txt('*FLICK*', 470, 280, 80, '#ffd040');
     },
@@ -108,21 +109,21 @@ export function playIntro({ say, sfx, music, onDone, startShot = 0 }) {
     title(t) {
       R(0, 0, 1600, 1000, '#0d0b12', 0); for (let i = 0; i < 16; i++) { g.save(); g.translate(800, 500); g.rotate(i / 16 * Math.PI * 2 + t * 0.05); g.globalAlpha = 0.08; g.fillStyle = '#F5C518'; g.beginPath(); g.moveTo(0, 0); g.lineTo(-90, -1100); g.lineTo(90, -1100); g.fill(); g.restore(); } g.globalAlpha = 1;
       const s = Math.min(1, t / 0.6); g.save(); g.translate(800, 440); g.scale(s, s); txt('DOWNSTAIRS', 0, 0, 220, '#F5C518'); g.restore();
-      if (t > 1.2) txt('FLOOR 1 · THE UNDERCROFT', 800, 600, 70, '#f4eedc');
-      if (t > 2.2) txt('Contestant #4,117,021 · Dale · Pyromancer', 800, 690, 42, '#ff9a2a', 'Barlow Condensed');
+      if (t > 1.2) txt('FLOOR 0 · THE LANDING', 800, 600, 70, '#f4eedc');
+      if (t > 2.2) txt(`Contestant #4,117,021 · ${NAME}`, 800, 690, 42, '#ff9a2a', 'Barlow Condensed');
     },
   };
 
   // ---------- script ----------
   const N = 'narrator', HOST = 'host';
   const SHOTS = [
-    { p: 'bedroom', zoom: [1.05, 1.18], pan: [0, 0, 60, 20], lines: [[N, '3:17 in the morning. Somewhere ordinary.'], [N, 'Dale was asleep. Dale was always asleep at 3:17. He worked nights at a fireworks warehouse, and this was his one night off.'], [N, 'Then the television switched itself on.']], sfx: [[6.2, 'static']] },
+    { p: 'bedroom', zoom: [1.05, 1.18], pan: [0, 0, 60, 20], lines: [[N, '3:17 in the morning. Somewhere ordinary.'], [N, `${NAME} was asleep. ${NAME} was always asleep at 3:17. Nights at the fireworks warehouse, and this was the one night off.`], [N, 'Then the television switched itself on.']], sfx: [[6.2, 'static']] },
     { p: 'tv', zoom: [1, 1.08], pan: [0, 0, 0, -20], lines: [[HOST, 'Good morning, Earth! Sorry about the hour. Big news, huge news!'], [HOST, 'Your planet has been acquired by the Network. Congratulations! The surface is being renovated.'], [HOST, 'In ten minutes, every building on Earth will fold neatly into the ground. Please do not be inside them.']] },
-    { p: 'window', zoom: [1.08, 1.2], pan: [0, 20, 0, -30], lines: [[N, 'Dale looked out of the window. The city was folding itself away like a pop-up book in reverse.'], [HOST, 'But here is the good news! Every stairwell on the planet now leads to one place. Downstairs!']], sfx: [[0.3, 'rumble'], [3, 'rumble']] },
+    { p: 'window', zoom: [1.08, 1.2], pan: [0, 20, 0, -30], lines: [[N, `${NAME} looked out of the window. The city was folding itself away like a pop-up book in reverse.`], [HOST, 'But here is the good news! Every stairwell on the planet now leads to one place. Downstairs!']], sfx: [[0.3, 'rumble'], [3, 'rumble']] },
     { p: 'tv', zoom: [1.1, 1.18], pan: [0, -20, 0, -40], lines: [[HOST, 'Downstairs is the greatest show in the galaxy. Eighteen floors. Monsters. Loot. Ratings!'], [HOST, 'The rules are simple. Go down. Stay alive. Eat, drink, and entertain the audience. They are watching. All of them.'], [HOST, 'Reach Floor Eighteen and you win. Nobody has ever reached Floor Eighteen. No pressure!']] },
-    { p: 'grab', zoom: [1, 1.1], pan: [0, 0, -40, 0], lines: [[N, 'Dale had nine minutes, one bathrobe, and the lighter from work.'], [N, 'It would have to do.']], sfx: [[2.2, 'flick']] },
+    { p: 'grab', zoom: [1, 1.1], pan: [0, 0, -40, 0], lines: [[N, `${NAME} had nine minutes, one bathrobe, and a length of pipe from the hallway.`], [N, 'It would have to do.']], sfx: [[2.2, 'flick']] },
     { p: 'street', zoom: [1, 1.15], pan: [0, 0, 0, 30], lines: [[HOST, 'Stairwells close in sixty seconds! Anyone still upstairs becomes part of the scenery!'], [N, 'The whole street was running for the same green sign.']], sfx: [[0.2, 'rumble'], [2, 'siren']] },
-    { p: 'stairs', zoom: [1, 1.25], pan: [0, 0, 0, 40], lines: [[HOST, 'Contestant number four million, one hundred seventeen thousand and twenty-one. Class detected: Pyromancer. Cute.'], [HOST, 'Welcome to the dungeon, Dale. Find the camp, find the people, find a way down. And try not to die before the commercial break!']] },
+    { p: 'stairs', zoom: [1, 1.25], pan: [0, 0, 0, 40], lines: [[HOST, 'Contestant number four million, one hundred seventeen thousand and twenty-one. Class detected: none. Bathrobe detected. Cute.'], [HOST, `Welcome to the dungeon, ${NAME}. Find the camp, find the people, find a way down. And try not to die before the commercial break!`]] },
     { p: 'title', zoom: [1, 1.05], pan: [0, 0, 0, 0], lines: [[null, '']], hold: 4.5 },
   ];
   const fired = new Set();

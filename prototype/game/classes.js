@@ -1,5 +1,5 @@
 // Playable races and classes (from the design doc), and every class skill as data. combat.js runs them.
-// New contestants start classless ("Contestant") with a basic weapon and Dale's lighter. Race and class are
+// New contestants start classless ("Contestant") with a basic weapon and the lighter. Race and class are
 // chosen at the Hall of Callings on Floor 3. 12 magic classes + 8 job classes; each has 3 built-in skills
 // and 3 skill-book skills (the Pyromancer keeps its full 16-skill tree).
 // Skill kinds: bolt, volley, nova, cone, zone, ward, heal, buff, dash, strike, summon, reveal, passive.

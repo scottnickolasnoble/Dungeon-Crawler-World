@@ -8,18 +8,20 @@ const ESS = ['ember', 'frost', 'storm', 'tide', 'light', 'shadow'];
 const ladder = (t, a, b, c) => {
   const i = {}; const add = (k, n) => { i[k] = (i[k] || 0) + n; };
   add(a[0], 2 + t); if (t >= 2) add(b[0], t); if (t >= 3) add(c, t - 1); if (t >= 4) add(b[1] || 'alloy', t - 2); if (t >= 5) add('bosscore', 1);
-  return i;
+  rarityMats(t, add); return i;
 };
 const TIERN = ['I', 'II', 'III', 'IV', 'V'];
+// higher tiers need rarity materials: scrap gear of that rarity, or find them on tougher monsters
+export function rarityMats(t, add) { if (t === 2) add('tempered', 1); if (t === 3) { add('tempered', 2); add('bluechip', 1); } if (t === 4) { add('bluechip', 2); add('primetime', 1); } if (t === 5) { add('primetime', 2); add('showstopper', 1); } }
 
 export function generateRecipes(existing, R, C, Gr) {
   const out = []; const names = new Set(existing.map((r) => r.name));
   const push = (r) => { if (names.has(r.name)) return; names.add(r.name); out.push(r); };
   const count = (table) => existing.filter((r) => r.table === table).length + out.filter((r) => r.table === table).length;
   // spread the free slots evenly over the five tiers; each tier drops a different line so every line still appears
-  const fill = (table, lines) => { const avail = 60 - count(table); const q = Math.floor(avail / 5); let extra = avail - q * 5;
+  const fill = (table, lines, cap = 60) => { const avail = cap - count(table); const q = Math.floor(avail / 5); let extra = avail - q * 5;
     for (let t = 1; t <= 5; t++) { const n = Math.min(lines.length, q + (t === 5 ? extra : 0)); for (let k = 0; k < lines.length && out.filter((r) => r.table === table && r.tier === t).length < n; k++) push(lines[(k + t * 3) % lines.length](t)); }
-    for (let t = 5; t >= 1 && count(table) < 60; t--) for (const L of lines) { if (count(table) >= 60) break; push(L(t)); } };
+    for (let t = 5; t >= 1 && count(table) < cap; t--) for (const L of lines) { if (count(table) >= cap) break; push(L(t)); } };
   const pre = (arr, t) => arr[t - 1];
 
   // WORKBENCH: tools, utility gear and processed materials
@@ -38,10 +40,14 @@ export function generateRecipes(existing, R, C, Gr) {
     (t) => R('workbench', t, `${pre(WB, t)} Hard Hat`, ladder(t, ['plastic'], ['bolt', 'alloy'], 'light'), Gr('head', `${pre(WB, t)} Hard Hat`, { armor: 4 + t * 4, hp: 10 * t })),
     (t) => R('workbench', t, `${pre(WB, t)} Knee Pads`, ladder(t, ['rubber'], ['strap', 'alloy'], 'tide'), Gr('legs', `${pre(WB, t)} Knee Pads`, { armor: 4 + t * 4, moveSpeed: t })),
   ]);
-  // ANVIL: 12 weapon families
+  // ANVIL: 15 themed weapons (each needs its floor's junk), five tiers each
   const AN = ['Scrap', 'Steel', 'Tempered', 'Alloy', 'Boss-Forged'];
-  const W = [['Spear', { dmg: 14, atkSpeed: 2 }], ['Axe', { dmg: 18 }], ['Wrench', { dmg: 13, STR: 1 }], ['Chakram', { dmg: 15, crit: 2 }], ['Staff', { spell: 14, INT: 1 }], ['Blade', { dmg: 16, DEX: 1 }], ['Mace', { dmg: 17, CON: 1 }], ['Warhammer', { dmg: 21 }], ['Dagger', { dmg: 11, crit: 4 }], ['Longbow', { dmg: 15, DEX: 2 }], ['Crossbow', { dmg: 19 }], ['Wand', { spell: 12, mana: 10 }]];
-  fill('anvil', W.map(([n, st]) => (t) => { const s = {}; for (const [k, v] of Object.entries(st)) s[k] = Math.round(v * (1 + (t - 1) * 0.7)); if (t >= 3) s[['fire', 'crit', 'STR', 'INT'][t % 4]] = 2 * t; return R('anvil', t, `${pre(AN, t)} ${n}`, ladder(t, ['scrapmetal'], ['steel', 'alloy'], ESS[(n.length + t) % 6]), Gr('main', `${pre(AN, t)} ${n}`, s, t >= 4 ? 'elemental' : 'scrap')); }));
+  const W = [['Tyre Iron', 'blunt', { dmg: 14 }, 'rubber'], ['Rebar Pike', 'pierce', { dmg: 14, crit: 1 }, 'wire'], ['Stop-Sign Axe', 'heavy', { dmg: 19 }, 'coneplastic'], ['Jumper-Cable Flail', 'shock', { dmg: 13, shock: 3 }, 'battery'],
+    ['Coat-Hanger Rapier', 'quick', { dmg: 11, DEX: 1 }, 'lint'], ['Clothes-Iron Knuckles', 'hot', { dmg: 13, fire: 3 }, 'detergent'], ['Kitchen Cleaver', 'blade', { dmg: 15 }, 'castiron'], ['Neon-Sign Sabre', 'shock', { dmg: 15, shock: 4 }, 'neon'],
+    ['Golf Driver', 'blunt', { dmg: 16, crit: 2 }, 'clippings'], ['Hedge Trimmers', 'blade', { dmg: 14, atkSpeed: 3 }, 'ceramic'], ['Weed Whacker', 'flail', { dmg: 13 }, 'clippings'], ['Plank Greatsword', 'heavy', { dmg: 21 }, 'sap'],
+    ['Antler Pick', 'pierce', { dmg: 15, crit: 2 }, 'chitin'], ['Mic-Stand Staff', 'caster', { spell: 14, CHA: 1 }, 'glitter'], ['Remote-Control Wand', 'caster', { spell: 12, castSpeed: 2 }, 'circuit']];
+  fill('anvil', W.map(([n, wt, st, fm]) => (t) => { const s = {}; for (const [k, v] of Object.entries(st)) s[k] = Math.round(v * (1 + (t - 1) * 0.7)); if (t >= 3) s[['fire', 'crit', 'STR', 'INT'][t % 4]] = 2 * t;
+    const inp = ladder(t, ['scrapmetal'], ['steel', 'alloy'], ESS[(n.length + t) % 6]); inp[fm] = (inp[fm] || 0) + 1 + t; const g = Gr('main', `${pre(AN, t)} ${n}`, s, 'forged'); g.gear.wtype = wt; return R('anvil', t, `${pre(AN, t)} ${n}`, inp, g); }), 75);
   // ARMOURER: 12 armour pieces
   const AR = ['Patched', 'Riveted', 'Plated', 'Alloy', 'Warlord'];
   const AP = [['head', 'Helm', 5], ['chest', 'Cuirass', 9], ['legs', 'Greaves', 7], ['boots', 'Sabatons', 5], ['gloves', 'Gauntlets', 4], ['shoulders', 'Pauldrons', 5], ['bracers', 'Vambraces', 4], ['belt', 'War Belt', 4], ['off', 'Kite Shield', 10], ['face', 'Visor', 3], ['back', 'Battle Cloak', 4], ['off', 'Riot Shield', 12]];
@@ -78,7 +84,7 @@ export function generateRecipes(existing, R, C, Gr) {
   // IMBUING FONT: 12 effects in five ranks
   const FN = ['Faint', 'Minor', 'Major', 'Grand', 'Mythic'];
   const FP = [['Flame', { fire: 6 }, 'ember'], ['Frost', { frost: 6 }, 'frost'], ['Storm', { storm: 6 }, 'storm'], ['Fortitude', { hp: 20, CON: 1 }, 'light'], ['Haste', { castSpeed: 2, moveSpeed: 2 }, 'storm'], ['Precision', { crit: 2 }, 'shadow'], ['Might', { STR: 2, dmg: 3 }, 'ember'], ['Wisdom', { WIS: 2, mana: 10 }, 'tide'], ['Warding', { armor: 6 }, 'light'], ['Charisma', { CHA: 2 }, 'light'], ['Sorcery', { spell: 6, INT: 1 }, 'shadow'], ['Tides', { tide: 6, hp: 10 }, 'tide']];
-  fill('font', FP.map(([n, add, ess]) => (t) => { const a = {}; for (const [k, v] of Object.entries(add)) a[k] = Math.round(v * (1 + (t - 1) * 0.7)); const inp = { [ess]: 1 + t }; if (t >= 2) inp.vial = t - 1; if (t >= 4) inp.prism = t - 3; if (t >= 5) inp.bosscore = 1; return R('font', t, `Imbue: ${pre(FN, t)} ${n}`, inp, { imbue: { target: 'any', add: a, tag: `Imbued: ${pre(FN, t)} ${n}` } }); }));
+  fill('font', FP.map(([n, add, ess]) => (t) => { const a = {}; for (const [k, v] of Object.entries(add)) a[k] = Math.round(v * (1 + (t - 1) * 0.7)); const inp = { [ess]: 1 + t }; if (t >= 2) inp.vial = t - 1; if (t >= 4) inp.prism = t - 3; if (t >= 5) inp.bosscore = 1; rarityMats(t, (k, n) => { inp[k] = (inp[k] || 0) + n; }); return R('font', t, `Imbue: ${pre(FN, t)} ${n}`, inp, { imbue: { target: 'any', add: a, tag: `Imbued: ${pre(FN, t)} ${n}` } }); }));
   // SCRIBE: scrolls, maps and tomes
   const SC = ['Scrawled', 'Inked', 'Illuminated', 'Gilded', 'Forbidden'];
   const SCP = [['Scroll of Fireball', { scroll: 1 }], ['Scroll of Recall', { recall: 1 }], ['Scroll of Mending', { hp: 60 }], ['Scroll of Mana', { mana: 50 }], ['District Map', { map: 1 }], ['Scroll of Haste', { buff: 'moveSpeed', amount: 10, mins: 5 }], ['Scroll of Warding', { buff: 'armor', amount: 15, mins: 5 }], ['Scroll of Insight', { buff: 'INT', amount: 4, mins: 8 }], ['Scroll of Might', { buff: 'STR', amount: 4, mins: 8 }], ['Treasure Map', { map: 1 }], ['Scroll of Luck', { buff: 'crit', amount: 5, mins: 5 }], ['Sponsor Pitch', { buff: 'CHA', amount: 4, mins: 10 }]];

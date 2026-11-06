@@ -1,6 +1,6 @@
 // In-game UI: HUD updates, inventory + equipment, character sheet, skill tree, map, achievements, loot boxes.
 import { artImg } from './lootart.js';
-import { STATS, STAT_INFO, CLASS, SKILLS, SLOTS, SLOT_NAMES, RARITIES, STAT_LABEL, ACHIEVEMENTS, BOXES } from './data.js';
+import { STATS, STAT_INFO, CLASS, SKILLS, SLOTS, SLOT_NAMES, RARITIES, STAT_LABEL, ACHIEVEMENTS, BOXES, WTYPES } from './data.js';
 
 const $ = (id) => document.getElementById(id);
 const rcol = (r) => (RARITIES.find((x) => x.id === r) || { color: '#fff' }).color;
@@ -18,10 +18,10 @@ export function createUI(G) {
   const state = G.state;
   let open = null, tab = 'gear', hoverEl = null;
   // ---------- panels ----------
-  const panels = { inv: $('pInv'), char: $('pChar'), skills: $('pSkills'), map: $('pMap'), ach: $('pAch'), craft: $('pCraft'), settings: $('pSettings'), shop: $('pShop'), quests: $('pQuests'), class: $('pClass') };
+  const panels = { inv: $('pInv'), char: $('pChar'), skills: $('pSkills'), map: $('pMap'), ach: $('pAch'), craft: $('pCraft'), settings: $('pSettings'), shop: $('pShop'), quests: $('pQuests'), class: $('pClass'), guide: $('pGuide') };
   function toggle(p) { if (open === p) return close(); open = p; Object.entries(panels).forEach(([k, el]) => el.classList.toggle('show', k === p)); $('panelWrap').classList.add('show'); render(); G.onPanel(true); }
   function close() { open = null; Object.values(panels).forEach((el) => el.classList.remove('show')); $('panelWrap').classList.remove('show'); hideTip(); G.onPanel(false); }
-  function render() { if (open === 'inv') renderInv(); if (open === 'char') renderChar(); if (open === 'skills') renderSkills(); if (open === 'map') G.drawMap($('bigMap'), true); if (open === 'ach') renderAch(); if (open === 'craft') G.renderCraft(); if (open === 'settings') G.renderSettings(); if (open === 'shop') G.renderShop(); if (open === 'quests') G.renderLog(); if (open === 'class') G.renderClass(); }
+  function render() { if (open === 'inv') renderInv(); if (open === 'char') renderChar(); if (open === 'skills') renderSkills(); if (open === 'map') G.drawMap($('bigMap'), true); if (open === 'ach') renderAch(); if (open === 'craft') G.renderCraft(); if (open === 'settings') G.renderSettings(); if (open === 'guide') G.renderGuide(); if (open === 'shop') G.renderShop(); if (open === 'quests') G.renderLog(); if (open === 'class') G.renderClass(); }
 
   // ---------- tooltip ----------
   const tip = $('tip');
@@ -33,6 +33,7 @@ export function createUI(G) {
     if (!item) return hideTip();
     const cur = item.kind === 'gear' && equippedCmp ? state.equip[item.slot === 'ring1' && state.equip.ring1 && !state.equip.ring2 ? 'ring2' : item.slot] : null;
     let h = `<div class="tart">${artImg(item, 128)}</div><div class="tn" style="color:${rcol(item.rarity)}">${esc(item.name)}</div>`;
+    if (item.kind === 'gear' && item.slot === 'main') { const wt = WTYPES[item.wtype || (item.stats.spell && !item.stats.dmg ? 'caster' : 'blunt')]; if (wt) h += `<div class="tr" style="color:#F5C518">${wt.name} weapon · ${wt.desc} · speed ${Math.round(wt.speed * 100)}% · reach ${wt.reach} m · hits up to ${wt.hits}</div>`; }
     if (item.kind === 'gear') h += `<div class="tr">${(RARITIES.find((r) => r.id === item.rarity) || {}).name} ${SLOT_NAMES[item.slot]} · iLvl ${item.level} · ${item.family}</div>` + statLines(item.stats, cur && cur !== item ? cur.stats : null) + (cur && cur !== item ? `<div class="tc">Compared with equipped: ${esc(cur.name)}</div>` : '');
     if (item.kind === 'consumable') h += `<div class="tr">Consumable</div>` + Object.entries(item.effect).map(([k, v]) => `<div class="sl">+${v} ${k}</div>`).join('');
     if (item.kind === 'book') { const s = G.skillDef(item.skill); h += `<div class="tr">Skill book · ${esc((G.classes[s.cls] || {}).name || 'Any class')}</div><div class="sl">${state.skills[item.skill] ? 'Known: +1 skill level' : 'Teaches: ' + esc(s.name)}</div><div class="sl">${esc(s.desc)}</div>`; }
@@ -119,7 +120,7 @@ export function createUI(G) {
     $('mpF').style.width = (p.mana / D.maxMana) * 100 + '%'; $('stF').style.width = (p.stamina / D.maxStamina) * 100 + '%';
     $('wardF').style.width = p.ward > 0 ? (p.ward / p.wardMax) * 100 + '%' : '0%';
     $('hunF').style.width = p.hunger + '%'; $('thiF').style.width = p.thirst + '%';
-    $('xpF').style.width = (p.xp / p.xpNext) * 100 + '%'; $('lvl').textContent = 'LV ' + p.level; { const c = G.cls && G.cls(); const rn = p.race && G.races && G.races[p.race] ? G.races[p.race].name + ' ' : ''; const cn = (c && c.name) || 'Contestant'; if ($('clsName').textContent !== rn + cn) $('clsName').textContent = rn + cn; }
+    $('xpF').style.width = (p.xp / p.xpNext) * 100 + '%'; $('lvl').textContent = 'LV ' + p.level; { const nm = (p.name || 'Contestant').toUpperCase(); if ($('name').textContent !== nm) $('name').textContent = nm; } { const c = G.cls && G.cls(); const rn = p.race && G.races && G.races[p.race] ? G.races[p.race].name + ' ' : ''; const cn = (c && c.name) || 'Contestant'; if ($('clsName').textContent !== rn + cn) $('clsName').textContent = rn + cn; }
     for (const sk of G.hotbarIds()) { const el = $('hk_' + sk); if (!el) continue; const cd = G.cooldownFrac(sk); el.querySelector('.cdo').style.height = cd * 100 + '%'; const d = G.skillDef(sk); el.classList.toggle('nomana', !!d && p.mana < (d.cost || 0)); }
     $('ptsBadge').style.display = p.statPoints || p.skillPoints ? 'block' : 'none'; $('ptsBadge').textContent = `${p.statPoints ? p.statPoints + ' stat' : ''}${p.statPoints && p.skillPoints ? ' · ' : ''}${p.skillPoints ? p.skillPoints + ' skill' : ''} point${p.statPoints + p.skillPoints > 1 ? 's' : ''} to spend (C / K)`;
     $('boxBadge').style.display = p.inv.some((i) => i.kind === 'box') ? 'block' : 'none'; $('boxBadge').textContent = `${p.inv.filter((i) => i.kind === 'box').length} loot box(es) · press I`;
@@ -129,5 +130,14 @@ export function createUI(G) {
   let hostTimer = 0;
   function host(line) { $('hostTxt').textContent = line; $('host').classList.add('show'); clearTimeout(hostTimer); hostTimer = setTimeout(() => $('host').classList.remove('show'), 6000); }
   function banner(text, color = '#F5C518') { const b = $('banner'); b.textContent = text; b.style.color = color; b.classList.remove('go'); void b.offsetWidth; b.classList.add('go'); }
-  return { toggle, close, render, isOpen: () => open, hud, toast, host, banner, revealBox };
+  // yes/no confirmation box (used before scrapping valuable gear)
+  function confirmBox(html, yes, onYes) {
+    let el = document.getElementById('confirmBox'); if (!el) { el = document.createElement('div'); el.id = 'confirmBox'; el.style.cssText = 'position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(10,8,14,.55);z-index:90'; document.body.appendChild(el); }
+    el.innerHTML = `<div style="background:#1c1822;border:3px solid #F5C518;padding:18px 22px;max-width:420px;font:15px 'Barlow Condensed',sans-serif;color:#f4eedc;box-shadow:6px 6px 0 #000"><div style="margin-bottom:14px">${html}</div><div style="display:flex;gap:10px;justify-content:flex-end"><button class="cbtn ghost" id="cfNo">Cancel</button><button class="cbtn" id="cfYes" style="background:#E5484D;color:#fff">${yes}</button></div></div>`;
+    el.style.display = 'flex'; const done = () => { el.style.display = 'none'; };
+    el.querySelector('#cfNo').onclick = done; el.querySelector('#cfYes').onclick = () => { done(); onYes(); render(); };
+    const key = (e) => { if (e.code === 'Escape' || e.code === 'KeyN') { done(); } if (e.code === 'Enter' || e.code === 'KeyY') { done(); onYes(); render(); } if (['Escape', 'KeyN', 'Enter', 'KeyY'].includes(e.code)) { e.stopPropagation(); document.removeEventListener('keydown', key, true); } };
+    document.addEventListener('keydown', key, true);
+  }
+  return { toggle, close, render, isOpen: () => open, hud, toast, host, banner, revealBox, confirm: confirmBox };
 }

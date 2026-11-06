@@ -2,6 +2,7 @@
 // (bolt, volley, nova, cone, zone, ward, heal, buff, dash, strike, summon, reveal). Elements apply statuses.
 import * as THREE from '../node_modules/three/build/three.module.js';
 import { skillDef, UP_EFFECT, ELEM, ELEM_STATUS, CLASSES } from './classes.js';
+import { WTYPES } from './data.js';
 
 export function createCombat(ctx) {
   const { scene, fx, camera, P, state, col } = ctx;
@@ -124,13 +125,26 @@ export function createCombat(ctx) {
 
   // ---------- melee ----------
   function weaponDmg() { const w = state.equip.main; const D = ctx.derived(); return (w && w.stats.dmg ? w.stats.dmg : 4) + D.stat('STR') * 0.7 + (D.gearStats.dmg || 0) * 0.3; }
+  // melee: the equipped weapon's type sets speed, reach, arc, how many enemies one swing hits and its extra effect
+  function wtype() { const w = state.equip.main; return WTYPES[(w && w.wtype) || (w ? 'blunt' : 'blunt')] || WTYPES.blunt; }
+  // melee damage-over-time scales with the weapon, not spell power
+  function meleeDot(m, secs, color) { m.burn = Math.max(m.burn || 0, secs); m.burnDps = Math.max(m.burnDps || 0, weaponDmg() * 0.15); m.dotColor = color; }
   function swing(heavy) {
-    if (swingCd > 0) return false; const D = ctx.derived(); const spd = 1 + (D.atkSpeed || 0) / 100; swingCd = (heavy ? 1.25 : 0.62) / spd; swingT = heavy ? 0.42 : 0.3;
+    if (swingCd > 0) return false; const D = ctx.derived(); const WT = wtype(); const spd = (1 + (D.atkSpeed || 0) / 100) * WT.speed; swingCd = (heavy ? 1.25 : 0.62) / spd; swingT = (heavy ? 0.42 : 0.3) / Math.sqrt(WT.speed);
     if (heavy && state.stamina < 12) { ctx.toast('Too tired for a heavy swing', '#5ad86a', 900); swingCd = 0.3; return false; } if (heavy) state.stamina -= 12;
     const brand = state.buffs.some((b) => b.stat === 'weaponElem' && b.until > performance.now() / 1000);
-    const def = { id: 'melee', elem: brand ? 'fire' : 'phys', status: brand ? 2 : heavy ? 0.6 : 0, crit: 0 };
+    const elem = brand ? 'fire' : WT.elem || 'phys';
     ctx.sfx('swing', P.pos);
-    setTimeout(() => { let n = 0; for (const m of ctx.mobs) { if (m.dead || n >= 3) continue; if (inArc(m, heavy ? 3 : 2.6, heavy ? 1.9 : 1.6)) { n++; const dmg = weaponDmg() * (heavy ? 2.2 : 1) * (0.9 + Math.random() * 0.2); ctx.hurtMob(m, dmg, { elem: def.elem, crit: 0 }); if (heavy && Math.random() < 0.5) { m.stun = Math.max(m.stun || 0, 0.8); } if (def.status) applyStatus(m, { ...def, elem: 'fire' }, 2); ctx.burst(m.g.position.clone().setY(1.2 * m.bodyScale), '#ffffff', 10, 0.5); } } if (n) ctx.shake(heavy ? 0.2 : 0.08); }, heavy ? 180 : 90);
+    setTimeout(() => { let n = 0; const reach = WT.reach + (heavy ? 0.4 : 0), arc = WT.arc + (heavy ? 0.3 : 0), cap = WT.hits + (heavy ? 1 : 0);
+      for (const m of ctx.mobs) { if (m.dead || n >= cap) continue; if (!inArc(m, reach, arc)) continue; n++;
+        const dmg = weaponDmg() * WT.dmg * (heavy ? 2.2 : 1) * (0.9 + Math.random() * 0.2); ctx.hurtMob(m, dmg, { elem, crit: WT.crit || 0 });
+        if (Math.random() < (WT.stagger || 0) + (heavy ? 0.3 : 0)) m.stun = Math.max(m.stun || 0, heavy ? 0.9 : 0.5);
+        if (WT.stun && Math.random() < WT.stun) m.stun = Math.max(m.stun || 0, 1);
+        if (WT.bleed) meleeDot(m, WT.bleed, '#c81a1a');
+        if (WT.burn || brand) { meleeDot(m, WT.burn || 2, '#ff8a2a'); state.counters.burned++; }
+        if (WT.knock && heavy) { const k = m.g.position.clone().sub(P.pos).setY(0).normalize().multiplyScalar(WT.knock * 0.4); m.g.position.add(k); col.resolve(m.g.position, 0.4, 0); }
+        ctx.burst(m.g.position.clone().setY(1.2 * m.bodyScale), elem === 'storm' ? '#ffe040' : elem === 'fire' ? '#ffa030' : '#ffffff', 10, 0.5); }
+      if (n) ctx.shake(heavy ? 0.2 * WT.dmg : 0.08); }, (heavy ? 180 : 90) / Math.sqrt(WT.speed));
     return true;
   }
 

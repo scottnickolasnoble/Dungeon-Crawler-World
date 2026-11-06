@@ -29,13 +29,21 @@ export const SKILLS = [
 
 // ---------------- loot ----------------
 export const RARITIES = [
-  { id: 'junk', name: 'Junk', color: '#9a9a9a', affixes: [0, 0], w: 30 },
-  { id: 'common', name: 'Common', color: '#f4eedc', affixes: [0, 1], w: 35 },
-  { id: 'uncommon', name: 'Uncommon', color: '#5ad86a', affixes: [1, 2], w: 20 },
-  { id: 'rare', name: 'Rare', color: '#4a9aff', affixes: [2, 3], w: 10 },
-  { id: 'epic', name: 'Epic', color: '#b46cff', affixes: [3, 4], w: 4 },
-  { id: 'legendary', name: 'Legendary', color: '#ff9a2a', affixes: [4, 5], w: 0.8 },
+  { id: 'junk', name: 'Junk', color: '#9a9a9a', affixes: [0, 0], w: 30, ilvl: 1 },
+  { id: 'common', name: 'Common', color: '#f4eedc', affixes: [0, 1], w: 38, ilvl: 1 },
+  { id: 'uncommon', name: 'Uncommon', color: '#5ad86a', affixes: [1, 2], w: 20, ilvl: 1 },
+  { id: 'rare', name: 'Rare', color: '#4a9aff', affixes: [2, 3], w: 8, ilvl: 4 },
+  { id: 'epic', name: 'Epic', color: '#b46cff', affixes: [3, 4], w: 2, ilvl: 9 },
+  { id: 'legendary', name: 'Legendary', color: '#ff9a2a', affixes: [4, 5], w: 0.25, ilvl: 16 },
 ];
+// Diablo-style gating: an item's level (the monster's level) caps how rare it can be.
+// Rare from item level 4, epic from 9, legendary from 16 (Floor 2-3 onward). capBonus lets bosses and gold boxes reach one step higher.
+export const rarityCap = (ilvl, capBonus = 0) => Math.min(RARITIES.length - 1, RARITIES.reduce((c, r, i) => (ilvl >= r.ilvl ? i : c), 0) + capBonus);
+// chance that a normal monster drops a piece of gear (elites always do, bosses drop several)
+export const GEAR_DROP = 0.3;
+// rarity materials: what scrapping an item of that rarity gives, and how often monsters drop them (never more often than the gear itself)
+export const RARITY_MAT = { junk: 'scrapmetal', common: 'scrapmetal', uncommon: 'tempered', rare: 'bluechip', epic: 'primetime', legendary: 'showstopper' };
+export const RARITY_MAT_DROP = [['tempered', 0.04, 1], ['bluechip', 0.015, 4], ['primetime', 0.004, 9], ['showstopper', 0.0005, 16]]; // [mat, chance per kill, min monster level]
 export const SLOTS = ['head', 'face', 'shoulders', 'chest', 'back', 'bracers', 'gloves', 'belt', 'legs', 'boots', 'ring1', 'ring2', 'amulet', 'main', 'off'];
 export const SLOT_NAMES = { head: 'Head', face: 'Face', shoulders: 'Shoulders', chest: 'Chest', back: 'Cloak', bracers: 'Bracers', gloves: 'Gloves', belt: 'Belt', legs: 'Legs', boots: 'Boots', ring1: 'Ring', ring2: 'Ring', amulet: 'Amulet', main: 'Main hand', off: 'Off-hand' };
 // base items per slot, from several themed families (not just medieval)
@@ -52,10 +60,52 @@ const BASES = {
   boots: [['Steel-Toe Boots', 'work', { armor: 6 }], ['Roller Skates', 'silly', { moveSpeed: 8 }], ['Ember Treads', 'elemental', { moveSpeed: 4, fire: 3 }], ['Cleats', 'sports', { moveSpeed: 5 }]],
   ring1: [['Washer Ring', 'scrap', {}], ['Ring of Embers', 'elemental', { fire: 5 }], ['Mood Ring', 'silly', { CHA: 2 }], ['Signet of the Network', 'arcane', { INT: 2 }]],
   amulet: [['Bottle-Cap Amulet', 'scrap', {}], ['Phoenix Feather Pendant', 'elemental', { fire: 6 }], ['Lanyard of Authority', 'work', { CHA: 2 }], ['Third-Eye Amulet', 'arcane', { INT: 3, mana: 15 }]],
-  main: [['Rusty Wrench', 'scrap', { dmg: 9 }], ['Crooked Wand', 'arcane', { spell: 10 }], ['Lighter Staff', 'elemental', { spell: 12, fire: 3 }], ['Ladle Mace', 'kitchen', { dmg: 11 }], ['Stop-Sign Axe', 'scrap', { dmg: 14 }], ['Tiki-Torch Staff', 'elemental', { spell: 14, fire: 5 }]],
+  main: [], // filled from WEAPONS below (themed per floor)
   off: [['Car-Door Shield', 'scrap', { block: 12, armor: 6 }], ['Focus Orb (Snow Globe)', 'arcane', { mana: 20 }], ['Tome of Lighter Fluid', 'elemental', { spell: 8, fire: 4 }], ['Trash-Can Lid', 'scrap', { block: 9 }], ['Torch', 'elemental', { light: 1, fire: 2 }]],
 };
 BASES.ring2 = BASES.ring1;
+
+// ---------------- weapons ----------------
+// Weapon types change how a swing handles: speed, reach, arc, how many enemies it hits, and its extra effect.
+export const WTYPES = {
+  blunt: { name: 'Blunt', speed: 1.0, reach: 2.6, arc: 1.6, dmg: 1.0, hits: 3, stagger: 0.25, desc: 'Staggers' },
+  blade: { name: 'Blade', speed: 1.15, reach: 2.4, arc: 1.8, dmg: 0.95, hits: 3, bleed: 3, desc: 'Causes bleeding' },
+  pierce: { name: 'Polearm', speed: 0.95, reach: 3.5, arc: 0.8, dmg: 1.05, hits: 2, crit: 6, desc: 'Long reach, extra crit' },
+  heavy: { name: 'Heavy', speed: 0.7, reach: 2.8, arc: 2.2, dmg: 1.45, hits: 4, stagger: 0.5, knock: 3, desc: 'Slow, hits hard, knocks back' },
+  quick: { name: 'Quick', speed: 1.55, reach: 2.0, arc: 1.2, dmg: 0.68, hits: 1, crit: 8, desc: 'Very fast, extra crit' },
+  flail: { name: 'Flail', speed: 0.85, reach: 3.0, arc: 2.7, dmg: 0.9, hits: 5, desc: 'Wide sweeps hit crowds' },
+  shock: { name: 'Shock', speed: 1.0, reach: 2.5, arc: 1.5, dmg: 0.95, hits: 3, elem: 'storm', stun: 0.2, desc: 'Shocks; can stun' },
+  hot: { name: 'Searing', speed: 1.0, reach: 2.5, arc: 1.6, dmg: 0.95, hits: 3, elem: 'fire', burn: 2, desc: 'Sets enemies alight' },
+  caster: { name: 'Implement', speed: 1.0, reach: 2.3, arc: 1.4, dmg: 0.6, hits: 2, desc: 'Weak swing, boosts spells' },
+};
+// [name, family, stats, type, from item level]. Each floor's junk becomes its weapons.
+export const WEAPONS = [
+  // Floor 1 · the car park
+  ['Lead Pipe', 'scrap', { dmg: 8 }, 'blunt', 1], ['Tyre Iron', 'scrap', { dmg: 10 }, 'blunt', 1], ['Rusty Wrench', 'work', { dmg: 9, STR: 1 }, 'blunt', 1], ['Rebar Spear', 'scrap', { dmg: 10 }, 'pierce', 1],
+  ['Car-Antenna Rapier', 'scrap', { dmg: 8, DEX: 1 }, 'quick', 2], ['Stop-Sign Axe', 'scrap', { dmg: 13 }, 'heavy', 3], ['Jumper-Cable Flail', 'scrap', { dmg: 10, shock: 3 }, 'shock', 4],
+  ['Parking-Meter Maul', 'scrap', { dmg: 15 }, 'heavy', 6], ['Windscreen-Wiper Whip', 'scrap', { dmg: 9 }, 'flail', 5], ['Hubcap Chakram', 'scrap', { dmg: 10, crit: 2 }, 'blade', 4],
+  // Floor 2 · Spin City
+  ['Mop Halberd', 'laundry', { dmg: 12 }, 'pierce', 10], ['Coat-Hanger Rapier', 'laundry', { dmg: 9, DEX: 2 }, 'quick', 10], ['Clothes-Iron Knuckles', 'laundry', { dmg: 11, fire: 4 }, 'hot', 11],
+  ['Dryer-Drum Hammer', 'laundry', { dmg: 16, CON: 1 }, 'heavy', 12], ['Washboard Cleaver', 'laundry', { dmg: 12 }, 'blade', 11], ['Laundry-Line Flail', 'laundry', { dmg: 10 }, 'flail', 12],
+  // Floor 3 · the Soup District
+  ['Kitchen Cleaver', 'kitchen', { dmg: 13 }, 'blade', 16], ['Cast-Iron Pan', 'kitchen', { dmg: 13, block: 4 }, 'blunt', 16], ['Rolling Pin', 'kitchen', { dmg: 12, STR: 2 }, 'blunt', 17],
+  ['Skewer Spear', 'kitchen', { dmg: 13 }, 'pierce', 17], ['Ladle Mace', 'kitchen', { dmg: 12, WIS: 1 }, 'blunt', 16], ['Meat Tenderiser', 'kitchen', { dmg: 17 }, 'heavy', 19], ['Boiling Ladle', 'kitchen', { dmg: 11, fire: 6 }, 'hot', 20],
+  // Floor 4 · the Endless Mall
+  ['Neon-Sign Sabre', 'mall', { dmg: 13, shock: 5 }, 'shock', 26], ['Security Baton', 'mall', { dmg: 12, shock: 4 }, 'shock', 26], ['Mannequin-Arm Club', 'mall', { dmg: 14 }, 'blunt', 27],
+  ['Umbrella Rapier', 'mall', { dmg: 11, DEX: 2 }, 'quick', 27], ['Escalator-Step Axe', 'mall', { dmg: 18 }, 'heavy', 29], ['Clothes-Rail Lance', 'mall', { dmg: 14 }, 'pierce', 28],
+  // Floor 5 · Suburbia Infinite
+  ['Golf Driver', 'suburb', { dmg: 15, crit: 3 }, 'blunt', 37], ['Garden Rake', 'suburb', { dmg: 15 }, 'pierce', 37], ['Hedge Trimmers', 'suburb', { dmg: 14, atkSpeed: 4 }, 'blade', 38],
+  ['Lawn-Gnome Hammer', 'suburb', { dmg: 20 }, 'heavy', 39], ['Weed Whacker', 'suburb', { dmg: 13 }, 'flail', 39], ['Barbecue Fork', 'suburb', { dmg: 13, fire: 6 }, 'hot', 40],
+  // Floor 6 · the Canopy
+  ['Antler Pick', 'canopy', { dmg: 17 }, 'pierce', 51], ['Hunting Machete', 'canopy', { dmg: 16 }, 'blade', 51], ['Rope-Bridge Flail', 'canopy', { dmg: 15 }, 'flail', 52],
+  ['Plank Greatsword', 'canopy', { dmg: 22 }, 'heavy', 53], ['Hornback-Horn Dagger', 'canopy', { dmg: 13, crit: 4 }, 'quick', 52],
+  // spell implements (casters)
+  ['Crooked Wand', 'arcane', { spell: 10 }, 'caster', 1], ['Lighter Staff', 'elemental', { spell: 12, fire: 3 }, 'caster', 3], ['Remote-Control Wand', 'arcane', { spell: 13, castSpeed: 3 }, 'caster', 10],
+  ['Tiki-Torch Staff', 'elemental', { spell: 14, fire: 5 }, 'caster', 16], ['Mic-Stand Staff', 'arcane', { spell: 16, CHA: 2 }, 'caster', 26], ['Garden-Hose Sceptre', 'elemental', { spell: 17, frost: 4 }, 'caster', 37], ['Druid-Branch Staff', 'elemental', { spell: 20, WIS: 2 }, 'caster', 51],
+];
+for (const [n, f, st, t] of WEAPONS) BASES.main.push([n, f, st, t]);
+// weapons unlocked by item level; most picks come from the newest few so each floor drops its own junk
+function pickWeapon(rng, level) { const ok = WEAPONS.filter((w) => w[4] <= level); const recent = ok.filter((w) => w[4] >= level - 12); const pool = recent.length && rng() < 0.7 ? recent : ok; const w = pool[Math.floor(rng() * pool.length)]; return [w[0], w[1], w[2], w[3]]; }
 const AFFIXES = [
   ['STR', 1, 4], ['DEX', 1, 4], ['CON', 1, 4], ['INT', 1, 5], ['WIS', 1, 4], ['CHA', 1, 4], ['hp', 8, 30], ['mana', 8, 30], ['crit', 1, 5], ['atkSpeed', 2, 8], ['castSpeed', 2, 8],
   ['fire', 2, 10], ['frost', 2, 8], ['fireRes', 4, 15], ['moveSpeed', 2, 6], ['lifeOnHit', 1, 4], ['loot', 3, 12], ['fans', 3, 15], ['hungerDrain', 5, 15], ['thirstDrain', 5, 15],
@@ -72,12 +122,12 @@ const HOST_LINES = {
 };
 const rr = (a, b, r) => Math.round(a + (b - a) * r);
 export function makeRng(seed) { let s = seed >>> 0 || 1; return () => ((s = Math.imul(s ^ (s >>> 15), 2246822519) + 1442695040 | 0) >>> 0) / 4294967296; }
-export function rollRarity(rng, min = 0, bonus = 0) { const pool = RARITIES.slice(min); const total = pool.reduce((s, r, i) => s + r.w * (1 + bonus * i * 0.5), 0); let x = rng() * total; for (let i = 0; i < pool.length; i++) { x -= pool[i].w * (1 + bonus * i * 0.5); if (x <= 0) return pool[i]; } return pool[pool.length - 1]; }
+export function rollRarity(rng, min = 0, bonus = 0, cap = RARITIES.length - 1) { const pool = RARITIES.slice(Math.min(min, cap), cap + 1); const total = pool.reduce((s, r, i) => s + r.w * (1 + bonus * i * 0.5), 0); let x = rng() * total; for (let i = 0; i < pool.length; i++) { x -= pool[i].w * (1 + bonus * i * 0.5); if (x <= 0) return pool[i]; } return pool[pool.length - 1]; }
 let uid = 1;
-export function makeItem(rng, { level = 3, minRarity = 0, rarityBonus = 0, slot = null } = {}) {
-  const rar = rollRarity(rng, minRarity, rarityBonus);
+export function makeItem(rng, { level = 3, minRarity = 0, rarityBonus = 0, slot = null, capBonus = 0 } = {}) {
+  const rar = rollRarity(rng, minRarity, rarityBonus, rarityCap(level, capBonus));
   slot = slot || SLOTS[Math.floor(rng() * SLOTS.length)];
-  const [baseName, family, baseStats] = BASES[slot][Math.floor(rng() * BASES[slot].length)];
+  const [baseName, family, baseStats, wtype] = slot === 'main' ? pickWeapon(rng, level) : BASES[slot][Math.floor(rng() * BASES[slot].length)];
   const mult = 1 + level * 0.12 + RARITIES.indexOf(rar) * 0.15;
   const stats = {}; for (const [k, v] of Object.entries(baseStats)) stats[k] = Math.max(1, Math.round(v * mult));
   const n = rr(rar.affixes[0], rar.affixes[1], rng());
@@ -86,7 +136,7 @@ export function makeItem(rng, { level = 3, minRarity = 0, rarityBonus = 0, slot 
   if (['rare', 'epic', 'legendary'].includes(rar.id) && rng() < 0.55) { const sk = ['skill_firebolt', 'skill_fireball', 'skill_flameward', 'skill_fire'][Math.floor(rng() * 4)]; stats[sk] = sk === 'skill_fire' ? 1 : rr(1, rar.id === 'legendary' ? 3 : 2, rng()); }
   const pre = PREFIX[rar.id]; const name = pre ? `${pre[Math.floor(rng() * pre.length)]} ${baseName}` : rar.id === 'junk' ? `Broken ${baseName}` : baseName;
   const lines = HOST_LINES[rar.id];
-  return { uid: uid++, kind: 'gear', slot: slot === 'ring2' ? 'ring1' : slot, name, rarity: rar.id, family, level, stats, host: lines[Math.floor(rng() * lines.length)], value: Math.round(5 * mult * (1 + RARITIES.indexOf(rar)) ** 2) };
+  return { uid: uid++, kind: 'gear', slot: slot === 'ring2' ? 'ring1' : slot, name, rarity: rar.id, family, level, stats, ...(wtype ? { wtype } : {}), host: lines[Math.floor(rng() * lines.length)], value: Math.round(5 * mult * (1 + RARITIES.indexOf(rar)) ** 2) };
 }
 export const CONSUMABLES = [
   { id: 'water', name: 'Bottle of Clean-ish Water', kind: 'consumable', effect: { thirst: 35 }, host: 'Only slightly radioactive.' },
@@ -95,14 +145,14 @@ export const CONSUMABLES = [
   { id: 'hpot', name: 'Health Potion (Cherry)', kind: 'consumable', effect: { hp: 50 }, host: 'Doctor-recommended. The doctor is a goblin.' },
 ];
 export const BOXES = {
-  bronze: { name: 'Bronze Box', color: '#c88a4a', items: 2, minRarity: 1, bonus: 0, book: 0.05 },
-  silver: { name: 'Silver Box', color: '#c8ccd8', items: 3, minRarity: 2, bonus: 0.3, book: 0.15 },
-  gold: { name: 'Gold Box', color: '#F5C518', items: 3, minRarity: 3, bonus: 0.8, book: 0.35 },
-  boss: { name: 'Boss Box', color: '#E5484D', items: 3, minRarity: 3, bonus: 1.2, book: 0.4 },
+  bronze: { name: 'Bronze Box', color: '#c88a4a', items: 2, minRarity: 1, bonus: 0, book: 0.05, cap: 0 },
+  silver: { name: 'Silver Box', color: '#c8ccd8', items: 2, minRarity: 2, bonus: 0.2, book: 0.12, cap: 0 },
+  gold: { name: 'Gold Box', color: '#F5C518', items: 3, minRarity: 2, bonus: 0.5, book: 0.3, cap: 1 },
+  boss: { name: 'Boss Box', color: '#E5484D', items: 3, minRarity: 3, bonus: 0.8, book: 0.4, cap: 1 },
 };
 export function openBox(rng, type, level, bookPool = null) {
   const b = BOXES[type], out = [];
-  for (let i = 0; i < b.items; i++) out.push(makeItem(rng, { level, minRarity: i === 0 ? b.minRarity : Math.max(1, b.minRarity - 1), rarityBonus: b.bonus }));
+  for (let i = 0; i < b.items; i++) out.push(makeItem(rng, { level, minRarity: i === 0 ? b.minRarity : Math.max(1, b.minRarity - 1), rarityBonus: b.bonus, capBonus: b.cap }));
   if (rng() < b.book) { const learnable = bookPool || SKILLS.filter((s) => !s.built && !s.src.startsWith('Prestige')); if (learnable.length) { const s = learnable[Math.floor(rng() * learnable.length)]; out.push({ uid: uid++, kind: 'book', skill: s.id, name: `Skill Book: ${s.name}`, rarity: 'epic', host: 'Reading! In MY dungeon? Bold.' }); } else out.push({ uid: uid++, kind: 'consumable', name: 'Tome of Grit', rarity: 'epic', effect: { statPoints: 2 }, host: 'No class, no spells. Have some stat points instead.' }); }
   out.push({ uid: uid++, kind: 'consumable', ...CONSUMABLES[Math.floor(rng() * CONSUMABLES.length)] });
   return out;

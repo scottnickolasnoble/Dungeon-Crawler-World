@@ -47,7 +47,7 @@ const F1 = {
   questNPCs: (S) => [{ id: 'marta', named: 'marta', kind: 'quest', name: 'Marta Vance', title: 'Camp leader', x: S.quests[0][0], z: S.quests[0][1], yaw: 0.6, voice: 'marta' }],
   merchants: [{ id: 'pickles', named: 'pickles', name: 'Pickles', title: 'Junk trader', shop: 'pickles', voice: 'pickles' }, { id: 'bo', name: 'Benchwright Bo', title: 'Table merchant', shop: 'tables', race: 'stoneblood', voice: 'bo' }, { id: 'm1g', name: 'Rusty Kell', title: 'Weapons & armour', shop: 'gear' }, { id: 'm1p', name: 'Dot', title: 'Food, water, potions', shop: 'provisions' }],
   townsfolk: { races: ['human', 'gutterkin'] }, innkeeper: 'Barb the Innkeeper',
-  stairs: { x: 0, z: -29, r: 3.4, to: '2', flag: 'f1_stairs', locked: 'The stairwell door is chained. Marta knows why.' },
+  stairs: { x: 0, z: -29, r: 3.4, to: '2', flag: 'f1_stairs', how: 'Talk to Marta Vance in Stairwell Camp and take “The Chained Stairwell”. Deal with Sergeant Pylon at Pylon Point (kill him, or broker a truce through Pickles), then report back to Marta.', locked: 'The stairwell door is chained. Marta knows why.' },
 };
 
 // ======================= FLOOR 2 · SPIN CITY =======================
@@ -74,7 +74,7 @@ const F2 = {
   questNPCs: (S) => [{ id: 'spin', named: 'spin', kind: 'quest', name: 'Spin Cycle', title: 'Laundromat owner', x: S.quests[0][0], z: S.quests[0][1], yaw: 0.4, voice: 'spin' }, { id: 'reggie', named: 'reggie', kind: 'quest', name: 'Old Reggie', title: 'Retired custodian', x: S.quests[1][0], z: S.quests[1][1], yaw: -0.6, voice: 'reggie' }],
   merchants: [{ id: 'bev', name: 'Bev', title: 'Table merchant', shop: 'tables', race: 'fennix', voice: 'bev' }, { id: 'm2g', name: 'Spool', title: 'Weapons & armour', shop: 'gear' }, { id: 'm2p', name: 'Suds', title: 'Food, water, potions', shop: 'provisions' }, { id: 'm2j', name: 'Rinse', title: 'Junk', shop: 'pickles' }],
   townsfolk: { races: ['gutterkin', 'fennix'] }, innkeeper: 'Mangle the Innkeeper',
-  stairs: { x: 0, z: -42, r: 3.4, to: '3', flag: 'ebb_handled', locked: 'The service stairs to Floor 3 are behind Boiler Room 0’s pressure door. Deal with Ebb first.' },
+  stairs: { x: 0, z: -42, r: 3.4, to: '3', flag: 'ebb_handled', how: 'Defeat Head Custodian Ebb, boss of Boiler Room 0 (west of the Laundromat). The pressure door opens when he falls.', locked: 'The service stairs to Floor 3 are behind Boiler Room 0’s pressure door. Deal with Ebb first.' },
   hubDecor(H) { const t = H.add(new THREE.Mesh(new THREE.BoxGeometry(8, 7, 6), H.toon('#3a5a6a'))); t.position.set(0, 3.5, -46.5); H.col.box(0, -46.5, 4, 3); const ex = H.add(new THREE.Mesh(new THREE.PlaneGeometry(3, 1), sign(H, 'STAIRS ▼', '#0a3a12', '#5aff7a'))); ex.position.set(0, 4.2, -43.4); H.fx.push(ex); },
 };
 
@@ -101,7 +101,7 @@ const F3 = {
   questNPCs: (S) => [{ id: 'wickley', named: 'wickley', kind: 'quest', name: 'Wickley', title: 'Soup cook · Soup Feud', x: S.quests[0][0], z: S.quests[0][1], yaw: 0, voice: 'wickley' }, { id: 'ash', named: 'ash', kind: 'quest', name: 'Brother Ash', title: 'Monk of the Last Light', x: S.quests[1][0], z: S.quests[1][1], yaw: 2.3, voice: 'ash' }, { id: 'vrask', kind: 'quest', role: 'quest', race: 'lumen', variant: 2, name: 'Judge Vrask', title: 'Food critic (visiting)', x: S.quests[2][0], z: S.quests[2][1], yaw: -0.6, voice: 'vrask', static: true }],
   merchants: [{ id: 'bix', name: 'Bix', title: 'Table merchant', shop: 'tables', race: 'stoneblood', voice: 'bix' }, { id: 'm3g', name: 'Cleaver Jo', title: 'Weapons & armour', shop: 'gear' }, { id: 'm3p', name: 'Auntie Dumpling', title: 'Food, water, potions', shop: 'provisions' }, { id: 'm3j', name: 'Scraps', title: 'Junk', shop: 'pickles' }],
   townsfolk: { races: ['ogrekin', 'human'] }, innkeeper: 'Gravy the Innkeeper',
-  stairs: { x: 0, z: -282, r: 3.4, to: '4', flag: 'coneKing_handled', locked: 'The stairs to Floor 4 are under the Cone King’s throne.' },
+  stairs: { x: 0, z: -282, r: 3.4, to: '4', flag: 'coneKing_handled', how: 'Defeat the Cone King at the Cone Cathedral. The stairs are under his throne, far north of Soup Row.', locked: 'The stairs to Floor 4 are under the Cone King’s throne.' },
 };
 
 // ======================= FLOOR 4 · THE ENDLESS MALL =======================
@@ -125,7 +125,7 @@ const F4 = {
   questNPCs: (S) => [{ id: 'sunny', named: 'sunny', kind: 'quest', name: 'Sunny the Sponsor Rep', title: 'Sponsor Rep', x: S.quests[0][0], z: S.quests[0][1], yaw: 0, voice: 'spin' }, { id: 'prickle', named: 'prickle', kind: 'quest', name: 'Madame Prickle', title: 'Kiosk fortune-teller', x: S.quests[1][0], z: S.quests[1][1], yaw: 2, voice: 'marta' }],
   merchants: [{ id: 'm4g', name: 'Clearance Carl', title: 'Weapons & armour', shop: 'gear' }, { id: 'm4p', name: 'Cinnamon Sue', title: 'Food, water, potions', shop: 'provisions' }, { id: 'm4t', name: 'Bo’s Mall Branch', title: 'Table merchant', shop: 'tables', race: 'stoneblood', voice: 'bo' }, { id: 'm4j', name: 'Lost Receipts', title: 'Junk', shop: 'pickles' }],
   townsfolk: { races: ['human', 'fennix'] }, innkeeper: 'Mattress Mo',
-  stairs: { x: 278, z: 32, r: 3.4, to: '5', flag: 'kraken_handled', locked: 'The service lift to Floor 5 is behind the Food Court Kraken.' },
+  stairs: { x: 278, z: 32, r: 3.4, to: '5', flag: 'kraken_handled', how: 'Defeat the Food Court Kraken in the Food Court Depths. The service lift is east of the Free State.', locked: 'The service lift to Floor 5 is behind the Food Court Kraken.' },
 };
 
 // ======================= FLOOR 5 · SUBURBIA INFINITE =======================
@@ -147,7 +147,7 @@ const F5 = {
   questNPCs: (S) => [{ id: 'deb', named: 'deb', kind: 'quest', name: 'Big Deb', title: 'Fort Cul-de-Sac quartermaster', x: S.quests[0][0], z: S.quests[0][1], yaw: 0, voice: 'pickles' }, { id: 'watch', named: 'watch', kind: 'quest', name: 'the Neighbourhood Watch', title: 'The Neighbourhood Watch', x: S.quests[1][0], z: S.quests[1][1], yaw: 2, voice: 'reggie' }],
   merchants: [{ id: 'm5g', name: 'Yard Sale Yolanda', title: 'Weapons & armour', shop: 'gear' }, { id: 'm5p', name: 'Lemonade Lee', title: 'Food, water, potions', shop: 'provisions' }, { id: 'm5t', name: 'Bo’s Garage', title: 'Table merchant', shop: 'tables', race: 'stoneblood', voice: 'bo' }, { id: 'm5j', name: 'Curbside Cal', title: 'Junk', shop: 'pickles' }],
   townsfolk: { races: ['human', 'bogling'] }, innkeeper: 'Mrs Doily',
-  stairs: { x: 278, z: 32, r: 3.4, to: '6', flag: 'hoa_handled', locked: 'The manhole to Floor 6 is inside the HOA Clubhouse. They have rules about it.' },
+  stairs: { x: 278, z: 32, r: 3.4, to: '6', flag: 'hoa_handled', how: 'Deal with the HOA Clubhouse boss. The manhole down is inside their clubhouse grounds, east of Fort Cul-de-Sac.', locked: 'The manhole to Floor 6 is inside the HOA Clubhouse. They have rules about it.' },
 };
 
 // ======================= FLOOR 6 · THE CANOPY =======================
@@ -169,7 +169,7 @@ const F6 = {
   questNPCs: (S) => [{ id: 'gusset', named: 'gusset', kind: 'quest', name: 'Gusset', title: 'Treehouse warden', x: S.quests[0][0], z: S.quests[0][1], yaw: 0, voice: 'bo' }, { id: 'lantern', named: 'lantern', kind: 'quest', name: 'Elder Lantern', title: 'Elder of the Mothwing', x: S.quests[1][0], z: S.quests[1][1], yaw: 2, voice: 'ash' }],
   merchants: [{ id: 'm6g', name: 'Bark & Blade', title: 'Weapons & armour', shop: 'gear' }, { id: 'm6p', name: 'Forager Fern', title: 'Food, water, potions', shop: 'provisions' }, { id: 'm6t', name: 'Bo’s Treehouse Branch', title: 'Table merchant', shop: 'tables', race: 'stoneblood', voice: 'bo' }, { id: 'm6j', name: 'Twig', title: 'Junk', shop: 'pickles' }],
   townsfolk: { races: ['fennix', 'bogling'] }, innkeeper: 'Old Bramble',
-  stairs: { x: 0, z: -312, r: 3.4, to: '7', flag: 'huntLord_handled', locked: 'The way down is through the Glimmerkin Safari Lodge.' },
+  stairs: { x: 0, z: -312, r: 3.4, to: '7', flag: 'huntLord_handled', how: 'Defeat the Hunt Lord at the Glimmerkin Safari Lodge, far north of the Treehouse.', locked: 'The way down is through the Glimmerkin Safari Lodge.' },
 };
 
 export const FLOORDEFS = { 1: F1, 2: F2, 3: F3, 4: F4, 5: F5, 6: F6 };

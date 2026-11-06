@@ -10,9 +10,10 @@ import { createStory } from './story.js';
 import { artImg } from './lootart.js';
 import { playIntro } from './intro.js';
 const AU = createAudio();
-import { SKILLS, CLASS, STATS, makeItem, makeRng, openBox, BOXES, ACHIEVEMENTS, CONSUMABLES } from './data.js';
+import { SKILLS, CLASS, STATS, makeItem, makeRng, openBox, BOXES, ACHIEVEMENTS, CONSUMABLES, GEAR_DROP, RARITY_MAT_DROP, RARITY_MAT } from './data.js';
 import { createUI } from './ui.js';
 import { createCrafting, createCraftUI, MATS, TABLES } from './crafting.js';
+import { createGuide } from './guide.js';
 
 const $ = (id) => document.getElementById(id);
 const QS = new URLSearchParams(location.search); const HASH = location.hash.slice(1);
@@ -26,7 +27,7 @@ const FIRE_SKILLS = ['firebolt', 'fireball', 'flamewave', 'emberdarts', 'combust
 
 // ---------------- state ----------------
 const state = {
-  name: 'Dale', level: 1, xp: 0, xpNext: 0, statPoints: 0, skillPoints: 0, gold: 37, scrap: 4,
+  name: '', level: 1, xp: 0, xpNext: 0, statPoints: 0, skillPoints: 0, gold: 37, scrap: 4,
   base: { STR: 9, DEX: 9, CON: 10, INT: 8, WIS: 8, CHA: 8 }, cls: 'none', race: null, hotbar: ['flick'],
   hp: 1, mana: 1, stamina: 100, hunger: 78, thirst: 64, ward: 0, wardMax: 1,
   equip: {}, inv: [], ach: {}, counters: { walked: 0, kills: 0, burned: 0, wardAbsorb: 0, boxes: 0, parries: 0 }, conquered: {}, discovered: new Set(),
@@ -40,10 +41,14 @@ const LOADED = !QS.has('newgame') && HASH !== 'new' && loadGame();
 if (HASH === 'new' || HASH === 'intro') { try { history.replaceState(null, '', '#floor-0'); } catch (e) {} }
 state.equipped = (it) => Object.values(state.equip).includes(it);
 // Diablo-style curve: early levels come in ~10 kills, then each level takes longer (L5 ~50 kills, L10 ~100)
+// what each monster drops (Math.random parts are rolled per kill); the crafting guide reads this too
+function matDropTable() { return { wight: { bonedust: 2, cloth: 2, dirtywater: 1 }, ebb: { bonedust: 6, cloth: 4, frost: 2, bosscore: 1 }, lamprey: { lampreymeat: 2, gristle: 1, dirtywater: 2 }, bigSucker: { lampreymeat: 6, gristle: 4, tide: 2, bosscore: 1 }, moth: { glass: 1, light: Math.random() < 0.35 ? 1 : 0, cloth: 1 }, bulbQueen: { glass: 6, light: 4, bosscore: 1 }, pigeon: { gristle: 1, cloth: 1, hide: 1 }, coo: { gristle: 4, cloth: 4, bosscore: 1 }, mimic: { scrapmetal: 2, battery: 1, spring: Math.random() < 0.5 ? 1 : 0, wire: 1 }, pylon: { coneplastic: 8, scrapmetal: 4, bosscore: 1 }, coneKing: { coneplastic: 12, alloy: 2, bosscore: 2 } }; }
+// floor-themed crafting materials: every kill has a 60% chance to drop one from its floor's list
+const FLOOR_MATS = { 0: ['scrapmetal', 'cloth'], 1: ['coneplastic', 'hide', 'rubber', 'wire', 'sulphur', 'saltpetre', 'dirtywater', 'plastic'], 2: ['lint', 'detergent', 'cloth', 'rubber', 'dirtywater', 'grease', 'battery', 'frost'], 3: ['stock', 'castiron', 'herbs', 'salt', 'mushroom', 'roughruby', 'ember'], 4: ['neon', 'glitter', 'plastic', 'glass', 'paper', 'ink', 'battery', 'storm'], 5: ['clippings', 'ceramic', 'rubber', 'herbs', 'roughsapphire', 'light', 'tide'], 6: ['sap', 'chitin', 'herbs', 'mushroom', 'shadow', 'tide', 'roughruby'] };
 const xpFor = (lv) => Math.round(80 * lv * lv + 120 * lv);
 state.xpNext = xpFor(state.level);
 // starting kit (new game only): no class yet, a basic weapon, a bathrobe, slippers and some supplies
-const STARTER = { main: { name: 'Lead Pipe', family: 'scrap', stats: { dmg: 7 }, host: 'A length of pipe. The oldest weapon in the dungeon.' }, chest: { name: 'Bathrobe', family: 'silly', stats: { armor: 2, CON: 1 }, host: 'You ran out of the house in this. Respect.' }, boots: { name: 'Fuzzy Slippers', family: 'silly', stats: { moveSpeed: 3 }, host: 'Silent, warm, and absolutely not armour.' } };
+const STARTER = { main: { name: 'Lead Pipe', family: 'scrap', wtype: 'blunt', stats: { dmg: 7 }, host: 'A length of pipe. The oldest weapon in the dungeon.' }, chest: { name: 'Bathrobe', family: 'silly', stats: { armor: 2, CON: 1 }, host: 'You ran out of the house in this. Respect.' }, boots: { name: 'Fuzzy Slippers', family: 'silly', stats: { moveSpeed: 3 }, host: 'Silent, warm, and absolutely not armour.' } };
 if (!LOADED) { for (const [slot, b] of Object.entries(STARTER)) state.equip[slot] = { uid: 100 + slot.length, kind: 'gear', slot, rarity: 'common', level: 1, value: 4, ...b, stats: { ...b.stats } };
   state.inv.push({ ...CONSUMABLES[0], uid: 9002, rarity: 'common' }, { ...CONSUMABLES[0], uid: 9005, rarity: 'common' }, { ...CONSUMABLES[1], uid: 9003, rarity: 'common' }, { ...CONSUMABLES[3], uid: 9004, rarity: 'common' }); state.gold = 25; }
 function gearTotals() { const t = {}; for (const it of Object.values(state.equip)) if (it) for (const [k, v] of Object.entries(it.stats)) t[k] = (t[k] || 0) + v; return t; }
@@ -84,7 +89,9 @@ const G = { state, derived, gearSkillBonus, spellDamage, cooldownFrac, skillDef,
     else if (it.kind === 'book') { const s = skillDef(it.skill); state.inv.splice(state.inv.indexOf(it), 1); if (state.skills[s.id]) { if (state.skills[s.id].lvl < 15) state.skills[s.id].lvl++; ui.toast(`Duplicate book: <b>${s.name}</b> +1 level`, '#b46cff'); } else { state.skills[s.id] = { lvl: 1, ups: [] }; if (state.hotbar.length < 6 && s.kind !== 'passive') state.hotbar.push(s.id); renderHotbar(); ui.banner(`NEW SKILL: ${s.name.toUpperCase()}`, '#b46cff'); ui.host(`You learned ${s.name}. From a book. In a dungeon. Truly the hero we deserve.`); } }
     else if (it.kind === 'box') { state.flags.tut_box = true; setTimeout(() => STORY.Q.event('flag'), 50); state.inv.splice(state.inv.indexOf(it), 1); const items = openBox(rng, it.box, Math.max(3, state.level), bookPool()); items.forEach((x) => state.inv.push(x)); state.counters.boxes++; ui.revealBox(BOXES[it.box].name, BOXES[it.box].color, items, checkAch); const best = items.find((x) => x.rarity === 'legendary' || x.rarity === 'epic'); ui.host(best ? `Ooh, ${best.name}! The audience is jealous. I'm jealous.` : 'Unboxing! The purest form of content.'); }
   },
-  scrap(it) { state.inv.splice(state.inv.indexOf(it), 1); const r = ['junk', 'common', 'uncommon', 'rare', 'epic', 'legendary'].indexOf(it.rarity); state.scrap += 1 + r; state.gold += Math.round((it.value || 10) / 4); const got = { scrapmetal: 1 + r, [['plastic', 'wire', 'cloth', 'rubber', 'glass'][it.uid % 5]]: 1 + (r >> 1) }; if (r >= 3) got[['ember', 'frost', 'storm', 'light'][it.uid % 4]] = r - 2; if (it.stats && it.stats.fire) got.ember = (got.ember || 0) + 1; for (const [m, n] of Object.entries(got)) state.mats[m] = (state.mats[m] || 0) + n; ui.toast(`Scrapped ${it.name}<div class="sm">${Object.entries(got).map(([m, n]) => `+${n} ${MATS[m]}`).join(' · ')}</div>`, '#9a9a9a', 2200); },
+  scrap(it, sure = false) { const r0 = ['junk', 'common', 'uncommon', 'rare', 'epic', 'legendary'].indexOf(it.rarity);
+    if (!sure && (r0 >= 3 || it.crafted)) { const col = RCOL[it.rarity] || '#fff'; return ui.confirm(`Scrap <b style="color:${col}">${it.name}</b>?<div class="sm" style="margin-top:6px">It's ${it.rarity}. You'll get materials including <b>${MATS[RARITY_MAT[it.rarity]] || 'scrap'}</b>, but the item is gone for good.</div>`, 'SCRAP IT', () => G.scrap(it, true)); }
+    if (state.inv.indexOf(it) < 0) return; state.inv.splice(state.inv.indexOf(it), 1); const r = r0; state.scrap += 1 + r; state.gold += Math.round((it.value || 10) / 4); const got = { scrapmetal: 1 + r, [['plastic', 'wire', 'cloth', 'rubber', 'glass'][it.uid % 5]]: 1 + (r >> 1) }; if (r >= 3) got[['ember', 'frost', 'storm', 'light'][it.uid % 4]] = r - 2; if (it.stats && it.stats.fire) got.ember = (got.ember || 0) + 1; if (r >= 2) got[RARITY_MAT[it.rarity]] = (got[RARITY_MAT[it.rarity]] || 0) + 1 + (r === 2 && Math.random() < 0.3 ? 1 : 0); for (const [m, n] of Object.entries(got)) state.mats[m] = (state.mats[m] || 0) + n; ui.toast(`Scrapped ${it.name}<div class="sm">${Object.entries(got).map(([m, n]) => `+${n} ${MATS[m]}`).join(' · ')}</div>`, '#9a9a9a', 2200); },
   cls: () => clsDef(), skillList: () => [skillDef('flick'), ...classSkills(state.cls)].filter(Boolean), hotbarIds: () => state.hotbar,
   setHotbar(i, id) { const j = state.hotbar.indexOf(id); if (j >= 0) state.hotbar.splice(j, 1); state.hotbar.splice(Math.min(i, state.hotbar.length), 0, id); state.hotbar = state.hotbar.slice(0, 6); renderHotbar(); },
   chooseClass(cls, race) { const C = CLASSES[cls], R = PRACES[race]; if (!C || !R || state.cls !== 'none') return; state.cls = cls; state.race = race; for (const [k, v] of Object.entries(R.bonus)) state.base[k] += v;
@@ -94,6 +101,7 @@ const G = { state, derived, gearSkillBonus, spellDamage, cooldownFrac, skillDef,
   scrapJunk() { const j = state.inv.filter((i) => i.kind === 'gear' && i.rarity === 'junk'); j.forEach((i) => G.scrap(i)); if (!j.length) ui.toast('No junk to scrap', '#9a9a9a', 1500); },
 };
 const ui = createUI(G);
+const GUIDE = createGuide(G, { matDrop: matDropTable(), floorMats: FLOOR_MATS, mobName: (k) => (MOBDEFS[k] && MOBDEFS[k].name) || k }); G.renderGuide = () => GUIDE.render(); G.openGuide = () => ui.toggle("guide");
 { const h = ui.host; ui.host = (t) => { h(t); AU.say(t, 'host'); }; const tg = ui.toggle; ui.toggle = (p) => { SFX('ui'); tg(p); }; }
 const CR = createCrafting(G); const craftUI = createCraftUI(G, CR);
 G.closeCraft = () => ui.close();
@@ -187,6 +195,14 @@ function tickTurrets(dt) {
     if (T.t <= 0) { scene.remove(T.g); turrets.splice(i, 1); burstAt(T.g.position, '#9a9a9a', 12, 0.4); } }
 }
 // hotbar: slot 0 = left-click attack (weapon swing for melee classes), then up to 6 skills on keys 1-6
+// quick-use bar: Z health, X mana, T drink, Y food. Each uses the strongest matching item you carry.
+const QUICK = [['KeyZ', 'Z', 'HEALTH', 'hp', '#E5484D'], ['KeyX', 'X', 'MANA', 'mana', '#4a9aff'], ['KeyT', 'T', 'DRINK', 'thirst', '#5ab8e8'], ['KeyY', 'Y', 'FOOD', 'hunger', '#e8a040']];
+const quickItems = (eff) => state.inv.filter((i) => i.kind === 'consumable' && i.effect && i.effect[eff] > 0 && !i.effect.bomb && !i.effect.turret);
+function quickUse(eff) { const list = quickItems(eff); if (!list.length) return ui.toast(`No ${QUICK.find((q) => q[3] === eff)[2].toLowerCase()} items`, '#9a9a9a', 1000); list.sort((a, b) => b.effect[eff] - a.effect[eff]); G.useItem(list[0]); renderQuick(); }
+let quickSig = '';
+function renderQuick() { const sig = QUICK.map((q) => quickItems(q[3]).length).join(','); if (sig === quickSig) return; quickSig = sig; const el = $('quickbar'); if (!el) return;
+  el.innerHTML = QUICK.map(([, key, lab, eff, col], i) => { const n = quickItems(eff).length; return `<div class="qs ${n ? 'has' : 'empty'}" style="--c:${col}" data-q="${i}" title="${lab}: uses your best ${lab.toLowerCase()} item"><span class="k">${key}</span><b>${lab}</b><span class="n">${n}</span></div>`; }).join('');
+  el.querySelectorAll('.qs').forEach((d) => d.onclick = () => quickUse(QUICK[+d.dataset.q][3])); }
 function renderHotbar() { const C = clsDef(); const cells = []; if (C.attack === 'melee') cells.push(`<div class="hk atk0"><span class="k">LMB / RMB</span><b>${(state.equip.main ? state.equip.main.name : 'FISTS').toUpperCase().slice(0, 12)}</b><small>light / heavy</small></div>`);
   state.hotbar.forEach((id, i) => { const d = skillDef(id); if (!d) return; cells.push(`<div class="hk" id="hk_${id}" style="border-color:${(CLASSES[d.cls] || C).color || '#000'}"><span class="k">${i + 1}${C.attack !== 'melee' && i === 0 ? ' / LMB' : C.attack !== 'melee' && i === 1 ? ' / RMB' : ''}</span><b>${d.name.replace(/ \(.*\)/, '').toUpperCase().slice(0, 12)}</b><small>${d.cost ? d.cost + ' mp' : 'free'}</small><div class="cdo"></div></div>`); });
   $('hotbar').innerHTML = cells.join(''); }
@@ -216,8 +232,9 @@ document.addEventListener('keydown', (e) => {
   keys[e.code] = true; if (e.repeat) return;
   const k = e.code;
   if (STORY.isOpen()) { STORY.key(k); return; }
-  if (k === 'KeyI') ui.toggle('inv'); else if (k === 'KeyL') ui.toggle('quests'); else if (k === 'KeyB') ui.toast(FLOOR === 'pad' ? 'Walk up to a table and press E.' : 'Crafting happens at the tables in your Crash Pad. Press H in a safe zone.', '#9a9a9a', 1800); else if (k === 'KeyH' && !ui.isOpen()) goPad(); else if (k === 'KeyC') ui.toggle('char'); else if (k === 'KeyK') ui.toggle('skills'); else if (k === 'KeyM') ui.toggle('map'); else if (k === 'KeyJ') ui.toggle('ach'); else if (k === 'KeyP') ui.toggle('settings');
+  if (k === 'KeyI') ui.toggle('inv'); else if (k === 'KeyN') ui.toggle('guide'); else if (k === 'KeyL') ui.toggle('quests'); else if (k === 'KeyB') ui.toast(FLOOR === 'pad' ? 'Walk up to a table and press E.' : 'Crafting happens at the tables in your Crash Pad. Press H in a safe zone.', '#9a9a9a', 1800); else if (k === 'KeyH' && !ui.isOpen()) goPad(); else if (k === 'KeyC') ui.toggle('char'); else if (k === 'KeyK') ui.toggle('skills'); else if (k === 'KeyM') ui.toggle('map'); else if (k === 'KeyJ') ui.toggle('ach'); else if (k === 'KeyP') ui.toggle('settings');
   else if (k === 'Escape') ui.close(); else if (k === 'KeyO') { ink.state.outline = !ink.state.outline; ui.toast(`Ink outlines ${ink.state.outline ? 'on' : 'off'}`, '#9a9a9a', 1200); }
+  else if (!ui.isOpen() && QUICK.some((q) => q[0] === k)) quickUse(QUICK.find((q) => q[0] === k)[3]);
   else if (!ui.isOpen()) { const dg = k.match(/^Digit([1-6])$/); if (dg && state.hotbar[+dg[1] - 1]) cast(state.hotbar[+dg[1] - 1]); if (k === 'KeyR' && state.hotbar[1]) cast(state.hotbar[1]); if (k === 'KeyQ') { const dq = state.hotbar.find((id) => { const d = skillDef(id); return d && d.type === 'def'; }); if (dq) cast(dq); } if (k === 'KeyE') use(); if (k === 'KeyG') throwBomb(); if (k === 'KeyF') { DEF.parryT = performance.now() / 1000; DEF.blockHeld = true; SFX('parryTry', P.pos); } if (k === 'KeyV') dodge(); if (k === 'Space' && P.onGround) { P.vel.y = 5.2; P.onGround = false; } }
 });
 document.addEventListener('keyup', (e) => { keys[e.code] = false; if (e.code === 'KeyF') DEF.blockHeld = false; });
@@ -246,18 +263,38 @@ let revealT = 0;
 function cast(id) { return COMBAT.cast(id); }
 const clsDef = () => CLASSES[state.cls || 'none'];
 // left click: melee classes swing their weapon, casters cast their first hotbar skill. Right click: heavy swing / second slot.
-function primary() { if (clsDef().attack === 'melee') { if (COMBAT.swing(false)) { castAnim = 0.3; } } else cast(state.hotbar[0] || 'flick'); }
+function primary() { if (clsDef().attack === 'melee') { const ok = COMBAT.swing(false); if (ok) castAnim = 0.3; return ok; } return cast(state.hotbar[0] || 'flick'); }
 function secondary() { if (clsDef().attack === 'melee') { if (COMBAT.swing(true)) castAnim = 0.45; } else cast(state.hotbar[1] || state.hotbar[0]); }
 // first-person weapon (melee) or glowing hand (casters)
 const weaponFP = new THREE.Group(); handFlame.add(weaponFP);
-function buildWeaponFP() { weaponFP.clear(); const w = state.equip.main; const n = (w && w.name || '').toLowerCase(); const metal = new THREE.MeshStandardMaterial({ color: '#8a8e94', metalness: 0.8, roughness: 0.4 }); const wood = new THREE.MeshStandardMaterial({ color: '#7a5a3a', roughness: 0.8 });
-  const add = (geo, mat, x, y, z, rx = 0) => { const m = new THREE.Mesh(geo, mat); m.position.set(x, y, z); m.rotation.x = rx; weaponFP.add(m); return m; };
-  if (!w) return; if (/axe/.test(n)) { add(new THREE.CylinderGeometry(0.02, 0.02, 0.6, 8), wood, 0, 0.25, 0); add(new THREE.BoxGeometry(0.18, 0.14, 0.02), /stop/.test(n) ? new THREE.MeshStandardMaterial({ color: '#c81a14' }) : metal, 0.08, 0.5, 0); }
-  else if (/wand|staff/.test(n)) { add(new THREE.CylinderGeometry(0.015, 0.02, 0.7, 8), wood, 0, 0.3, 0); add(new THREE.SphereGeometry(0.04, 10, 8), new THREE.MeshBasicMaterial({ color: new THREE.Color('#ffb040').multiplyScalar(2) }), 0, 0.68, 0); }
-  else if (/wrench|mace|ladle|hammer/.test(n)) { add(new THREE.CylinderGeometry(0.02, 0.02, 0.55, 8), metal, 0, 0.25, 0); add(new THREE.BoxGeometry(0.12, 0.08, 0.05), metal, 0, 0.53, 0); }
-  else if (/sword|blade|dagger|spear|crowbar/.test(n)) { add(new THREE.BoxGeometry(0.035, 0.6, 0.012), metal, 0, 0.38, 0); add(new THREE.BoxGeometry(0.14, 0.025, 0.03), metal, 0, 0.08, 0); }
-  else add(new THREE.CylinderGeometry(0.022, 0.022, 0.62, 10), metal, 0, 0.28, 0); // the lead pipe
-  weaponFP.position.set(0, 0.02, -0.02); weaponFP.rotation.set(-0.5, 0, 0.35); }
+// first-person weapon: shaped by weapon type, with a few named specials (stop sign, pan, rake, umbrella...)
+function buildWeaponFP() { weaponFP.clear(); weaponFP.position.set(0, 0.02, -0.02); weaponFP.rotation.set(-0.5, 0, 0.35); const w = state.equip.main; if (!w) return; const n = (w.name || '').toLowerCase(); const wt = w.wtype || (w.stats.spell && !w.stats.dmg ? 'caster' : 'blunt');
+  const M = (c, o = {}) => new THREE.MeshStandardMaterial({ color: c, roughness: 0.5, ...o }); const metal = M('#8a8e94', { metalness: 0.8, roughness: 0.4 }), dark = M('#3a3a40', { metalness: 0.6 }), wood = M('#7a5a3a', { roughness: 0.8 }), grip = M('#2a2228');
+  const glowM = (c) => new THREE.MeshBasicMaterial({ color: new THREE.Color(c).multiplyScalar(2) });
+  const add = (geo, mat, x, y, z, rx = 0, rz = 0) => { const m = new THREE.Mesh(geo, mat); m.position.set(x, y, z); m.rotation.set(rx, 0, rz); weaponFP.add(m); return m; };
+  const cyl = (r1, r2, h, seg = 10) => new THREE.CylinderGeometry(r1, r2, h, seg), box = (a, b, c) => new THREE.BoxGeometry(a, b, c);
+  add(cyl(0.024, 0.024, 0.16), grip, 0, 0.0, 0); // grip
+  if (wt === 'caster') { add(cyl(0.015, 0.02, 0.75, 8), /mic/.test(n) ? dark : wood, 0, 0.32, 0); add(new THREE.SphereGeometry(0.045, 12, 10), glowM(w.stats.frost ? '#9ad8ff' : w.stats.fire ? '#ffb040' : '#c89aff'), 0, 0.72, 0); if (/mic/.test(n)) add(new THREE.SphereGeometry(0.05, 10, 8), dark, 0, 0.72, 0); if (/remote/.test(n)) add(box(0.05, 0.16, 0.025), dark, 0, 0.62, 0); return; }
+  if (wt === 'pierce') { add(cyl(0.016, 0.016, 1.1, 8), /rebar|antler/.test(n) ? metal : wood, 0, 0.5, 0);
+    if (/rake/.test(n)) { add(box(0.24, 0.025, 0.025), metal, 0, 1.05, 0); for (let i = 0; i < 6; i++) add(box(0.01, 0.08, 0.01), metal, -0.1 + i * 0.04, 1.0, 0.02); }
+    else if (/mop/.test(n)) add(cyl(0.07, 0.05, 0.14, 10), M('#d8d0c0', { roughness: 0.95 }), 0, 1.08, 0);
+    else add(new THREE.ConeGeometry(0.035, 0.16, 8), /antler/.test(n) ? M('#e8dcc0') : metal, 0, 1.13, 0); return; }
+  if (wt === 'quick') { add(box(0.07, 0.015, 0.03), metal, 0, 0.09, 0); if (/umbrella/.test(n)) { add(cyl(0.01, 0.01, 0.75, 6), dark, 0, 0.45, 0); add(new THREE.ConeGeometry(0.05, 0.5, 8), M('#2a2a5a'), 0, 0.55, 0, Math.PI); } else add(box(0.016, 0.62, 0.008), /antenna|hanger/.test(n) ? dark : metal, 0, 0.4, 0); return; }
+  if (wt === 'blade') { if (/cleaver|machete|washboard/.test(n)) { add(box(0.11, 0.3, 0.012), metal, 0.03, 0.26, 0); } else if (/trimmer/.test(n)) { for (const sx of [-0.02, 0.02]) add(box(0.025, 0.42, 0.008), metal, sx, 0.3, sx * 2, 0, sx * 3); } else if (/chakram/.test(n)) { add(new THREE.TorusGeometry(0.11, 0.025, 6, 20), metal, 0, 0.2, 0); } else { add(box(0.04, 0.55, 0.012), metal, 0, 0.36, 0); add(box(0.14, 0.025, 0.03), metal, 0, 0.09, 0); } return; }
+  if (wt === 'heavy') { add(cyl(0.024, 0.024, 0.7, 8), /plank/.test(n) ? wood : dark, 0, 0.35, 0);
+    if (/stop/.test(n)) add(cyl(0.16, 0.16, 0.02, 8), M('#c81a14'), 0.0, 0.72, 0, Math.PI / 2); else if (/meter/.test(n)) { add(box(0.12, 0.2, 0.1), M('#7a8088', { metalness: 0.5 }), 0, 0.75, 0); add(new THREE.SphereGeometry(0.06, 10, 8), glowM('#88aaff'), 0, 0.87, 0); }
+    else if (/plank/.test(n)) add(box(0.14, 0.75, 0.03), wood, 0, 0.6, 0); else if (/gnome/.test(n)) { add(cyl(0.07, 0.09, 0.16, 10), M('#3a6ac8'), 0, 0.74, 0); add(new THREE.ConeGeometry(0.07, 0.14, 10), M('#c81a1a'), 0, 0.88, 0); }
+    else add(box(0.2, 0.12, 0.1), /axe|escalator/.test(n) ? metal : M('#6a6a70', { metalness: 0.6 }), 0, 0.72, 0); return; }
+  if (wt === 'flail') { add(cyl(0.02, 0.02, 0.3, 8), /rope|line/.test(n) ? wood : dark, 0, 0.15, 0); for (let i = 0; i < 4; i++) add(new THREE.TorusGeometry(0.02, 0.006, 4, 8), metal, 0.02 * i, 0.32 + i * 0.045, 0, 0, i * 0.6);
+    add(/whacker|wiper/.test(n) ? box(0.18, 0.02, 0.02) : new THREE.SphereGeometry(0.06, 10, 8), /whacker/.test(n) ? M('#e85a1a') : dark, 0.08, 0.52, 0); return; }
+  if (wt === 'shock') { add(cyl(0.02, 0.02, 0.5, 8), /neon/.test(n) ? glowM('#ff3ac8') : dark, 0, 0.3, 0); add(new THREE.SphereGeometry(0.03, 8, 6), glowM('#ffe040'), 0, 0.57, 0); if (/cable/.test(n)) for (const sx of [-1, 1]) add(box(0.04, 0.06, 0.02), M(sx < 0 ? '#c81a14' : '#1a1a1a'), sx * 0.03, 0.6, 0); return; }
+  if (wt === 'hot') { if (/iron/.test(n)) { add(box(0.14, 0.05, 0.09), metal, 0, 0.1, 0.05); add(box(0.14, 0.01, 0.09), glowM('#ff6a1a'), 0, 0.075, 0.05); } else { add(cyl(0.018, 0.018, 0.5, 8), metal, 0, 0.25, 0); add(new THREE.SphereGeometry(0.05, 10, 8, 0, 6.3, 0, 1.6), glowM('#ff8a2a'), 0, 0.52, 0); } return; }
+  // blunt
+  if (/pan/.test(n)) { add(cyl(0.015, 0.015, 0.3, 8), dark, 0, 0.15, 0); add(cyl(0.13, 0.11, 0.035, 18), dark, 0, 0.42, 0, Math.PI / 2); }
+  else if (/golf/.test(n)) { add(cyl(0.008, 0.012, 0.8, 8), metal, 0, 0.4, 0); add(box(0.1, 0.05, 0.04), metal, 0.04, 0.8, 0); }
+  else if (/rolling/.test(n)) add(cyl(0.045, 0.045, 0.4, 12), wood, 0, 0.3, 0);
+  else { add(cyl(0.022, 0.022, 0.55, 8), /mannequin/.test(n) ? M('#e8e0d8') : metal, 0, 0.27, 0); if (/wrench|ladle|tyre|mace/.test(n)) add(box(0.12, 0.08, 0.05), metal, 0, 0.55, 0); }
+}
 function handGlow(elem) { const c = { fire: '#ffa030', frost: '#bff4ff', storm: '#ffe040', poison: '#9aff5a', holy: '#fff4c0', water: '#5ab8ff', earth: '#e8b060', wind: '#d8fff0', death: '#d8d0ff', shadow: '#c89aff', time: '#ffe8a0', arcane: '#9ad0ff' }[elem] || '#ffa030'; palmFire.material.color.set(c).multiplyScalar(2.5); palmLight.color.set(c); }
 let handFireIdle = false; // casters keep a flame in the palm; weapon users only flash one when they cast
 function refreshHand() { const melee = clsDef().attack === 'melee'; weaponFP.visible = melee; handFireIdle = !melee; palmFire.visible = handFireIdle; palmFire.scale.setScalar(melee ? 0.7 : 1); handGlow(clsDef().elem || 'fire'); buildWeaponFP(); }
@@ -317,7 +354,8 @@ function killMob(m) {
   STORY.Q.event('kill', m); if (m.def.boss) { STORY.Q.event('boss', m.kind); state.flags[m.kind + '_handled'] = true; if (m.kind === 'pylon') state.flags.pylon_handled = true; bossDown(m); } else if (m.camp) campCheck(m.camp);
   if (state.counters.kills === 1) ui.host('Your first kill on camera! Our legal team has been notified.');
   // loot pouch with 1-2 items
-  const items = [makeItem(rng, { level: m.lvl, minRarity: m.def.boss ? 3 : m.def.elite ? 2 : 0 })]; if (m.def.boss) { items.push(makeItem(rng, { level: m.lvl + 1, minRarity: 3 }), makeItem(rng, { level: m.lvl, minRarity: 2 }), { uid: Math.floor(Math.random() * 1e9), kind: 'box', box: 'boss', name: 'Boss Box', rarity: 'epic', host: 'You killed a boss. Here is a box. Inside the box: more boxes? No. Loot.' }); } const MATDROP = { wight: { bonedust: 2, cloth: 2, dirtywater: 1 }, ebb: { bonedust: 6, cloth: 4, frost: 2, bosscore: 1 }, lamprey: { lampreymeat: 2, gristle: 1, dirtywater: 2 }, bigSucker: { lampreymeat: 6, gristle: 4, tide: 2, bosscore: 1 }, moth: { glass: 1, light: Math.random() < 0.35 ? 1 : 0, cloth: 1 }, bulbQueen: { glass: 6, light: 4, bosscore: 1 }, pigeon: { gristle: 1, cloth: 1, hide: 1 }, coo: { gristle: 4, cloth: 4, bosscore: 1 }, mimic: { scrapmetal: 2, battery: 1, spring: Math.random() < 0.5 ? 1 : 0, wire: 1 }, pylon: { coneplastic: 8, scrapmetal: 4, bosscore: 1 }, coneKing: { coneplastic: 12, alloy: 2, bosscore: 2 } }; const matDrop = MATDROP[m.kind] || { coneplastic: 1 + (Math.random() < 0.5 ? 1 : 0), gristle: 2, hide: 1, scrapmetal: 1, ember: Math.random() < 0.25 ? 1 : 0, sulphur: Math.random() < 0.4 ? 1 : 0 }; items.push({ kind: 'mat', mats: matDrop, rarity: 'common', name: 'Materials' }); if (Math.random() < 0.5) items.push(makeItem(rng, { level: m.lvl })); if (Math.random() < 0.35) items.push({ ...CONSUMABLES[Math.floor(Math.random() * CONSUMABLES.length)], uid: Math.floor(Math.random() * 1e9), rarity: 'common' });
+  const bossCap = m.lvl >= 9 ? 1 : 0; const items = (m.def.boss || m.def.elite || Math.random() < GEAR_DROP) ? [makeItem(rng, { level: m.lvl, minRarity: m.def.boss ? 3 : m.def.elite ? 2 : 0, capBonus: m.def.boss ? bossCap : 0 })] : []; if (m.def.boss) { items.push(makeItem(rng, { level: m.lvl + 1, minRarity: 3, capBonus: bossCap }), makeItem(rng, { level: m.lvl, minRarity: 2 }), { uid: Math.floor(Math.random() * 1e9), kind: 'box', box: 'boss', name: 'Boss Box', rarity: 'epic', host: 'You killed a boss. Here is a box. Inside the box: more boxes? No. Loot.' }); } const MATDROP = matDropTable(); const matDrop = MATDROP[m.kind] || { coneplastic: 1 + (Math.random() < 0.5 ? 1 : 0), gristle: 2, hide: 1, scrapmetal: 1, ember: Math.random() < 0.25 ? 1 : 0, sulphur: Math.random() < 0.4 ? 1 : 0 }; { const fm = FLOOR_MATS[FLOOR]; if (fm && Math.random() < 0.6) { const k = fm[Math.floor(Math.random() * fm.length)]; matDrop[k] = (matDrop[k] || 0) + 1; } for (const [k, ch, lv] of RARITY_MAT_DROP) if (m.lvl >= lv && Math.random() < ch * (m.def.boss ? 25 : m.def.elite ? 4 : 1)) matDrop[k] = (matDrop[k] || 0) + 1; }
+  items.push({ kind: 'mat', mats: matDrop, rarity: 'common', name: 'Materials' }); if (Math.random() < 0.35) items.push({ ...CONSUMABLES[Math.floor(Math.random() * CONSUMABLES.length)], uid: Math.floor(Math.random() * 1e9), rarity: 'common' });
   const best = items.filter((i) => i.kind !== 'mat').reduce((b, i) => (['junk', 'common', 'uncommon', 'rare', 'epic', 'legendary'].indexOf(i.rarity) > ['junk', 'common', 'uncommon', 'rare', 'epic', 'legendary'].indexOf(b.rarity) ? i : b), items.find((i) => i.kind !== 'mat'));
   const colr = { junk: '#9a9a9a', common: '#f4eedc', uncommon: '#5ad86a', rare: '#4a9aff', epic: '#b46cff', legendary: '#ff9a2a' }[best.rarity];
   const pouch = new THREE.Group(); const bag = new THREE.Mesh(new THREE.SphereGeometry(0.18, 12, 10), new THREE.MeshPhysicalMaterial({ color: '#7a5a3a', roughness: 0.8 })); bag.scale.y = 0.8; pouch.add(bag);
@@ -339,7 +377,7 @@ function campCheck(camp) {
 }
 function use() {
   const n = NPCS.nearest(P, 2.8); if (n) { if (n.kind === 'filler') { const L = FILLER_POOL(n); fillerSay(n, L, 1); n.talking = 2.5; } else if (!STORY.open(n)) fillerSay(n, 'Hm?', 1); return; }
-  if (world.stairs && Math.hypot(P.pos.x - world.stairs.x, P.pos.z - world.stairs.z) < world.stairs.r) { if (state.flags && state.flags[world.stairs.flag] && world.stairs.to === '7') ui.toast('Floor 7 (The Drowned Cistern) is still being built by the network. You cleared Floor 6!', '#F5C518', 4000); else if (state.flags && state.flags[world.stairs.flag]) { SFX('door'); state.lastFloor = world.stairs.to; saveGame(); ui.banner(`DESCENDING TO FLOOR ${world.stairs.to}`, '#F5C518'); setTimeout(() => goFloor(world.stairs.to), 900); } else ui.toast(world.stairs.locked, '#E5484D', 3000); return; }
+  if (world.stairs && Math.hypot(P.pos.x - world.stairs.x, P.pos.z - world.stairs.z) < world.stairs.r) { if (state.flags && state.flags[world.stairs.flag] && world.stairs.to === '7') ui.toast('Floor 7 (The Drowned Cistern) is still being built by the network. You cleared Floor 6!', '#F5C518', 4000); else if (state.flags && state.flags[world.stairs.flag]) { SFX('door'); state.lastFloor = world.stairs.to; saveGame(); ui.banner(`DESCENDING TO FLOOR ${world.stairs.to}`, '#F5C518'); setTimeout(() => goFloor(world.stairs.to), 900); } else ui.toast(`<div class="ta">LOCKED</div>${world.stairs.how || world.stairs.locked}`, '#E5484D', 7000); return; }
   const dr = (world.doors || []).find((d) => Math.hypot(P.pos.x - d.x, P.pos.z - d.z) < 2.6);
   if (dr) { if (dr.kind === 'saferoom') { state.lastFloor = FLOOR; saveGame(); SFX('door'); ui.banner('ENTERING YOUR SAFE ROOM', '#5ad86a'); setTimeout(() => goFloor('pad'), 700); return; }
     if (dr.kind === 'fountain') { state.thirst = 100; state.flags.tut_drank = true; STORY.Q.event('flag'); SFX('splash', P.pos); ui.toast('You drink deeply. Thirst full.', '#3a9aff', 1800); return; }
@@ -358,6 +396,31 @@ function interact() {
 
 // ---------------- map ----------------
 const visited = new Set(); const VCELL = 12;
+// town services and the stairs, as labelled markers on both maps
+const SERVICE = { saferoom: ['S', '#5ad86a', 'SAFE ROOM'], inn: ['I', '#ffd080', 'INN'], guild: ['G', '#b46cff', 'GUILD HALL'], callings: ['C', '#F5C518', 'HALL OF CALLINGS'], fountain: ['W', '#5ab8e8', 'WATER'] };
+const SHOPMARK = { tables: ['T', '#c8a070', 'TABLES'], gear: ['$', '#F5C518', 'GEAR'], provisions: ['$', '#7BE38A', 'FOOD & POTIONS'], pickles: ['$', '#c8c0b0', 'JUNK'], dave: ['$', '#ff8a2a', 'SNACKS'] };
+function serviceList() { const out = []; for (const d of world.doors || []) if (SERVICE[d.kind]) out.push([d.x, d.z, ...SERVICE[d.kind]]); for (const n of NPCS.npcs) if (n.shop) { const k = SHOPMARK[n.shop] || ['$', '#F5C518', 'SHOP']; out.push([n.g.position.x, n.g.position.z, k[0], k[1], k[2] + ' · ' + n.name]); } return out; }
+function drawServices(c, X, Z, big) { const r = big ? 8 : 5;
+  for (const [x, z, ch, col, lab] of serviceList()) { const sx = X(x), sz = Z(z); if (!big && Math.hypot(x - P.pos.x, z - P.pos.z) > 70) continue; c.save(); c.translate(sx, sz); if (!big) c.rotate(-P.yaw);
+    c.fillStyle = '#0d0b12'; c.beginPath(); c.arc(0, 0, r + 2, 0, 7); c.fill(); c.fillStyle = col; c.beginPath(); c.arc(0, 0, r, 0, 7); c.fill(); c.fillStyle = '#0d0b12'; c.font = `bold ${big ? 12 : 8}px Barlow Condensed`; c.textAlign = 'center'; c.fillText(ch, 0, big ? 4 : 3);
+    if (big && !/·/.test(lab)) { c.fillStyle = col; c.font = 'bold 12px Barlow Condensed'; c.textAlign = 'left'; c.fillText(lab, r + 4, 4); } c.restore(); }
+  if (world.stairs) { const open = state.flags && state.flags[world.stairs.flag]; c.save(); c.translate(X(world.stairs.x), Z(world.stairs.z)); if (!big) c.rotate(-P.yaw); c.fillStyle = open ? '#5aff7a' : '#ff5a3a'; c.strokeStyle = '#0d0b12'; c.lineWidth = 2; const k = big ? 1.6 : 1; c.beginPath(); c.moveTo(-8 * k, -6 * k); c.lineTo(8 * k, -6 * k); c.lineTo(0, 8 * k); c.closePath(); c.fill(); c.stroke();
+    if (big) { c.font = 'bold 14px Barlow Condensed'; c.textAlign = 'left'; c.fillText(open ? `STAIRS TO FLOOR ${world.stairs.to} · OPEN` : 'STAIRS · LOCKED', 16, 5); } c.restore(); }
+}
+// floating labelled icons above town services and shopkeepers (fade in within ~45 m)
+const signs = [];
+function serviceSprite(ch, col, label) { const c = document.createElement('canvas'); c.width = 320; c.height = 96; const g = c.getContext('2d'); g.fillStyle = 'rgba(13,11,18,0.85)'; g.beginPath(); g.roundRect(4, 14, 312, 68, 14); g.fill(); g.strokeStyle = col; g.lineWidth = 5; g.stroke();
+  g.fillStyle = col; g.beginPath(); g.arc(48, 48, 26, 0, 7); g.fill(); g.fillStyle = '#0d0b12'; g.font = 'bold 34px sans-serif'; g.textAlign = 'center'; g.fillText(ch, 48, 60); g.fillStyle = '#f4eedc'; g.font = 'bold 26px sans-serif'; g.textAlign = 'left'; g.fillText(label, 86, 58, 222);
+  const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; const sp = new THREE.Sprite(new THREE.SpriteMaterial({ map: t, transparent: true, depthWrite: false })); sp.scale.set(3.2, 0.96, 1); fx.push(sp); return sp; }
+function buildServiceSigns() {
+  for (const d of world.doors || []) { const k = SERVICE[d.kind]; if (!k) continue; const sp = serviceSprite(k[0], k[1], k[2]); sp.position.set(d.x, 4.6, d.z); scene.add(sp); signs.push(sp); }
+  for (const n of NPCS.npcs) if (n.shop) { const k = SHOPMARK[n.shop] || ['$', '#F5C518', 'SHOP']; const sp = serviceSprite(k[0], k[1], k[2]); sp.scale.set(2.4, 0.72, 1); sp.position.set(0, 3.0 / (n.g.scale.y || 1), 0); n.g.add(sp); signs.push(sp); }
+}
+function updateSigns() { for (const sp of signs) { const p = sp.getWorldPosition(_sv); const d = Math.hypot(p.x - P.pos.x, p.z - P.pos.z); sp.visible = d < 45; sp.material.opacity = Math.min(1, (45 - d) / 10); } }
+const _sv = new THREE.Vector3();
+// the way down: what this floor's stairs need, always on screen
+let wayT = 0; function updateWayDown(dt) { wayT -= dt; if (wayT > 0) return; wayT = 1; const el = $('wayDown'); if (!el || !world.stairs) { if (el) el.style.display = 'none'; return; } const open = state.flags && state.flags[world.stairs.flag];
+  el.style.display = 'block'; el.className = open ? 'open' : ''; el.innerHTML = open ? `<b>THE WAY DOWN · OPEN</b><div>Stairs to Floor ${world.stairs.to} are marked ▼ on your map (M).</div>` : `<b>THE WAY DOWN</b><div>${world.stairs.how || world.stairs.locked}</div>`; }
 function drawMap(cv, big = false) {
   const c = cv.getContext('2d'), W = cv.width, H = cv.height, S = world.size, m = world.map;
   const scale = big ? Math.min(W, H) / S : 2.2; const cx = big ? W / 2 : W / 2 - P.pos.x * scale, cz = big ? H / 2 : H / 2 - P.pos.z * scale;
@@ -382,9 +445,10 @@ function drawMap(cv, big = false) {
   for (const d of drops) { c.fillStyle = d.colr; c.fillRect(X(d.g.position.x) - 2, Z(d.g.position.z) - 2, 4, 4); }
   if (big) { c.fillStyle = 'rgba(13,11,18,0.9)'; const cs = VCELL * scale; for (let gx = -S / 2; gx < S / 2; gx += VCELL) for (let gz = -S / 2; gz < S / 2; gz += VCELL) if (!visited.has(`${Math.floor(gx / VCELL)},${Math.floor(gz / VCELL)}`)) c.fillRect(X(gx), Z(gz), cs + 0.5, cs + 0.5); }
   if (big) for (const p of m.pois.filter((q) => q.safe)) { c.strokeStyle = '#5ad86a'; c.lineWidth = 3; c.beginPath(); c.arc(X(p.x), Z(p.z), p.r * scale, 0, 7); c.stroke(); c.fillStyle = '#7BE38A'; c.font = 'bold 14px Barlow Condensed'; c.textAlign = 'center'; c.fillText(p.name.toUpperCase() + ' · SAFE ZONE', X(p.x), Z(p.z) - p.r * scale - 6); c.save(); c.translate(X(p.x), Z(p.z)); c.fillStyle = '#5ad86a'; c.strokeStyle = '#0d0b12'; c.lineWidth = 2; c.beginPath(); c.moveTo(0, -14); c.lineTo(11, -8); c.lineTo(10, 4); c.lineTo(0, 14); c.lineTo(-10, 4); c.lineTo(-11, -8); c.closePath(); c.fill(); c.stroke(); c.restore(); }
+  drawServices(c, X, Z, big);
   if (!big) c.restore();
   const px = big ? X(P.pos.x) : W / 2, pz = big ? Z(P.pos.z) : H / 2; c.save(); c.translate(px, pz); c.rotate(big ? -P.yaw : 0); c.fillStyle = '#3FD0E0'; c.strokeStyle = '#0D0B12'; c.lineWidth = 2; c.beginPath(); c.moveTo(0, -9); c.lineTo(6, 7); c.lineTo(0, 3); c.lineTo(-6, 7); c.closePath(); c.fill(); c.stroke(); c.restore();
-  if (big) { c.fillStyle = '#F5C518'; c.font = 'bold 22px Bangers'; c.textAlign = 'left'; c.fillText(world.name, 16, 32); c.fillStyle = '#d9d2bf'; c.font = '15px Barlow Condensed'; c.fillText(`${state.discovered.size}/${m.pois.length} places discovered · green shield = safe zone · red dashed = encampment · fog clears as you explore · this chunk is 360 m across (the full floor is about 2 km)`, 16, 54); }
+  if (big) { c.fillStyle = '#F5C518'; c.font = 'bold 22px Bangers'; c.textAlign = 'left'; c.fillText(world.name, 16, 32); c.fillStyle = '#d9d2bf'; c.font = '15px Barlow Condensed'; c.fillText(`${state.discovered.size}/${m.pois.length} places discovered · fog clears as you explore`, 16, 54); c.fillText('Key: green shield = safe zone · red dashed = encampment · S safe room · I inn · G guild · C Hall of Callings · $ shop · T table seller · ▼ stairs (red = locked)', 16, 74); }
 }
 
 // ---------------- loop ----------------
@@ -464,7 +528,7 @@ function frame(now) {
   for (let i = dmgNums.length - 1; i >= 0; i--) { const d = dmgNums[i]; d.t += dt; const [x, y, z] = project(d.p.clone().add(new THREE.Vector3(0, d.t * d.rise, 0))); d.el.style.transform = `translate(${x - (d.el.offsetWidth >> 1)}px, ${y}px)`; d.el.style.opacity = z < 1 ? Math.max(0, Math.min(1, (d.dur - d.t) / 0.3)) : 0; if (d.t > d.dur) { d.el.remove(); dmgNums.splice(i, 1); } }
   $('vign').style.opacity = Math.max(0, parseFloat($('vign').style.opacity || 0) - dt * 2);
   $('compass').style.backgroundPositionX = `${(P.yaw / (Math.PI * 2)) * 720}px`;
-  ui.hud(D); mapT -= dt; if (started && mapT <= 0) { mapT = 0.12; drawMap($('mini')); }
+  ui.hud(D); renderQuick(); updateSigns(); updateWayDown(dt); mapT -= dt; if (started && mapT <= 0) { mapT = 0.12; drawMap($('mini')); }
   fpsN++; fpsT += dt; if (fpsT > 0.5) { fpsV = fpsN / fpsT; fpsN = 0; fpsT = 0; if (GFX.fps) $('fps').textContent = Math.round(fpsV) + ' FPS'; slowT = started && fpsV < 24 ? slowT + 0.5 : 0; if (slowT > 8 && !GFX.suggested && GFX.preset !== 'low') { GFX.suggested = true; saveGfx(); ui.toast('<div class="ta">RUNNING SLOWLY?</div>Press <b>P</b> and pick the <b>LOW</b> graphics preset.', '#F5C518', 8000); } }
   if (!FAST || (++fastN % 12) === 0) ink.render();
   requestAnimationFrame(frame);
@@ -487,7 +551,7 @@ async function boot() {
   spawnMobs(built.mobs.filter((s) => !(s.camp && state.conquered[s.camp])));
   setP(0.93, 'Waking the townsfolk…'); await new Promise((r) => setTimeout(r, 20)); for (const n of built.npcs || []) NPCS.spawn(n);
   if (built.stairs) { const sg = new THREE.Mesh(new THREE.PlaneGeometry(2.2, 0.6), new THREE.MeshBasicMaterial({ map: (() => { const c = document.createElement('canvas'); c.width = 256; c.height = 72; const g = c.getContext('2d'); g.fillStyle = '#0a3a12'; g.fillRect(0, 0, 256, 72); g.fillStyle = '#5aff7a'; g.font = 'bold 34px sans-serif'; g.fillText(`▼ FLOOR ${built.stairs.to}`, 30, 50); const tx = new THREE.CanvasTexture(c); tx.colorSpace = THREE.SRGBColorSpace; return tx; })(), side: THREE.DoubleSide, color: new THREE.Color(1.6, 1.6, 1.6) })); sg.position.set(built.stairs.x, 2.8, built.stairs.z); scene.add(sg); fx.push(sg); world.stairSign = sg; }
-  STORY.renderTracker(); refreshHand(); renderHotbar(); if (FLOOR === '1') { state.flags.reached_f1 = true; if (STORY.Q.st('tut_down') === 'active') STORY.Q.complete('tut_down'); if (!state.quests.arrival && !state.quests.nobody_out) STORY.Q.start('arrival'); } state.lastFloor = FLOOR === 'pad' ? state.lastFloor : FLOOR;
+  buildServiceSigns(); STORY.renderTracker(); refreshHand(); renderHotbar(); if (FLOOR === '1') { state.flags.reached_f1 = true; if (STORY.Q.st('tut_down') === 'active') STORY.Q.complete('tut_down'); if (!state.quests.arrival && !state.quests.nobody_out) STORY.Q.start('arrival'); } state.lastFloor = FLOOR === 'pad' ? state.lastFloor : FLOOR;
   if (FLOOR === '0' && !state.quests.tut_desk) STORY.Q.start('tut_desk');
   P.pos.set(def.spawn[0], 0, def.spawn[2]); P.yaw = def.spawnYaw;
   $('loc').textContent = world.name; setP(1, 'Ready.');
@@ -501,9 +565,13 @@ function beginTutorial() {
 }
 let intro = null;
 function startPlaying() { $('loading').style.display = 'none'; started = true; $('stage').requestPointerLock && $('stage').requestPointerLock(); }
-$('startBtn').addEventListener('click', () => { AU.init(); AU.setFloor(FLOOR);
-  if (FLOOR === '0' && !QS.has('nointro') && ((!LOADED && !state.flags.introSeen) || QS.has('intro') || HASH === 'intro')) { $('loading').style.display = 'none'; state.flags.introSeen = true; saveGame(); intro = playIntro({ say: (t, w, p, o) => AU.say(t, w, p, o), sfx: (n) => SFX(n), music: (m) => AU.setMood(m), onDone: () => { AU.stopSpeech(); intro = null; startPlaying(); ui.host('Welcome to the Landing, Dale! This is orientation. Talk to Pip at the desk. Pip is an intern. Be gentle.'); beginTutorial(); } }); return; }
-  $('loading').style.display = 'none'; started = true; $('stage').requestPointerLock(); ui.host(FLOOR === '3' ? 'Welcome to the Soup District! Everything is delicious and one in five things is cursed. Bon appétit!' : FLOOR === 'pad' ? 'Your Crash Pad! Buy tables, craft weird things, and remember: tables next to each other can work together.' : FLOOR === '2' ? 'Welcome to Spin City! Mind the floor, it\u2019s wet. Everything is wet. Forever.' : 'Welcome back to the Undercroft, Dale! Try not to die before the commercial break.'); });
+// new game: name your contestant before the intro
+const needName = !LOADED && !state.flags.named;
+if (needName) { const box = document.createElement('div'); box.id = 'nameBox'; box.innerHTML = `<label for="nameIn">What's your name, contestant?</label><input id="nameIn" maxlength="18" autocomplete="off" placeholder="Type your name">`; $('startBtn').before(box); const inp = $('nameIn'); inp.addEventListener('keydown', (e) => { e.stopPropagation(); if (e.key === 'Enter' && !$('startBtn').disabled) $('startBtn').click(); }); setTimeout(() => inp.focus(), 50); }
+const playerName = () => state.name || 'Contestant';
+$('startBtn').addEventListener('click', () => { if (needName && !state.flags.named) { const v = ($('nameIn').value || '').replace(/[<>&"]/g, '').trim(); state.name = v || 'Contestant'; state.flags.named = true; $('nameBox').remove(); saveGame(); } AU.init(); AU.setFloor(FLOOR);
+  if (FLOOR === '0' && !QS.has('nointro') && ((!LOADED && !state.flags.introSeen) || QS.has('intro') || HASH === 'intro')) { $('loading').style.display = 'none'; state.flags.introSeen = true; saveGame(); intro = playIntro({ name: playerName(), say: (t, w, p, o) => AU.say(t, w, p, o), sfx: (n) => SFX(n), music: (m) => AU.setMood(m), onDone: () => { AU.stopSpeech(); intro = null; startPlaying(); ui.host(`Welcome to the Landing, ${playerName()}! This is orientation. Talk to Pip at the desk. Pip is an intern. Be gentle.`); beginTutorial(); } }); return; }
+  $('loading').style.display = 'none'; started = true; $('stage').requestPointerLock(); ui.host(FLOOR === '3' ? 'Welcome to the Soup District! Everything is delicious and one in five things is cursed. Bon appétit!' : FLOOR === 'pad' ? 'Your Crash Pad! Buy tables, craft weird things, and remember: tables next to each other can work together.' : FLOOR === '2' ? 'Welcome to Spin City! Mind the floor, it\u2019s wet. Everything is wet. Forever.' : `Welcome back to the Undercroft, ${playerName()}! Try not to die before the commercial break.`); });
 boot().catch((e) => { $('loadMsg').textContent = 'Error: ' + e.message; console.error(e); });
 window.addEventListener('beforeunload', saveGame);
 window.__swing = () => primary(); window.__game = { state, P, mobs, cast, ui, G, CR, craftUI, throwBomb, saveGame, MS, DEF, NPCS, STORY, AU, use, ink, world: () => world };
