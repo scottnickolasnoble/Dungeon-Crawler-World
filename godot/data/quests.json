@@ -1,0 +1,667 @@
+{
+ "quests": {
+  "mall_exit": {
+   "name": "Sponsored Content",
+   "giver": "sunny",
+   "main": true,
+   "desc": "Your new sponsor wants a highlight reel. The service lift down is behind the Food Court Kraken.",
+   "obj": [
+    {
+     "t": "boss",
+     "kind": "kraken",
+     "label": "Defeat the Food Court Kraken"
+    }
+   ],
+   "reward": {
+    "xp": 6000,
+    "gold": 800,
+    "item": "epic"
+   }
+  },
+  "lost_child": {
+   "name": "Lost Child Announcement",
+   "giver": "prickle",
+   "desc": "“Would the parents of little Timmy please come to…” Madame Prickle says Timmy is real, and hiding. Check the Changing Rooms and Kiosk Ring.",
+   "obj": [
+    {
+     "t": "visit",
+     "poi": "The Changing Rooms",
+     "label": "Search the Changing Rooms"
+    },
+    {
+     "t": "visit",
+     "poi": "Kiosk Ring",
+     "label": "Search Kiosk Ring"
+    }
+   ],
+   "reward": {
+    "xp": 3500,
+    "gold": 400,
+    "box": "gold"
+   }
+  },
+  "hoa_violation": {
+   "name": "Notice of Violation",
+   "giver": "deb",
+   "main": true,
+   "desc": "The HOA President has fined the entire fort out of existence. Big Deb wants the fines cancelled, permanently.",
+   "obj": [
+    {
+     "t": "boss",
+     "kind": "hoa",
+     "label": "Defeat the HOA President"
+    }
+   ],
+   "reward": {
+    "xp": 9000,
+    "gold": 1200,
+    "item": "epic"
+   }
+  },
+  "good_boy": {
+   "name": "Good Boy",
+   "giver": "watch",
+   "desc": "The Neighbourhood Watch says Mr. Fetch was somebody’s dog once. Go to the Dog Park and find his old collar.",
+   "obj": [
+    {
+     "t": "visit",
+     "poi": "The Dog Park",
+     "label": "Find the collar at the Dog Park"
+    }
+   ],
+   "reward": {
+    "xp": 4000
+   }
+  },
+  "hunting_season": {
+   "name": "Hunting Season",
+   "giver": "gusset",
+   "main": true,
+   "desc": "Tourists with hunting licences are stalking contestants through the Canopy. Turn the tables: take down 5 Tourist Hunters.",
+   "obj": [
+    {
+     "t": "kill",
+     "family": "hunter",
+     "n": 5,
+     "label": "Defeat Tourist Hunters"
+    }
+   ],
+   "reward": {
+    "xp": 12000,
+    "gold": 1500,
+    "box": "gold"
+   }
+  },
+  "lodge_fire": {
+   "name": "Lodge Fire",
+   "giver": "gusset",
+   "main": true,
+   "desc": "The hunts are organised from the Glimmerkin Safari Lodge. End Lord-Hunter Facet’s season.",
+   "obj": [
+    {
+     "t": "boss",
+     "kind": "huntLord",
+     "label": "Defeat Lord-Hunter Facet"
+    }
+   ],
+   "reward": {
+    "xp": 20000,
+    "gold": 3000,
+    "item": "epic"
+   }
+  },
+  "tallest_tree": {
+   "name": "The Roots of Things",
+   "giver": "lantern",
+   "arc": true,
+   "desc": "Elder Lantern has seen scratch marks at the foot of the Tallest Tree that match nothing the Mothwing know.",
+   "obj": [
+    {
+     "t": "visit",
+     "poi": "The Tallest Tree",
+     "label": "Visit the Tallest Tree"
+    }
+   ],
+   "reward": {
+    "xp": 8000,
+    "flags": [
+     "unnamed_6"
+    ]
+   }
+  },
+  "tut_desk": {
+   "name": "Orientation",
+   "giver": "pip",
+   "main": true,
+   "desc": "You came down the stairs into the Network’s Orientation Centre. Find the desk and talk to the intern.",
+   "obj": [
+    {
+     "t": "flag",
+     "flag": "met_pip",
+     "label": "Talk to Intern Pip at the Orientation Desk"
+    }
+   ],
+   "reward": {
+    "xp": 20
+   }
+  },
+  "tut_basics": {
+   "name": "Contestant Basics",
+   "giver": "pip",
+   "main": true,
+   "desc": "Pip wants you to learn the basics: drink from the fountain, open your Welcome Box, and hit a training dummy.",
+   "obj": [
+    {
+     "t": "flag",
+     "flag": "tut_drank",
+     "label": "Drink from the water fountain (E)"
+    },
+    {
+     "t": "flag",
+     "flag": "tut_box",
+     "label": "Open your Welcome Box (I, then click it)"
+    },
+    {
+     "t": "count",
+     "key": "dummyHits",
+     "n": 5,
+     "label": "Hit a training dummy (left click)"
+    }
+   ],
+   "reward": {
+    "xp": 40,
+    "gold": 15
+   }
+  },
+  "tut_arena": {
+   "name": "Cardboard Combat",
+   "giver": "pip",
+   "main": true,
+   "desc": "The practice arena has cardboard goblins. They hit back, softly. Watch for the red warnings and dodge (V) or parry (F).",
+   "obj": [
+    {
+     "t": "kill",
+     "family": "cardboard",
+     "n": 3,
+     "label": "Defeat the cardboard goblins"
+    }
+   ],
+   "reward": {
+    "xp": 60,
+    "box": "bronze",
+    "flags": [
+     "tut_arena_done"
+    ]
+   }
+  },
+  "tut_down": {
+   "name": "Going Down",
+   "giver": "pip",
+   "main": true,
+   "desc": "That’s orientation done. Take the stairs at the far end down to Floor 1 and find Stairwell Camp.",
+   "obj": [
+    {
+     "t": "flag",
+     "flag": "reached_f1",
+     "label": "Take the stairs down to Floor 1"
+    }
+   ],
+   "reward": {
+    "xp": 50
+   }
+  },
+  "guild_trial1": {
+   "name": "Guild Trial I",
+   "giver": "guild",
+   "desc": "Prove yourself to your guild. Defeat 12 enemies.",
+   "obj": [
+    {
+     "t": "kill",
+     "n": 12,
+     "label": "Defeat enemies"
+    }
+   ],
+   "reward": {
+    "xp": 600,
+    "gold": 150,
+    "book": true,
+    "flags": [
+     "guild_r2"
+    ]
+   }
+  },
+  "guild_trial2": {
+   "name": "Guild Trial II",
+   "giver": "guild",
+   "desc": "Your guild wants more. Defeat 25 enemies and a camp leader.",
+   "obj": [
+    {
+     "t": "kill",
+     "n": 25,
+     "label": "Defeat enemies"
+    },
+    {
+     "t": "flag",
+     "flag": "any_boss",
+     "label": "Defeat any encampment boss"
+    }
+   ],
+   "reward": {
+    "xp": 1500,
+    "gold": 300,
+    "book": true,
+    "flags": [
+     "guild_r3"
+    ]
+   }
+  },
+  "guild_trial3": {
+   "name": "Guild Trial III",
+   "giver": "guild",
+   "desc": "The final trial. Defeat 40 enemies on a single floor.",
+   "obj": [
+    {
+     "t": "kill",
+     "n": 40,
+     "label": "Defeat enemies"
+    }
+   ],
+   "reward": {
+    "xp": 3000,
+    "gold": 600,
+    "book": true,
+    "item": "epic",
+    "flags": [
+     "guild_r4"
+    ]
+   }
+  },
+  "arrival": {
+   "name": "Welcome to the Dungeon",
+   "giver": "marta",
+   "main": true,
+   "desc": "You made it down the stairs. Find Marta Vance in Stairwell Camp. She runs the place.",
+   "obj": [
+    {
+     "t": "flag",
+     "flag": "met_marta",
+     "label": "Talk to Marta Vance (the ! in camp)"
+    }
+   ],
+   "reward": {
+    "xp": 60,
+    "gold": 20
+   }
+  },
+  "nobody_out": {
+   "name": "Nobody Gets Out",
+   "giver": "marta",
+   "main": true,
+   "desc": "Marta says no contestant has ever reached Floor 18. Start by finding the Exit Sign everyone talks about.",
+   "obj": [
+    {
+     "t": "visit",
+     "poi": "The Exit Sign",
+     "label": "Find The Exit Sign"
+    }
+   ],
+   "reward": {
+    "xp": 150,
+    "gold": 40
+   }
+  },
+  "the_stairs": {
+   "name": "The Chained Stairwell",
+   "giver": "marta",
+   "main": true,
+   "desc": "The stairwell door down is chained, and Sergeant Pylon holds the key. Kill him, or make a deal through Pickles.",
+   "obj": [
+    {
+     "t": "flag",
+     "flag": "pylon_handled",
+     "label": "Deal with Sergeant Pylon (kill him, or broker a truce)"
+    }
+   ],
+   "reward": {
+    "xp": 400,
+    "gold": 100,
+    "flags": [
+     "f1_stairs"
+    ]
+   }
+  },
+  "water_line": {
+   "name": "Thin the Packs",
+   "giver": "marta",
+   "desc": "Goblin packs keep raiding the camp water line. Kill 6 goblins anywhere on the floor.",
+   "obj": [
+    {
+     "t": "kill",
+     "family": "goblin",
+     "n": 6,
+     "label": "Kill goblins"
+    }
+   ],
+   "reward": {
+    "xp": 220,
+    "gold": 120,
+    "item": "uncommon"
+   }
+  },
+  "find_leak": {
+   "name": "Find the Leak",
+   "giver": "marta",
+   "desc": "Someone has to find where the water’s going. Check the Ramp Spiral and the Burning Bus.",
+   "obj": [
+    {
+     "t": "visit",
+     "poi": "The Ramp Spiral",
+     "label": "Search the Ramp Spiral"
+    },
+    {
+     "t": "visit",
+     "poi": "The Burning Bus",
+     "label": "Search the Burning Bus"
+    }
+   ],
+   "reward": {
+    "xp": 260,
+    "gold": 80,
+    "box": "bronze"
+   }
+  },
+  "cone_collector": {
+   "name": "Cone Collector",
+   "giver": "pickles",
+   "desc": "Pickles wants 12 Cone Plastic, “for reasons”. Goblins drop it.",
+   "obj": [
+    {
+     "t": "mats",
+     "mat": "coneplastic",
+     "n": 12,
+     "label": "Bring Cone Plastic"
+    }
+   ],
+   "reward": {
+    "xp": 180,
+    "gold": 90
+   }
+  },
+  "cone_coup": {
+   "name": "Cone Coup",
+   "giver": "pickles",
+   "desc": "Pylon plans to cone off the stairwell and charge a toll forever. Pickles wants him made an example of.",
+   "obj": [
+    {
+     "t": "boss",
+     "kind": "pylon",
+     "label": "Defeat Sergeant Pylon"
+    }
+   ],
+   "reward": {
+    "xp": 500,
+    "gold": 150,
+    "gear": "coneCrown"
+   }
+  },
+  "bo_toolbox": {
+   "name": "Bo’s Toolbox",
+   "giver": "bo",
+   "desc": "Bo dropped a toolbox near the Ramp Spiral and goblins took the springs. Find the box and bring 3 Mimic Springs.",
+   "obj": [
+    {
+     "t": "visit",
+     "poi": "The Ramp Spiral",
+     "label": "Find the toolbox at the Ramp Spiral"
+    },
+    {
+     "t": "mats",
+     "mat": "spring",
+     "n": 3,
+     "label": "Bring Mimic Springs"
+    }
+   ],
+   "reward": {
+    "xp": 160,
+    "flags": [
+     "bo_discount"
+    ]
+   }
+  },
+  "dave_jars": {
+   "name": "Coin Jar Raid",
+   "giver": "spin",
+   "desc": "Goblins and wights stole Spin’s coin jars. Clear out 10 of them on Spin City to get the coins back for Dave.",
+   "obj": [
+    {
+     "t": "kill",
+     "n": 10,
+     "floor": "2",
+     "label": "Defeat thieves on Floor 2"
+    }
+   ],
+   "reward": {
+    "xp": 400,
+    "gold": 60,
+    "flags": [
+     "dave_free"
+    ]
+   }
+  },
+  "clocking_out": {
+   "name": "Clocking Out",
+   "giver": "reggie",
+   "desc": "Old Reggie’s partner Ebb is still “on shift” in Boiler Room 0. Find Ebb’s timecard there.",
+   "obj": [
+    {
+     "t": "visit",
+     "poi": "Boiler Room 0",
+     "label": "Find Ebb’s timecard in Boiler Room 0"
+    }
+   ],
+   "reward": {
+    "xp": 300
+   }
+  },
+  "reggie_end": {
+   "name": "End of Shift",
+   "giver": "reggie",
+   "desc": "Reggie can’t bear it. Put Head Custodian Ebb to rest yourself.",
+   "obj": [
+    {
+     "t": "boss",
+     "kind": "ebb",
+     "label": "Defeat Head Custodian Ebb"
+    }
+   ],
+   "reward": {
+    "xp": 700,
+    "gold": 200,
+    "gear": "keyring"
+   }
+  },
+  "soup_feud": {
+   "name": "Soup Feud",
+   "giver": "wickley",
+   "desc": "Two hag families run rival kitchens and their feud is poisoning the district. Taste-test both recipes, then come back to Wickley.",
+   "obj": [
+    {
+     "t": "visit",
+     "poi": "Grandma Gristle's Kitchen",
+     "label": "Taste Grandma Gristle’s broth"
+    },
+    {
+     "t": "visit",
+     "poi": "Auntie Brine's Pot",
+     "label": "Taste Auntie Brine’s chowder"
+    }
+   ],
+   "reward": {
+    "xp": 900
+   }
+  },
+  "cone_king": {
+   "name": "Long Live the Cone",
+   "giver": "wickley",
+   "main": true,
+   "desc": "The stairs to Floor 4 run under the Cone King’s throne in the Cone Cathedral. He is not going to move for you.",
+   "obj": [
+    {
+     "t": "boss",
+     "kind": "coneKing",
+     "label": "Defeat the Cone King"
+    }
+   ],
+   "reward": {
+    "xp": 2000,
+    "gold": 400,
+    "flags": [
+     "coneKing_handled"
+    ]
+   }
+  },
+  "lights_out": {
+   "name": "Lights Out",
+   "giver": "ash",
+   "desc": "Moths swarm Soup Row every night. Brother Ash wants you to track their Queen to the Lamp Market.",
+   "obj": [
+    {
+     "t": "visit",
+     "poi": "The Lamp Market",
+     "label": "Find the Bulb Queen’s court"
+    }
+   ],
+   "reward": {
+    "xp": 700
+   }
+  },
+  "ash_queen": {
+   "name": "The Last Light",
+   "giver": "ash",
+   "desc": "You chose to end the Bulb Queen. Brother Ash will pray for both of you.",
+   "obj": [
+    {
+     "t": "boss",
+     "kind": "bulbQueen",
+     "label": "Defeat the Bulb Queen"
+    }
+   ],
+   "reward": {
+    "xp": 1500,
+    "gold": 250,
+    "gear": "mothTrophy"
+   }
+  },
+  "five_stars": {
+   "name": "Five Stars",
+   "giver": "vrask",
+   "arc": true,
+   "desc": "Judge Vrask is reviewing the Soup District. Cook something at your Cookstove and bring it to the judge.",
+   "obj": [
+    {
+     "t": "flag",
+     "flag": "has_dish",
+     "label": "Bring a dish you cooked (Cookstove)"
+    }
+   ],
+   "reward": {
+    "xp": 800,
+    "gold": 150
+   }
+  }
+ },
+ "quest_gear": {
+  "coneCrown": {
+   "slot": "head",
+   "name": "Cone Crown",
+   "rarity": "epic",
+   "family": "trophy",
+   "stats": {
+    "armor": 14,
+    "CHA": 4,
+    "hp": 30
+   },
+   "host": "Five cones, one crown. Fashion has never been this orange."
+  },
+  "goblinPass": {
+   "slot": "amulet",
+   "name": "Goblin Pass",
+   "rarity": "rare",
+   "family": "trophy",
+   "stats": {
+    "CHA": 3,
+    "crit": 2,
+    "hp": 15
+   },
+   "host": "A laminated cone. The goblins respect it. Mostly."
+  },
+  "mothTrophy": {
+   "slot": "amulet",
+   "name": "Moth Queen’s Filament",
+   "rarity": "epic",
+   "family": "trophy",
+   "stats": {
+    "light": 3,
+    "spell": 14,
+    "INT": 3
+   },
+   "host": "Still warm. Still glowing. Still a bit sad."
+  },
+  "criticSeal": {
+   "slot": "ring1",
+   "name": "Critic’s Seal",
+   "rarity": "rare",
+   "family": "trophy",
+   "stats": {
+    "CHA": 4,
+    "crit": 2
+   },
+   "host": "Five stars. From an actual alien. Frame it."
+  },
+  "recipeBook": {
+   "slot": "off",
+   "name": "Hag Recipe Book",
+   "rarity": "rare",
+   "family": "trophy",
+   "stats": {
+    "WIS": 4,
+    "hp": 30
+   },
+   "host": "Page 12: Soup. Page 13: More soup. Page 14: Do not read aloud."
+  },
+  "keyring": {
+   "slot": "amulet",
+   "name": "Custodian’s Keyring",
+   "rarity": "epic",
+   "family": "trophy",
+   "stats": {
+    "WIS": 4,
+    "mana": 30,
+    "armor": 6
+   },
+   "host": "Forty years of keys. One of them opens something. Nobody knows what."
+  }
+ },
+ "npc_names": {
+  "sunny": "Sunny the Sponsor Rep",
+  "prickle": "Madame Prickle",
+  "deb": "Big Deb",
+  "watch": "the Neighbourhood Watch",
+  "gusset": "Gusset",
+  "lantern": "Elder Lantern",
+  "pip": "Intern Pip",
+  "guild": "your guild master",
+  "callings": "Registrar Odessa",
+  "innkeeper": "the innkeeper",
+  "wickley": "Wickley",
+  "ash": "Brother Ash",
+  "vrask": "Judge Vrask",
+  "bix": "Bix",
+  "marta": "Marta Vance",
+  "pickles": "Pickles",
+  "bo": "Benchwright Bo",
+  "bev": "Bev",
+  "spin": "Spin Cycle",
+  "reggie": "Old Reggie"
+ }
+}

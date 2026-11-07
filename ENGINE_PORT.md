@@ -85,4 +85,4 @@ Open Claude Code in the `dungeon-crawler-world` folder and ask for **Phase 1** (
 ## Tips
 - Keep `prototype/` working: it's the spec. When the Godot version disagrees, the prototype shows what was intended.
 - Commit after every phase (`git add -A`, then `git commit -m "Phase 2: combat"`), so you can always roll back.
-- On the work laptop, use Godot's **Compatibility** renderer (Project Settings → Rendering → Renderer). It's the lightest, and it's also what the web export uses.
+- The project uses Godot's **Forward+** renderer, because the game stays on the home PC (RTX 3070) and the ink shader reads Forward+'s normal buffer. A browser build or a much weaker machine would need the Compatibility renderer and a reworked ink shader.

@@ -1,0 +1,22 @@
+.godot/
+
+# Temporary prototype characters, about 1 GB, until the redesign replaces them.
+# tools/export_prototype.mjs regenerates them. Only the ones Floor 0 places are kept in the repository.
+models/monsters/*
+!models/monsters/dummy.glb
+!models/monsters/dummy.glb.import
+!models/monsters/goblin_v1.glb
+!models/monsters/goblin_v1.glb.import
+!models/monsters/goblin_v4.glb
+!models/monsters/goblin_v4.glb.import
+!models/monsters/goblin_v6.glb
+!models/monsters/goblin_v6.glb.import
+models/npcs/*
+!models/npcs/pool/
+models/npcs/pool/*
+!models/npcs/pool/human_quest.glb
+!models/npcs/pool/human_quest.glb.import
+!models/npcs/pool/human_guard.glb
+!models/npcs/pool/human_guard.glb.import
+!models/npcs/pool/gutterkin_gossip.glb
+!models/npcs/pool/gutterkin_gossip.glb.import

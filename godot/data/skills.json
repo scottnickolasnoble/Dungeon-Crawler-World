@@ -1,0 +1,4800 @@
+{
+ "skills": [
+  {
+   "cost": 0,
+   "cd": 5,
+   "type": "atk",
+   "ups": [
+    [
+     "Bigger flame",
+     "Quicker flick"
+    ],
+    [
+     "Lingering burn",
+     "Two flicks"
+    ],
+    [
+     "Blowtorch",
+     "Free"
+    ]
+   ],
+   "built": true,
+   "src": "Your lighter",
+   "id": "flick",
+   "cls": "all",
+   "name": "Flick (Lighter)",
+   "kind": "bolt",
+   "elem": "fire",
+   "dmg": [
+    6,
+    2
+   ],
+   "scale": "INT",
+   "speed": 24,
+   "size": 0.09,
+   "desc": "Flick your work lighter at something. A tiny burst of fire. Long cooldown."
+  },
+  {
+   "id": "firebolt",
+   "name": "Firebolt",
+   "type": "atk",
+   "built": true,
+   "src": "Built-in",
+   "mana": 8,
+   "cd": 0.45,
+   "desc": "Hurl a bolt of fire. Applies Burning.",
+   "ups": [
+    [
+     "Twin Bolts",
+     "Searing Bolt"
+    ],
+    [
+     "Homing",
+     "Piercing"
+    ],
+    [
+     "Phoenix Bolt",
+     "Supernova Bolt"
+    ]
+   ],
+   "cls": "pyromancer",
+   "elem": "fire",
+   "cost": 8,
+   "scale": "INT",
+   "kind": "bolt",
+   "dmg": [
+    12,
+    3.2
+   ],
+   "speed": 34,
+   "size": 0.13,
+   "status": 2
+  },
+  {
+   "id": "flameward",
+   "name": "Flame Ward",
+   "type": "def",
+   "built": true,
+   "src": "Built-in",
+   "mana": 25,
+   "cd": 12,
+   "desc": "A shield of fire absorbs damage.",
+   "ups": [
+    [
+     "Burning Ward",
+     "Thick Ward"
+    ],
+    [
+     "Reflects projectiles",
+     "Heals as it breaks"
+    ],
+    [
+     "Permanent out of combat",
+     "Share with party"
+    ]
+   ],
+   "cls": "pyromancer",
+   "elem": "fire",
+   "cost": 25,
+   "scale": "INT",
+   "kind": "ward",
+   "amount": [
+    40,
+    9
+   ]
+  },
+  {
+   "id": "kindle",
+   "name": "Kindle",
+   "type": "util",
+   "built": true,
+   "src": "Built-in",
+   "mana": 5,
+   "cd": 2,
+   "desc": "Set objects alight: light, cooking, signals.",
+   "ups": [
+    [
+     "Bigger fires",
+     "Smokeless"
+    ],
+    [
+     "Instant cooking",
+     "Follow-light"
+    ],
+    [
+     "Kindle enemy gear",
+     "Ignite water"
+    ]
+   ],
+   "cls": "pyromancer",
+   "elem": "fire",
+   "cost": 5,
+   "scale": "INT",
+   "kind": "zone",
+   "dmg": [
+    4,
+    1
+   ],
+   "radius": 1.6,
+   "dur": 4,
+   "range": 12,
+   "status": 2
+  },
+  {
+   "id": "fireball",
+   "name": "Fireball",
+   "type": "atk",
+   "src": "Skill book (quest)",
+   "mana": 30,
+   "cd": 4,
+   "desc": "An exploding ball of fire.",
+   "ups": [
+    [
+     "Bigger radius",
+     "Faster"
+    ],
+    [
+     "Cluster bombs",
+     "Sticky"
+    ],
+    [
+     "Meteor",
+     "Triple cast"
+    ]
+   ],
+   "cls": "pyromancer",
+   "elem": "fire",
+   "cost": 30,
+   "scale": "INT",
+   "kind": "bolt",
+   "dmg": [
+    34,
+    7
+   ],
+   "speed": 22,
+   "size": 0.28,
+   "explode": 3.2,
+   "status": 3,
+   "arc": 2
+  },
+  {
+   "id": "flamewave",
+   "name": "Flame Wave",
+   "type": "atk",
+   "src": "Skill book (loot box)",
+   "mana": 22,
+   "cd": 6,
+   "desc": "A cone of rolling flame.",
+   "ups": [
+    [
+     "Wider",
+     "Longer"
+    ],
+    [
+     "Knockback",
+     "Fire trail"
+    ],
+    [
+     "Tidal Inferno",
+     "Ring of Fire"
+    ]
+   ],
+   "cls": "pyromancer",
+   "elem": "fire",
+   "cost": 22,
+   "scale": "INT",
+   "kind": "cone",
+   "dmg": [
+    20,
+    4
+   ],
+   "range": 7,
+   "arc": 1.2,
+   "status": 3
+  },
+  {
+   "id": "emberdarts",
+   "name": "Ember Darts",
+   "type": "atk",
+   "src": "Skill book (loot box)",
+   "mana": 12,
+   "cd": 2,
+   "desc": "A fan of small burning darts.",
+   "ups": [
+    [
+     "+2 darts",
+     "Bleed"
+    ],
+    [
+     "Ricochet",
+     "Crit stacks"
+    ],
+    [
+     "Dart storm",
+     "Hellfire darts"
+    ]
+   ],
+   "cls": "pyromancer",
+   "elem": "fire",
+   "cost": 12,
+   "scale": "INT",
+   "kind": "volley",
+   "dmg": [
+    7,
+    1.6
+   ],
+   "count": 5,
+   "spread": 0.5,
+   "speed": 30,
+   "size": 0.08,
+   "status": 1
+  },
+  {
+   "id": "combust",
+   "name": "Combust",
+   "type": "atk",
+   "src": "Skill book (achievement)",
+   "mana": 18,
+   "cd": 5,
+   "desc": "Detonate Burning on a target.",
+   "ups": [
+    [
+     "Chain explosions",
+     "Single-target burst"
+    ],
+    [
+     "Lower cost",
+     "Mana on kill"
+    ],
+    [
+     "Combust all in sight",
+     "Leaves lava"
+    ]
+   ],
+   "cls": "pyromancer",
+   "elem": "fire",
+   "cost": 18,
+   "scale": "INT",
+   "kind": "nova",
+   "dmg": [
+    10,
+    3
+   ],
+   "radius": 9,
+   "status": 2
+  },
+  {
+   "id": "heatray",
+   "name": "Heat Ray",
+   "type": "atk",
+   "src": "Skill book (boss)",
+   "mana": 6,
+   "cd": 0.15,
+   "desc": "Channel a beam of heat.",
+   "ups": [
+    [
+     "Wider beam",
+     "Slows"
+    ],
+    [
+     "Melts armour",
+     "Sweeps"
+    ],
+    [
+     "Solar Lance",
+     "Split into 3"
+    ]
+   ],
+   "cls": "pyromancer",
+   "elem": "fire",
+   "cost": 6,
+   "scale": "INT",
+   "kind": "bolt",
+   "dmg": [
+    6,
+    1.4
+   ],
+   "speed": 60,
+   "size": 0.07,
+   "status": 1
+  },
+  {
+   "id": "lavapool",
+   "name": "Lava Pool",
+   "type": "atk",
+   "src": "Skill book (loot box)",
+   "mana": 28,
+   "cd": 10,
+   "desc": "Leave a pool of lava on the ground.",
+   "ups": [
+    [
+     "Lasts longer",
+     "Slows"
+    ],
+    [
+     "Roots",
+     "Spreads"
+    ],
+    [
+     "Lava Golem",
+     "Volcanic geyser"
+    ]
+   ],
+   "cls": "pyromancer",
+   "elem": "fire",
+   "cost": 28,
+   "scale": "INT",
+   "kind": "zone",
+   "dmg": [
+    12,
+    2.5
+   ],
+   "radius": 3,
+   "dur": 7,
+   "range": 14,
+   "status": 2
+  },
+  {
+   "id": "livingflame",
+   "name": "Living Flame",
+   "type": "atk",
+   "src": "Skill book (quest chain)",
+   "mana": 40,
+   "cd": 20,
+   "desc": "Summon a flame that fights for you.",
+   "ups": [
+    [
+     "Lasts longer",
+     "Two flames"
+    ],
+    [
+     "Explodes on death",
+     "Taunts"
+    ],
+    [
+     "Fire Elemental",
+     "Wisp swarm"
+    ]
+   ],
+   "cls": "pyromancer",
+   "elem": "fire",
+   "cost": 40,
+   "scale": "INT",
+   "kind": "summon",
+   "dmg": [
+    10,
+    2
+   ],
+   "dur": 25
+  },
+  {
+   "id": "inferno",
+   "name": "Inferno",
+   "type": "atk",
+   "src": "Prestige (Floor 9)",
+   "mana": 60,
+   "cd": 45,
+   "desc": "Engulf an area in fire.",
+   "ups": [
+    [
+     "Bigger",
+     "Faster cast"
+    ],
+    [
+     "Steals mana",
+     "Heals you"
+    ],
+    [
+     "Firestorm",
+     "Sun Drop"
+    ]
+   ],
+   "cls": "pyromancer",
+   "elem": "fire",
+   "cost": 60,
+   "scale": "INT",
+   "kind": "nova",
+   "dmg": [
+    60,
+    10
+   ],
+   "radius": 10,
+   "status": 5
+  },
+  {
+   "id": "cauterize",
+   "name": "Cauterize",
+   "type": "def",
+   "src": "Skill book (achievement)",
+   "mana": 20,
+   "cd": 15,
+   "desc": "Burn your wounds shut: heal and stop bleeding.",
+   "ups": [
+    [
+     "Stops bleed",
+     "Heals more"
+    ],
+    [
+     "Instant",
+     "Area"
+    ],
+    [
+     "Revive ally",
+     "Brief invulnerability"
+    ]
+   ],
+   "cls": "pyromancer",
+   "elem": "fire",
+   "cost": 20,
+   "scale": "INT",
+   "kind": "heal",
+   "amount": [
+    40,
+    8
+   ]
+  },
+  {
+   "id": "ashcloak",
+   "name": "Ash Cloak",
+   "type": "def",
+   "src": "Skill book (loot box)",
+   "mana": 20,
+   "cd": 18,
+   "desc": "Wrap yourself in drifting ash.",
+   "ups": [
+    [
+     "Dodge chance",
+     "Blinds attackers"
+    ],
+    [
+     "Longer",
+     "Shareable"
+    ],
+    [
+     "Invisible in smoke",
+     "Reflect"
+    ]
+   ],
+   "cls": "pyromancer",
+   "elem": "fire",
+   "cost": 20,
+   "scale": "INT",
+   "kind": "buff",
+   "buff": {
+    "dodge": 25,
+    "armor": 10
+   },
+   "dur": 10
+  },
+  {
+   "id": "flamestep",
+   "name": "Flame Step",
+   "type": "util",
+   "src": "Skill book (quest)",
+   "mana": 15,
+   "cd": 6,
+   "desc": "Dash through fire.",
+   "ups": [
+    [
+     "Longer dash",
+     "2 charges"
+    ],
+    [
+     "Fire trail",
+     "Cleanse"
+    ],
+    [
+     "Teleport to fire",
+     "Arrival burst"
+    ]
+   ],
+   "cls": "pyromancer",
+   "elem": "fire",
+   "cost": 15,
+   "scale": "INT",
+   "kind": "dash",
+   "dist": 9,
+   "dmg": [
+    8,
+    2
+   ],
+   "status": 2
+  },
+  {
+   "id": "smokesignal",
+   "name": "Smoke Signal",
+   "type": "util",
+   "src": "Skill book (achievement)",
+   "mana": 10,
+   "cd": 30,
+   "desc": "Send up smoke: reveals, calls, marks.",
+   "ups": [
+    [
+     "Reveal map",
+     "Call fans"
+    ],
+    [
+     "Mark enemies",
+     "Stealth"
+    ],
+    [
+     "Sponsor crate",
+     "District Map"
+    ]
+   ],
+   "cls": "pyromancer",
+   "elem": "fire",
+   "cost": 10,
+   "scale": "INT",
+   "kind": "reveal"
+  },
+  {
+   "id": "pyresight",
+   "name": "Pyre Sight",
+   "type": "util",
+   "passive": true,
+   "src": "Prestige (Floor 9)",
+   "desc": "Passive: see heat.",
+   "ups": [
+    [
+     "Heat through walls",
+     "Night vision"
+    ],
+    [
+     "Weak points",
+     "Track footprints"
+    ],
+    [
+     "Floor heat map",
+     "Crits on Burning"
+    ]
+   ],
+   "cls": "pyromancer",
+   "elem": "fire",
+   "cost": 0,
+   "scale": "INT",
+   "kind": "passive"
+  },
+  {
+   "cost": 8,
+   "cd": 0.6,
+   "type": "atk",
+   "ups": [
+    [
+     "More damage",
+     "Faster cooldown"
+    ],
+    [
+     "Bigger",
+     "Stronger effect"
+    ],
+    [
+     "Devastating",
+     "Half cost"
+    ]
+   ],
+   "built": true,
+   "src": "Built-in",
+   "id": "galeslash",
+   "cls": "windcaller",
+   "name": "Gale Slash",
+   "kind": "volley",
+   "elem": "wind",
+   "dmg": [
+    7,
+    2
+   ],
+   "count": 3,
+   "spread": 0.25,
+   "speed": 40,
+   "size": 0.1,
+   "knock": 3,
+   "scale": "INT",
+   "desc": "Three blades of wind. Pushes enemies back."
+  },
+  {
+   "cost": 12,
+   "cd": 4,
+   "type": "util",
+   "ups": [
+    [
+     "More damage",
+     "Faster cooldown"
+    ],
+    [
+     "Bigger",
+     "Stronger effect"
+    ],
+    [
+     "Devastating",
+     "Half cost"
+    ]
+   ],
+   "built": true,
+   "src": "Built-in",
+   "id": "updraft",
+   "cls": "windcaller",
+   "name": "Updraft",
+   "kind": "dash",
+   "elem": "wind",
+   "dist": 10,
+   "lift": 7,
+   "dmg": [
+    4,
+    1
+   ],
+   "scale": "INT",
+   "desc": "Leap on a column of wind and glide forward."
+  },
+  {
+   "cost": 20,
+   "cd": 12,
+   "type": "def",
+   "ups": [
+    [
+     "More damage",
+     "Faster cooldown"
+    ],
+    [
+     "Bigger",
+     "Stronger effect"
+    ],
+    [
+     "Devastating",
+     "Half cost"
+    ]
+   ],
+   "built": true,
+   "src": "Built-in",
+   "id": "deflect",
+   "cls": "windcaller",
+   "name": "Deflect Winds",
+   "kind": "ward",
+   "elem": "wind",
+   "amount": [
+    35,
+    8
+   ],
+   "deflect": true,
+   "scale": "INT",
+   "desc": "Swirling winds bat projectiles away and soak hits."
+  },
+  {
+   "cost": 26,
+   "cd": 12,
+   "type": "atk",
+   "ups": [
+    [
+     "More damage",
+     "Faster cooldown"
+    ],
+    [
+     "Bigger",
+     "Stronger effect"
+    ],
+    [
+     "Devastating",
+     "Half cost"
+    ]
+   ],
+   "src": "Skill book",
+   "id": "cyclone",
+   "cls": "windcaller",
+   "name": "Cyclone",
+   "kind": "zone",
+   "elem": "wind",
+   "dmg": [
+    11,
+    3
+   ],
+   "radius": 3.5,
+   "dur": 6,
+   "range": 14,
+   "pull": true,
+   "scale": "INT",
+   "desc": "A spinning storm that drags enemies in."
+  },
+  {
+   "cost": 24,
+   "cd": 8,
+   "type": "atk",
+   "ups": [
+    [
+     "More damage",
+     "Faster cooldown"
+    ],
+    [
+     "Bigger",
+     "Stronger effect"
+    ],
+    [
+     "Devastating",
+     "Half cost"
+    ]
+   ],
+   "src": "Skill book",
+   "id": "tempest",
+   "cls": "windcaller",
+   "name": "Tempest Burst",
+   "kind": "nova",
+   "elem": "wind",
+   "dmg": [
+    18,
+    4
+   ],
+   "radius": 6,
+   "knock": 12,
+   "scale": "INT",
+   "desc": "Blow everything away from you."
+  },
+  {
+   "cost": 12,
+   "cd": 25,
+   "type": "util",
+   "ups": [
+    [
+     "More damage",
+     "Faster cooldown"
+    ],
+    [
+     "Bigger",
+     "Stronger effect"
+    ],
+    [
+     "Devastating",
+     "Half cost"
+    ]
+   ],
+   "src": "Skill book",
+   "id": "tailwind",
+   "cls": "windcaller",
+   "name": "Tailwind",
+   "kind": "buff",
+   "elem": "wind",
+   "buff": {
+    "moveSpeed": 30,
+    "castSpeed": 15
+   },
+   "dur": 15,
+   "desc": "The wind is at your back. Literally."
+  },
+  {
+   "cost": 8,
+   "cd": 0.5,
+   "type": "atk",
+   "ups": [
+    [
+     "More damage",
+     "Faster cooldown"
+    ],
+    [
+     "Bigger",
+     "Stronger effect"
+    ],
+    [
+     "Devastating",
+     "Half cost"
+    ]
+   ],
+   "built": true,
+   "src": "Built-in",
+   "id": "frostshard",
+   "cls": "frostweaver",
+   "name": "Frost Shard",
+   "kind": "bolt",
+   "elem": "frost",
+   "dmg": [
+    11,
+    3
+   ],
+   "scale": "INT",
+   "speed": 30,
+   "size": 0.13,
+   "status": 2,
+   "desc": "A shard of ice. Slows what it hits."
+  },
+  {
+   "cost": 24,
+   "cd": 12,
+   "type": "def",
+   "ups": [
+    [
+     "More damage",
+     "Faster cooldown"
+    ],
+    [
+     "Bigger",
+     "Stronger effect"
+    ],
+    [
+     "Devastating",
+     "Half cost"
+    ]
+   ],
+   "built": true,
+   "src": "Built-in",
+   "id": "icebarrier",
+   "cls": "frostweaver",
+   "name": "Ice Barrier",
+   "kind": "ward",
+   "elem": "frost",
+   "amount": [
+    50,
+    10
+   ],
+   "scale": "WIS",
+   "desc": "A shell of ice that soaks damage and chills attackers."
+  },
+  {
+   "cost": 12,
+   "cd": 4,
+   "type": "util",
+   "ups": [
+    [
+     "More damage",
+     "Faster cooldown"
+    ],
+    [
+     "Bigger",
+     "Stronger effect"
+    ],
+    [
+     "Devastating",
+     "Half cost"
+    ]
+   ],
+   "built": true,
+   "src": "Built-in",
+   "id": "chilltouch",
+   "cls": "frostweaver",
+   "name": "Chill Touch",
+   "kind": "cone",
+   "elem": "frost",
+   "dmg": [
+    10,
+    2.5
+   ],
+   "range": 5,
+   "arc": 1.3,
+   "status": 3,
+   "scale": "INT",
+   "desc": "A freezing breath that slows everything in front of you."
+  },
+  {
+   "cost": 26,
+   "cd": 8,
+   "type": "atk",
+   "ups": [
+    [
+     "More damage",
+     "Faster cooldown"
+    ],
+    [
+     "Bigger",
+     "Stronger effect"
+    ],
+    [
+     "Devastating",
+     "Half cost"
+    ]
+   ],
+   "src": "Skill book",
+   "id": "icenova",
+   "cls": "frostweaver",
+   "name": "Ice Nova",
+   "kind": "nova",
+   "elem": "frost",
+   "dmg": [
+    18,
+    4
+   ],
+   "radius": 6,
+   "status": 2.5,
+   "freeze": true,
+   "scale": "INT",
+   "desc": "Freeze everything around you solid for a moment."
+  },
+  {
+   "cost": 30,
+   "cd": 12,
+   "type": "atk",
+   "ups": [
+    [
+     "More damage",
+     "Faster cooldown"
+    ],
+    [
+     "Bigger",
+     "Stronger effect"
+    ],
+    [
+     "Devastating",
+     "Half cost"
+    ]
+   ],
+   "src": "Skill book",
+   "id": "blizzard",
+   "cls": "frostweaver",
+   "name": "Blizzard",
+   "kind": "zone",
+   "elem": "frost",
+   "dmg": [
+    10,
+    2.5
+   ],
+   "radius": 4,
+   "dur": 7,
+   "range": 16,
+   "status": 2,
+   "scale": "INT",
+   "desc": "A localised snowstorm. Bring a coat."
+  },
+  {
+   "cost": 18,
+   "cd": 4,
+   "type": "atk",
+   "ups": [
+    [
+     "More damage",
+     "Faster cooldown"
+    ],
+    [
+     "Bigger",
+     "Stronger effect"
+    ],
+    [
+     "Devastating",
+     "Half cost"
+    ]
+   ],
+   "src": "Skill book",
+   "id": "frostlance",
+   "cls": "frostweaver",
+   "name": "Frost Lance",
+   "kind": "bolt",
+   "elem": "frost",
+   "dmg": [
+    30,
+    6
+   ],
+   "speed": 46,
+   "size": 0.2,
+   "pierce": true,
+   "status": 3,
+   "scale": "INT",
+   "desc": "A spear of ice that goes straight through several enemies."
+  },
+  {
+   "cost": 6,
+   "cd": 0.35,
+   "type": "atk",
+   "ups": [
+    [
+     "More damage",
+     "Faster cooldown"
+    ],
+    [
+     "Bigger",
+     "Stronger effect"
+    ],
+    [
+     "Devastating",
+     "Half cost"
+    ]
+   ],
+   "built": true,
+   "src": "Built-in",
+   "id": "spark",
+   "cls": "stormcaller",
+   "name": "Spark",
+   "kind": "bolt",
+   "elem": "storm",
+   "dmg": [
+    9,
+    2.6
+   ],
+   "speed": 52,
+   "size": 0.1,
+   "status": 0.4,
+   "scale": "INT",
+   "desc": "A crackling bolt. Very fast, sometimes stuns."
+  },
+  {
+   "cost": 22,
+   "cd": 12,
+   "type": "def",
+   "ups": [
+    [
+     "More damage",
+     "Faster cooldown"
+    ],
+    [
+     "Bigger",
+     "Stronger effect"
+    ],
+    [
+     "Devastating",
+     "Half cost"
+    ]
+   ],
+   "built": true,
+   "src": "Built-in",
+   "id": "staticshield",
+   "cls": "stormcaller",
+   "name": "Static Shield",
+   "kind": "ward",
+   "elem": "storm",
+   "amount": [
+    40,
+    8
+   ],
+   "thorns": 6,
+   "scale": "INT",
+   "desc": "A crackling shield that shocks whatever hits it."
+  },
+  {
+   "cost": 10,
+   "cd": 10,
+   "type": "util",
+   "ups": [
+    [
+     "More damage",
+     "Faster cooldown"
+    ],
+    [
+     "Bigger",
+     "Stronger effect"
+    ],
+    [
+     "Devastating",
+     "Half cost"
+    ]
+   ],
+   "built": true,
+   "src": "Built-in",
+   "id": "chargeup",
+   "cls": "stormcaller",
+   "name": "Charge Up",
+   "kind": "buff",
+   "elem": "storm",
+   "buff": {
+    "crit": 100
+   },
+   "dur": 4,
+   "scale": "INT",
+   "desc": "Your next few seconds of spells all crit."
+  },
+  {
+   "cost": 20,
+   "cd": 3,
+   "type": "atk",
+   "ups": [
+    [
+     "More damage",
+     "Faster cooldown"
+    ],
+    [
+     "Bigger",
+     "Stronger effect"
+    ],
+    [
+     "Devastating",
+     "Half cost"
+    ]
+   ],
+   "src": "Skill book",
+   "id": "chainlightning",
+   "cls": "stormcaller",
+   "name": "Chain Lightning",
+   "kind": "bolt",
+   "elem": "storm",
+   "dmg": [
+    22,
+    5
+   ],
+   "speed": 60,
+   "size": 0.14,
+   "chain": 3,
+   "status": 0.6,
+   "scale": "INT",
+   "desc": "Lightning that jumps to nearby enemies."
+  },
+  {
+   "cost": 22,
+   "cd": 7,
+   "type": "atk",
+   "ups": [
+    [
+     "More damage",
+     "Faster cooldown"
+    ],
+    [
+     "Bigger",
+     "Stronger effect"
+    ],
+    [
+     "Devastating",
+     "Half cost"
+    ]
+   ],
+   "src": "Skill book",
+   "id": "thunderclap",
+   "cls": "stormcaller",
+   "name": "Thunderclap",
+   "kind": "nova",
+   "elem": "storm",
+   "dmg": [
+    16,
+    4
+   ],
+   "radius": 6,
+   "knock": 10,
+   "status": 0.8,
+   "scale": "INT",
+   "desc": "A boom that throws enemies away from you."
+  },
+  {
+   "cost": 35,
+   "cd": 20,
+   "type": "atk",
+   "ups": [
+    [
+     "More damage",
+     "Faster cooldown"
+    ],
+    [
+     "Bigger",
+     "Stronger effect"
+    ],
+    [
+     "Devastating",
+     "Half cost"
+    ]
+   ],
+   "src": "Skill book",
+   "id": "balllightning",
+   "cls": "stormcaller",
+   "name": "Ball Lightning",
+   "kind": "summon",
+   "elem": "storm",
+   "dmg": [
+    9,
+    2
+   ],
+   "dur": 20,
+   "scale": "INT",
+   "desc": "A floating ball that zaps nearby enemies."
+  },
+  {
+   "cost": 10,
+   "cd": 0.8,
+   "type": "atk",
+   "ups": [
+    [
+     "More damage",
+     "Faster cooldown"
+    ],
+    [
+     "Bigger",
+     "Stronger effect"
+    ],
+    [
+     "Devastating",
+     "Half cost"
+    ]
+   ],
+   "built": true,
+   "src": "Built-in",
+   "id": "stonefist",
+   "cls": "earthshaper",
+   "name": "Stone Fist",
+   "kind": "bolt",
+   "elem": "earth",
+   "dmg": [
+    16,
+    3.6
+   ],
+   "speed": 26,
+   "size": 0.24,
+   "knock": 4,
+   "status": 0.5,
+   "scale": "INT",
+   "desc": "Hurl a fist of rock. Knocks enemies back."
+  },
+  {
+   "cost": 22,
+   "cd": 12,
+   "type": "def",
+   "ups": [
+    [
+     "More damage",
+     "Faster cooldown"
+    ],
+    [
+     "Bigger",
+     "Stronger effect"
+    ],
+    [
+     "Devastating",
+     "Half cost"
+    ]
+   ],
+   "built": true,
+   "src": "Built-in",
+   "id": "earthwall",
+   "cls": "earthshaper",
+   "name": "Earth Wall",
+   "kind": "ward",
+   "elem": "earth",
+   "amount": [
+    70,
+    12
+   ],
+   "scale": "CON",
+   "desc": "Raise a wall of stone around yourself."
+  },
+  {
+   "cost": 8,
+   "cd": 20,
+   "type": "util",
+   "ups": [
+    [
+     "More damage",
+     "Faster cooldown"
+    ],
+    [
+     "Bigger",
+     "Stronger effect"
+    ],
+    [
+     "Devastating",
+     "Half cost"
+    ]
+   ],
+   "built": true,
+   "src": "Built-in",
+   "id": "tremorsense",
+   "cls": "earthshaper",
+   "name": "Tremor Sense",
+   "kind": "reveal",
+   "elem": "earth",
+   "desc": "Feel footsteps through the floor. Shows every mob nearby on your map."
+  },
+  {
+   "cost": 28,
+   "cd": 9,
+   "type": "atk",
+   "ups": [
+    [
+     "More damage",
+     "Faster cooldown"
+    ],
+    [
+     "Bigger",
+     "Stronger effect"
+    ],
+    [
+     "Devastating",
+     "Half cost"
+    ]
+   ],
+   "src": "Skill book",
+   "id": "quake",
+   "cls": "earthshaper",
+   "name": "Quake",
+   "kind": "nova",
+   "elem": "earth",
+   "dmg": [
+    24,
+    5
+   ],
+   "radius": 7,
+   "status": 1.2,
+   "scale": "INT",
+   "desc": "Shake the ground. Everything falls over."
+  },
+  {
+   "cost": 24,
+   "cd": 11,
+   "type": "atk",
+   "ups": [
+    [
+     "More damage",
+     "Faster cooldown"
+    ],
+    [
+     "Bigger",
+     "Stronger effect"
+    ],
+    [
+     "Devastating",
+     "Half cost"
+    ]
+   ],
+   "src": "Skill book",
+   "id": "spikefield",
+   "cls": "earthshaper",
+   "name": "Spike Field",
+   "kind": "zone",
+   "elem": "earth",
+   "dmg": [
+    14,
+    3
+   ],
+   "radius": 3.5,
+   "dur": 6,
+   "range": 14,
+   "root": true,
+   "status": 2,
+   "scale": "INT",
+   "desc": "Stone spikes erupt and pin enemies in place."
+  },
+  {
+   "cost": 26,
+   "cd": 6,
+   "type": "atk",
+   "ups": [
+    [
+     "More damage",
+     "Faster cooldown"
+    ],
+    [
+     "Bigger",
+     "Stronger effect"
+    ],
+    [
+     "Devastating",
+     "Half cost"
+    ]
+   ],
+   "src": "Skill book",
+   "id": "boulder",
+   "cls": "earthshaper",
+   "name": "Boulder",
+   "kind": "bolt",
+   "elem": "earth",
+   "dmg": [
+    40,
+    8
+   ],
+   "speed": 18,
+   "size": 0.45,
+   "explode": 3,
+   "status": 1,
+   "scale": "INT",
+   "desc": "A huge rolling rock."
+  },
+  {
+   "cost": 8,
+   "cd": 0.7,
+   "type": "atk",
+   "ups": [
+    [
+     "More damage",
+     "Faster cooldown"
+    ],
+    [
+     "Bigger",
+     "Stronger effect"
+    ],
+    [
+     "Devastating",
+     "Half cost"
+    ]
+   ],
+   "built": true,
+   "src": "Built-in",
+   "id": "waterlash",
+   "cls": "tidecaller",
+   "name": "Water Lash",
+   "kind": "cone",
+   "elem": "water",
+   "dmg": [
+    11,
+    2.8
+   ],
+   "range": 6,
+   "arc": 0.9,
+   "status": 4,
+   "scale": "WIS",
+   "desc": "A whip of water. Leaves enemies Wet (lightning loves this)."
+  },
+  {
+   "cost": 20,
+   "cd": 10,
+   "type": "def",
+   "ups": [
+    [
+     "More damage",
+     "Faster cooldown"
+    ],
+    [
+     "Bigger",
+     "Stronger effect"
+    ],
+    [
+     "Devastating",
+     "Half cost"
+    ]
+   ],
+   "built": true,
+   "src": "Built-in",
+   "id": "bubbleshield",
+   "cls": "tidecaller",
+   "name": "Bubble Shield",
+   "kind": "ward",
+   "elem": "water",
+   "amount": [
+    45,
+    9
+   ],
+   "heal": 2,
+   "scale": "WIS",
+   "desc": "A bubble that soaks hits and slowly heals you."
+  },
+  {
+   "cost": 10,
+   "cd": 15,
+   "type": "util",
+   "ups": [
+    [
+     "More damage",
+     "Faster cooldown"
+    ],
+    [
+     "Bigger",
+     "Stronger effect"
+    ],
+    [
+     "Devastating",
+     "Half cost"
+    ]
+   ],
+   "built": true,
+   "src": "Built-in",
+   "id": "purify",
+   "cls": "tidecaller",
+   "name": "Purify Water",
+   "kind": "heal",
+   "elem": "water",
+   "amount": [
+    20,
+    4
+   ],
+   "thirst": 50,
+   "scale": "WIS",
+   "desc": "Make clean water from nothing. Quenches thirst and heals a little."
+  },
+  {
+   "cost": 24,
+   "cd": 11,
+   "type": "atk",
+   "ups": [
+    [
+     "More damage",
+     "Faster cooldown"
+    ],
+    [
+     "Bigger",
+     "Stronger effect"
+    ],
+    [
+     "Devastating",
+     "Half cost"
+    ]
+   ],
+   "src": "Skill book",
+   "id": "riptide",
+   "cls": "tidecaller",
+   "name": "Riptide",
+   "kind": "zone",
+   "elem": "water",
+   "dmg": [
+    12,
+    3
+   ],
+   "radius": 3.5,
+   "dur": 6,
+   "range": 14,
+   "pull": true,
+   "status": 3,
+   "scale": "WIS",
+   "desc": "A whirlpool that drags enemies in."
+  },
+  {
+   "cost": 28,
+   "cd": 9,
+   "type": "atk",
+   "ups": [
+    [
+     "More damage",
+     "Faster cooldown"
+    ],
+    [
+     "Bigger",
+     "Stronger effect"
+    ],
+    [
+     "Devastating",
+     "Half cost"
+    ]
+   ],
+   "src": "Skill book",
+   "id": "tidalwave",
+   "cls": "tidecaller",
+   "name": "Tidal Wave",
+   "kind": "cone",
+   "elem": "water",
+   "dmg": [
+    26,
+    5
+   ],
+   "range": 10,
+   "arc": 1.4,
+   "knock": 10,
+   "status": 4,
+   "scale": "WIS",
+   "desc": "A wall of water that sweeps everything away."
+  },
+  {
+   "cost": 20,
+   "cd": 30,
+   "type": "def",
+   "ups": [
+    [
+     "More damage",
+     "Faster cooldown"
+    ],
+    [
+     "Bigger",
+     "Stronger effect"
+    ],
+    [
+     "Devastating",
+     "Half cost"
+    ]
+   ],
+   "src": "Skill book",
+   "id": "springrain",
+   "cls": "tidecaller",
+   "name": "Spring Rain",
+   "kind": "buff",
+   "elem": "water",
+   "buff": {
+    "hpRegen": 6,
+    "manaRegen": 3
+   },
+   "dur": 20,
+   "scale": "WIS",
+   "desc": "A gentle rain that heals over time."
+  },
+  {
+   "cost": 22,
+   "cd": 12,
+   "type": "atk",
+   "ups": [
+    [
+     "More damage",
+     "Faster cooldown"
+    ],
+    [
+     "Bigger",
+     "Stronger effect"
+    ],
+    [
+     "Devastating",
+     "Half cost"
+    ]
+   ],
+   "built": true,
+   "src": "Built-in",
+   "id": "raiseskeleton",
+   "cls": "bonecaller",
+   "name": "Raise Skeleton",
+   "kind": "summon",
+   "elem": "death",
+   "dmg": [
+    9,
+    2.2
+   ],
+   "dur": 40,
+   "scale": "INT",
+   "desc": "A skeleton climbs out of the floor and fights for you."
+  },
+  {
+   "cost": 20,
+   "cd": 12,
+   "type": "def",
+   "ups": [
+    [
+     "More damage",
+     "Faster cooldown"
+    ],
+    [
+     "Bigger",
+     "Stronger effect"
+    ],
+    [
+     "Devastating",
+     "Half cost"
+    ]
+   ],
+   "built": true,
+   "src": "Built-in",
+   "id": "bonearmor",
+   "cls": "bonecaller",
+   "name": "Bone Armor",
+   "kind": "ward",
+   "elem": "death",
+   "amount": [
+    45,
+    9
+   ],
+   "scale": "WIS",
+   "desc": "Plates of bone wrap around you."
+  },
+  {
+   "cost": 8,
+   "cd": 0.6,
+   "type": "atk",
+   "ups": [
+    [
+     "More damage",
+     "Faster cooldown"
+    ],
+    [
+     "Bigger",
+     "Stronger effect"
+    ],
+    [
+     "Devastating",
+     "Half cost"
+    ]
+   ],
+   "built": true,
+   "src": "Built-in",
+   "id": "siphon",
+   "cls": "bonecaller",
+   "name": "Siphon",
+   "kind": "bolt",
+   "elem": "death",
+   "dmg": [
+    9,
+    2.5
+   ],
+   "speed": 34,
+   "size": 0.12,
+   "drain": 0.4,
+   "scale": "INT",
+   "desc": "Steal health from a target."
+  },
+  {
+   "cost": 24,
+   "cd": 8,
+   "type": "atk",
+   "ups": [
+    [
+     "More damage",
+     "Faster cooldown"
+    ],
+    [
+     "Bigger",
+     "Stronger effect"
+    ],
+    [
+     "Devastating",
+     "Half cost"
+    ]
+   ],
+   "src": "Skill book",
+   "id": "corpseblast",
+   "cls": "bonecaller",
+   "name": "Corpse Blast",
+   "kind": "nova",
+   "elem": "death",
+   "dmg": [
+    22,
+    5
+   ],
+   "radius": 6,
+   "scale": "INT",
+   "desc": "Make the nearby dead explode. Messy."
+  },
+  {
+   "cost": 22,
+   "cd": 12,
+   "type": "atk",
+   "ups": [
+    [
+     "More damage",
+     "Faster cooldown"
+    ],
+    [
+     "Bigger",
+     "Stronger effect"
+    ],
+    [
+     "Devastating",
+     "Half cost"
+    ]
+   ],
+   "src": "Skill book",
+   "id": "deathgrip",
+   "cls": "bonecaller",
+   "name": "Death Grip",
+   "kind": "zone",
+   "elem": "death",
+   "dmg": [
+    10,
+    2.5
+   ],
+   "radius": 3,
+   "dur": 6,
+   "range": 14,
+   "root": true,
+   "drain": 0.3,
+   "scale": "INT",
+   "desc": "Hands from the floor hold enemies and drain them."
+  },
+  {
+   "cost": 18,
+   "cd": 4,
+   "type": "atk",
+   "ups": [
+    [
+     "More damage",
+     "Faster cooldown"
+    ],
+    [
+     "Bigger",
+     "Stronger effect"
+    ],
+    [
+     "Devastating",
+     "Half cost"
+    ]
+   ],
+   "src": "Skill book",
+   "id": "bonestorm",
+   "cls": "bonecaller",
+   "name": "Bone Storm",
+   "kind": "volley",
+   "elem": "death",
+   "dmg": [
+    8,
+    2
+   ],
+   "count": 7,
+   "spread": 0.8,
+   "speed": 30,
+   "size": 0.08,
+   "scale": "INT",
+   "desc": "A spray of sharpened bones."
+  },
+  {
+   "cost": 18,
+   "cd": 5,
+   "type": "def",
+   "ups": [
+    [
+     "More damage",
+     "Faster cooldown"
+    ],
+    [
+     "Bigger",
+     "Stronger effect"
+    ],
+    [
+     "Devastating",
+     "Half cost"
+    ]
+   ],
+   "built": true,
+   "src": "Built-in",
+   "id": "mend",
+   "cls": "lightbringer",
+   "name": "Mend",
+   "kind": "heal",
+   "elem": "holy",
+   "amount": [
+    40,
+    9
+   ],
+   "scale": "WIS",
+   "desc": "Close wounds with a word."
+  },
+  {
+   "cost": 22,
+   "cd": 12,
+   "type": "def",
+   "ups": [
+    [
+     "More damage",
+     "Faster cooldown"
+    ],
+    [
+     "Bigger",
+     "Stronger effect"
+    ],
+    [
+     "Devastating",
+     "Half cost"
+    ]
+   ],
+   "built": true,
+   "src": "Built-in",
+   "id": "radiantshield",
+   "cls": "lightbringer",
+   "name": "Radiant Shield",
+   "kind": "ward",
+   "elem": "holy",
+   "amount": [
+    60,
+    11
+   ],
+   "scale": "WIS",
+   "desc": "A dome of light that absorbs damage."
+  },
+  {
+   "cost": 8,
+   "cd": 0.6,
+   "type": "atk",
+   "ups": [
+    [
+     "More damage",
+     "Faster cooldown"
+    ],
+    [
+     "Bigger",
+     "Stronger effect"
+    ],
+    [
+     "Devastating",
+     "Half cost"
+    ]
+   ],
+   "built": true,
+   "src": "Built-in",
+   "id": "flare",
+   "cls": "lightbringer",
+   "name": "Flare",
+   "kind": "bolt",
+   "elem": "holy",
+   "dmg": [
+    10,
+    2.8
+   ],
+   "speed": 34,
+   "size": 0.13,
+   "status": 1,
+   "undead": 2,
+   "scale": "WIS",
+   "desc": "A bolt of blinding light. Undead hate it twice as much."
+  },
+  {
+   "cost": 26,
+   "cd": 9,
+   "type": "atk",
+   "ups": [
+    [
+     "More damage",
+     "Faster cooldown"
+    ],
+    [
+     "Bigger",
+     "Stronger effect"
+    ],
+    [
+     "Devastating",
+     "Half cost"
+    ]
+   ],
+   "src": "Skill book",
+   "id": "sunburst",
+   "cls": "lightbringer",
+   "name": "Sunburst",
+   "kind": "nova",
+   "elem": "holy",
+   "dmg": [
+    22,
+    5
+   ],
+   "radius": 6,
+   "undead": 2,
+   "scale": "WIS",
+   "desc": "A ring of light that burns the wicked."
+  },
+  {
+   "cost": 15,
+   "cd": 30,
+   "type": "util",
+   "ups": [
+    [
+     "More damage",
+     "Faster cooldown"
+    ],
+    [
+     "Bigger",
+     "Stronger effect"
+    ],
+    [
+     "Devastating",
+     "Half cost"
+    ]
+   ],
+   "src": "Skill book",
+   "id": "blessing",
+   "cls": "lightbringer",
+   "name": "Blessing",
+   "kind": "buff",
+   "elem": "holy",
+   "buff": {
+    "WIS": 5,
+    "CON": 4,
+    "hpRegen": 3
+   },
+   "dur": 30,
+   "desc": "Everything goes a bit better for a while."
+  },
+  {
+   "cost": 30,
+   "cd": 25,
+   "type": "atk",
+   "ups": [
+    [
+     "More damage",
+     "Faster cooldown"
+    ],
+    [
+     "Bigger",
+     "Stronger effect"
+    ],
+    [
+     "Devastating",
+     "Half cost"
+    ]
+   ],
+   "src": "Skill book",
+   "id": "guardianwisp",
+   "cls": "lightbringer",
+   "name": "Guardian Wisp",
+   "kind": "summon",
+   "elem": "holy",
+   "dmg": [
+    7,
+    2
+   ],
+   "dur": 30,
+   "scale": "WIS",
+   "desc": "A friendly light that fights beside you."
+  },
+  {
+   "cost": 8,
+   "cd": 0.6,
+   "type": "atk",
+   "ups": [
+    [
+     "More damage",
+     "Faster cooldown"
+    ],
+    [
+     "Bigger",
+     "Stronger effect"
+    ],
+    [
+     "Devastating",
+     "Half cost"
+    ]
+   ],
+   "built": true,
+   "src": "Built-in",
+   "id": "hexbolt",
+   "cls": "hexwright",
+   "name": "Hex Bolt",
+   "kind": "bolt",
+   "elem": "shadow",
+   "dmg": [
+    9,
+    2.6
+   ],
+   "speed": 32,
+   "size": 0.12,
+   "status": 4,
+   "weaken": true,
+   "scale": "INT",
+   "desc": "A curse in a bolt. Hexed enemies take more damage."
+  },
+  {
+   "cost": 18,
+   "cd": 12,
+   "type": "def",
+   "ups": [
+    [
+     "More damage",
+     "Faster cooldown"
+    ],
+    [
+     "Bigger",
+     "Stronger effect"
+    ],
+    [
+     "Devastating",
+     "Half cost"
+    ]
+   ],
+   "built": true,
+   "src": "Built-in",
+   "id": "jinxward",
+   "cls": "hexwright",
+   "name": "Jinx Ward",
+   "kind": "ward",
+   "elem": "shadow",
+   "amount": [
+    35,
+    8
+   ],
+   "thorns": 4,
+   "scale": "INT",
+   "desc": "A ward that bounces bad luck back at attackers."
+  },
+  {
+   "cost": 16,
+   "cd": 10,
+   "type": "util",
+   "ups": [
+    [
+     "More damage",
+     "Faster cooldown"
+    ],
+    [
+     "Bigger",
+     "Stronger effect"
+    ],
+    [
+     "Devastating",
+     "Half cost"
+    ]
+   ],
+   "built": true,
+   "src": "Built-in",
+   "id": "badluck",
+   "cls": "hexwright",
+   "name": "Bad Luck",
+   "kind": "nova",
+   "elem": "shadow",
+   "dmg": [
+    4,
+    1
+   ],
+   "radius": 8,
+   "status": 5,
+   "weaken": true,
+   "scale": "CHA",
+   "desc": "Everything nearby starts missing. A lot."
+  },
+  {
+   "cost": 22,
+   "cd": 10,
+   "type": "atk",
+   "ups": [
+    [
+     "More damage",
+     "Faster cooldown"
+    ],
+    [
+     "Bigger",
+     "Stronger effect"
+    ],
+    [
+     "Devastating",
+     "Half cost"
+    ]
+   ],
+   "src": "Skill book",
+   "id": "withering",
+   "cls": "hexwright",
+   "name": "Withering",
+   "kind": "zone",
+   "elem": "shadow",
+   "dmg": [
+    12,
+    3
+   ],
+   "radius": 3.5,
+   "dur": 7,
+   "range": 14,
+   "weaken": true,
+   "scale": "INT",
+   "desc": "A patch of curse that rots whatever stands in it."
+  },
+  {
+   "cost": 18,
+   "cd": 4,
+   "type": "atk",
+   "ups": [
+    [
+     "More damage",
+     "Faster cooldown"
+    ],
+    [
+     "Bigger",
+     "Stronger effect"
+    ],
+    [
+     "Devastating",
+     "Half cost"
+    ]
+   ],
+   "src": "Skill book",
+   "id": "evileye",
+   "cls": "hexwright",
+   "name": "Evil Eye",
+   "kind": "bolt",
+   "elem": "shadow",
+   "dmg": [
+    28,
+    6
+   ],
+   "speed": 40,
+   "size": 0.16,
+   "status": 3,
+   "scale": "INT",
+   "desc": "A look that hurts."
+  },
+  {
+   "cost": 14,
+   "cd": 8,
+   "type": "util",
+   "ups": [
+    [
+     "More damage",
+     "Faster cooldown"
+    ],
+    [
+     "Bigger",
+     "Stronger effect"
+    ],
+    [
+     "Devastating",
+     "Half cost"
+    ]
+   ],
+   "src": "Skill book",
+   "id": "curseofrags",
+   "cls": "hexwright",
+   "name": "Curse of Rags",
+   "kind": "cone",
+   "elem": "shadow",
+   "dmg": [
+    8,
+    2
+   ],
+   "range": 7,
+   "arc": 1.4,
+   "weaken": true,
+   "status": 6,
+   "scale": "CHA",
+   "desc": "Their armour falls apart. Spiritually."
+  },
+  {
+   "cost": 14,
+   "cd": 20,
+   "type": "util",
+   "ups": [
+    [
+     "More damage",
+     "Faster cooldown"
+    ],
+    [
+     "Bigger",
+     "Stronger effect"
+    ],
+    [
+     "Devastating",
+     "Half cost"
+    ]
+   ],
+   "built": true,
+   "src": "Built-in",
+   "id": "haste",
+   "cls": "chronomancer",
+   "name": "Haste",
+   "kind": "buff",
+   "elem": "time",
+   "buff": {
+    "moveSpeed": 25,
+    "castSpeed": 25,
+    "atkSpeed": 25
+   },
+   "dur": 12,
+   "scale": "WIS",
+   "desc": "Everything you do is faster."
+  },
+  {
+   "cost": 22,
+   "cd": 18,
+   "type": "def",
+   "ups": [
+    [
+     "More damage",
+     "Faster cooldown"
+    ],
+    [
+     "Bigger",
+     "Stronger effect"
+    ],
+    [
+     "Devastating",
+     "Half cost"
+    ]
+   ],
+   "built": true,
+   "src": "Built-in",
+   "id": "rewind",
+   "cls": "chronomancer",
+   "name": "Rewind",
+   "kind": "heal",
+   "elem": "time",
+   "amount": [
+    50,
+    10
+   ],
+   "rewind": true,
+   "scale": "WIS",
+   "desc": "Undo the last few seconds of damage."
+  },
+  {
+   "cost": 16,
+   "cd": 9,
+   "type": "atk",
+   "ups": [
+    [
+     "More damage",
+     "Faster cooldown"
+    ],
+    [
+     "Bigger",
+     "Stronger effect"
+    ],
+    [
+     "Devastating",
+     "Half cost"
+    ]
+   ],
+   "built": true,
+   "src": "Built-in",
+   "id": "slowfield",
+   "cls": "chronomancer",
+   "name": "Slow Field",
+   "kind": "zone",
+   "elem": "time",
+   "dmg": [
+    5,
+    1.5
+   ],
+   "radius": 4,
+   "dur": 7,
+   "range": 14,
+   "status": 2,
+   "scale": "INT",
+   "desc": "A bubble where time crawls."
+  },
+  {
+   "cost": 8,
+   "cd": 0.5,
+   "type": "atk",
+   "ups": [
+    [
+     "More damage",
+     "Faster cooldown"
+    ],
+    [
+     "Bigger",
+     "Stronger effect"
+    ],
+    [
+     "Devastating",
+     "Half cost"
+    ]
+   ],
+   "src": "Skill book",
+   "id": "timebolt",
+   "cls": "chronomancer",
+   "name": "Time Bolt",
+   "kind": "bolt",
+   "elem": "time",
+   "dmg": [
+    11,
+    3
+   ],
+   "speed": 36,
+   "size": 0.12,
+   "status": 1,
+   "scale": "INT",
+   "desc": "A bolt that ages what it hits."
+  },
+  {
+   "cost": 30,
+   "cd": 16,
+   "type": "atk",
+   "ups": [
+    [
+     "More damage",
+     "Faster cooldown"
+    ],
+    [
+     "Bigger",
+     "Stronger effect"
+    ],
+    [
+     "Devastating",
+     "Half cost"
+    ]
+   ],
+   "src": "Skill book",
+   "id": "stopwatch",
+   "cls": "chronomancer",
+   "name": "Stopwatch",
+   "kind": "nova",
+   "elem": "time",
+   "dmg": [
+    10,
+    2
+   ],
+   "radius": 8,
+   "status": 3,
+   "freeze": true,
+   "scale": "INT",
+   "desc": "Stop time around you for a moment."
+  },
+  {
+   "cost": 15,
+   "cd": 6,
+   "type": "util",
+   "ups": [
+    [
+     "More damage",
+     "Faster cooldown"
+    ],
+    [
+     "Bigger",
+     "Stronger effect"
+    ],
+    [
+     "Devastating",
+     "Half cost"
+    ]
+   ],
+   "src": "Skill book",
+   "id": "paradox",
+   "cls": "chronomancer",
+   "name": "Paradox",
+   "kind": "dash",
+   "elem": "time",
+   "dist": 12,
+   "dmg": [
+    12,
+    3
+   ],
+   "scale": "INT",
+   "desc": "Be somewhere else. You were always there."
+  },
+  {
+   "cost": 10,
+   "cd": 1.2,
+   "type": "atk",
+   "ups": [
+    [
+     "More damage",
+     "Faster cooldown"
+    ],
+    [
+     "Bigger",
+     "Stronger effect"
+    ],
+    [
+     "Devastating",
+     "Half cost"
+    ]
+   ],
+   "built": true,
+   "src": "Built-in",
+   "id": "sporecloud",
+   "cls": "sporesage",
+   "name": "Spore Cloud",
+   "kind": "zone",
+   "elem": "poison",
+   "dmg": [
+    8,
+    2.2
+   ],
+   "radius": 2.6,
+   "dur": 5,
+   "range": 12,
+   "status": 4,
+   "scale": "WIS",
+   "desc": "A cloud of choking spores."
+  },
+  {
+   "cost": 18,
+   "cd": 12,
+   "type": "def",
+   "ups": [
+    [
+     "More damage",
+     "Faster cooldown"
+    ],
+    [
+     "Bigger",
+     "Stronger effect"
+    ],
+    [
+     "Devastating",
+     "Half cost"
+    ]
+   ],
+   "built": true,
+   "src": "Built-in",
+   "id": "barkskin",
+   "cls": "sporesage",
+   "name": "Barkskin",
+   "kind": "ward",
+   "elem": "poison",
+   "amount": [
+    50,
+    10
+   ],
+   "scale": "CON",
+   "desc": "Your skin hardens into bark."
+  },
+  {
+   "cost": 8,
+   "cd": 30,
+   "type": "util",
+   "ups": [
+    [
+     "More damage",
+     "Faster cooldown"
+    ],
+    [
+     "Bigger",
+     "Stronger effect"
+    ],
+    [
+     "Devastating",
+     "Half cost"
+    ]
+   ],
+   "built": true,
+   "src": "Built-in",
+   "id": "forage",
+   "cls": "sporesage",
+   "name": "Forage",
+   "kind": "heal",
+   "elem": "poison",
+   "amount": [
+    15,
+    3
+   ],
+   "hunger": 40,
+   "scale": "WIS",
+   "desc": "Find something edible. Somewhere. Probably."
+  },
+  {
+   "cost": 14,
+   "cd": 3,
+   "type": "atk",
+   "ups": [
+    [
+     "More damage",
+     "Faster cooldown"
+    ],
+    [
+     "Bigger",
+     "Stronger effect"
+    ],
+    [
+     "Devastating",
+     "Half cost"
+    ]
+   ],
+   "src": "Skill book",
+   "id": "thornvolley",
+   "cls": "sporesage",
+   "name": "Thorn Volley",
+   "kind": "volley",
+   "elem": "poison",
+   "dmg": [
+    8,
+    2
+   ],
+   "count": 5,
+   "spread": 0.5,
+   "speed": 32,
+   "size": 0.08,
+   "status": 3,
+   "scale": "WIS",
+   "desc": "A fan of poisoned thorns."
+  },
+  {
+   "cost": 18,
+   "cd": 10,
+   "type": "atk",
+   "ups": [
+    [
+     "More damage",
+     "Faster cooldown"
+    ],
+    [
+     "Bigger",
+     "Stronger effect"
+    ],
+    [
+     "Devastating",
+     "Half cost"
+    ]
+   ],
+   "src": "Skill book",
+   "id": "rootsnare",
+   "cls": "sporesage",
+   "name": "Root Snare",
+   "kind": "zone",
+   "elem": "poison",
+   "dmg": [
+    6,
+    1.5
+   ],
+   "radius": 3,
+   "dur": 6,
+   "range": 12,
+   "root": true,
+   "status": 3,
+   "scale": "WIS",
+   "desc": "Roots burst up and hold enemies."
+  },
+  {
+   "cost": 18,
+   "cd": 25,
+   "type": "def",
+   "ups": [
+    [
+     "More damage",
+     "Faster cooldown"
+    ],
+    [
+     "Bigger",
+     "Stronger effect"
+    ],
+    [
+     "Devastating",
+     "Half cost"
+    ]
+   ],
+   "src": "Skill book",
+   "id": "regrowth",
+   "cls": "sporesage",
+   "name": "Regrowth",
+   "kind": "buff",
+   "elem": "poison",
+   "buff": {
+    "hpRegen": 7
+   },
+   "dur": 20,
+   "scale": "WIS",
+   "desc": "Moss grows over your wounds."
+  },
+  {
+   "cost": 14,
+   "cd": 20,
+   "type": "util",
+   "ups": [
+    [
+     "More damage",
+     "Faster cooldown"
+    ],
+    [
+     "Bigger",
+     "Stronger effect"
+    ],
+    [
+     "Devastating",
+     "Half cost"
+    ]
+   ],
+   "built": true,
+   "src": "Built-in",
+   "id": "elementalbrand",
+   "cls": "spellsword",
+   "name": "Elemental Brand",
+   "kind": "buff",
+   "elem": "arcane",
+   "buff": {
+    "weaponElem": 1,
+    "dmg": 8
+   },
+   "dur": 20,
+   "scale": "INT",
+   "desc": "Imbue your weapon with fire. Every swing burns."
+  },
+  {
+   "cost": 16,
+   "cd": 10,
+   "type": "def",
+   "ups": [
+    [
+     "More damage",
+     "Faster cooldown"
+    ],
+    [
+     "Bigger",
+     "Stronger effect"
+    ],
+    [
+     "Devastating",
+     "Half cost"
+    ]
+   ],
+   "built": true,
+   "src": "Built-in",
+   "id": "arcaneparry",
+   "cls": "spellsword",
+   "name": "Arcane Parry",
+   "kind": "ward",
+   "elem": "arcane",
+   "amount": [
+    40,
+    8
+   ],
+   "parry": true,
+   "scale": "INT",
+   "desc": "A magical guard. Your next parry window is huge."
+  },
+  {
+   "cost": 12,
+   "cd": 4,
+   "type": "util",
+   "ups": [
+    [
+     "More damage",
+     "Faster cooldown"
+    ],
+    [
+     "Bigger",
+     "Stronger effect"
+    ],
+    [
+     "Devastating",
+     "Half cost"
+    ]
+   ],
+   "built": true,
+   "src": "Built-in",
+   "id": "blinkstep",
+   "cls": "spellsword",
+   "name": "Blink Step",
+   "kind": "dash",
+   "elem": "arcane",
+   "dist": 9,
+   "dmg": [
+    12,
+    3
+   ],
+   "scale": "INT",
+   "desc": "Teleport a short way, slashing as you arrive."
+  },
+  {
+   "cost": 14,
+   "cd": 3,
+   "type": "atk",
+   "ups": [
+    [
+     "More damage",
+     "Faster cooldown"
+    ],
+    [
+     "Bigger",
+     "Stronger effect"
+    ],
+    [
+     "Devastating",
+     "Half cost"
+    ]
+   ],
+   "src": "Skill book",
+   "id": "arcaneblade",
+   "cls": "spellsword",
+   "name": "Arcane Blade",
+   "kind": "cone",
+   "elem": "arcane",
+   "dmg": [
+    22,
+    5
+   ],
+   "range": 5,
+   "arc": 1.2,
+   "scale": "INT",
+   "desc": "A wave of force off your blade."
+  },
+  {
+   "cost": 16,
+   "cd": 5,
+   "type": "atk",
+   "ups": [
+    [
+     "More damage",
+     "Faster cooldown"
+    ],
+    [
+     "Bigger",
+     "Stronger effect"
+    ],
+    [
+     "Devastating",
+     "Half cost"
+    ]
+   ],
+   "src": "Skill book",
+   "id": "spellstrike",
+   "cls": "spellsword",
+   "name": "Spellstrike",
+   "kind": "strike",
+   "elem": "arcane",
+   "dmg": [
+    32,
+    7
+   ],
+   "range": 2.8,
+   "arc": 1.4,
+   "status": 1,
+   "scale": "STR",
+   "desc": "A blow charged with magic. Stuns."
+  },
+  {
+   "cost": 16,
+   "cd": 3,
+   "type": "atk",
+   "ups": [
+    [
+     "More damage",
+     "Faster cooldown"
+    ],
+    [
+     "Bigger",
+     "Stronger effect"
+    ],
+    [
+     "Devastating",
+     "Half cost"
+    ]
+   ],
+   "src": "Skill book",
+   "id": "arcanemissile",
+   "cls": "spellsword",
+   "name": "Arcane Missiles",
+   "kind": "volley",
+   "elem": "arcane",
+   "dmg": [
+    8,
+    2
+   ],
+   "count": 4,
+   "spread": 0.3,
+   "speed": 36,
+   "size": 0.09,
+   "scale": "INT",
+   "desc": "A burst of homing-ish force bolts."
+  },
+  {
+   "cost": 12,
+   "cd": 3.5,
+   "type": "atk",
+   "ups": [
+    [
+     "More damage",
+     "Faster cooldown"
+    ],
+    [
+     "Bigger",
+     "Stronger effect"
+    ],
+    [
+     "Devastating",
+     "Half cost"
+    ]
+   ],
+   "built": true,
+   "src": "Built-in",
+   "id": "wrenchsmash",
+   "cls": "plumber",
+   "name": "Wrench Smash",
+   "kind": "strike",
+   "elem": "phys",
+   "dmg": [
+    26,
+    5
+   ],
+   "range": 2.8,
+   "arc": 1.3,
+   "status": 1,
+   "scale": "STR",
+   "desc": "A big two-handed wrench swing. Stuns."
+  },
+  {
+   "cost": 14,
+   "cd": 6,
+   "type": "util",
+   "ups": [
+    [
+     "More damage",
+     "Faster cooldown"
+    ],
+    [
+     "Bigger",
+     "Stronger effect"
+    ],
+    [
+     "Devastating",
+     "Half cost"
+    ]
+   ],
+   "built": true,
+   "src": "Built-in",
+   "id": "pipedream",
+   "cls": "plumber",
+   "name": "Pipe Dream",
+   "kind": "dash",
+   "elem": "water",
+   "dist": 12,
+   "dmg": [
+    8,
+    2
+   ],
+   "scale": "STR",
+   "desc": "Dive into the pipes and pop out further ahead."
+  },
+  {
+   "cost": 16,
+   "cd": 10,
+   "type": "def",
+   "ups": [
+    [
+     "More damage",
+     "Faster cooldown"
+    ],
+    [
+     "Bigger",
+     "Stronger effect"
+    ],
+    [
+     "Devastating",
+     "Half cost"
+    ]
+   ],
+   "built": true,
+   "src": "Built-in",
+   "id": "plunger",
+   "cls": "plumber",
+   "name": "Plunger Guard",
+   "kind": "ward",
+   "elem": "phys",
+   "amount": [
+    50,
+    10
+   ],
+   "scale": "CON",
+   "desc": "Hold up a plunger. Somehow it blocks things."
+  },
+  {
+   "cost": 18,
+   "cd": 6,
+   "type": "atk",
+   "ups": [
+    [
+     "More damage",
+     "Faster cooldown"
+    ],
+    [
+     "Bigger",
+     "Stronger effect"
+    ],
+    [
+     "Devastating",
+     "Half cost"
+    ]
+   ],
+   "src": "Skill book",
+   "id": "burstpipe",
+   "cls": "plumber",
+   "name": "Burst Pipe",
+   "kind": "cone",
+   "elem": "water",
+   "dmg": [
+    18,
+    4
+   ],
+   "range": 7,
+   "arc": 1.2,
+   "knock": 8,
+   "status": 4,
+   "scale": "STR",
+   "desc": "A jet of high-pressure dirty water."
+  },
+  {
+   "cost": 22,
+   "cd": 8,
+   "type": "atk",
+   "ups": [
+    [
+     "More damage",
+     "Faster cooldown"
+    ],
+    [
+     "Bigger",
+     "Stronger effect"
+    ],
+    [
+     "Devastating",
+     "Half cost"
+    ]
+   ],
+   "src": "Skill book",
+   "id": "drainclean",
+   "cls": "plumber",
+   "name": "Drain Clean",
+   "kind": "nova",
+   "elem": "phys",
+   "dmg": [
+    20,
+    5
+   ],
+   "radius": 5,
+   "scale": "STR",
+   "desc": "Spin the snake. Everything nearby gets unclogged."
+  },
+  {
+   "cost": 10,
+   "cd": 30,
+   "type": "util",
+   "ups": [
+    [
+     "More damage",
+     "Faster cooldown"
+    ],
+    [
+     "Bigger",
+     "Stronger effect"
+    ],
+    [
+     "Devastating",
+     "Half cost"
+    ]
+   ],
+   "src": "Skill book",
+   "id": "callout",
+   "cls": "plumber",
+   "name": "Emergency Call-Out",
+   "kind": "buff",
+   "elem": "phys",
+   "buff": {
+    "STR": 6,
+    "moveSpeed": 15
+   },
+   "dur": 20,
+   "desc": "Double-time rates. Double-time effort."
+  },
+  {
+   "cost": 14,
+   "cd": 4,
+   "type": "atk",
+   "ups": [
+    [
+     "More damage",
+     "Faster cooldown"
+    ],
+    [
+     "Bigger",
+     "Stronger effect"
+    ],
+    [
+     "Devastating",
+     "Half cost"
+    ]
+   ],
+   "built": true,
+   "src": "Built-in",
+   "id": "defib",
+   "cls": "paramedic",
+   "name": "Defib",
+   "kind": "strike",
+   "elem": "storm",
+   "dmg": [
+    22,
+    5
+   ],
+   "range": 2.6,
+   "arc": 1.2,
+   "status": 1.2,
+   "scale": "WIS",
+   "desc": "Clear! Shocks and stuns. Also revives you once per floor."
+  },
+  {
+   "cost": 14,
+   "cd": 6,
+   "type": "def",
+   "ups": [
+    [
+     "More damage",
+     "Faster cooldown"
+    ],
+    [
+     "Bigger",
+     "Stronger effect"
+    ],
+    [
+     "Devastating",
+     "Half cost"
+    ]
+   ],
+   "built": true,
+   "src": "Built-in",
+   "id": "firstaid",
+   "cls": "paramedic",
+   "name": "First Aid",
+   "kind": "heal",
+   "elem": "holy",
+   "amount": [
+    45,
+    10
+   ],
+   "scale": "WIS",
+   "desc": "Bandages, antiseptic, a lollipop."
+  },
+  {
+   "cost": 12,
+   "cd": 25,
+   "type": "util",
+   "ups": [
+    [
+     "More damage",
+     "Faster cooldown"
+    ],
+    [
+     "Bigger",
+     "Stronger effect"
+    ],
+    [
+     "Devastating",
+     "Half cost"
+    ]
+   ],
+   "built": true,
+   "src": "Built-in",
+   "id": "adrenaline",
+   "cls": "paramedic",
+   "name": "Adrenaline",
+   "kind": "buff",
+   "elem": "phys",
+   "buff": {
+    "moveSpeed": 20,
+    "atkSpeed": 20,
+    "armor": 10
+   },
+   "dur": 12,
+   "desc": "A shot of something strong."
+  },
+  {
+   "cost": 22,
+   "cd": 25,
+   "type": "def",
+   "ups": [
+    [
+     "More damage",
+     "Faster cooldown"
+    ],
+    [
+     "Bigger",
+     "Stronger effect"
+    ],
+    [
+     "Devastating",
+     "Half cost"
+    ]
+   ],
+   "src": "Skill book",
+   "id": "triage",
+   "cls": "paramedic",
+   "name": "Triage Tent",
+   "kind": "zone",
+   "elem": "holy",
+   "dmg": [
+    0,
+    0
+   ],
+   "radius": 4,
+   "dur": 10,
+   "range": 6,
+   "healZone": 6,
+   "scale": "WIS",
+   "desc": "A tent where you heal over time."
+  },
+  {
+   "cost": 10,
+   "cd": 3,
+   "type": "atk",
+   "ups": [
+    [
+     "More damage",
+     "Faster cooldown"
+    ],
+    [
+     "Bigger",
+     "Stronger effect"
+    ],
+    [
+     "Devastating",
+     "Half cost"
+    ]
+   ],
+   "src": "Skill book",
+   "id": "sedative",
+   "cls": "paramedic",
+   "name": "Sedative Dart",
+   "kind": "bolt",
+   "elem": "poison",
+   "dmg": [
+    10,
+    2.4
+   ],
+   "speed": 44,
+   "size": 0.07,
+   "status": 3,
+   "scale": "DEX",
+   "desc": "A dart that makes enemies very, very slow."
+  },
+  {
+   "cost": 18,
+   "cd": 12,
+   "type": "def",
+   "ups": [
+    [
+     "More damage",
+     "Faster cooldown"
+    ],
+    [
+     "Bigger",
+     "Stronger effect"
+    ],
+    [
+     "Devastating",
+     "Half cost"
+    ]
+   ],
+   "src": "Skill book",
+   "id": "stretcher",
+   "cls": "paramedic",
+   "name": "Crash Cart",
+   "kind": "ward",
+   "elem": "phys",
+   "amount": [
+    55,
+    10
+   ],
+   "scale": "CON",
+   "desc": "Hide behind a crash cart."
+  },
+  {
+   "cost": 12,
+   "cd": 2.5,
+   "type": "atk",
+   "ups": [
+    [
+     "More damage",
+     "Faster cooldown"
+    ],
+    [
+     "Bigger",
+     "Stronger effect"
+    ],
+    [
+     "Devastating",
+     "Half cost"
+    ]
+   ],
+   "built": true,
+   "src": "Built-in",
+   "id": "pipebomb",
+   "cls": "demolitions",
+   "name": "Pipe Bomb",
+   "kind": "bolt",
+   "elem": "fire",
+   "dmg": [
+    24,
+    6
+   ],
+   "speed": 18,
+   "size": 0.18,
+   "explode": 3.2,
+   "status": 2,
+   "arc": 4,
+   "scale": "DEX",
+   "desc": "Lob a homemade bomb."
+  },
+  {
+   "cost": 14,
+   "cd": 8,
+   "type": "util",
+   "ups": [
+    [
+     "More damage",
+     "Faster cooldown"
+    ],
+    [
+     "Bigger",
+     "Stronger effect"
+    ],
+    [
+     "Devastating",
+     "Half cost"
+    ]
+   ],
+   "built": true,
+   "src": "Built-in",
+   "id": "garagechem",
+   "cls": "demolitions",
+   "name": "Garage Chemistry",
+   "kind": "zone",
+   "elem": "poison",
+   "dmg": [
+    10,
+    2.5
+   ],
+   "radius": 3,
+   "dur": 6,
+   "range": 12,
+   "status": 3,
+   "scale": "INT",
+   "desc": "Mix cleaning supplies. Do not breathe."
+  },
+  {
+   "cost": 12,
+   "cd": 6,
+   "type": "def",
+   "ups": [
+    [
+     "More damage",
+     "Faster cooldown"
+    ],
+    [
+     "Bigger",
+     "Stronger effect"
+    ],
+    [
+     "Devastating",
+     "Half cost"
+    ]
+   ],
+   "built": true,
+   "src": "Built-in",
+   "id": "blastjump",
+   "cls": "demolitions",
+   "name": "Blast Jump",
+   "kind": "dash",
+   "elem": "fire",
+   "dist": 10,
+   "lift": 5,
+   "dmg": [
+    12,
+    3
+   ],
+   "scale": "DEX",
+   "desc": "Blow yourself out of trouble. Mostly."
+  },
+  {
+   "cost": 22,
+   "cd": 6,
+   "type": "atk",
+   "ups": [
+    [
+     "More damage",
+     "Faster cooldown"
+    ],
+    [
+     "Bigger",
+     "Stronger effect"
+    ],
+    [
+     "Devastating",
+     "Half cost"
+    ]
+   ],
+   "src": "Skill book",
+   "id": "clusterbomb",
+   "cls": "demolitions",
+   "name": "Cluster Bomb",
+   "kind": "volley",
+   "elem": "fire",
+   "dmg": [
+    14,
+    3.5
+   ],
+   "count": 4,
+   "spread": 0.6,
+   "speed": 18,
+   "size": 0.14,
+   "explode": 2.4,
+   "arc": 4,
+   "scale": "DEX",
+   "desc": "One bomb that becomes four bombs."
+  },
+  {
+   "cost": 16,
+   "cd": 9,
+   "type": "atk",
+   "ups": [
+    [
+     "More damage",
+     "Faster cooldown"
+    ],
+    [
+     "Bigger",
+     "Stronger effect"
+    ],
+    [
+     "Devastating",
+     "Half cost"
+    ]
+   ],
+   "src": "Skill book",
+   "id": "proxmine",
+   "cls": "demolitions",
+   "name": "Proximity Mine",
+   "kind": "zone",
+   "elem": "fire",
+   "dmg": [
+    30,
+    7
+   ],
+   "radius": 2.5,
+   "dur": 15,
+   "range": 8,
+   "status": 2,
+   "scale": "DEX",
+   "desc": "Leave a present on the floor."
+  },
+  {
+   "cost": 40,
+   "cd": 25,
+   "type": "atk",
+   "ups": [
+    [
+     "More damage",
+     "Faster cooldown"
+    ],
+    [
+     "Bigger",
+     "Stronger effect"
+    ],
+    [
+     "Devastating",
+     "Half cost"
+    ]
+   ],
+   "src": "Skill book",
+   "id": "bigone",
+   "cls": "demolitions",
+   "name": "The Big One",
+   "kind": "nova",
+   "elem": "fire",
+   "dmg": [
+    70,
+    14
+   ],
+   "radius": 9,
+   "status": 4,
+   "scale": "DEX",
+   "desc": "Everything you have, all at once."
+  },
+  {
+   "cost": 10,
+   "cd": 3,
+   "type": "atk",
+   "ups": [
+    [
+     "More damage",
+     "Faster cooldown"
+    ],
+    [
+     "Bigger",
+     "Stronger effect"
+    ],
+    [
+     "Devastating",
+     "Half cost"
+    ]
+   ],
+   "built": true,
+   "src": "Built-in",
+   "id": "extraction",
+   "cls": "dentist",
+   "name": "Extraction",
+   "kind": "strike",
+   "elem": "phys",
+   "dmg": [
+    28,
+    6
+   ],
+   "range": 2.4,
+   "arc": 1,
+   "crit": 30,
+   "scale": "DEX",
+   "desc": "A precise pull. Huge crit chance. Keep the teeth."
+  },
+  {
+   "cost": 14,
+   "cd": 20,
+   "type": "def",
+   "ups": [
+    [
+     "More damage",
+     "Faster cooldown"
+    ],
+    [
+     "Bigger",
+     "Stronger effect"
+    ],
+    [
+     "Devastating",
+     "Half cost"
+    ]
+   ],
+   "built": true,
+   "src": "Built-in",
+   "id": "novocaine",
+   "cls": "dentist",
+   "name": "Novocaine",
+   "kind": "buff",
+   "elem": "phys",
+   "buff": {
+    "armor": 25,
+    "dodge": 15
+   },
+   "dur": 10,
+   "desc": "You don’t feel a thing."
+  },
+  {
+   "cost": 10,
+   "cd": 4,
+   "type": "util",
+   "ups": [
+    [
+     "More damage",
+     "Faster cooldown"
+    ],
+    [
+     "Bigger",
+     "Stronger effect"
+    ],
+    [
+     "Devastating",
+     "Half cost"
+    ]
+   ],
+   "built": true,
+   "src": "Built-in",
+   "id": "drillrush",
+   "cls": "dentist",
+   "name": "Drill Rush",
+   "kind": "dash",
+   "elem": "phys",
+   "dist": 8,
+   "dmg": [
+    16,
+    4
+   ],
+   "status": 2,
+   "scale": "DEX",
+   "desc": "Dash in with the drill whining."
+  },
+  {
+   "cost": 14,
+   "cd": 6,
+   "type": "atk",
+   "ups": [
+    [
+     "More damage",
+     "Faster cooldown"
+    ],
+    [
+     "Bigger",
+     "Stronger effect"
+    ],
+    [
+     "Devastating",
+     "Half cost"
+    ]
+   ],
+   "src": "Skill book",
+   "id": "flossgarrote",
+   "cls": "dentist",
+   "name": "Floss Garrote",
+   "kind": "strike",
+   "elem": "phys",
+   "dmg": [
+    22,
+    5
+   ],
+   "range": 2.4,
+   "arc": 1.2,
+   "status": 5,
+   "scale": "DEX",
+   "desc": "Minty, and causes bleeding."
+  },
+  {
+   "cost": 16,
+   "cd": 8,
+   "type": "atk",
+   "ups": [
+    [
+     "More damage",
+     "Faster cooldown"
+    ],
+    [
+     "Bigger",
+     "Stronger effect"
+    ],
+    [
+     "Devastating",
+     "Half cost"
+    ]
+   ],
+   "src": "Skill book",
+   "id": "gasandair",
+   "cls": "dentist",
+   "name": "Gas and Air",
+   "kind": "cone",
+   "elem": "poison",
+   "dmg": [
+    8,
+    2
+   ],
+   "range": 6,
+   "arc": 1.2,
+   "status": 3,
+   "scale": "INT",
+   "desc": "Enemies get giggly, then slow, then asleep."
+  },
+  {
+   "cost": 20,
+   "cd": 10,
+   "type": "atk",
+   "ups": [
+    [
+     "More damage",
+     "Faster cooldown"
+    ],
+    [
+     "Bigger",
+     "Stronger effect"
+    ],
+    [
+     "Devastating",
+     "Half cost"
+    ]
+   ],
+   "src": "Skill book",
+   "id": "rootcanal",
+   "cls": "dentist",
+   "name": "Root Canal",
+   "kind": "strike",
+   "elem": "phys",
+   "dmg": [
+    50,
+    10
+   ],
+   "range": 2.4,
+   "arc": 0.9,
+   "crit": 50,
+   "scale": "DEX",
+   "desc": "The worst procedure in the dungeon."
+  },
+  {
+   "cost": 12,
+   "cd": 6,
+   "type": "atk",
+   "ups": [
+    [
+     "More damage",
+     "Faster cooldown"
+    ],
+    [
+     "Bigger",
+     "Stronger effect"
+    ],
+    [
+     "Devastating",
+     "Half cost"
+    ]
+   ],
+   "built": true,
+   "src": "Built-in",
+   "id": "repossess",
+   "cls": "repoagent",
+   "name": "Repossess",
+   "kind": "strike",
+   "elem": "phys",
+   "dmg": [
+    18,
+    4
+   ],
+   "range": 2.6,
+   "arc": 1.2,
+   "steal": true,
+   "scale": "DEX",
+   "desc": "Snatch something they’re holding. Sometimes it’s loot."
+  },
+  {
+   "cost": 10,
+   "cd": 5,
+   "type": "util",
+   "ups": [
+    [
+     "More damage",
+     "Faster cooldown"
+    ],
+    [
+     "Bigger",
+     "Stronger effect"
+    ],
+    [
+     "Devastating",
+     "Half cost"
+    ]
+   ],
+   "built": true,
+   "src": "Built-in",
+   "id": "towhook",
+   "cls": "repoagent",
+   "name": "Tow Hook",
+   "kind": "bolt",
+   "elem": "phys",
+   "dmg": [
+    10,
+    2.4
+   ],
+   "speed": 44,
+   "size": 0.1,
+   "pull": true,
+   "scale": "DEX",
+   "desc": "Hook an enemy and yank them closer."
+  },
+  {
+   "cost": 14,
+   "cd": 10,
+   "type": "def",
+   "ups": [
+    [
+     "More damage",
+     "Faster cooldown"
+    ],
+    [
+     "Bigger",
+     "Stronger effect"
+    ],
+    [
+     "Devastating",
+     "Half cost"
+    ]
+   ],
+   "built": true,
+   "src": "Built-in",
+   "id": "paperwork",
+   "cls": "repoagent",
+   "name": "Paperwork Shield",
+   "kind": "ward",
+   "elem": "phys",
+   "amount": [
+    40,
+    8
+   ],
+   "scale": "CHA",
+   "desc": "A clipboard of legal notices. Somehow deflects blows."
+  },
+  {
+   "cost": 16,
+   "cd": 4,
+   "type": "atk",
+   "ups": [
+    [
+     "More damage",
+     "Faster cooldown"
+    ],
+    [
+     "Bigger",
+     "Stronger effect"
+    ],
+    [
+     "Devastating",
+     "Half cost"
+    ]
+   ],
+   "src": "Skill book",
+   "id": "finalnotice",
+   "cls": "repoagent",
+   "name": "Final Notice",
+   "kind": "bolt",
+   "elem": "shadow",
+   "dmg": [
+    26,
+    6
+   ],
+   "speed": 42,
+   "size": 0.12,
+   "weaken": true,
+   "scale": "CHA",
+   "desc": "A red envelope. It hurts to read."
+  },
+  {
+   "cost": 12,
+   "cd": 20,
+   "type": "util",
+   "ups": [
+    [
+     "More damage",
+     "Faster cooldown"
+    ],
+    [
+     "Bigger",
+     "Stronger effect"
+    ],
+    [
+     "Devastating",
+     "Half cost"
+    ]
+   ],
+   "src": "Skill book",
+   "id": "lockpick",
+   "cls": "repoagent",
+   "name": "Slip Away",
+   "kind": "buff",
+   "elem": "shadow",
+   "buff": {
+    "dodge": 35,
+    "moveSpeed": 20
+   },
+   "dur": 8,
+   "desc": "You were never here."
+  },
+  {
+   "cost": 22,
+   "cd": 9,
+   "type": "atk",
+   "ups": [
+    [
+     "More damage",
+     "Faster cooldown"
+    ],
+    [
+     "Bigger",
+     "Stronger effect"
+    ],
+    [
+     "Devastating",
+     "Half cost"
+    ]
+   ],
+   "src": "Skill book",
+   "id": "liquidate",
+   "cls": "repoagent",
+   "name": "Liquidate",
+   "kind": "nova",
+   "elem": "phys",
+   "dmg": [
+    22,
+    5
+   ],
+   "radius": 5,
+   "scale": "DEX",
+   "desc": "Everything must go."
+  },
+  {
+   "cost": 0,
+   "cd": 0.45,
+   "type": "atk",
+   "ups": [
+    [
+     "More damage",
+     "Faster cooldown"
+    ],
+    [
+     "Bigger",
+     "Stronger effect"
+    ],
+    [
+     "Devastating",
+     "Half cost"
+    ]
+   ],
+   "built": true,
+   "src": "Built-in",
+   "id": "pressuregun",
+   "cls": "exterminator",
+   "name": "Pressure Gun",
+   "kind": "bolt",
+   "elem": "phys",
+   "dmg": [
+    9,
+    2.5
+   ],
+   "speed": 50,
+   "size": 0.07,
+   "scale": "DEX",
+   "desc": "A pump-action pellet gun. Your basic shot."
+  },
+  {
+   "cost": 18,
+   "cd": 8,
+   "type": "atk",
+   "ups": [
+    [
+     "More damage",
+     "Faster cooldown"
+    ],
+    [
+     "Bigger",
+     "Stronger effect"
+    ],
+    [
+     "Devastating",
+     "Half cost"
+    ]
+   ],
+   "built": true,
+   "src": "Built-in",
+   "id": "fumigate",
+   "cls": "exterminator",
+   "name": "Fumigate",
+   "kind": "zone",
+   "elem": "poison",
+   "dmg": [
+    10,
+    2.6
+   ],
+   "radius": 3.5,
+   "dur": 7,
+   "range": 14,
+   "status": 5,
+   "scale": "WIS",
+   "desc": "A poison cloud. Hits pests extra hard."
+  },
+  {
+   "cost": 14,
+   "cd": 6,
+   "type": "util",
+   "ups": [
+    [
+     "More damage",
+     "Faster cooldown"
+    ],
+    [
+     "Bigger",
+     "Stronger effect"
+    ],
+    [
+     "Devastating",
+     "Half cost"
+    ]
+   ],
+   "built": true,
+   "src": "Built-in",
+   "id": "bugbomb",
+   "cls": "exterminator",
+   "name": "Bug Bomb",
+   "kind": "bolt",
+   "elem": "poison",
+   "dmg": [
+    18,
+    4
+   ],
+   "speed": 20,
+   "size": 0.16,
+   "explode": 3.5,
+   "status": 4,
+   "arc": 4,
+   "scale": "DEX",
+   "desc": "Lob a fogger. Everyone gets fogged."
+  },
+  {
+   "cost": 12,
+   "cd": 2,
+   "type": "atk",
+   "ups": [
+    [
+     "More damage",
+     "Faster cooldown"
+    ],
+    [
+     "Bigger",
+     "Stronger effect"
+    ],
+    [
+     "Devastating",
+     "Half cost"
+    ]
+   ],
+   "src": "Skill book",
+   "id": "sprayer",
+   "cls": "exterminator",
+   "name": "Sprayer",
+   "kind": "cone",
+   "elem": "poison",
+   "dmg": [
+    12,
+    3
+   ],
+   "range": 7,
+   "arc": 0.9,
+   "status": 4,
+   "scale": "DEX",
+   "desc": "A wide spray of something that smells awful."
+  },
+  {
+   "cost": 10,
+   "cd": 8,
+   "type": "atk",
+   "ups": [
+    [
+     "More damage",
+     "Faster cooldown"
+    ],
+    [
+     "Bigger",
+     "Stronger effect"
+    ],
+    [
+     "Devastating",
+     "Half cost"
+    ]
+   ],
+   "src": "Skill book",
+   "id": "glueboard",
+   "cls": "exterminator",
+   "name": "Glue Board",
+   "kind": "zone",
+   "elem": "phys",
+   "dmg": [
+    2,
+    0.5
+   ],
+   "radius": 3,
+   "dur": 12,
+   "range": 10,
+   "root": true,
+   "scale": "WIS",
+   "desc": "Sticky. Very sticky."
+  },
+  {
+   "cost": 16,
+   "cd": 14,
+   "type": "def",
+   "ups": [
+    [
+     "More damage",
+     "Faster cooldown"
+    ],
+    [
+     "Bigger",
+     "Stronger effect"
+    ],
+    [
+     "Devastating",
+     "Half cost"
+    ]
+   ],
+   "src": "Skill book",
+   "id": "hazmat",
+   "cls": "exterminator",
+   "name": "Hazmat Suit",
+   "kind": "ward",
+   "elem": "poison",
+   "amount": [
+    50,
+    10
+   ],
+   "scale": "CON",
+   "desc": "Zip up. Nothing gets in."
+  },
+  {
+   "cost": 10,
+   "cd": 4,
+   "type": "util",
+   "ups": [
+    [
+     "More damage",
+     "Faster cooldown"
+    ],
+    [
+     "Bigger",
+     "Stronger effect"
+    ],
+    [
+     "Devastating",
+     "Half cost"
+    ]
+   ],
+   "built": true,
+   "src": "Built-in",
+   "id": "naughtylist",
+   "cls": "mallsanta",
+   "name": "Naughty List",
+   "kind": "bolt",
+   "elem": "holy",
+   "dmg": [
+    8,
+    2
+   ],
+   "speed": 36,
+   "size": 0.14,
+   "weaken": true,
+   "status": 6,
+   "scale": "CHA",
+   "desc": "Mark an enemy. Marked enemies take 30% more damage."
+  },
+  {
+   "cost": 16,
+   "cd": 5,
+   "type": "atk",
+   "ups": [
+    [
+     "More damage",
+     "Faster cooldown"
+    ],
+    [
+     "Bigger",
+     "Stronger effect"
+    ],
+    [
+     "Devastating",
+     "Half cost"
+    ]
+   ],
+   "built": true,
+   "src": "Built-in",
+   "id": "sackslam",
+   "cls": "mallsanta",
+   "name": "Sack Slam",
+   "kind": "nova",
+   "elem": "phys",
+   "dmg": [
+    18,
+    4
+   ],
+   "radius": 4.5,
+   "taunt": true,
+   "status": 0.8,
+   "scale": "CON",
+   "desc": "Swing the sack. Everyone nearby wants a word with you."
+  },
+  {
+   "cost": 18,
+   "cd": 10,
+   "type": "def",
+   "ups": [
+    [
+     "More damage",
+     "Faster cooldown"
+    ],
+    [
+     "Bigger",
+     "Stronger effect"
+    ],
+    [
+     "Devastating",
+     "Half cost"
+    ]
+   ],
+   "built": true,
+   "src": "Built-in",
+   "id": "paddedsuit",
+   "cls": "mallsanta",
+   "name": "Padded Suit",
+   "kind": "ward",
+   "elem": "phys",
+   "amount": [
+    75,
+    13
+   ],
+   "scale": "CON",
+   "desc": "It’s mostly padding. It works."
+  },
+  {
+   "cost": 12,
+   "cd": 12,
+   "type": "def",
+   "ups": [
+    [
+     "More damage",
+     "Faster cooldown"
+    ],
+    [
+     "Bigger",
+     "Stronger effect"
+    ],
+    [
+     "Devastating",
+     "Half cost"
+    ]
+   ],
+   "src": "Skill book",
+   "id": "cocoa",
+   "cls": "mallsanta",
+   "name": "Hot Cocoa",
+   "kind": "heal",
+   "elem": "holy",
+   "amount": [
+    40,
+    8
+   ],
+   "thirst": 25,
+   "scale": "CHA",
+   "desc": "Warm, sweet, restorative."
+  },
+  {
+   "cost": 14,
+   "cd": 6,
+   "type": "util",
+   "ups": [
+    [
+     "More damage",
+     "Faster cooldown"
+    ],
+    [
+     "Bigger",
+     "Stronger effect"
+    ],
+    [
+     "Devastating",
+     "Half cost"
+    ]
+   ],
+   "src": "Skill book",
+   "id": "sleighrush",
+   "cls": "mallsanta",
+   "name": "Sleigh Rush",
+   "kind": "dash",
+   "elem": "phys",
+   "dist": 10,
+   "dmg": [
+    16,
+    4
+   ],
+   "status": 1,
+   "scale": "CON",
+   "desc": "Ho ho ho. Out of the way."
+  },
+  {
+   "cost": 14,
+   "cd": 4,
+   "type": "atk",
+   "ups": [
+    [
+     "More damage",
+     "Faster cooldown"
+    ],
+    [
+     "Bigger",
+     "Stronger effect"
+    ],
+    [
+     "Devastating",
+     "Half cost"
+    ]
+   ],
+   "src": "Skill book",
+   "id": "coal",
+   "cls": "mallsanta",
+   "name": "Lump of Coal",
+   "kind": "volley",
+   "elem": "fire",
+   "dmg": [
+    9,
+    2.2
+   ],
+   "count": 4,
+   "spread": 0.5,
+   "speed": 30,
+   "size": 0.1,
+   "status": 1,
+   "scale": "CHA",
+   "desc": "For the naughty. Thrown hard."
+  },
+  {
+   "cost": 10,
+   "cd": 3,
+   "type": "atk",
+   "ups": [
+    [
+     "More damage",
+     "Faster cooldown"
+    ],
+    [
+     "Bigger",
+     "Stronger effect"
+    ],
+    [
+     "Devastating",
+     "Half cost"
+    ]
+   ],
+   "built": true,
+   "src": "Built-in",
+   "id": "batonstrike",
+   "cls": "nightsecurity",
+   "name": "Baton Strike",
+   "kind": "strike",
+   "elem": "phys",
+   "dmg": [
+    22,
+    5
+   ],
+   "range": 2.6,
+   "arc": 1.2,
+   "status": 1,
+   "scale": "DEX",
+   "desc": "A practised baton blow. Stuns."
+  },
+  {
+   "cost": 8,
+   "cd": 20,
+   "type": "util",
+   "ups": [
+    [
+     "More damage",
+     "Faster cooldown"
+    ],
+    [
+     "Bigger",
+     "Stronger effect"
+    ],
+    [
+     "Devastating",
+     "Half cost"
+    ]
+   ],
+   "built": true,
+   "src": "Built-in",
+   "id": "rounds",
+   "cls": "nightsecurity",
+   "name": "Rounds",
+   "kind": "reveal",
+   "elem": "phys",
+   "desc": "Walk your rounds. Every mob nearby shows on your map."
+  },
+  {
+   "cost": 10,
+   "cd": 6,
+   "type": "def",
+   "ups": [
+    [
+     "More damage",
+     "Faster cooldown"
+    ],
+    [
+     "Bigger",
+     "Stronger effect"
+    ],
+    [
+     "Devastating",
+     "Half cost"
+    ]
+   ],
+   "built": true,
+   "src": "Built-in",
+   "id": "flashlight",
+   "cls": "nightsecurity",
+   "name": "Flashlight",
+   "kind": "cone",
+   "elem": "holy",
+   "dmg": [
+    6,
+    1.5
+   ],
+   "range": 9,
+   "arc": 0.7,
+   "status": 2,
+   "scale": "WIS",
+   "desc": "Shine it in their eyes. They stumble."
+  },
+  {
+   "cost": 12,
+   "cd": 8,
+   "type": "atk",
+   "ups": [
+    [
+     "More damage",
+     "Faster cooldown"
+    ],
+    [
+     "Bigger",
+     "Stronger effect"
+    ],
+    [
+     "Devastating",
+     "Half cost"
+    ]
+   ],
+   "src": "Skill book",
+   "id": "tripwire",
+   "cls": "nightsecurity",
+   "name": "Tripwire",
+   "kind": "zone",
+   "elem": "phys",
+   "dmg": [
+    12,
+    3
+   ],
+   "radius": 2.5,
+   "dur": 15,
+   "range": 8,
+   "root": true,
+   "scale": "DEX",
+   "desc": "A wire across the floor. Classic."
+  },
+  {
+   "cost": 12,
+   "cd": 3,
+   "type": "atk",
+   "ups": [
+    [
+     "More damage",
+     "Faster cooldown"
+    ],
+    [
+     "Bigger",
+     "Stronger effect"
+    ],
+    [
+     "Devastating",
+     "Half cost"
+    ]
+   ],
+   "src": "Skill book",
+   "id": "taser",
+   "cls": "nightsecurity",
+   "name": "Taser",
+   "kind": "bolt",
+   "elem": "storm",
+   "dmg": [
+    16,
+    4
+   ],
+   "speed": 46,
+   "size": 0.08,
+   "status": 1.2,
+   "scale": "DEX",
+   "desc": "Ten thousand volts. Mostly legal."
+  },
+  {
+   "cost": 12,
+   "cd": 25,
+   "type": "util",
+   "ups": [
+    [
+     "More damage",
+     "Faster cooldown"
+    ],
+    [
+     "Bigger",
+     "Stronger effect"
+    ],
+    [
+     "Devastating",
+     "Half cost"
+    ]
+   ],
+   "src": "Skill book",
+   "id": "shadowpatrol",
+   "cls": "nightsecurity",
+   "name": "Shadow Patrol",
+   "kind": "buff",
+   "elem": "shadow",
+   "buff": {
+    "dodge": 30,
+    "crit": 15
+   },
+   "dur": 12,
+   "desc": "Move through the dark like you own it. You do; you’re security."
+  }
+ ],
+ "pyromancer_tree": [
+  {
+   "id": "firebolt",
+   "name": "Firebolt",
+   "type": "atk",
+   "built": true,
+   "src": "Built-in",
+   "mana": 8,
+   "cd": 0.45,
+   "desc": "Hurl a bolt of fire. Applies Burning.",
+   "ups": [
+    [
+     "Twin Bolts",
+     "Searing Bolt"
+    ],
+    [
+     "Homing",
+     "Piercing"
+    ],
+    [
+     "Phoenix Bolt",
+     "Supernova Bolt"
+    ]
+   ]
+  },
+  {
+   "id": "flameward",
+   "name": "Flame Ward",
+   "type": "def",
+   "built": true,
+   "src": "Built-in",
+   "mana": 25,
+   "cd": 12,
+   "desc": "A shield of fire absorbs damage.",
+   "ups": [
+    [
+     "Burning Ward",
+     "Thick Ward"
+    ],
+    [
+     "Reflects projectiles",
+     "Heals as it breaks"
+    ],
+    [
+     "Permanent out of combat",
+     "Share with party"
+    ]
+   ]
+  },
+  {
+   "id": "kindle",
+   "name": "Kindle",
+   "type": "util",
+   "built": true,
+   "src": "Built-in",
+   "mana": 5,
+   "cd": 2,
+   "desc": "Set objects alight: light, cooking, signals.",
+   "ups": [
+    [
+     "Bigger fires",
+     "Smokeless"
+    ],
+    [
+     "Instant cooking",
+     "Follow-light"
+    ],
+    [
+     "Kindle enemy gear",
+     "Ignite water"
+    ]
+   ]
+  },
+  {
+   "id": "fireball",
+   "name": "Fireball",
+   "type": "atk",
+   "src": "Skill book (quest)",
+   "mana": 30,
+   "cd": 4,
+   "desc": "An exploding ball of fire.",
+   "ups": [
+    [
+     "Bigger radius",
+     "Faster"
+    ],
+    [
+     "Cluster bombs",
+     "Sticky"
+    ],
+    [
+     "Meteor",
+     "Triple cast"
+    ]
+   ]
+  },
+  {
+   "id": "flamewave",
+   "name": "Flame Wave",
+   "type": "atk",
+   "src": "Skill book (loot box)",
+   "mana": 22,
+   "cd": 6,
+   "desc": "A cone of rolling flame.",
+   "ups": [
+    [
+     "Wider",
+     "Longer"
+    ],
+    [
+     "Knockback",
+     "Fire trail"
+    ],
+    [
+     "Tidal Inferno",
+     "Ring of Fire"
+    ]
+   ]
+  },
+  {
+   "id": "emberdarts",
+   "name": "Ember Darts",
+   "type": "atk",
+   "src": "Skill book (loot box)",
+   "mana": 12,
+   "cd": 2,
+   "desc": "A fan of small burning darts.",
+   "ups": [
+    [
+     "+2 darts",
+     "Bleed"
+    ],
+    [
+     "Ricochet",
+     "Crit stacks"
+    ],
+    [
+     "Dart storm",
+     "Hellfire darts"
+    ]
+   ]
+  },
+  {
+   "id": "combust",
+   "name": "Combust",
+   "type": "atk",
+   "src": "Skill book (achievement)",
+   "mana": 18,
+   "cd": 5,
+   "desc": "Detonate Burning on a target.",
+   "ups": [
+    [
+     "Chain explosions",
+     "Single-target burst"
+    ],
+    [
+     "Lower cost",
+     "Mana on kill"
+    ],
+    [
+     "Combust all in sight",
+     "Leaves lava"
+    ]
+   ]
+  },
+  {
+   "id": "heatray",
+   "name": "Heat Ray",
+   "type": "atk",
+   "src": "Skill book (boss)",
+   "mana": 6,
+   "cd": 0,
+   "desc": "Channel a beam of heat.",
+   "ups": [
+    [
+     "Wider beam",
+     "Slows"
+    ],
+    [
+     "Melts armour",
+     "Sweeps"
+    ],
+    [
+     "Solar Lance",
+     "Split into 3"
+    ]
+   ]
+  },
+  {
+   "id": "lavapool",
+   "name": "Lava Pool",
+   "type": "atk",
+   "src": "Skill book (loot box)",
+   "mana": 28,
+   "cd": 10,
+   "desc": "Leave a pool of lava on the ground.",
+   "ups": [
+    [
+     "Lasts longer",
+     "Slows"
+    ],
+    [
+     "Roots",
+     "Spreads"
+    ],
+    [
+     "Lava Golem",
+     "Volcanic geyser"
+    ]
+   ]
+  },
+  {
+   "id": "livingflame",
+   "name": "Living Flame",
+   "type": "atk",
+   "src": "Skill book (quest chain)",
+   "mana": 40,
+   "cd": 20,
+   "desc": "Summon a flame that fights for you.",
+   "ups": [
+    [
+     "Lasts longer",
+     "Two flames"
+    ],
+    [
+     "Explodes on death",
+     "Taunts"
+    ],
+    [
+     "Fire Elemental",
+     "Wisp swarm"
+    ]
+   ]
+  },
+  {
+   "id": "inferno",
+   "name": "Inferno",
+   "type": "atk",
+   "src": "Prestige (Floor 9)",
+   "mana": 60,
+   "cd": 45,
+   "desc": "Engulf an area in fire.",
+   "ups": [
+    [
+     "Bigger",
+     "Faster cast"
+    ],
+    [
+     "Steals mana",
+     "Heals you"
+    ],
+    [
+     "Firestorm",
+     "Sun Drop"
+    ]
+   ]
+  },
+  {
+   "id": "cauterize",
+   "name": "Cauterize",
+   "type": "def",
+   "src": "Skill book (achievement)",
+   "mana": 20,
+   "cd": 15,
+   "desc": "Burn your wounds shut: heal and stop bleeding.",
+   "ups": [
+    [
+     "Stops bleed",
+     "Heals more"
+    ],
+    [
+     "Instant",
+     "Area"
+    ],
+    [
+     "Revive ally",
+     "Brief invulnerability"
+    ]
+   ]
+  },
+  {
+   "id": "ashcloak",
+   "name": "Ash Cloak",
+   "type": "def",
+   "src": "Skill book (loot box)",
+   "mana": 20,
+   "cd": 18,
+   "desc": "Wrap yourself in drifting ash.",
+   "ups": [
+    [
+     "Dodge chance",
+     "Blinds attackers"
+    ],
+    [
+     "Longer",
+     "Shareable"
+    ],
+    [
+     "Invisible in smoke",
+     "Reflect"
+    ]
+   ]
+  },
+  {
+   "id": "flamestep",
+   "name": "Flame Step",
+   "type": "util",
+   "src": "Skill book (quest)",
+   "mana": 15,
+   "cd": 6,
+   "desc": "Dash through fire.",
+   "ups": [
+    [
+     "Longer dash",
+     "2 charges"
+    ],
+    [
+     "Fire trail",
+     "Cleanse"
+    ],
+    [
+     "Teleport to fire",
+     "Arrival burst"
+    ]
+   ]
+  },
+  {
+   "id": "smokesignal",
+   "name": "Smoke Signal",
+   "type": "util",
+   "src": "Skill book (achievement)",
+   "mana": 10,
+   "cd": 30,
+   "desc": "Send up smoke: reveals, calls, marks.",
+   "ups": [
+    [
+     "Reveal map",
+     "Call fans"
+    ],
+    [
+     "Mark enemies",
+     "Stealth"
+    ],
+    [
+     "Sponsor crate",
+     "District Map"
+    ]
+   ]
+  },
+  {
+   "id": "pyresight",
+   "name": "Pyre Sight",
+   "type": "util",
+   "passive": true,
+   "src": "Prestige (Floor 9)",
+   "desc": "Passive: see heat.",
+   "ups": [
+    [
+     "Heat through walls",
+     "Night vision"
+    ],
+    [
+     "Weak points",
+     "Track footprints"
+    ],
+    [
+     "Floor heat map",
+     "Crits on Burning"
+    ]
+   ]
+  }
+ ]
+}

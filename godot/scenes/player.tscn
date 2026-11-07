@@ -1,0 +1,38 @@
+[gd_scene load_steps=7 format=3]
+
+[ext_resource type="Script" path="res://scripts/player/player.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/player/viewmodel.gd" id="2"]
+[ext_resource type="Shader" path="res://shaders/ink.gdshader" id="3"]
+
+[sub_resource type="CapsuleShape3D" id="capsule"]
+radius = 0.4
+height = 1.8
+
+[sub_resource type="ShaderMaterial" id="ink_mat"]
+render_priority = -100
+shader = ExtResource("3")
+
+[sub_resource type="QuadMesh" id="ink_quad"]
+material = SubResource("ink_mat")
+
+[node name="Player" type="CharacterBody3D" groups=["player"]]
+script = ExtResource("1")
+
+[node name="Collision" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+shape = SubResource("capsule")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7, 0)
+current = true
+fov = 72.0
+near = 0.05
+far = 600.0
+
+[node name="Viewmodel" type="Node3D" parent="Camera3D"]
+script = ExtResource("2")
+
+[node name="InkOutline" type="MeshInstance3D" parent="Camera3D"]
+cast_shadow = 0
+extra_cull_margin = 16384.0
+mesh = SubResource("ink_quad")

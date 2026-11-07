@@ -1,0 +1,1879 @@
+{
+ "stats": [
+  "STR",
+  "DEX",
+  "CON",
+  "INT",
+  "WIS",
+  "CHA"
+ ],
+ "stat_info": {
+  "STR": "Melee damage, carry weight, heavy armour",
+  "DEX": "Attack speed, crit chance, dodge",
+  "CON": "Max HP, stamina, slower Hunger/Thirst",
+  "INT": "Spell damage, max mana, effect duration",
+  "WIS": "Mana regen, healing, shields, cooldowns",
+  "CHA": "Fan gain, shop prices, companions"
+ },
+ "stat_labels": {
+  "armor": "Armour",
+  "dmg": "Damage",
+  "spell": "Spell power",
+  "STR": "STR",
+  "DEX": "DEX",
+  "CON": "CON",
+  "INT": "INT",
+  "WIS": "WIS",
+  "CHA": "CHA",
+  "hp": "Max HP",
+  "mana": "Max mana",
+  "crit": "% Crit",
+  "atkSpeed": "% Attack speed",
+  "castSpeed": "% Cast speed",
+  "fire": "% Fire damage",
+  "frost": "% Frost damage",
+  "fireRes": "% Fire resist",
+  "poisonRes": "% Poison resist",
+  "moveSpeed": "% Move speed",
+  "lifeOnHit": "Life on hit",
+  "loot": "% Loot find",
+  "fans": "% Fan gain",
+  "hungerDrain": "% Slower hunger",
+  "thirstDrain": "% Slower thirst",
+  "dodge": "% Dodge",
+  "block": "Block",
+  "potionSlots": "Potion slots",
+  "carry": "Carry weight",
+  "shock": "% Shock damage",
+  "light": "Light source",
+  "skill_firebolt": "to Firebolt",
+  "skill_fireball": "to Fireball",
+  "skill_fire": "to all fire skills",
+  "skill_flameward": "to Flame Ward"
+ },
+ "rarities": [
+  {
+   "id": "junk",
+   "name": "Junk",
+   "color": "#9a9a9a",
+   "affixes": [
+    0,
+    0
+   ],
+   "w": 30,
+   "ilvl": 1
+  },
+  {
+   "id": "common",
+   "name": "Common",
+   "color": "#f4eedc",
+   "affixes": [
+    0,
+    1
+   ],
+   "w": 38,
+   "ilvl": 1
+  },
+  {
+   "id": "uncommon",
+   "name": "Uncommon",
+   "color": "#5ad86a",
+   "affixes": [
+    1,
+    2
+   ],
+   "w": 20,
+   "ilvl": 1
+  },
+  {
+   "id": "rare",
+   "name": "Rare",
+   "color": "#4a9aff",
+   "affixes": [
+    2,
+    3
+   ],
+   "w": 8,
+   "ilvl": 4
+  },
+  {
+   "id": "epic",
+   "name": "Epic",
+   "color": "#b46cff",
+   "affixes": [
+    3,
+    4
+   ],
+   "w": 2,
+   "ilvl": 9
+  },
+  {
+   "id": "legendary",
+   "name": "Legendary",
+   "color": "#ff9a2a",
+   "affixes": [
+    4,
+    5
+   ],
+   "w": 0.25,
+   "ilvl": 16
+  }
+ ],
+ "gear_drop": 0.3,
+ "rarity_mat": {
+  "junk": "scrapmetal",
+  "common": "scrapmetal",
+  "uncommon": "tempered",
+  "rare": "bluechip",
+  "epic": "primetime",
+  "legendary": "showstopper"
+ },
+ "rarity_mat_drop": [
+  [
+   "tempered",
+   0.04,
+   1
+  ],
+  [
+   "bluechip",
+   0.015,
+   4
+  ],
+  [
+   "primetime",
+   0.004,
+   9
+  ],
+  [
+   "showstopper",
+   0.0005,
+   16
+  ]
+ ],
+ "slots": [
+  "head",
+  "face",
+  "shoulders",
+  "chest",
+  "back",
+  "bracers",
+  "gloves",
+  "belt",
+  "legs",
+  "boots",
+  "ring1",
+  "ring2",
+  "amulet",
+  "main",
+  "off"
+ ],
+ "slot_names": {
+  "head": "Head",
+  "face": "Face",
+  "shoulders": "Shoulders",
+  "chest": "Chest",
+  "back": "Cloak",
+  "bracers": "Bracers",
+  "gloves": "Gloves",
+  "belt": "Belt",
+  "legs": "Legs",
+  "boots": "Boots",
+  "ring1": "Ring",
+  "ring2": "Ring",
+  "amulet": "Amulet",
+  "main": "Main hand",
+  "off": "Off-hand"
+ },
+ "bases": {
+  "head": [
+   [
+    "Traffic-Cone Helm",
+    "scrap",
+    {
+     "armor": 6
+    }
+   ],
+   [
+    "Wizard Hat of Questionable Origin",
+    "arcane",
+    {
+     "armor": 2,
+     "INT": 2
+    }
+   ],
+   [
+    "Hard Hat",
+    "work",
+    {
+     "armor": 8
+    }
+   ],
+   [
+    "Colander Helm",
+    "kitchen",
+    {
+     "armor": 5,
+     "WIS": 1
+    }
+   ],
+   [
+    "Ember Circlet",
+    "elemental",
+    {
+     "armor": 3,
+     "fire": 4
+    }
+   ],
+   [
+    "Hockey Mask",
+    "sports",
+    {
+     "armor": 7
+    }
+   ]
+  ],
+  "face": [
+   [
+    "Welding Goggles",
+    "work",
+    {
+     "fireRes": 8
+    }
+   ],
+   [
+    "Surgical Mask",
+    "medical",
+    {
+     "poisonRes": 10
+    }
+   ],
+   [
+    "Monocle of Judgement",
+    "arcane",
+    {
+     "crit": 2
+    }
+   ],
+   [
+    "Gas Mask",
+    "scrap",
+    {
+     "poisonRes": 14
+    }
+   ]
+  ],
+  "shoulders": [
+   [
+    "Hubcap Pauldrons",
+    "scrap",
+    {
+     "armor": 7
+    }
+   ],
+   [
+    "Shoulder Pads",
+    "sports",
+    {
+     "armor": 9
+    }
+   ],
+   [
+    "Ember Mantle",
+    "elemental",
+    {
+     "armor": 4,
+     "fire": 5
+    }
+   ],
+   [
+    "Rubber-Duck Pauldrons",
+    "silly",
+    {
+     "armor": 3,
+     "CHA": 3
+    }
+   ]
+  ],
+  "chest": [
+   [
+    "Hi-Vis Vest",
+    "work",
+    {
+     "armor": 9
+    }
+   ],
+   [
+    "Apron Armour",
+    "kitchen",
+    {
+     "armor": 10,
+     "CON": 1
+    }
+   ],
+   [
+    "Robe of Mild Combustion",
+    "arcane",
+    {
+     "armor": 4,
+     "INT": 3
+    }
+   ],
+   [
+    "Car-Seat Cuirass",
+    "scrap",
+    {
+     "armor": 14
+    }
+   ],
+   [
+    "Scrubs",
+    "medical",
+    {
+     "armor": 5,
+     "WIS": 2
+    }
+   ]
+  ],
+  "back": [
+   [
+    "Shower-Curtain Cloak",
+    "scrap",
+    {
+     "dodge": 2
+    }
+   ],
+   [
+    "Cape of the Cone King",
+    "silly",
+    {
+     "dodge": 3,
+     "CHA": 2
+    }
+   ],
+   [
+    "Smoke Cloak",
+    "elemental",
+    {
+     "dodge": 4
+    }
+   ]
+  ],
+  "bracers": [
+   [
+    "Seatbelt Bracers",
+    "scrap",
+    {
+     "block": 4
+    }
+   ],
+   [
+    "Rune Bracers",
+    "arcane",
+    {
+     "castSpeed": 4
+    }
+   ],
+   [
+    "Sweatbands",
+    "sports",
+    {
+     "atkSpeed": 3
+    }
+   ]
+  ],
+  "gloves": [
+   [
+    "Oven-Mitt Gauntlets",
+    "kitchen",
+    {
+     "fireRes": 10,
+     "armor": 3
+    }
+   ],
+   [
+    "Welding Gloves",
+    "work",
+    {
+     "armor": 4,
+     "fire": 3
+    }
+   ],
+   [
+    "Gloves of Kindling",
+    "arcane",
+    {
+     "fire": 6
+    }
+   ],
+   [
+    "Defib Gloves",
+    "medical",
+    {
+     "shock": 4
+    }
+   ]
+  ],
+  "belt": [
+   [
+    "Tool Belt",
+    "work",
+    {
+     "potionSlots": 1
+    }
+   ],
+   [
+    "Bandolier of Sauces",
+    "kitchen",
+    {
+     "potionSlots": 2
+    }
+   ],
+   [
+    "Seatbelt Sash",
+    "scrap",
+    {
+     "carry": 10
+    }
+   ]
+  ],
+  "legs": [
+   [
+    "Cargo Shorts of Holding",
+    "scrap",
+    {
+     "armor": 5,
+     "carry": 15
+    }
+   ],
+   [
+    "Chef Trousers",
+    "kitchen",
+    {
+     "armor": 6
+    }
+   ],
+   [
+    "Spellweave Leggings",
+    "arcane",
+    {
+     "armor": 4,
+     "INT": 2
+    }
+   ],
+   [
+    "Hockey Pants",
+    "sports",
+    {
+     "armor": 9
+    }
+   ]
+  ],
+  "boots": [
+   [
+    "Steel-Toe Boots",
+    "work",
+    {
+     "armor": 6
+    }
+   ],
+   [
+    "Roller Skates",
+    "silly",
+    {
+     "moveSpeed": 8
+    }
+   ],
+   [
+    "Ember Treads",
+    "elemental",
+    {
+     "moveSpeed": 4,
+     "fire": 3
+    }
+   ],
+   [
+    "Cleats",
+    "sports",
+    {
+     "moveSpeed": 5
+    }
+   ]
+  ],
+  "ring1": [
+   [
+    "Washer Ring",
+    "scrap",
+    {}
+   ],
+   [
+    "Ring of Embers",
+    "elemental",
+    {
+     "fire": 5
+    }
+   ],
+   [
+    "Mood Ring",
+    "silly",
+    {
+     "CHA": 2
+    }
+   ],
+   [
+    "Signet of the Network",
+    "arcane",
+    {
+     "INT": 2
+    }
+   ]
+  ],
+  "amulet": [
+   [
+    "Bottle-Cap Amulet",
+    "scrap",
+    {}
+   ],
+   [
+    "Phoenix Feather Pendant",
+    "elemental",
+    {
+     "fire": 6
+    }
+   ],
+   [
+    "Lanyard of Authority",
+    "work",
+    {
+     "CHA": 2
+    }
+   ],
+   [
+    "Third-Eye Amulet",
+    "arcane",
+    {
+     "INT": 3,
+     "mana": 15
+    }
+   ]
+  ],
+  "main": [
+   [
+    "Lead Pipe",
+    "scrap",
+    {
+     "dmg": 8
+    },
+    "blunt"
+   ],
+   [
+    "Tyre Iron",
+    "scrap",
+    {
+     "dmg": 10
+    },
+    "blunt"
+   ],
+   [
+    "Rusty Wrench",
+    "work",
+    {
+     "dmg": 9,
+     "STR": 1
+    },
+    "blunt"
+   ],
+   [
+    "Rebar Spear",
+    "scrap",
+    {
+     "dmg": 10
+    },
+    "pierce"
+   ],
+   [
+    "Car-Antenna Rapier",
+    "scrap",
+    {
+     "dmg": 8,
+     "DEX": 1
+    },
+    "quick"
+   ],
+   [
+    "Stop-Sign Axe",
+    "scrap",
+    {
+     "dmg": 13
+    },
+    "heavy"
+   ],
+   [
+    "Jumper-Cable Flail",
+    "scrap",
+    {
+     "dmg": 10,
+     "shock": 3
+    },
+    "shock"
+   ],
+   [
+    "Parking-Meter Maul",
+    "scrap",
+    {
+     "dmg": 15
+    },
+    "heavy"
+   ],
+   [
+    "Windscreen-Wiper Whip",
+    "scrap",
+    {
+     "dmg": 9
+    },
+    "flail"
+   ],
+   [
+    "Hubcap Chakram",
+    "scrap",
+    {
+     "dmg": 10,
+     "crit": 2
+    },
+    "blade"
+   ],
+   [
+    "Mop Halberd",
+    "laundry",
+    {
+     "dmg": 12
+    },
+    "pierce"
+   ],
+   [
+    "Coat-Hanger Rapier",
+    "laundry",
+    {
+     "dmg": 9,
+     "DEX": 2
+    },
+    "quick"
+   ],
+   [
+    "Clothes-Iron Knuckles",
+    "laundry",
+    {
+     "dmg": 11,
+     "fire": 4
+    },
+    "hot"
+   ],
+   [
+    "Dryer-Drum Hammer",
+    "laundry",
+    {
+     "dmg": 16,
+     "CON": 1
+    },
+    "heavy"
+   ],
+   [
+    "Washboard Cleaver",
+    "laundry",
+    {
+     "dmg": 12
+    },
+    "blade"
+   ],
+   [
+    "Laundry-Line Flail",
+    "laundry",
+    {
+     "dmg": 10
+    },
+    "flail"
+   ],
+   [
+    "Kitchen Cleaver",
+    "kitchen",
+    {
+     "dmg": 13
+    },
+    "blade"
+   ],
+   [
+    "Cast-Iron Pan",
+    "kitchen",
+    {
+     "dmg": 13,
+     "block": 4
+    },
+    "blunt"
+   ],
+   [
+    "Rolling Pin",
+    "kitchen",
+    {
+     "dmg": 12,
+     "STR": 2
+    },
+    "blunt"
+   ],
+   [
+    "Skewer Spear",
+    "kitchen",
+    {
+     "dmg": 13
+    },
+    "pierce"
+   ],
+   [
+    "Ladle Mace",
+    "kitchen",
+    {
+     "dmg": 12,
+     "WIS": 1
+    },
+    "blunt"
+   ],
+   [
+    "Meat Tenderiser",
+    "kitchen",
+    {
+     "dmg": 17
+    },
+    "heavy"
+   ],
+   [
+    "Boiling Ladle",
+    "kitchen",
+    {
+     "dmg": 11,
+     "fire": 6
+    },
+    "hot"
+   ],
+   [
+    "Neon-Sign Sabre",
+    "mall",
+    {
+     "dmg": 13,
+     "shock": 5
+    },
+    "shock"
+   ],
+   [
+    "Security Baton",
+    "mall",
+    {
+     "dmg": 12,
+     "shock": 4
+    },
+    "shock"
+   ],
+   [
+    "Mannequin-Arm Club",
+    "mall",
+    {
+     "dmg": 14
+    },
+    "blunt"
+   ],
+   [
+    "Umbrella Rapier",
+    "mall",
+    {
+     "dmg": 11,
+     "DEX": 2
+    },
+    "quick"
+   ],
+   [
+    "Escalator-Step Axe",
+    "mall",
+    {
+     "dmg": 18
+    },
+    "heavy"
+   ],
+   [
+    "Clothes-Rail Lance",
+    "mall",
+    {
+     "dmg": 14
+    },
+    "pierce"
+   ],
+   [
+    "Golf Driver",
+    "suburb",
+    {
+     "dmg": 15,
+     "crit": 3
+    },
+    "blunt"
+   ],
+   [
+    "Garden Rake",
+    "suburb",
+    {
+     "dmg": 15
+    },
+    "pierce"
+   ],
+   [
+    "Hedge Trimmers",
+    "suburb",
+    {
+     "dmg": 14,
+     "atkSpeed": 4
+    },
+    "blade"
+   ],
+   [
+    "Lawn-Gnome Hammer",
+    "suburb",
+    {
+     "dmg": 20
+    },
+    "heavy"
+   ],
+   [
+    "Weed Whacker",
+    "suburb",
+    {
+     "dmg": 13
+    },
+    "flail"
+   ],
+   [
+    "Barbecue Fork",
+    "suburb",
+    {
+     "dmg": 13,
+     "fire": 6
+    },
+    "hot"
+   ],
+   [
+    "Antler Pick",
+    "canopy",
+    {
+     "dmg": 17
+    },
+    "pierce"
+   ],
+   [
+    "Hunting Machete",
+    "canopy",
+    {
+     "dmg": 16
+    },
+    "blade"
+   ],
+   [
+    "Rope-Bridge Flail",
+    "canopy",
+    {
+     "dmg": 15
+    },
+    "flail"
+   ],
+   [
+    "Plank Greatsword",
+    "canopy",
+    {
+     "dmg": 22
+    },
+    "heavy"
+   ],
+   [
+    "Hornback-Horn Dagger",
+    "canopy",
+    {
+     "dmg": 13,
+     "crit": 4
+    },
+    "quick"
+   ],
+   [
+    "Crooked Wand",
+    "arcane",
+    {
+     "spell": 10
+    },
+    "caster"
+   ],
+   [
+    "Lighter Staff",
+    "elemental",
+    {
+     "spell": 12,
+     "fire": 3
+    },
+    "caster"
+   ],
+   [
+    "Remote-Control Wand",
+    "arcane",
+    {
+     "spell": 13,
+     "castSpeed": 3
+    },
+    "caster"
+   ],
+   [
+    "Tiki-Torch Staff",
+    "elemental",
+    {
+     "spell": 14,
+     "fire": 5
+    },
+    "caster"
+   ],
+   [
+    "Mic-Stand Staff",
+    "arcane",
+    {
+     "spell": 16,
+     "CHA": 2
+    },
+    "caster"
+   ],
+   [
+    "Garden-Hose Sceptre",
+    "elemental",
+    {
+     "spell": 17,
+     "frost": 4
+    },
+    "caster"
+   ],
+   [
+    "Druid-Branch Staff",
+    "elemental",
+    {
+     "spell": 20,
+     "WIS": 2
+    },
+    "caster"
+   ]
+  ],
+  "off": [
+   [
+    "Car-Door Shield",
+    "scrap",
+    {
+     "block": 12,
+     "armor": 6
+    }
+   ],
+   [
+    "Focus Orb (Snow Globe)",
+    "arcane",
+    {
+     "mana": 20
+    }
+   ],
+   [
+    "Tome of Lighter Fluid",
+    "elemental",
+    {
+     "spell": 8,
+     "fire": 4
+    }
+   ],
+   [
+    "Trash-Can Lid",
+    "scrap",
+    {
+     "block": 9
+    }
+   ],
+   [
+    "Torch",
+    "elemental",
+    {
+     "light": 1,
+     "fire": 2
+    }
+   ]
+  ],
+  "ring2": [
+   [
+    "Washer Ring",
+    "scrap",
+    {}
+   ],
+   [
+    "Ring of Embers",
+    "elemental",
+    {
+     "fire": 5
+    }
+   ],
+   [
+    "Mood Ring",
+    "silly",
+    {
+     "CHA": 2
+    }
+   ],
+   [
+    "Signet of the Network",
+    "arcane",
+    {
+     "INT": 2
+    }
+   ]
+  ]
+ },
+ "weapon_types": {
+  "blunt": {
+   "name": "Blunt",
+   "speed": 1,
+   "reach": 2.6,
+   "arc": 1.6,
+   "dmg": 1,
+   "hits": 3,
+   "stagger": 0.25,
+   "desc": "Staggers"
+  },
+  "blade": {
+   "name": "Blade",
+   "speed": 1.15,
+   "reach": 2.4,
+   "arc": 1.8,
+   "dmg": 0.95,
+   "hits": 3,
+   "bleed": 3,
+   "desc": "Causes bleeding"
+  },
+  "pierce": {
+   "name": "Polearm",
+   "speed": 0.95,
+   "reach": 3.5,
+   "arc": 0.8,
+   "dmg": 1.05,
+   "hits": 2,
+   "crit": 6,
+   "desc": "Long reach, extra crit"
+  },
+  "heavy": {
+   "name": "Heavy",
+   "speed": 0.7,
+   "reach": 2.8,
+   "arc": 2.2,
+   "dmg": 1.45,
+   "hits": 4,
+   "stagger": 0.5,
+   "knock": 3,
+   "desc": "Slow, hits hard, knocks back"
+  },
+  "quick": {
+   "name": "Quick",
+   "speed": 1.55,
+   "reach": 2.3,
+   "arc": 1.2,
+   "dmg": 0.68,
+   "hits": 1,
+   "crit": 8,
+   "desc": "Very fast, extra crit"
+  },
+  "flail": {
+   "name": "Flail",
+   "speed": 0.85,
+   "reach": 3,
+   "arc": 2.7,
+   "dmg": 0.9,
+   "hits": 5,
+   "desc": "Wide sweeps hit crowds"
+  },
+  "shock": {
+   "name": "Shock",
+   "speed": 1,
+   "reach": 2.5,
+   "arc": 1.5,
+   "dmg": 0.95,
+   "hits": 3,
+   "elem": "storm",
+   "stun": 0.2,
+   "desc": "Shocks; can stun"
+  },
+  "hot": {
+   "name": "Searing",
+   "speed": 1,
+   "reach": 2.5,
+   "arc": 1.6,
+   "dmg": 0.95,
+   "hits": 3,
+   "elem": "fire",
+   "burn": 2,
+   "desc": "Sets enemies alight"
+  },
+  "caster": {
+   "name": "Implement",
+   "speed": 1,
+   "reach": 2.3,
+   "arc": 1.4,
+   "dmg": 0.6,
+   "hits": 2,
+   "desc": "Weak swing, boosts spells"
+  }
+ },
+ "weapons": [
+  [
+   "Lead Pipe",
+   "scrap",
+   {
+    "dmg": 8
+   },
+   "blunt",
+   1
+  ],
+  [
+   "Tyre Iron",
+   "scrap",
+   {
+    "dmg": 10
+   },
+   "blunt",
+   1
+  ],
+  [
+   "Rusty Wrench",
+   "work",
+   {
+    "dmg": 9,
+    "STR": 1
+   },
+   "blunt",
+   1
+  ],
+  [
+   "Rebar Spear",
+   "scrap",
+   {
+    "dmg": 10
+   },
+   "pierce",
+   1
+  ],
+  [
+   "Car-Antenna Rapier",
+   "scrap",
+   {
+    "dmg": 8,
+    "DEX": 1
+   },
+   "quick",
+   2
+  ],
+  [
+   "Stop-Sign Axe",
+   "scrap",
+   {
+    "dmg": 13
+   },
+   "heavy",
+   3
+  ],
+  [
+   "Jumper-Cable Flail",
+   "scrap",
+   {
+    "dmg": 10,
+    "shock": 3
+   },
+   "shock",
+   4
+  ],
+  [
+   "Parking-Meter Maul",
+   "scrap",
+   {
+    "dmg": 15
+   },
+   "heavy",
+   6
+  ],
+  [
+   "Windscreen-Wiper Whip",
+   "scrap",
+   {
+    "dmg": 9
+   },
+   "flail",
+   5
+  ],
+  [
+   "Hubcap Chakram",
+   "scrap",
+   {
+    "dmg": 10,
+    "crit": 2
+   },
+   "blade",
+   4
+  ],
+  [
+   "Mop Halberd",
+   "laundry",
+   {
+    "dmg": 12
+   },
+   "pierce",
+   10
+  ],
+  [
+   "Coat-Hanger Rapier",
+   "laundry",
+   {
+    "dmg": 9,
+    "DEX": 2
+   },
+   "quick",
+   10
+  ],
+  [
+   "Clothes-Iron Knuckles",
+   "laundry",
+   {
+    "dmg": 11,
+    "fire": 4
+   },
+   "hot",
+   11
+  ],
+  [
+   "Dryer-Drum Hammer",
+   "laundry",
+   {
+    "dmg": 16,
+    "CON": 1
+   },
+   "heavy",
+   12
+  ],
+  [
+   "Washboard Cleaver",
+   "laundry",
+   {
+    "dmg": 12
+   },
+   "blade",
+   11
+  ],
+  [
+   "Laundry-Line Flail",
+   "laundry",
+   {
+    "dmg": 10
+   },
+   "flail",
+   12
+  ],
+  [
+   "Kitchen Cleaver",
+   "kitchen",
+   {
+    "dmg": 13
+   },
+   "blade",
+   16
+  ],
+  [
+   "Cast-Iron Pan",
+   "kitchen",
+   {
+    "dmg": 13,
+    "block": 4
+   },
+   "blunt",
+   16
+  ],
+  [
+   "Rolling Pin",
+   "kitchen",
+   {
+    "dmg": 12,
+    "STR": 2
+   },
+   "blunt",
+   17
+  ],
+  [
+   "Skewer Spear",
+   "kitchen",
+   {
+    "dmg": 13
+   },
+   "pierce",
+   17
+  ],
+  [
+   "Ladle Mace",
+   "kitchen",
+   {
+    "dmg": 12,
+    "WIS": 1
+   },
+   "blunt",
+   16
+  ],
+  [
+   "Meat Tenderiser",
+   "kitchen",
+   {
+    "dmg": 17
+   },
+   "heavy",
+   19
+  ],
+  [
+   "Boiling Ladle",
+   "kitchen",
+   {
+    "dmg": 11,
+    "fire": 6
+   },
+   "hot",
+   20
+  ],
+  [
+   "Neon-Sign Sabre",
+   "mall",
+   {
+    "dmg": 13,
+    "shock": 5
+   },
+   "shock",
+   26
+  ],
+  [
+   "Security Baton",
+   "mall",
+   {
+    "dmg": 12,
+    "shock": 4
+   },
+   "shock",
+   26
+  ],
+  [
+   "Mannequin-Arm Club",
+   "mall",
+   {
+    "dmg": 14
+   },
+   "blunt",
+   27
+  ],
+  [
+   "Umbrella Rapier",
+   "mall",
+   {
+    "dmg": 11,
+    "DEX": 2
+   },
+   "quick",
+   27
+  ],
+  [
+   "Escalator-Step Axe",
+   "mall",
+   {
+    "dmg": 18
+   },
+   "heavy",
+   29
+  ],
+  [
+   "Clothes-Rail Lance",
+   "mall",
+   {
+    "dmg": 14
+   },
+   "pierce",
+   28
+  ],
+  [
+   "Golf Driver",
+   "suburb",
+   {
+    "dmg": 15,
+    "crit": 3
+   },
+   "blunt",
+   37
+  ],
+  [
+   "Garden Rake",
+   "suburb",
+   {
+    "dmg": 15
+   },
+   "pierce",
+   37
+  ],
+  [
+   "Hedge Trimmers",
+   "suburb",
+   {
+    "dmg": 14,
+    "atkSpeed": 4
+   },
+   "blade",
+   38
+  ],
+  [
+   "Lawn-Gnome Hammer",
+   "suburb",
+   {
+    "dmg": 20
+   },
+   "heavy",
+   39
+  ],
+  [
+   "Weed Whacker",
+   "suburb",
+   {
+    "dmg": 13
+   },
+   "flail",
+   39
+  ],
+  [
+   "Barbecue Fork",
+   "suburb",
+   {
+    "dmg": 13,
+    "fire": 6
+   },
+   "hot",
+   40
+  ],
+  [
+   "Antler Pick",
+   "canopy",
+   {
+    "dmg": 17
+   },
+   "pierce",
+   51
+  ],
+  [
+   "Hunting Machete",
+   "canopy",
+   {
+    "dmg": 16
+   },
+   "blade",
+   51
+  ],
+  [
+   "Rope-Bridge Flail",
+   "canopy",
+   {
+    "dmg": 15
+   },
+   "flail",
+   52
+  ],
+  [
+   "Plank Greatsword",
+   "canopy",
+   {
+    "dmg": 22
+   },
+   "heavy",
+   53
+  ],
+  [
+   "Hornback-Horn Dagger",
+   "canopy",
+   {
+    "dmg": 13,
+    "crit": 4
+   },
+   "quick",
+   52
+  ],
+  [
+   "Crooked Wand",
+   "arcane",
+   {
+    "spell": 10
+   },
+   "caster",
+   1
+  ],
+  [
+   "Lighter Staff",
+   "elemental",
+   {
+    "spell": 12,
+    "fire": 3
+   },
+   "caster",
+   3
+  ],
+  [
+   "Remote-Control Wand",
+   "arcane",
+   {
+    "spell": 13,
+    "castSpeed": 3
+   },
+   "caster",
+   10
+  ],
+  [
+   "Tiki-Torch Staff",
+   "elemental",
+   {
+    "spell": 14,
+    "fire": 5
+   },
+   "caster",
+   16
+  ],
+  [
+   "Mic-Stand Staff",
+   "arcane",
+   {
+    "spell": 16,
+    "CHA": 2
+   },
+   "caster",
+   26
+  ],
+  [
+   "Garden-Hose Sceptre",
+   "elemental",
+   {
+    "spell": 17,
+    "frost": 4
+   },
+   "caster",
+   37
+  ],
+  [
+   "Druid-Branch Staff",
+   "elemental",
+   {
+    "spell": 20,
+    "WIS": 2
+   },
+   "caster",
+   51
+  ]
+ ],
+ "affixes": [
+  [
+   "STR",
+   1,
+   4
+  ],
+  [
+   "DEX",
+   1,
+   4
+  ],
+  [
+   "CON",
+   1,
+   4
+  ],
+  [
+   "INT",
+   1,
+   5
+  ],
+  [
+   "WIS",
+   1,
+   4
+  ],
+  [
+   "CHA",
+   1,
+   4
+  ],
+  [
+   "hp",
+   8,
+   30
+  ],
+  [
+   "mana",
+   8,
+   30
+  ],
+  [
+   "crit",
+   1,
+   5
+  ],
+  [
+   "atkSpeed",
+   2,
+   8
+  ],
+  [
+   "castSpeed",
+   2,
+   8
+  ],
+  [
+   "fire",
+   2,
+   10
+  ],
+  [
+   "frost",
+   2,
+   8
+  ],
+  [
+   "fireRes",
+   4,
+   15
+  ],
+  [
+   "moveSpeed",
+   2,
+   6
+  ],
+  [
+   "lifeOnHit",
+   1,
+   4
+  ],
+  [
+   "loot",
+   3,
+   12
+  ],
+  [
+   "fans",
+   3,
+   15
+  ],
+  [
+   "hungerDrain",
+   5,
+   15
+  ],
+  [
+   "thirstDrain",
+   5,
+   15
+  ]
+ ],
+ "prefixes": {
+  "rare": [
+   "Smouldering",
+   "Glorious",
+   "Suspicious",
+   "Sponsored",
+   "Bloodstained",
+   "Haunted"
+  ],
+  "epic": [
+   "Infernal",
+   "Ratings-Approved",
+   "Cursed-but-Fine",
+   "Prime-Time"
+  ],
+  "legendary": [
+   "The Showstopper:",
+   "The Last Exit:",
+   "Grandma’s Own"
+  ]
+ },
+ "host_lines": {
+  "junk": [
+   "It’s garbage. But it’s YOUR garbage.",
+   "Smells like a parking garage. Because it is.",
+   "Worth roughly one (1) disappointment."
+  ],
+  "common": [
+   "Perfectly adequate. Like your personality.",
+   "It does the job. Barely.",
+   "The audience yawns."
+  ],
+  "uncommon": [
+   "Ooh, green! Fancy.",
+   "A modest upgrade for a modest contestant.",
+   "Slightly less terrible than average."
+  ],
+  "rare": [
+   "Blue! The colour of hope, and of bruises.",
+   "Now we’re cooking. Possibly literally.",
+   "Somebody died for this. Probably a goblin."
+  ],
+  "epic": [
+   "Purple! The audience gasps!",
+   "This is the good stuff. Don’t sell it, idiot.",
+   "Our sponsors are watching. Look cool."
+  ],
+  "legendary": [
+   "LEGENDARY. Everybody act natural.",
+   "Ratings just spiked 400%. Thank you.",
+   "This item has its own fan club."
+  ]
+ },
+ "consumables": [
+  {
+   "id": "water",
+   "name": "Bottle of Clean-ish Water",
+   "kind": "consumable",
+   "effect": {
+    "thirst": 35
+   },
+   "host": "Only slightly radioactive."
+  },
+  {
+   "id": "jerky",
+   "name": "Lamprey Jerky",
+   "kind": "consumable",
+   "effect": {
+    "hunger": 30,
+    "thirst": 5
+   },
+   "host": "Chewy. Like a tyre, but meatier."
+  },
+  {
+   "id": "mpot",
+   "name": "Mana Potion (Blue Raspberry)",
+   "kind": "consumable",
+   "effect": {
+    "mana": 60
+   },
+   "host": "Tastes like a slushie and regret."
+  },
+  {
+   "id": "hpot",
+   "name": "Health Potion (Cherry)",
+   "kind": "consumable",
+   "effect": {
+    "hp": 50
+   },
+   "host": "Doctor-recommended. The doctor is a goblin."
+  }
+ ],
+ "boxes": {
+  "bronze": {
+   "name": "Bronze Box",
+   "color": "#c88a4a",
+   "items": 2,
+   "minRarity": 1,
+   "bonus": 0,
+   "book": 0.05,
+   "cap": 0
+  },
+  "silver": {
+   "name": "Silver Box",
+   "color": "#c8ccd8",
+   "items": 2,
+   "minRarity": 2,
+   "bonus": 0.2,
+   "book": 0.12,
+   "cap": 0
+  },
+  "gold": {
+   "name": "Gold Box",
+   "color": "#F5C518",
+   "items": 3,
+   "minRarity": 2,
+   "bonus": 0.5,
+   "book": 0.3,
+   "cap": 1
+  },
+  "boss": {
+   "name": "Boss Box",
+   "color": "#E5484D",
+   "items": 3,
+   "minRarity": 3,
+   "bonus": 0.8,
+   "book": 0.4,
+   "cap": 1
+  }
+ },
+ "achievements": [
+  {
+   "id": "firstSteps",
+   "name": "First Steps",
+   "desc": "Walk 50 metres",
+   "box": "bronze"
+  },
+  {
+   "id": "tourist",
+   "name": "Tourist",
+   "desc": "Discover 3 points of interest",
+   "box": "bronze"
+  },
+  {
+   "id": "cartographer",
+   "name": "Cartographer (Demo)",
+   "desc": "Discover all 5 points of interest",
+   "box": "gold"
+  },
+  {
+   "id": "firstBlood",
+   "name": "First Blood",
+   "desc": "Kill your first mob",
+   "box": "bronze"
+  },
+  {
+   "id": "pyro",
+   "name": "Pyro Enthusiast",
+   "desc": "Set 10 enemies on fire",
+   "box": "silver",
+   "bookHint": true
+  },
+  {
+   "id": "goblinBane",
+   "name": "Goblin Bane",
+   "desc": "Kill 10 goblins",
+   "box": "silver"
+  },
+  {
+   "id": "warded",
+   "name": "Safety First",
+   "desc": "Absorb 50 damage with Flame Ward",
+   "box": "bronze"
+  },
+  {
+   "id": "closeCall",
+   "name": "Close Call",
+   "desc": "Survive below 15% HP",
+   "box": "silver"
+  },
+  {
+   "id": "fullKit",
+   "name": "Full Kit",
+   "desc": "Equip an item in 10 slots",
+   "box": "silver"
+  },
+  {
+   "id": "hoarder",
+   "name": "Unboxing Star",
+   "desc": "Open 5 loot boxes",
+   "box": "silver"
+  },
+  {
+   "id": "levelUp",
+   "name": "Moving Up",
+   "desc": "Reach Level 10",
+   "box": "gold"
+  },
+  {
+   "id": "exit",
+   "name": "Exit, Pursued",
+   "desc": "Touch the Exit Sign",
+   "box": "gold"
+  }
+ ]
+}
