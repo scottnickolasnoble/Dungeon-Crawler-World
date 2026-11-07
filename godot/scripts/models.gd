@@ -30,6 +30,31 @@ static func toon(color: Color, texture: Texture2D = null, uv_scale := Vector2.ON
 	return mat
 
 
+## One prop as a single mesh with comic materials baked in, for drawing hundreds of copies as one batch.
+static func batch_mesh(path: String) -> Mesh:
+	var model := instantiate(path)
+	if model == null:
+		return null
+	var source := _first_mesh(model)
+	var result: ArrayMesh = source.mesh.duplicate()
+	for i in result.get_surface_count():
+		var mat := source.get_surface_override_material(i)
+		if mat:
+			result.surface_set_material(i, mat)
+	model.free()
+	return result
+
+
+static func _first_mesh(node: Node) -> MeshInstance3D:
+	if node is MeshInstance3D:
+		return node
+	for child in node.get_children():
+		var found := _first_mesh(child)
+		if found:
+			return found
+	return null
+
+
 static func _convert(node: Node) -> void:
 	if node is MeshInstance3D and node.mesh:
 		for i in node.mesh.get_surface_count():

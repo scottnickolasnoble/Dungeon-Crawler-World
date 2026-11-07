@@ -643,10 +643,11 @@ def filing():
     p.export()
 
 
-for build in (desk, stanchions, column, ceiling_light, truss, spotlight, ceiling_beam, conduit, bench, plant, trash_can, fountain, tv_mount, camera_rig, barrier, sandbags, tires, boxes, wet_floor, folding_chair, cones, stair_door, arrival_stairs, fp_hand, lead_pipe, noticeboard, shelf, filing):
-    try:
-        build()
-    except Exception as error:
-        print("FAILED", build.__name__, repr(error))
-        raise
-print("KIT DONE")
+if __name__ == "__main__":
+    for build in (desk, stanchions, column, ceiling_light, truss, spotlight, ceiling_beam, conduit, bench, plant, trash_can, fountain, tv_mount, camera_rig, barrier, sandbags, tires, boxes, wet_floor, folding_chair, cones, stair_door, arrival_stairs, fp_hand, lead_pipe, noticeboard, shelf, filing):
+        try:
+            build()
+        except Exception as error:
+            print("FAILED", build.__name__, repr(error))
+            raise
+    print("KIT DONE")

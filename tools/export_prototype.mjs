@@ -94,6 +94,15 @@ if (MODE === 'all' || MODE === 'data') {
     await save('crafting', { tables: CR.TABLES, mats: CR.MATS, mats_extra: RG.MATS_EXTRA, mat_rarity: CR.MAT_RARITY, recipes: CR.RECIPES, tier_cap: CR.TIER_CAP_UI, max_tier: CR.MAX_TIER, quality: CR.QUALITY });
     await save('monsters', { monsters: M.MOBDEFS, rigs: M.RIG, abilities: M.ABIL });
     await save('quests', { quests: ST.QUESTS, quest_gear: ST.GEAR, npc_names: globalThis.__NPCNAME || {} });
+    // Floor layouts: the backbone each Godot floor is rebuilt on. Scenery code is left behind on purpose.
+    const FL = await import('/worlds/floors.js');
+    const floors = {};
+    for (const [n, f] of Object.entries(FL.FLOORDEFS)) {
+      const S = { quests: [[0, 0], [0, 0], [0, 0], [0, 0]], merchants: [], guards: [], doors: [], inner: { x: 0, z: 0, r: 40, r0: 5 } };
+      let quest_npcs = []; try { quest_npcs = f.questNPCs ? f.questNPCs(S) : []; } catch (e) { quest_npcs = []; }
+      floors[n] = { floor: f.floor, name: f.name, hub_name: f.hubName, spawn: f.spawn, ceil: f.ceil, hub: f.hub, villages: f.villages, camps: f.camps, landmarks: (f.landmarks || []).map((l) => ({ name: l.name, x: l.x, z: l.z, r: l.r })), merchants: f.merchants, innkeeper: f.innkeeper, townsfolk: f.townsfolk, stairs: f.stairs, quest_npcs };
+    }
+    await save('floors', floors);
     // Shops are not exported: each one is a function that builds its stock from game state, so they get ported to GDScript in Phase 3.
     await save('npcs', { races: Object.fromEntries(Object.entries(R.RACES).map(([k, v]) => [k, v])), role_colors: R.ROLE_COLORS, filler_lines: NP.FILLER_LINES, first_names: NP.FIRST });
     return { dropped, storyError, counts: { classes: Object.keys(C.CLASSES).length, races: Object.keys(C.PRACES).length, skills: C.SKILLDEFS.length, monsters: Object.keys(M.MOBDEFS).length, recipes: CR.RECIPES.length, quests: Object.keys(ST.QUESTS).length, weapons: D.WEAPONS.length } };

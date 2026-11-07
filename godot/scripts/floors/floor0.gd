@@ -20,6 +20,8 @@ const FACE_EAST := PI / 2.0
 const FACE_WEST := -PI / 2.0
 
 var _colliders: StaticBody3D
+## Things the player can walk up to: { pos, r, text, to (optional floor to travel to) }.
+var interactables: Array[Dictionary] = []
 
 
 func _ready() -> void:
@@ -246,6 +248,7 @@ func _build_exit() -> void:
 	_prop("stair_door", Vector3(0, 0, -68))
 	_collider(Vector3(0, CEILING / 2.0, -68), Vector3(4, CEILING / 2.0, 1))
 	_wall_sign("sign_floor1", 5, 1.1, Vector3(0, 6.45, -66.88), 0.0)
+	interactables.append({ "pos": Vector3(0, 0, -64), "r": 4.0, "text": "Press E: take the stairs down to Floor 1", "to": 1 })
 	_light(Color("#5aff7a"), 3.2, 11.0, Vector3(0, 3.4, -63), true)
 
 

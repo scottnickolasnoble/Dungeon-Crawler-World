@@ -8,6 +8,7 @@ var crafting: Dictionary
 var monsters: Dictionary
 var quests: Dictionary
 var npcs: Dictionary
+var floors: Dictionary
 
 
 func _ready() -> void:
@@ -18,6 +19,7 @@ func _ready() -> void:
 	monsters = _load("monsters")
 	quests = _load("quests")
 	npcs = _load("npcs")
+	floors = _load("floors")
 
 
 func _load(file_name: String) -> Dictionary:
