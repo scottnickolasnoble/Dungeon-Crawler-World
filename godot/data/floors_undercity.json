@@ -1,0 +1,722 @@
+{
+ "7": {
+  "floor": 7,
+  "name": "FLOOR 7 · THE DROWNED CISTERN",
+  "hub_name": "Gangway",
+  "spawn": [
+   0,
+   1.7,
+   52
+  ],
+  "ceil": 40,
+  "hub": {
+   "style": "pier",
+   "w": 156,
+   "d": 120
+  },
+  "villages": [
+   {
+    "name": "Plimsoll Row",
+    "x": -240,
+    "z": -180,
+    "races": [
+     "bogling",
+     "human"
+    ],
+    "merchants": [
+     {
+      "id": "v7a",
+      "name": "Tarpaulin Tess",
+      "title": "Gear",
+      "shop": "gear"
+     }
+    ]
+   },
+   {
+    "name": "The Boathouse",
+    "x": 250,
+    "z": -170,
+    "races": [
+     "human",
+     "gutterkin"
+    ],
+    "merchants": [
+     {
+      "id": "v7b",
+      "name": "Bilge",
+      "title": "Food, water, potions",
+      "shop": "provisions"
+     }
+    ]
+   },
+   {
+    "name": "Overflow",
+    "x": -250,
+    "z": 200,
+    "races": [
+     "bogling",
+     "quillback"
+    ],
+    "merchants": [
+     {
+      "id": "v7c",
+      "name": "Mister Wick",
+      "title": "Junk",
+      "shop": "pickles"
+     }
+    ]
+   },
+   {
+    "name": "Low Tide",
+    "x": 250,
+    "z": 240,
+    "races": [
+     "gutterkin",
+     "human"
+    ],
+    "merchants": [
+     {
+      "id": "v7d",
+      "name": "Sister Sump",
+      "title": "Gear",
+      "shop": "gear"
+     }
+    ]
+   }
+  ],
+  "camps": [
+   {
+    "name": "Bathwater Baths",
+    "camp": "baths1",
+    "x": -200,
+    "z": -40,
+    "r": 22,
+    "style": "wyrm",
+    "mob": "wyrm",
+    "lvl": [
+     58,
+     60
+    ],
+    "count": 10,
+    "boss": "bathwater",
+    "level": "58-62 · Neighbourhood"
+   },
+   {
+    "name": "Rent Tribunal",
+    "camp": "rent1",
+    "x": 170,
+    "z": -250,
+    "r": 22,
+    "style": "debt",
+    "mob": "collector",
+    "lvl": [
+     60,
+     62
+    ],
+    "count": 10,
+    "boss": "landlord",
+    "level": "60-64 · Borough"
+   },
+   {
+    "name": "The Organ Loft",
+    "camp": "organ1",
+    "x": -60,
+    "z": 280,
+    "r": 22,
+    "style": "wyrm",
+    "mob": "wyrm",
+    "lvl": [
+     62,
+     64
+    ],
+    "count": 10,
+    "boss": "organ",
+    "level": "62-66 · Borough"
+   },
+   {
+    "name": "The Landfill Barge",
+    "camp": "barge1",
+    "x": 280,
+    "z": 40,
+    "r": 24,
+    "style": "sewage",
+    "mob": "wyrm",
+    "lvl": [
+     64,
+     66
+    ],
+    "count": 10,
+    "boss": "sanking",
+    "level": "64-68 · City"
+   },
+   {
+    "name": "The Great Outfall",
+    "camp": "outfall1",
+    "x": 0,
+    "z": -320,
+    "r": 26,
+    "style": "sewage",
+    "mob": "wyrm",
+    "lvl": [
+     66,
+     68
+    ],
+    "count": 10,
+    "boss": "outfall",
+    "level": "66-70 · City"
+   }
+  ],
+  "landmarks": [
+   {
+    "name": "The Sluice Gate",
+    "x": -90,
+    "z": 150,
+    "r": 16
+   }
+  ],
+  "merchants": [
+   {
+    "id": "m7g",
+    "name": "Rivet Rosie",
+    "title": "Weapons & armour",
+    "shop": "gear"
+   },
+   {
+    "id": "m7p",
+    "name": "Galley Gwen",
+    "title": "Food, water, potions",
+    "shop": "provisions"
+   },
+   {
+    "id": "m7t",
+    "name": "Bo's Floating Branch",
+    "title": "Table merchant",
+    "shop": "tables",
+    "race": "stoneblood",
+    "voice": "bo"
+   },
+   {
+    "id": "m7j",
+    "name": "Flotsam",
+    "title": "Junk",
+    "shop": "pickles"
+   }
+  ],
+  "innkeeper": "Damp Maud",
+  "townsfolk": {
+   "races": [
+    "bogling",
+    "human"
+   ]
+  },
+  "stairs": {
+   "x": 278,
+   "z": 32,
+   "r": 3.4,
+   "to": "8",
+   "flag": "sanking_handled",
+   "how": "Deal with the Sanitation King on the Landfill Barge.",
+   "locked": "The way down is under the Landfill Barge."
+  },
+  "quest_npcs": [
+   {
+    "id": "nan",
+    "kind": "quest",
+    "name": "Nan Gangway",
+    "title": "Ferrywoman of the Cistern",
+    "x": 0,
+    "z": 0,
+    "yaw": 0
+   },
+   {
+    "id": "clerk",
+    "kind": "quest",
+    "name": "Clerk Damp",
+    "title": "Tenant advocate",
+    "x": 0,
+    "z": 0,
+    "yaw": 2
+   }
+  ]
+ },
+ "8": {
+  "floor": 8,
+  "name": "FLOOR 8 · THE WORKINGS",
+  "hub_name": "Shaft Town",
+  "spawn": [
+   0,
+   1.7,
+   52
+  ],
+  "ceil": 46,
+  "hub": {
+   "style": "timber",
+   "w": 156,
+   "d": 120
+  },
+  "villages": [
+   {
+    "name": "Gallery Nine",
+    "x": -240,
+    "z": -180,
+    "races": [
+     "stoneblood",
+     "grimhide"
+    ],
+    "merchants": [
+     {
+      "id": "v8a",
+      "name": "Pickaxe Pru",
+      "title": "Gear",
+      "shop": "gear"
+     }
+    ]
+   },
+   {
+    "name": "Grubtown",
+    "x": 250,
+    "z": -170,
+    "races": [
+     "grimhide",
+     "human"
+    ],
+    "merchants": [
+     {
+      "id": "v8b",
+      "name": "Lardy Moe",
+      "title": "Food, water, potions",
+      "shop": "provisions"
+     }
+    ]
+   },
+   {
+    "name": "Tally Yard",
+    "x": -250,
+    "z": 200,
+    "races": [
+     "clanker",
+     "stoneblood"
+    ],
+    "merchants": [
+     {
+      "id": "v8c",
+      "name": "Mr Sprocket",
+      "title": "Junk",
+      "shop": "pickles"
+     }
+    ]
+   },
+   {
+    "name": "Damp Seam",
+    "x": 250,
+    "z": 240,
+    "races": [
+     "stoneblood",
+     "lumen"
+    ],
+    "merchants": [
+     {
+      "id": "v8d",
+      "name": "Ingot Ida",
+      "title": "Gear",
+      "shop": "gear"
+     }
+    ]
+   }
+  ],
+  "camps": [
+   {
+    "name": "The Repo Yard",
+    "camp": "repo1",
+    "x": 170,
+    "z": -250,
+    "r": 22,
+    "style": "debt",
+    "mob": "collector",
+    "lvl": [
+     68,
+     70
+    ],
+    "count": 10,
+    "boss": "repo",
+    "level": "68-72 · Neighbourhood"
+   },
+   {
+    "name": "Grubtooth's Dig",
+    "camp": "dig1",
+    "x": -200,
+    "z": -40,
+    "r": 22,
+    "style": "mole",
+    "mob": "molekin",
+    "lvl": [
+     70,
+     72
+    ],
+    "count": 10,
+    "boss": "grubtooth",
+    "level": "70-74 · Neighbourhood"
+   },
+   {
+    "name": "The Drill Chapel",
+    "camp": "drill1",
+    "x": -60,
+    "z": 280,
+    "r": 22,
+    "style": "mole",
+    "mob": "molekin",
+    "lvl": [
+     72,
+     74
+    ],
+    "count": 10,
+    "boss": "drill",
+    "level": "72-76 · Borough"
+   },
+   {
+    "name": "The Fryer Manor",
+    "camp": "fryer1",
+    "x": 280,
+    "z": 40,
+    "r": 24,
+    "style": "grease",
+    "mob": "grease",
+    "lvl": [
+     74,
+     76
+    ],
+    "count": 10,
+    "boss": "baron",
+    "level": "74-78 · Borough"
+   },
+   {
+    "name": "The Nursery",
+    "camp": "nursery1",
+    "x": 0,
+    "z": -320,
+    "r": 26,
+    "style": "mold",
+    "mob": "choir",
+    "lvl": [
+     76,
+     78
+    ],
+    "count": 10,
+    "boss": "mold",
+    "level": "76-80 · City"
+   }
+  ],
+  "landmarks": [
+   {
+    "name": "The Bright Seam",
+    "x": -110,
+    "z": 170,
+    "r": 16
+   }
+  ],
+  "merchants": [
+   {
+    "id": "m8g",
+    "name": "Foreman Tuck",
+    "title": "Weapons & armour",
+    "shop": "gear"
+   },
+   {
+    "id": "m8p",
+    "name": "Cookie",
+    "title": "Food, water, potions",
+    "shop": "provisions"
+   },
+   {
+    "id": "m8t",
+    "name": "Bo's Deep Branch",
+    "title": "Table merchant",
+    "shop": "tables",
+    "race": "stoneblood",
+    "voice": "bo"
+   },
+   {
+    "id": "m8j",
+    "name": "Tailings",
+    "title": "Junk",
+    "shop": "pickles"
+   }
+  ],
+  "innkeeper": "Bunk Bertha",
+  "townsfolk": {
+   "races": [
+    "stoneblood",
+    "grimhide"
+   ]
+  },
+  "stairs": {
+   "x": 0,
+   "z": -312,
+   "r": 3.4,
+   "to": "9",
+   "flag": "mold_handled",
+   "how": "Get past Big Momma Mold at the Nursery, far north of Shaft Town.",
+   "locked": "The way down is through the Nursery."
+  },
+  "quest_npcs": [
+   {
+    "id": "tuck",
+    "kind": "quest",
+    "name": "Foreman Tuck",
+    "title": "Shift boss of the Workings",
+    "x": 0,
+    "z": 0,
+    "yaw": 0
+   },
+   {
+    "id": "canary",
+    "kind": "quest",
+    "name": "Canary",
+    "title": "The last canary",
+    "x": 0,
+    "z": 0,
+    "yaw": 2
+   }
+  ]
+ },
+ "9": {
+  "floor": 9,
+  "name": "FLOOR 9 · THE UNDERCITY",
+  "hub_name": "Verdigris Square",
+  "spawn": [
+   0,
+   1.7,
+   52
+  ],
+  "ceil": 50,
+  "hub": {
+   "style": "civic",
+   "w": 156,
+   "d": 120
+  },
+  "villages": [
+   {
+    "name": "Old Treasury",
+    "x": -240,
+    "z": -180,
+    "races": [
+     "clanker",
+     "human"
+    ],
+    "merchants": [
+     {
+      "id": "v9a",
+      "name": "Teller Nine",
+      "title": "Gear",
+      "shop": "gear"
+     }
+    ]
+   },
+   {
+    "name": "Sporeside",
+    "x": 250,
+    "z": -170,
+    "races": [
+     "lumen",
+     "fennix"
+    ],
+    "merchants": [
+     {
+      "id": "v9b",
+      "name": "Sister Verdigris",
+      "title": "Food, water, potions",
+      "shop": "provisions"
+     }
+    ]
+   },
+   {
+    "name": "Tailknot",
+    "x": -250,
+    "z": 200,
+    "races": [
+     "gutterkin",
+     "grimhide"
+    ],
+    "merchants": [
+     {
+      "id": "v9c",
+      "name": "Nib the Fence",
+      "title": "Junk",
+      "shop": "pickles"
+     }
+    ]
+   },
+   {
+    "name": "Terminus",
+    "x": 250,
+    "z": 240,
+    "races": [
+     "human",
+     "ogrekin"
+    ],
+    "merchants": [
+     {
+      "id": "v9d",
+      "name": "Conductor Hale",
+      "title": "Gear",
+      "shop": "gear"
+     }
+    ]
+   }
+  ],
+  "camps": [
+   {
+    "name": "The Opera House",
+    "camp": "opera1",
+    "x": -200,
+    "z": -40,
+    "r": 22,
+    "style": "mold",
+    "mob": "choir",
+    "lvl": [
+     78,
+     80
+    ],
+    "count": 10,
+    "boss": "soloist",
+    "level": "78-82 · Neighbourhood"
+   },
+   {
+    "name": "The Rat Senate",
+    "camp": "senate1",
+    "x": 170,
+    "z": -250,
+    "r": 22,
+    "style": "rat",
+    "mob": "ratking",
+    "lvl": [
+     80,
+     82
+    ],
+    "count": 10,
+    "boss": "senate",
+    "level": "80-84 · Borough"
+   },
+   {
+    "name": "The Vault",
+    "camp": "vault1",
+    "x": -60,
+    "z": 280,
+    "r": 22,
+    "style": "civic",
+    "mob": "collector",
+    "lvl": [
+     82,
+     84
+    ],
+    "count": 10,
+    "boss": "lockjaw",
+    "level": "82-86 · Borough"
+   },
+   {
+    "name": "The Rat Throne",
+    "camp": "throne1",
+    "x": 280,
+    "z": 40,
+    "r": 24,
+    "style": "rat",
+    "mob": "ratking",
+    "lvl": [
+     84,
+     86
+    ],
+    "count": 10,
+    "boss": "ratthrone",
+    "level": "84-88 · Neighbourhood"
+   },
+   {
+    "name": "City Hall",
+    "camp": "hall1",
+    "x": 0,
+    "z": -320,
+    "r": 26,
+    "style": "civic",
+    "mob": "ratking",
+    "lvl": [
+     86,
+     90
+    ],
+    "count": 10,
+    "boss": "undermayor",
+    "level": "86-90 · City"
+   }
+  ],
+  "landmarks": [
+   {
+    "name": "The Founders Lantern",
+    "x": 110,
+    "z": 170,
+    "r": 16
+   }
+  ],
+  "merchants": [
+   {
+    "id": "m9g",
+    "name": "Halberd & Daughter",
+    "title": "Weapons & armour",
+    "shop": "gear"
+   },
+   {
+    "id": "m9p",
+    "name": "The Civic Canteen",
+    "title": "Food, water, potions",
+    "shop": "provisions"
+   },
+   {
+    "id": "m9t",
+    "name": "Bo's Capital Branch",
+    "title": "Table merchant",
+    "shop": "tables",
+    "race": "stoneblood",
+    "voice": "bo"
+   },
+   {
+    "id": "m9j",
+    "name": "Lost Property Office",
+    "title": "Junk",
+    "shop": "pickles"
+   }
+  ],
+  "innkeeper": "Madame Ledger",
+  "townsfolk": {
+   "races": [
+    "human",
+    "gutterkin"
+   ]
+  },
+  "stairs": {
+   "x": 0,
+   "z": -312,
+   "r": 3.4,
+   "to": "10",
+   "flag": "undermayor_handled",
+   "how": "Unseat the Undermayor at City Hall.",
+   "locked": "The way down is beneath City Hall."
+  },
+  "quest_npcs": [
+   {
+    "id": "verdigris",
+    "kind": "quest",
+    "name": "Sister Verdigris",
+    "title": "Nun of the Spore Cathedral",
+    "x": 0,
+    "z": 0,
+    "yaw": 0
+   },
+   {
+    "id": "rcount",
+    "kind": "quest",
+    "name": "The Returning Officer",
+    "title": "Counts the votes",
+    "x": 0,
+    "z": 0,
+    "yaw": 2
+   }
+  ]
+ }
+}

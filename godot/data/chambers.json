@@ -1,0 +1,599 @@
+{
+ "_about": "Boss chambers: two per floor. Walk in, the doors slam, the boss makes an entrance (cutscene), and you don't leave until one of you is dead. 'look' is the Tripo prompt description (art/TRIPO_CAST_3.md).",
+ "floors": {
+  "1": [
+   {
+    "name": "The Ticket Hall",
+    "boss": "clamp",
+    "title": "CLAMP, THE WHEEL-CLAMPER",
+    "sub": "Nobody leaves without paying.",
+    "look": "A hulking yellow-jacketed parking warden ogre with a giant wheel clamp for one hand and a ticket machine embedded in his chest, printing endless fines.",
+    "intro": [
+     "CLAMP: \"Vehicle... parked... in a restricted zone. That vehicle is your BODY.\"",
+     "NIGEL: Clamp has been fining contestants since the first season. Nobody has ever paid. He's starting to take it personally."
+    ],
+    "unlock": "keys",
+    "step2": "Pay off three parking fines (find the fine slips)"
+   },
+   {
+    "name": "The Sump",
+    "boss": "drowned_valet",
+    "title": "THE DROWNED VALET",
+    "sub": "He'll park you somewhere nice and dark.",
+    "look": "A drowned car-park valet in a soaked red waistcoat and cap, skin blue and swollen, eels coiling round his arms, holding a ring of dripping car keys.",
+    "intro": [
+     "THE DROWNED VALET: \"Keys, sir. Keys. Leave them with me. Leave EVERYTHING with me.\"",
+     "NIGEL: He drowned on his first shift. Still clocked in. Still taking cars. Nobody's told him the cars are gone."
+    ],
+    "unlock": "trap",
+    "lure": {
+     "name": "Valet Parking",
+     "desc": "A laminated card on the board: \"LOST YOUR CAR KEYS? Spare sets held at the valet stand, lower level. Just walk in and take yours.\" Somebody has drawn a smiley face on it.",
+     "label": "Collect the spare keys from the valet stand",
+     "say": "take the spare keys"
+    }
+   }
+  ],
+  "2": [
+   {
+    "name": "The Drum",
+    "boss": "agitator",
+    "title": "THE AGITATOR",
+    "sub": "Heavy duty. Extra spin.",
+    "look": "A towering golem built from a giant industrial washing drum, porthole face with a churning eye, arms of dryer ducting, socks and soap foam pouring from its joints.",
+    "intro": [
+     "THE AGITATOR: \"WASH. RINSE. SPIN. YOU.\"",
+     "NIGEL: The Laundromat's oldest machine. It ate Dave in season two. And season five. And last Tuesday."
+    ],
+    "unlock": "switches",
+    "step2": "Balance the three overloaded machines"
+   },
+   {
+    "name": "The Pressing Room",
+    "boss": "trouser_press",
+    "title": "THE TROUSER PRESS",
+    "sub": "Creases you'll never get out.",
+    "look": "A gaunt tailor-monster whose torso is a giant steaming trouser press that opens like jaws, tape-measure tongue, irons for hands.",
+    "intro": [
+     "THE TROUSER PRESS: \"Hold still. You're very... wrinkled.\"",
+     "NIGEL: It presses anything that comes in. Shirts, trousers, contestants. Flat as a pancake and very, very neat."
+    ],
+    "unlock": "trap",
+    "lure": {
+     "name": "Pressing Matters",
+     "desc": "\"Suit pressing, FREE, today only. Leave your name.\" There are a lot of names on it. None of them crossed out.",
+     "label": "Pick up your free pressed suit",
+     "say": "take the pressed suit"
+    }
+   }
+  ],
+  "3": [
+   {
+    "name": "The Larder",
+    "boss": "brisket",
+    "title": "BRISKET, THE BUTCHER HAG",
+    "sub": "Fresh in today. That's you.",
+    "look": "A huge hag butcher in a blood-stained striped apron with meat cleavers for fingers, sausage-link necklace and a grin of rotten teeth.",
+    "intro": [
+     "BRISKET: \"Ooh, lovely marbling. Lovely, lovely marbling.\"",
+     "NIGEL: Grandma Gristle's sister. They haven't spoken in sixty years. Something about a recipe. And a husband. And the husband being IN the recipe."
+    ],
+    "unlock": "trap",
+    "lure": {
+     "name": "Fresh Meat",
+     "desc": "\"KITCHEN HAND WANTED. The Larder. Fetch the knife roll, get paid in soup.\" Underneath, smaller: \"bring your own apron\".",
+     "label": "Fetch the knife roll from the Larder",
+     "say": "take the knife roll"
+    }
+   },
+   {
+    "name": "The Stock Cellar",
+    "boss": "bone_broth",
+    "title": "THE BONE BROTH",
+    "sub": "Simmering since the first season.",
+    "look": "A living vat of brown broth rising into a monstrous shape, bones and skulls bobbing inside, ladles stuck in its back, steam pouring off it.",
+    "intro": [
+     "THE BONE BROTH: \"*blub* ...more bones... *blub* ...MORE BONES...\"",
+     "NIGEL: Every soup on Floor 3 starts here. Every soup on Floor 3 ends here too. Don't ask what the stock is made of. You know."
+    ],
+    "unlock": "password",
+    "step2": "Learn the recipe word from Grandma Gristle's scraps"
+   }
+  ],
+  "4": [
+   {
+    "name": "The Changing Rooms",
+    "boss": "mannequin_bride",
+    "title": "THE MANNEQUIN BRIDE",
+    "sub": "Something old, something new, something that used to be you.",
+    "look": "A cracked porcelain shop mannequin in a tattered wedding dress with too many jointed arms, veil over a blank face, price tag hanging from its neck.",
+    "intro": [
+     "THE MANNEQUIN BRIDE: \"Do you... take... this... DRESS?\"",
+     "NIGEL: She was put up in the window for a sale that never ended. She's been waiting at the altar ever since. You'll do."
+    ],
+    "unlock": "keys",
+    "step2": "Find the three pieces of her veil"
+   },
+   {
+    "name": "The Escalator Shaft",
+    "boss": "down_escalator",
+    "title": "THE DOWN ESCALATOR",
+    "sub": "Going down. Always going down.",
+    "look": "A monster made of a broken escalator twisted into a serpent, metal steps for scales, handrail tongue, shopping bags caught in its teeth.",
+    "intro": [
+     "THE DOWN ESCALATOR: \"MIND... THE... GAP...\"",
+     "NIGEL: It only goes one way. Every shopper who ever rode it is still going down. Can you hear them?"
+    ],
+    "unlock": "trap",
+    "lure": {
+     "name": "Out of Order",
+     "desc": "\"MAINTENANCE NEEDED, Escalator Shaft. 500 gold to whoever fetches the toolbox at the bottom.\" The escalator next to the sign is going down.",
+     "label": "Fetch the toolbox from the bottom of the shaft",
+     "say": "take the toolbox"
+    }
+   }
+  ],
+  "5": [
+   {
+    "name": "The Rec Room",
+    "boss": "grill_dad",
+    "title": "DAD (GRILLING)",
+    "sub": "It's not burnt, it's caramelised.",
+    "look": "A huge suburban dad monster in a novelty KISS THE COOK apron and flip-flops, barbecue grill for a chest, tongs for hands, sunglasses and a terrifying smile.",
+    "intro": [
+     "DAD: \"Hey there, sport! Who wants a BURGER? You're the burger.\"",
+     "NIGEL: Every suburb has one. Suburbia Infinite has one infinitely. He's been flipping the same patty since the HOA was founded."
+    ],
+    "unlock": "trap",
+    "lure": {
+     "name": "Cookout!",
+     "desc": "\"BBQ at the Rec Room, everyone welcome!! Just grab a plate!\" The paper is greasy. The drawing of a burger has teeth.",
+     "label": "Grab a plate at the Rec Room",
+     "say": "take a plate"
+    }
+   },
+   {
+    "name": "The Pool House",
+    "boss": "lifeguard",
+    "title": "THE LIFEGUARD",
+    "sub": "No running. No diving. No coming up.",
+    "look": "A tall drowned lifeguard with a whistle, red swim shorts, a rescue float as a weapon, seaweed hair and blank white eyes.",
+    "intro": [
+     "THE LIFEGUARD: \"*WHISTLE* Everybody OUT of the pool. Everybody INTO the pool.\"",
+     "NIGEL: Nobody's ever been rescued from the Pool House. She's very proud of her record."
+    ],
+    "unlock": "bell",
+    "step2": "Ring the pool bell from the high board"
+   }
+  ],
+  "6": [
+   {
+    "name": "The Trophy Hall",
+    "boss": "taxidermist",
+    "title": "THE TAXIDERMIST",
+    "sub": "You'll look lovely mounted.",
+    "look": "A gaunt hunter-taxidermist in a leather apron and pith helmet with a sewing needle spear and glass eyes in jars on his belt, stuffed heads on his back.",
+    "intro": [
+     "THE TAXIDERMIST: \"Stand very still. It helps with the posing afterwards.\"",
+     "NIGEL: Lord-Hunter Facet kills them. The Taxidermist makes them last forever. He's very good. Some of them still blink."
+    ],
+    "unlock": "keys",
+    "step2": "Bring three trophies back from the hunters"
+   },
+   {
+    "name": "The Kennel Pit",
+    "boss": "alpha",
+    "title": "ALPHA",
+    "sub": "Every good boy, all at once.",
+    "look": "A monstrous three-headed dog the size of a car, studded collars on every neck, a name tag on each, wild and starved.",
+    "intro": [
+     "ALPHA: \"*all three heads* WHO'S A GOOD BOY? WHO'S A GOOD BOY? WE ARE.\"",
+     "NIGEL: Three dogs, one body, no owner. They've been waiting to be walked for eleven years. They're going to walk all over you."
+    ],
+    "unlock": "trap",
+    "lure": {
+     "name": "Lost Dog",
+     "desc": "\"LOST: one good boy. Last seen at the Kennel Pit. Reward.\" The photo is of a dog. Mostly.",
+     "label": "Fetch the collar from the Kennel Pit",
+     "say": "take the collar"
+    }
+   }
+  ],
+  "7": [
+   {
+    "name": "The Rent Office",
+    "boss": "bailiff",
+    "title": "THE BAILIFF",
+    "sub": "Everything you own is now evidence.",
+    "look": "An enormous bailiff in a soaked grey suit and bowler hat with a battering ram arm and a clipboard of eviction notices, chains dragging from his belt.",
+    "intro": [
+     "THE BAILIFF: \"By order of the Landlord. Everything you own. Everything you ARE.\"",
+     "NIGEL: The Bailiff has evicted ten thousand tenants. Some of them from their own bodies."
+    ],
+    "unlock": "password",
+    "step2": "Get the case number from the Rent Tribunal"
+   },
+   {
+    "name": "The Flooded Ballroom",
+    "boss": "drowned_debutante",
+    "title": "THE DROWNED DEBUTANTE",
+    "sub": "Her coming-out party never ended.",
+    "look": "A drowned young debutante in a waterlogged ballgown and tiara, hair floating like weed, dancing slippers, barnacles on her arms.",
+    "intro": [
+     "THE DROWNED DEBUTANTE: \"May I have this dance? May I have this dance? MAY I HAVE THIS DANCE?\"",
+     "NIGEL: The ballroom flooded mid-waltz. She kept dancing. She's still looking for a partner. Every partner drowns."
+    ],
+    "unlock": "trap",
+    "lure": {
+     "name": "You Are Invited",
+     "desc": "A soaked invitation card: \"The pleasure of your company is requested at the Flooded Ballroom. Collect your dance card at the door.\" The ink is running like it's crying.",
+     "label": "Collect your dance card",
+     "say": "take the dance card"
+    }
+   }
+  ],
+  "8": [
+   {
+    "name": "The Furnace Floor",
+    "boss": "old_bellows",
+    "title": "OLD BELLOWS",
+    "sub": "He breathes fire. On purpose.",
+    "look": "A giant soot-black furnace man with leather bellows for lungs, a glowing coal-fire belly and a chimney top hat belching smoke.",
+    "intro": [
+     "OLD BELLOWS: \"*HUFF* Feed... the fire... *PUFF* ...FEED THE FIRE.\"",
+     "NIGEL: He kept the Workings warm for a hundred years. Fuel's been short lately. Guess what's a fuel."
+    ],
+    "unlock": "switches",
+    "step2": "Open the three furnace dampers"
+   },
+   {
+    "name": "Shaft Zero",
+    "boss": "foremans_ghost",
+    "title": "THE FOREMAN'S GHOST",
+    "sub": "Shift's not over till he says.",
+    "look": "A ghostly mine foreman in a hard hat and lamp, translucent and green, a pocket watch chain and a pickaxe, face of an angry old man.",
+    "intro": [
+     "THE FOREMAN'S GHOST: \"Eleven down. Eleven up. You're number twelve.\"",
+     "NIGEL: The shift that never clocked out. He's still counting heads. He'll make the numbers add up somehow."
+    ],
+    "unlock": "trap",
+    "lure": {
+     "name": "Night Shift",
+     "desc": "\"EXTRA SHIFT, Shaft Zero, double pay. Clock in at the bottom.\" The rota is dated forty years ago.",
+     "label": "Clock in at the bottom of Shaft Zero",
+     "say": "punch the timecard"
+    }
+   }
+  ],
+  "9": [
+   {
+    "name": "The Council Chamber",
+    "boss": "chief_whip",
+    "title": "THE CHIEF WHIP",
+    "sub": "Order. ORDER.",
+    "look": "A huge rat politician in a tailcoat and chain of office with a bullwhip made of a living rat tail, gavel in the other paw.",
+    "intro": [
+     "THE CHIEF WHIP: \"The motion to remove you from existence is CARRIED.\"",
+     "NIGEL: He keeps the Rat Senate voting the right way. With the whip. It's in the name. It was never a metaphor."
+    ],
+    "unlock": "bell",
+    "step2": "Ring the division bell"
+   },
+   {
+    "name": "The Counting House",
+    "boss": "auditor",
+    "title": "THE AUDITOR",
+    "sub": "Your accounts are overdue.",
+    "look": "A tall thin auditor in a green eyeshade and sleeve garters, twelve long fingers on each hand, ledgers stitched into his coat and an abacus spine.",
+    "intro": [
+     "THE AUDITOR: \"I have been through your books. All of them. You owe... everything.\"",
+     "NIGEL: Saint Tally's favourite son. He's never miscounted. He's never forgiven. He's never once taken a lunch break."
+    ],
+    "unlock": "trap",
+    "lure": {
+     "name": "Tax Rebate",
+     "desc": "\"YOU ARE OWED A REFUND. Collect in person at the Counting House.\" Your name is already printed on it. You never told anyone your name.",
+     "label": "Collect your refund",
+     "say": "take the envelope"
+    }
+   }
+  ],
+  "10": [
+   {
+    "name": "Stage Zero",
+    "boss": "leading_man",
+    "title": "THE LEADING MAN",
+    "sub": "It's always been about him.",
+    "look": "A dashing matinee idol with a perfect jaw and slicked hair whose face is cracking like old makeup to show something underneath, tuxedo, rapier.",
+    "intro": [
+     "THE LEADING MAN: \"Places, darling. This is MY close-up.\"",
+     "NIGEL: He was the star of the Network's first drama. He's had forty years of work done. Not all of it was surgery."
+    ],
+    "unlock": "password",
+    "step2": "Learn his catchphrase"
+   },
+   {
+    "name": "The Edit Suite",
+    "boss": "the_cutter",
+    "title": "THE CUTTER",
+    "sub": "You won't make the final cut.",
+    "look": "A spindly film editor creature with scissor-blade fingers, strips of film trailing from its body like bandages and a lens for one eye.",
+    "intro": [
+     "THE CUTTER: \"Too long. Too boring. Too... alive. CUT.\"",
+     "NIGEL: Anything that doesn't serve the story gets cut. He decides what the story is. Guess what he thinks of you."
+    ],
+    "unlock": "trap",
+    "lure": {
+     "name": "Deleted Scenes",
+     "desc": "\"Want to see your deleted scenes? The Edit Suite has them all. Free screening.\" There's a little drawing of scissors.",
+     "label": "Pick up your reel in the Edit Suite",
+     "say": "take the film reel"
+    }
+   }
+  ],
+  "11": [
+   {
+    "name": "The Dugout",
+    "boss": "the_manager",
+    "title": "THE MANAGER",
+    "sub": "Sacked nine times. Still here.",
+    "look": "A red-faced furious football manager in a sheepskin coat and flat cap, veins bulging, clipboard snapped in half, tactics board shield.",
+    "intro": [
+     "THE MANAGER: \"YOU'RE DROPPED! YOU'RE ALL DROPPED! GET OUT THERE!\"",
+     "NIGEL: He's been sacked by the Network nine times and refuses to leave the dugout. They stopped paying him seasons ago. He's here for the love of the game. And the screaming."
+    ],
+    "unlock": "switches",
+    "step2": "Flick the three floodlight breakers"
+   },
+   {
+    "name": "The Replay Room",
+    "boss": "the_replay",
+    "title": "THE REPLAY",
+    "sub": "Let's see that again.",
+    "look": "A flickering humanoid made of stacked TV screens each showing the same moment, a remote control hand and a pause-symbol face.",
+    "intro": [
+     "THE REPLAY: \"Let's see that again. And again. And AGAIN.\"",
+     "NIGEL: Every death in the Arena, played on a loop forever. You're about to be today's highlight."
+    ],
+    "unlock": "trap",
+    "lure": {
+     "name": "Highlights",
+     "desc": "\"YOUR GREATEST MOMENTS, on tape, in the Replay Room. Take a copy home!\"",
+     "label": "Take your highlight tape",
+     "say": "take the tape"
+    }
+   }
+  ],
+  "12": [
+   {
+    "name": "The Makeup Chair",
+    "boss": "the_face",
+    "title": "THE FACE",
+    "sub": "Everyone's face, at once.",
+    "look": "A makeup artist monster whose head is a cluster of dozens of stolen faces like masks, brushes and lipsticks for fingers, a ring light halo.",
+    "intro": [
+     "THE FACE: \"Ooh, you've got good bones. Can I borrow them? Can I KEEP them?\"",
+     "NIGEL: Every star who ever sat in her chair came out looking fabulous. Or didn't come out. Those are the faces she wears."
+    ],
+    "unlock": "trap",
+    "lure": {
+     "name": "Free Makeover",
+     "desc": "\"Hair & Makeup: walk-ins welcome. Sit in the big chair.\" Someone has written \"DON'T\" under it, and someone else has crossed that out.",
+     "label": "Sit in the makeup chair",
+     "say": "sit in the chair"
+    }
+   },
+   {
+    "name": "The Writers' Bunker",
+    "boss": "ghostwriter",
+    "title": "THE GHOSTWRITER",
+    "sub": "He's already written your ending.",
+    "look": "A pale ghostly writer with a typewriter for a chest, paper streaming from it, ink-stained fingers and a cigarette, hollow eyes.",
+    "intro": [
+     "THE GHOSTWRITER: \"Act three. Our hero dies. Badly. Rewrite? No.\"",
+     "NIGEL: He writes every contestant's story. He's never written a happy ending. He says they don't rate."
+    ],
+    "unlock": "keys",
+    "step2": "Steal the three last pages of his script"
+   }
+  ],
+  "13": [
+   {
+    "name": "The Rare Books Room",
+    "boss": "first_edition",
+    "title": "THE FIRST EDITION",
+    "sub": "Do not touch. Do not read. Do not.",
+    "look": "A giant ancient leather-bound book with clawed page-arms, a lock for a mouth and ink dripping from its spine, chained to a lectern it drags.",
+    "intro": [
+     "THE FIRST EDITION: \"You... have not... washed... your HANDS.\"",
+     "NIGEL: The first book the Builders ever wrote. It's been read once. The reader is still in it. Page four hundred."
+    ],
+    "unlock": "switches",
+    "step2": "Turn the three reading lamps off"
+   },
+   {
+    "name": "The Quiet Room",
+    "boss": "hush",
+    "title": "HUSH",
+    "sub": "Shhh. SHHHHH.",
+    "look": "A tall faceless librarian wraith with one enormous finger pressed where a mouth should be, cardigan of grey mist, soundless and long-limbed.",
+    "intro": [
+     "HUSH: \"...\"",
+     "NIGEL: Hush doesn't speak. Hush doesn't let anyone speak. If you can hear me, you're already too loud."
+    ],
+    "unlock": "trap",
+    "lure": {
+     "name": "Quiet Please",
+     "desc": "\"LOST PROPERTY: one library card, handed in to the Quiet Room. Collect quietly.\" The card has your photo on it.",
+     "label": "Collect your library card",
+     "say": "take the library card"
+    }
+   }
+  ],
+  "14": [
+   {
+    "name": "The Torture Exhibit",
+    "boss": "iron_maiden",
+    "title": "THE IRON MAIDEN",
+    "sub": "Please do not touch the exhibits. The exhibits will touch you.",
+    "look": "A walking spiked iron maiden cabinet with a sad painted woman's face on its lid, opening to show spikes, chains hanging, rust everywhere.",
+    "intro": [
+     "THE IRON MAIDEN: \"*creak* ...come in... come in... there's room for one more...\"",
+     "NIGEL: Season Nine's most popular prop. She got a fan club. Then she got hungry. The fan club got smaller."
+    ],
+    "unlock": "keys",
+    "step2": "Find the three exhibit keys"
+   },
+   {
+    "name": "The Banquet Hall",
+    "boss": "the_banquet",
+    "title": "THE BANQUET",
+    "sub": "You are cordially invited. As the main course.",
+    "look": "A monstrous feast table come to life, with a roast pig head, candelabra horns, cutlery legs and a tablecloth cape, goblets for eyes.",
+    "intro": [
+     "THE BANQUET: \"WELCOME! Be seated! You're the PIG!\"",
+     "NIGEL: The Count's last feast never ended. The food got bored waiting. Now the food eats the guests."
+    ],
+    "unlock": "trap",
+    "lure": {
+     "name": "Dinner Is Served",
+     "desc": "A gilt-edged card: \"His Excellency requests your company at dinner. Your place card awaits in the Banquet Hall.\"",
+     "label": "Find your place card",
+     "say": "take the place card"
+    }
+   }
+  ],
+  "15": [
+   {
+    "name": "The Server Crypt",
+    "boss": "corrupted_save",
+    "title": "THE CORRUPTED SAVE",
+    "sub": "Loading... loading... L O A D I N G...",
+    "look": "A glitching, half-rendered copy of a contestant, pixelated and fractured, with a progress bar frozen across its chest and a doubled screaming face.",
+    "intro": [
+     "THE CORRUPTED SAVE: \"Continue? Continue? CONTINUE? CON-CON-CONTINUE?\"",
+     "NIGEL: A backup of a contestant who died on Floor 15. The Network tried to restore him. Some of him came back."
+    ],
+    "unlock": "switches",
+    "step2": "Restore three corrupted backup drives"
+   },
+   {
+    "name": "The Coolant Lake",
+    "boss": "frost_kernel",
+    "title": "THE FROST KERNEL",
+    "sub": "Cold boot.",
+    "look": "A giant crystalline ice creature grown around a glowing server core, icicle claws, frozen cables like hair and a blue blinking heart.",
+    "intro": [
+     "THE FROST KERNEL: \"TEMPERATURE... CRITICAL. INITIATING... COOLING.\"",
+     "NIGEL: It keeps the Builders' memory from melting. It does that by keeping everything frozen. Everything."
+    ],
+    "unlock": "trap",
+    "lure": {
+     "name": "Cold Storage",
+     "desc": "\"Spare heater core in the Coolant Lake service bay. Help yourself. Stay warm!\"",
+     "label": "Take the heater core",
+     "say": "take the heater core"
+    }
+   }
+  ],
+  "16": [
+   {
+    "name": "The Green Screen",
+    "boss": "the_chroma",
+    "title": "THE CHROMA",
+    "sub": "Now you see it.",
+    "look": "A tall bright green figure with no features that is half invisible, edges shimmering like a bad special effect, long chroma-key arms.",
+    "intro": [
+     "THE CHROMA: \"*nothing. then everything. then nothing again.*\"",
+     "NIGEL: The Network keys it out of every shot. It's been invisible on telly for forty years. It's very, very lonely. And very, very angry."
+    ],
+    "unlock": "bell",
+    "step2": "Ring the studio bell"
+   },
+   {
+    "name": "The Vision Mixer's Desk",
+    "boss": "vision_mixer",
+    "title": "THE VISION MIXER",
+    "sub": "Camera three. Camera three. CAMERA THREE.",
+    "look": "A many-armed broadcast technician fused into a huge mixing desk, headphones grown into its skull, faders for fingers, a red tally light eye.",
+    "intro": [
+     "THE VISION MIXER: \"Cut to the contestant. Cut to the blood. CUT TO THE BLOOD.\"",
+     "NIGEL: It chooses what the audience sees. Right now it's choosing you. Smile."
+    ],
+    "unlock": "trap",
+    "lure": {
+     "name": "Camera Three",
+     "desc": "\"YOU'RE ON CAMERA THREE. Report to the Vision Mixer's Desk for your mark.\"",
+     "label": "Find your mark at the desk",
+     "say": "stand on your mark"
+    }
+   }
+  ],
+  "17": [
+   {
+    "name": "The Nursery",
+    "boss": "baby_host",
+    "title": "BABY HOST",
+    "sub": "Look who's a big boy now.",
+    "look": "A huge uncanny baby in a tiny tuxedo and bib with the Host's perfect hair and smile, holding a microphone rattle, eyes far too old.",
+    "intro": [
+     "BABY HOST: \"Good evening, ladies and gentlemen... and welcome... to MY show!\"",
+     "NIGEL: The Host's first memory, given a body by the Floor. He was charming even then. Especially then."
+    ],
+    "unlock": "trap",
+    "lure": {
+     "name": "Babysitter Wanted",
+     "desc": "\"Little one needs his rattle. It's in the Nursery. Very easy job!!!\" Three exclamation marks.",
+     "label": "Fetch the rattle from the Nursery",
+     "say": "take the rattle"
+    }
+   },
+   {
+    "name": "The Bedroom",
+    "boss": "under_the_bed",
+    "title": "THE THING UNDER HIS BED",
+    "sub": "He was always afraid of it. He was right.",
+    "look": "A long spidery shadow creature with too many arms and a wide white grin, crawling out from under a child's bed, wearing a stolen game-show bow tie.",
+    "intro": [
+     "THE THING UNDER HIS BED: \"He never looked. Will you?\"",
+     "NIGEL: The only thing the Host was ever afraid of. Turns out it's been waiting fifty years for someone to finally look."
+    ],
+    "unlock": "switches",
+    "step2": "Turn off the three nightlights"
+   }
+  ],
+  "18": [
+   {
+    "name": "The Antechamber",
+    "boss": "doorkeeper",
+    "title": "THE DOORKEEPER",
+    "sub": "There is a door. There was always a door.",
+    "look": "A colossal grey stone figure made of a doorframe, a giant key held across its body, a blank face with a keyhole, ancient and patient.",
+    "intro": [
+     "THE DOORKEEPER: \"Name. Season. Reason for leaving.\"",
+     "NIGEL: The Builders left it here to guard the way out. It has never once opened the door. Nobody has ever given the right answer."
+    ],
+    "unlock": "password",
+    "step2": "Learn the knock"
+   },
+   {
+    "name": "The Hall of Winners",
+    "boss": "every_previous_host",
+    "title": "EVERY PREVIOUS HOST",
+    "sub": "Thank you, and goodnight. Forever.",
+    "look": "A towering tangle of a dozen game-show hosts fused together, many tuxedo arms, many microphones, many perfect smiles stacked into one body.",
+    "intro": [
+     "EVERY PREVIOUS HOST: \"Good evening! Good evening! GOOD EVENING!\"",
+     "NIGEL: Every winner became a Host. Every Host became the set. And here they all are, still hosting. Still smiling. Still winning."
+    ],
+    "unlock": "trap",
+    "lure": {
+     "name": "Thank You For Watching",
+     "desc": "A gold card with your name embossed: \"Collect your award in the Hall of Winners.\"",
+     "label": "Collect your award",
+     "say": "take the award"
+    }
+   }
+  ]
+ }
+}

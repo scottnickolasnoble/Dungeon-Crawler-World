@@ -1,0 +1,373 @@
+<title>Floors 1–6 District Plans</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=IBM+Plex+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: one reading column; a tab row of floors; each floor = intro, district map (node graph), district cards, chambers, Unreal notes. */
+:root {
+  --paper: #f3f1ea; --sheet: #fbfaf6; --ink: #1d2226; --muted: #5d656b; --rule: #d6d2c4;
+  --accent: #e8b400; --accent-ink: #6b5200; --teal: #0e8a8a; --alarm: #c2362b; --hub: #1d2226; --hub-ink: #fbfaf6;
+  --display: "Archivo Black", "Arial Black", Impact, sans-serif;
+  --body: "Source Serif 4", Georgia, serif;
+  --mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --paper: #16191b; --sheet: #1e2225; --ink: #e7e5de; --muted: #9aa1a6; --rule: #353a3e;
+  --accent: #f2c533; --accent-ink: #f2c533; --teal: #3cc0c0; --alarm: #ef6a5e; --hub: #e7e5de; --hub-ink: #16191b; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --paper: #16191b; --sheet: #1e2225; --ink: #e7e5de; --muted: #9aa1a6; --rule: #353a3e;
+  --accent: #f2c533; --accent-ink: #f2c533; --teal: #3cc0c0; --alarm: #ef6a5e; --hub: #e7e5de; --hub-ink: #16191b; color-scheme: dark }
+body { background: var(--paper); color: var(--ink); font: 17px/1.6 var(--body); }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--paper); }
+.wrap { max-width: 800px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 28px 64px; }
+.eyebrow { font: 600 12px var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--accent-ink); }
+h1 { font: 38px/1.05 var(--display); margin: 6px 0 10px; text-wrap: balance; }
+h2 { font: 30px/1.1 var(--display); margin: 6px 0 6px; text-wrap: balance; }
+h3 { font: 19px/1.25 var(--display); margin: 34px 0 8px; text-wrap: balance; }
+h4 { font-size: 19px; margin: 0; text-wrap: balance; }
+p { margin: 8px 0; }
+.lede { font-size: 18px; color: var(--muted); }
+nav.floors { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--paper); display: flex; gap: 6px; overflow-x: auto; padding: 10px 0; border-bottom: 1px solid var(--rule); margin: 18px 0 18px; }
+nav.floors a { flex: none; font: 600 12px var(--mono); text-decoration: none; color: var(--ink); border: 1px solid var(--rule); background: var(--sheet); padding: 6px 10px; border-radius: 2px; }
+nav.floors a.on { background: var(--accent); border-color: var(--accent); color: #2a2100; }
+nav.floors a:focus-visible { outline: 2px solid var(--teal); outline-offset: 2px; }
+.feel { border-left: 4px solid var(--accent); padding: 4px 0 4px 12px; font-size: 18px; font-style: italic; }
+.facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1px; background: var(--rule); border: 1px solid var(--rule); margin: 16px 0; }
+.facts div { background: var(--sheet); padding: 9px 12px; min-width: 0; }
+.facts b { display: block; font: 600 11px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.map { background: var(--sheet); border: 1px solid var(--rule); padding: 8px; overflow-x: auto; }
+.map svg { display: block; width: 100%; min-width: 540px; height: auto; }
+.district { border-top: 2px solid var(--ink); padding: 16px 0 6px; display: grid; grid-template-columns: 46px 1fr; gap: 0 14px; }
+.num { font: 28px/1 var(--display); color: var(--accent-ink); }
+.district.hub .num { color: var(--teal); }
+.district .body { min-width: 0; }
+.dims { font: 13px var(--mono); color: var(--muted); margin: 2px 0 8px; }
+.tag { display: inline-block; font: 600 10.5px var(--mono); letter-spacing: .06em; text-transform: uppercase; padding: 2px 7px; border-radius: 2px; margin: 0 5px 6px 0; background: var(--rule); color: var(--ink); }
+.tag.path { background: var(--accent); color: #2a2100; }
+.tag.hubt { background: var(--teal); color: #fff; }
+.tag.boss { background: var(--alarm); color: #fff; }
+dl { display: grid; grid-template-columns: 92px 1fr; gap: 6px 12px; margin: 8px 0; font-size: 15.5px; }
+dt { font: 600 11px var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); padding-top: 3px; }
+dd { margin: 0; min-width: 0; }
+.chambers { display: grid; gap: 10px; }
+.chamber { background: var(--sheet); border: 1px solid var(--rule); padding: 12px 14px; }
+.chamber b { font-family: var(--display); font-weight: 400; color: var(--alarm); }
+.note { background: var(--sheet); border: 1px solid var(--rule); padding: 12px 14px; font-size: 15.5px; }
+.note ul, .note ol { margin: 6px 0; padding-left: 20px; }
+code { font: 13px var(--mono); background: var(--sheet); border: 1px solid var(--rule); padding: 0 4px; border-radius: 2px; }
+.mono { font-family: var(--mono); font-size: 13px; }
+</style>
+
+<div class="wrap">
+  <div class="eyebrow">Downstairs · Unreal Engine 5 · Level design docs</div>
+  <h1>Floors 1–6: district plans</h1>
+  <p class="lede">Each floor is a hub you can always run back to, four or five districts around it, and two boss chambers built as their own small levels. Districts connect through ramps, doors, lifts and bridges, with a short load or seamless streaming. It's a first pass: correct anything that's off.</p>
+  <div class="note"><b>How the pieces fit in Unreal.</b> Each district is its own map (<code>L_F1_LevelB</code>, and so on). The hub is the "persistent" level, and districts load in through <b>level streaming</b> when you walk through their connection, which feels seamless. Or use one <b>World Partition</b> map per floor if it runs well on your PC. Boss chambers are always separate small maps entered through their gate, so each one can be fully hand-built and hand-lit. Same scale rules as Floor 0: 1 m = 100 units.</div>
+  <nav class="floors" id="tabs" aria-label="Floors"></nav>
+  <main id="floor"></main>
+</div>
+
+<script>
+const FLOORS = [
+{
+  n: 1, name: "The Undercroft", verb: "survive",
+  feel: "Darkness, confusion, community. A car park the size of a town, lit in pockets.",
+  facts: [["Districts", "Hub + 4"], ["Each district", "≈ 150 × 150 m, 2–3 car-park levels"], ["Way down", "The Chained Stairwell (4 padlocks)"], ["Ceiling", "3–4 m decks, 9 m ramps and wells"]],
+  how: "Four padlocks on the stairwell chain. Pylon has one key, Lost Property has one, the Moth Matron swallowed one, and the fourth lock eats validated tickets.",
+  map: { hub: [300, 210, "Stairwell Camp"], nodes: [
+    [1, 300, 70, "Level B"], [2, 110, 180, "The Flooded Levels"], [3, 490, 180, "Lost Property"], [4, 300, 350, "The Lightwell"] ],
+    chambers: [[2, 70, 300, "The Sump (trap)"], [3, 530, 300, "The Ticket Hall"]], exit: [300, 210, "Chained Stairwell"] },
+  districts: [
+    { hub: true, name: "Stairwell Camp", size: "≈ 120 × 90 m · one deck, 4 m ceiling", tags: ["Hub", "Safe"],
+      what: "Marta Vance's camp round the chained stairwell, the way down. Pickles, Benchwright Bo, Rusty Kell and Dot trade from parked cars and pallets. Barb runs the inn out of a minibus. The Ticket Booth and its ticket machine (the floor's puzzle) stand at the edge of camp, and the glowing EXIT sign beyond them leads to a concrete wall covered in scratch marks.",
+      path: "Every quest starts and ends here. The Ticket Lock is solved at the booth.",
+      look: "Pockets of warm light (camp fires in oil drums, fairy lights strung between pillars) inside total dark. Everything beyond the camp's light is black.",
+      unreal: "The only place the player feels safe: keep enemies out with a <code>Nav Modifier Volume</code> or a trigger that calls monsters off. The EXIT sign is a bright emissive material that draws the eye from far off." },
+    { name: "Level B", size: "≈ 160 × 160 m · two decks + a roof deck", tags: ["Main path", "Pylon"],
+      what: "The goblins' half of the car park. Level B Village (frightened contestants barricaded in a stairwell) and the Burning Bus, a landmark you can see from anywhere on the deck. At the far end, Pylon Point: a goblin fort of stacked cones and crash barriers, with Sergeant Pylon on top.",
+      path: "The Toll Key: thin the packs and beat Sergeant Pylon for the first key.",
+      look: "Orange: the burning bus, sodium lamps, hazard stripes. Smoke hanging under the low ceiling.",
+      unreal: "The Burning Bus uses Niagara fire and a flickering point light. Build Pylon Point from a modular barrier and cone kit so it reads as goblin-built." },
+    { name: "The Flooded Levels", size: "≈ 150 × 150 m · lower decks under water", tags: ["Side + trap"],
+      what: "The lowest decks have flooded. Valet Row is a strip of waterlogged valet booths where a few survivors fish. The Flooded Bay is the lampreys' nest and The Big Sucker's lair. Somewhere in the dark water is the door to The Sump.",
+      path: "Side quests; the notice-board job that lures you into The Sump (the trap chamber).",
+      look: "Black water reflecting cold blue lights, dripping pipes, a green glow from the lamprey nest.",
+      unreal: "A water plane with a reflective material. Keep it shallow (knee to waist) so you can wade; deep spots use a Physics Volume to slow you. Lumen reflections sell it." },
+    { name: "Lost Property", size: "≈ 140 × 140 m · offices and storage cages", tags: ["Main path", "Chamber"],
+      what: "The car park's management offices: Lost Property, a vast cage of forgotten things where mimics hide among the suitcases, ruled by The Lost & Found. The Ticket Hall's gate is here.",
+      path: "Lost Property's key, and Clamp's Ticket Hall (pay off the fines to break its seals).",
+      look: "Flickering office fluorescents, wire cages, piles of umbrellas and prams casting long shadows.",
+      unreal: "Mimics are suitcases that wake when you get close: a Blueprint that swaps a static mesh for the monster. PCG can scatter thousands of lost items." },
+    { name: "The Lightwell", size: "≈ 100 × 100 m footprint · 40 m tall", tags: ["Main path", "Vertical"],
+      what: "A tall open shaft through every deck, with a sliver of fake 'sky' at the top. The Ramp Spiral winds up round it. The Lift Shaft village clings to the old lift, the Lightwell itself is the moths' hive and the Moth Matron's nest, and the Pigeon Loft sits at the very top.",
+      path: "Moth in the Lock: the Moth Matron swallowed the third key.",
+      look: "The brightest place on the floor: a shaft of white light full of drifting moths and dust. Climbing it is the floor's big view.",
+      unreal: "Volumetric fog plus one strong spotlight from the top gives you god rays for free with Lumen. The spiral ramp is a spline mesh." }
+  ],
+  chambers: [["The Ticket Hall", "Clamp, the Wheel-Clamper", "Keys: pay off three parking fines. Pay-and-display machines, the Tow-Away phase."],
+             ["The Sump", "The Drowned Valet", "Trap: a notice-board job lures you in. Rising water, headlights, he surfaces behind you."]],
+  build: ["Block out Stairwell Camp and Level B first: they're the opening 30 minutes.", "Make one modular car-park kit (pillar, deck slab, ramp, barrier, parking bay lines as decals) and every district reuses it.", "Light the dark early. The floor lives or dies on its pockets of light."]
+},
+{
+  n: 2, name: "Spin City", verb: "understand",
+  feel: "Routine. Clean, bright and still working, which is much creepier than darkness.",
+  facts: [["Districts", "Hub + 4"], ["Each district", "≈ 120 × 120 m interiors"], ["Way down", "The Great Dryer"], ["Ceiling", "5–12 m industrial halls"]],
+  how: "The stairs were bricked up seasons ago. The way down is the Great Dryer: it needs boiler pressure, the right cycle, and Ebb off shift.",
+  map: { hub: [300, 200, "The Laundromat"], nodes: [
+    [1, 110, 110, "Boiler Room 0"], [2, 490, 110, "Machine Graveyard"], [3, 110, 320, "The Lint Traps"], [4, 490, 320, "Dryer Heights"] ],
+    chambers: [[2, 540, 30, "The Drum"], [4, 545, 395, "The Pressing Room (trap)"]], exit: [490, 320, "Great Dryer"] },
+  districts: [
+    { hub: true, name: "The Laundromat", size: "≈ 100 × 70 m · bright, 6 m ceiling", tags: ["Hub", "Safe"],
+      what: "An enormous, spotless laundromat that is still open. Coin-Op Corner is the market: Bev, Spool, Suds and Rinse. Mangle the Innkeeper rents out dryer drums as beds. Spin Cycle and Old Reggie (who clocked in in 1986) give the main quests. A Customer Service screen counts contestants 'in processing'.",
+      path: "Customer Service: the floor's first quest, and its rules.",
+      look: "Flat, even, shadowless white light. Machines humming in rhythm. It should feel like a hospital.",
+      unreal: "Hundreds of washing machines: use Instanced Static Meshes, or PCG in rows, with a few spinning (a rotating component on the drum). Ambient sound does most of the work here." },
+    { name: "Boiler Room 0", size: "≈ 130 × 100 m · two levels of catwalks", tags: ["Main path", "Ebb"],
+      what: "The basement boilers that feed the Great Dryer. Bleach Wells, a village of contestants living by the hot pipes. Mop Wights patrol on shift. Head Custodian Ebb rules it all as his workplace.",
+      path: "Building Pressure (three valves), then Off Shift: get Ebb off duty.",
+      look: "Steam, red pressure gauges, wet floors reflecting orange furnace light.",
+      unreal: "Steam with Niagara, wet floors with a puddle material (Lumen reflections). Catwalks are good for fights from above." },
+    { name: "The Machine Graveyard", size: "≈ 140 × 140 m · junk canyons", tags: ["Side + chamber"],
+      what: "Where broken machines are dumped, stacked into canyons. Mimics everywhere. The Machine That Ate Dave lives at the heart of it. The Drum's gate is in a giant toppled washer.",
+      path: "Side quests (Dave); The Drum chamber (switches unlock).",
+      look: "Dim, with the odd machine still flickering on by itself. A graveyard that keeps twitching.",
+      unreal: "Stacks of the same five machine meshes at random angles. PCG with physics-free scatter is perfect for this." },
+    { name: "The Lint Traps", size: "≈ 120 × 120 m · tunnels and filters", tags: ["Side"],
+      what: "The giant lint filters behind the dryers: soft grey tunnels. Lint Hollow, a village woven out of lint, and the Lint King's court. Lampreys and goblins in the dust.",
+      path: "Side quests; lint materials for crafting.",
+      look: "Soft, muffled and grey, with dust motes in torch beams. Everything is fuzzy.",
+      unreal: "Fog does the heavy lifting: low visibility, so monsters appear out of the grey. Use a fluffy material (noise-based)." },
+    { name: "Dryer Heights", size: "≈ 160 × 160 m · tall, multi-level", tags: ["Main path", "Exit"],
+      what: "The industrial heart. Sock Mountain (a landmark pile of single socks), Soap Falls pouring down from a broken pipe, Dryer Heights village on gantries. At the top, the Great Dryer: the way down. The Pressing Room's trap is nearby.",
+      path: "Delicates and Final Spin: set the cycle and ride the Great Dryer down.",
+      look: "Bright again, but warm and humming. The Great Dryer glows from inside like a furnace.",
+      unreal: "The Great Dryer is your floor-exit set piece: a Level Sequence for the ride down (camera spins and tumbles, then a fade). Learn the Sequencer here." }
+  ],
+  chambers: [["The Drum", "The Agitator", "Switches: a room inside a spinning drum."], ["The Pressing Room", "The Trouser Press", "Trap: crushing presses on timers."]],
+  build: ["The hub's shadowless brightness is the floor's identity: get the lighting right before any props.", "Make a kit of 6–8 laundry machines and reuse it everywhere.", "The Great Dryer ride is a good first Sequencer project."]
+},
+{
+  n: 3, name: "The Soup District", verb: "choose",
+  feel: "The first real civilisation: markets, music, children, street performers. Finally, a place to live, until the Dinner Bell.",
+  facts: [["Districts", "Hub + 4"], ["Each district", "≈ 180 × 180 m town streets"], ["Way down", "Under the Cone King's throne"], ["Ceiling", "Open cavern 30 m+, fake night sky"]],
+  how: "The stairs are under the Cone King's throne, and the Cone Cathedral only opens for invited guests. Get invitations from Grandma Gristle, the Bulb Queen and Old Man Coo.",
+  map: { hub: [300, 210, "Soup Row"], nodes: [
+    [1, 110, 100, "Candlewick Lane"], [2, 490, 100, "The Rooftops"], [3, 110, 320, "Bonebroth Commons"], [4, 490, 320, "Cathedral Quarter"] ],
+    chambers: [[3, 60, 400, "The Larder (trap)"], [4, 545, 400, "The Stock Cellar"]], exit: [490, 320, "Cone Cathedral"] },
+  districts: [
+    { hub: true, name: "Soup Row", size: "≈ 150 × 80 m · a market street", tags: ["Hub", "Safe"],
+      what: "A busy market street of soup kitchens, stalls and music. Bix, Cleaver Jo, Auntie Dumpling, Scraps, and Gravy's inn. Wickley, Brother Ash and Judge Vrask. The Hall of Callings, where people are given a 'calling'. Every night the Dinner Bell rings.",
+      path: "The Dinner Bell; A Calling.",
+      look: "Warm lanterns, steam from soup pots, a busy crowd. The happiest place so far, and the Dinner Bell makes it uneasy.",
+      unreal: "A crowd is the point: use the Mass crowd system for background walkers, or a few dozen simple wandering NPCs. Lanterns are emissive meshes plus a few real lights." },
+    { name: "Candlewick Lane", size: "≈ 160 × 160 m · narrow lanes", tags: ["Main path", "Invitation"],
+      what: "A candle-making quarter of wax-dripped lanes, leading to the Lamp Market: thousands of lamps, the moths' paradise, ruled by the Bulb Queen.",
+      path: "Light the Market: the Bulb Queen's invitation.",
+      look: "Hundreds of small warm lights in the dark: the prettiest district.",
+      unreal: "Hundreds of lights are expensive: use emissive materials for most lamps and real lights for only a few. The moths are Niagara particles plus a few real monsters." },
+    { name: "The Rooftops", size: "≈ 160 × 160 m · roofs, 10–25 m up", tags: ["Main path", "Vertical", "Invitation"],
+      what: "A district you travel across on the rooftops: plank bridges, chimneys, washing lines. The Rooftop Roost of the pigeon ghouls, with Old Man Coo at the top.",
+      path: "Up on the Roof: Old Man Coo's invitation.",
+      look: "Moonlight from the cavern 'sky', chimney smoke and silhouettes. The floor's best views.",
+      unreal: "Falling is the danger: kill volumes below, or a fall that dumps you in the streets. A good place to learn traversal (mantling, jumping gaps)." },
+    { name: "Bonebroth Commons", size: "≈ 170 × 170 m · old town and gardens", tags: ["Main path", "Invitation", "Trap"],
+      what: "The old quarter: Ladle Gate, Pantry Keep and Bonebroth Commons. Grandma Gristle's Kitchen (the hags) and Auntie Brine's Pot, a huge cauldron landmark. The Larder trap chamber is under Gristle's kitchen.",
+      path: "Grandma's Table: Grandma Gristle's invitation (and her terrible soup).",
+      look: "Fog, bubbling pots, hanging herbs. Gristle's kitchen glows a sick green.",
+      unreal: "Steam and fog with Niagara and height fog. The kitchen is a hand-built interior: the floor's horror room." },
+    { name: "Cathedral Quarter", size: "≈ 180 × 180 m · a great plaza", tags: ["Main path", "Exit", "Boss"],
+      what: "A great plaza before the Cone Cathedral, a cathedral built of traffic cones. Goblins, chuckers and captains guard it. The Scratch Marks wall, where the map of the Stack is hidden. The Stock Cellar chamber is under the plaza.",
+      path: "The Feast of Cones: enter with three invitations, then the Cone King and the stairs under his throne.",
+      look: "Orange everywhere: cone plastic glowing in torchlight. The Cathedral should look holy and ridiculous at once.",
+      unreal: "The Cathedral is a hero building: worth hand-building in detail. The feast is a scripted event: a Level Sequence, then the fight." }
+  ],
+  chambers: [["The Larder", "Brisket, the Butcher Hag", "Trap: under Gristle's kitchen."], ["The Stock Cellar", "The Bone Broth", "Password: learned around the district."]],
+  build: ["Start with Soup Row, and make it busy and alive before anything else: this floor is about people.", "A modular old-town kit (walls, roofs, windows, doors) covers every district.", "PCG is great here: market stalls, crates and washing lines along the street splines."]
+},
+{
+  n: 4, name: "The Endless Mall", verb: "sold",
+  feel: "Retail heaven that slowly turns wrong. Free food, cheerful music, sponsors, and the mall itself is alive.",
+  facts: [["Districts", "Hub + 5"], ["Each district", "≈ 150 × 150 m, 2–3 storeys"], ["Way down", "The service lift"], ["Timer", "Closing Time: 10 minutes"]],
+  how: "The service lift is the only way out of the Mall. It needs a staff badge, three fuses, and someone to get past the Food Court Kraken before the shutters come down.",
+  map: { hub: [300, 220, "Food Court Free State"], nodes: [
+    [1, 300, 70, "The Atrium"], [2, 100, 140, "Escalator Rise"], [3, 500, 140, "Mall Security HQ"], [4, 110, 330, "The Changing Rooms"], [5, 490, 330, "Loading Dock 9"] ],
+    chambers: [[2, 55, 50, "Escalator Shaft (trap)"], [4, 60, 410, "Mannequin Bride"]], exit: [490, 330, "Service Lift"] },
+  districts: [
+    { hub: true, name: "Food Court Free State", size: "≈ 120 × 100 m · open, two storeys", tags: ["Hub", "Safe-ish"],
+      what: "A food court run as a tiny free state. Clearance Carl, Cinnamon Sue, Bo's Mall Branch, Lost Receipts, and Mattress Mo's inn in a bed shop. Sunny the Sponsor Rep offers sponsorships, and Madame Prickle runs the lost-child desk. The free food is endless, addictive, and slowly changes you.",
+      path: "You Are Here: the floor's rules, and the first sponsor deal.",
+      look: "Bright, cheery and over-saturated, with neon signs and muzak. Too clean.",
+      unreal: "Neon signs are emissive materials. The Food Court Depths (the Kraken) is under the hub floor: a grate you can see through." },
+    { name: "The Atrium", size: "≈ 120 m across · 5 storeys open", tags: ["Boss", "Mystery"],
+      what: "The great glass-roofed atrium at the centre of the mall. Mall cops and mimics. The mall's 'veins' (pipes, cables, roots) all lead here, to the Mall Mother.",
+      path: "The Veins; the floor's boss, the Mall Mother.",
+      look: "The grandest space so far: daylight from the glass roof, slowly turning organic and red as you get closer.",
+      unreal: "A huge vertical space: use HLODs so the far storeys stay cheap. The veins are spline meshes with a pulsing material." },
+    { name: "Escalator Rise", size: "≈ 150 × 150 m · 4 storeys of escalators", tags: ["Side + trap"],
+      what: "A tangle of escalators, some going nowhere, including the Escalator to Nowhere landmark. The Kiosk Ring and The Coupon Den (coupon leeches, the Final Notice). The Escalator Shaft trap chamber.",
+      path: "Side quests; one of the three fuses.",
+      look: "Endless escalators lit from below. Disorienting on purpose.",
+      unreal: "Moving escalators are a conveyor: a moving platform under the player (a Blueprint that adds velocity). A good small Blueprint lesson." },
+    { name: "Mall Security HQ", size: "≈ 110 × 110 m · offices and cells", tags: ["Main path"],
+      what: "The security offices, bank of CCTV screens, holding cells. Mall Cop Ogres on patrol, and Captain Kevlar in charge.",
+      path: "Staff Only: the staff badge, from Kevlar.",
+      look: "Harsh white office light and the blue glow of a wall of CCTV screens, some of them showing you.",
+      unreal: "The CCTV wall uses Scene Capture components: real live camera views of other rooms (and of the player). Expensive, so use only a few at once." },
+    { name: "The Changing Rooms", size: "≈ 140 × 140 m · a maze of cubicles", tags: ["Side", "Chamber"],
+      what: "A maze of changing cubicles and mirrors, then The Bounce Castle, a soft-play centre gone bad (bounce-house slimes, the Birthday Blob). The Mannequin Bride's chamber.",
+      path: "Side quests; the second fuse; the Mannequin Bride (keys).",
+      look: "Mirrors everywhere reflecting monsters that aren't there. Soft-play colours in the dark.",
+      unreal: "Real mirrors are costly: use Lumen reflections on a few, and fake 'mirrors' that are windows into a duplicate room for scares." },
+    { name: "Loading Dock 9", size: "≈ 150 × 150 m · back-of-house", tags: ["Main path", "Exit"],
+      what: "The back of the mall: loading bays, storerooms and the service lift. The Food Court Depths open into it, where the Kraken waits under the food court.",
+      path: "Blown: the third fuse; then Closing Time, the timed run to the lift past the Kraken as the shutters come down.",
+      look: "Bare concrete and caged lights after the shiny mall. The shutters coming down are the floor's tension.",
+      unreal: "Closing Time: a timer in the HUD and a Blueprint that drops shutters one by one on a schedule, closing routes as you run." }
+  ],
+  chambers: [["The Changing Rooms", "The Mannequin Bride", "Keys."], ["The Escalator Shaft", "The Down Escalator", "Trap."]],
+  build: ["A modular shopfront kit (window, door, sign, shutter) builds most of the mall.", "Fake shops behind glass are cheap: only a few need interiors you can enter.", "Use Data Layers or streaming so only the district you're in is loaded: the mall is the heaviest floor yet."]
+},
+{
+  n: 5, name: "Suburbia Infinite", verb: "sold",
+  feel: "Perfect lawns, the same family waving from every yard, and an HOA that fines you for breathing. The further out, the more wrong it gets.",
+  facts: [["Districts", "Hub + 5"], ["Each district", "≈ 200 × 200 m streets and yards"], ["Way down", "The manhole (Permit to Descend)"], ["Sky", "A painted sky dome, always noon"]],
+  how: "The manhole is inside the HOA Clubhouse grounds and needs a stamped Permit to Descend: three signatures, no unpaid fines, and the HOA's vote.",
+  map: { hub: [300, 220, "Fort Cul-de-Sac"], nodes: [
+    [1, 300, 70, "Town Hall"], [2, 100, 150, "Maple Drive"], [3, 500, 150, "HOA Clubhouse"], [4, 110, 330, "The Gnome Garden"], [5, 490, 330, "The Dog Park"] ],
+    chambers: [[3, 545, 55, "The Rec Room (trap)"], [5, 545, 405, "The Pool House"]], exit: [500, 150, "The manhole"] },
+  districts: [
+    { hub: true, name: "Fort Cul-de-Sac", size: "≈ 120 × 120 m · a fortified cul-de-sac", tags: ["Hub", "Safe"],
+      what: "A cul-de-sac the survivors have fortified with garden fences and parked cars. Big Deb runs it. Yard Sale Yolanda, Lemonade Lee, Bo's Garage, Curbside Cal, and Mrs Doily's B&B. The Neighbourhood Watch.",
+      path: "Notice of Violation: you've already been fined.",
+      look: "Bright noon sun, picket fences, sprinklers. Pleasant, and that's the problem.",
+      unreal: "The sky never moves: a fixed Directional Light at noon and a slightly too-blue sky. Sprinklers are Niagara." },
+    { name: "Town Hall", size: "≈ 150 × 150 m · civic centre", tags: ["Main path", "Boss"],
+      what: "Town Hall and its square: Mayor Eternal, hounds and mall-cop-style enforcers. Where signatures and permits are stamped.",
+      path: "Three Signatures (one is here); Mayor Eternal.",
+      look: "Grand civic white stone, bunting, a brass band that never stops.",
+      unreal: "A hero building. The forms and stamps are good UI practice (a permit document widget)." },
+    { name: "Maple Drive", size: "≈ 250 × 150 m · one long street", tags: ["Side", "Mystery"],
+      what: "One street of identical houses, with the same family waving from every yard. Sprinkler Field and the Block Party landmark. Walk further out and the houses go wrong: rooms inside out, families with too many faces.",
+      path: "Side quests; the floor's mystery.",
+      look: "It starts perfect. By the end of the street the colours are off, and the waving gets faster.",
+      unreal: "This is what PCG is for: one house Blueprint repeated along a spline, with a 'wrongness' value that increases with distance and swaps in creepier variants." },
+    { name: "HOA Clubhouse", size: "≈ 160 × 160 m · clubhouse and grounds", tags: ["Main path", "Exit"],
+      what: "The HOA's clubhouse, golf lawn and the fenced grounds where the manhole is. Gnome cultists and enforcers. The HOA President holds meetings. The Rec Room trap chamber (Dad, grilling).",
+      path: "Paid in Full, then The HOA Meeting: the vote, then down the manhole.",
+      look: "A country-club look gone sinister: polished wood, trophies, perfect turf, and a manhole nobody looks at.",
+      unreal: "The HOA meeting is a dialogue set piece: a Level Sequence with your choices." },
+    { name: "The Gnome Garden", size: "≈ 160 × 160 m · gardens and allotments", tags: ["Side + main"],
+      what: "Gardens taken over by lawn-gnome cultists, the Gnome Pope's garden-shed cathedral, and the Garage Band village (survivors playing in a garage, very badly).",
+      path: "One of the three signatures; side quests.",
+      look: "Flowerbeds, gnomes everywhere, and gnomes that weren't there a moment ago.",
+      unreal: "Gnomes that move only when you aren't looking: a Blueprint that checks whether a gnome is on screen (a 'was recently rendered' check)." },
+    { name: "The Dog Park", size: "≈ 160 × 160 m · park and pool", tags: ["Side + chamber"],
+      what: "A dog park of cul-de-sac hounds and Mr Fetch, the Pool House village, and the Lifeguard's Pool House chamber (ring the bell to enter).",
+      path: "One of the three signatures; side quests.",
+      look: "Open grass, agility gear, and the glare of the pool.",
+      unreal: "Hounds hunt in packs: good place to use the AI Perception's hearing, so noise brings them." }
+  ],
+  chambers: [["The Rec Room", "Dad (Grilling)", "Trap."], ["The Pool House", "The Lifeguard", "Bell."]],
+  build: ["Make one great house and vary it (colours, fences, broken versions). Repetition is the theme.", "Landscape for the lawns, with spline roads and pavements.", "The 'gets more wrong further out' idea is the floor's signature: plan it from the start."]
+},
+{
+  n: 6, name: "The Canopy", verb: "sold",
+  feel: "A dark forest where you are the prey: hunted for sport by paying customers. Then you learn to turn the hunt around.",
+  facts: [["Districts", "Hub + 5"], ["Each district", "≈ 250 × 250 m forest"], ["Way down", "Through the Safari Lodge"], ["Levels", "Forest floor and canopy, 20–40 m up"]],
+  how: "The stairs are at the Glimmerkin Safari Lodge, and the Lodge only lets hunters through. Become one, then survive Hunt Night.",
+  map: { hub: [300, 220, "The Treehouse"], nodes: [
+    [1, 300, 70, "Safari Lodge"], [2, 100, 150, "Rope Bridges"], [3, 500, 150, "Hornback Camp"], [4, 110, 330, "Hag Hollow"], [5, 490, 330, "The Wild Kennel"] ],
+    chambers: [[1, 420, 40, "The Trophy Hall"], [5, 545, 405, "The Kennel Pit (trap)"]], exit: [300, 70, "Lodge stairs"] },
+  districts: [
+    { hub: true, name: "The Treehouse", size: "≈ 80 × 80 m · platforms 25 m up", tags: ["Hub", "Safe"],
+      what: "A settlement built in the canopy of a giant tree: platforms, ladders and rope lifts. Gusset, Elder Lantern and the Mothwing. Bark & Blade, Forager Fern, Bo's Treehouse Branch, Twig, and Old Bramble's inn. Acorn Store is the market.",
+      path: "Prey: you learn you're being hunted.",
+      look: "Lantern light high in the leaves, safe above a pitch-dark forest floor.",
+      unreal: "Hand-build the tree with a few big trunk meshes and platform pieces. Ladders need a simple climbing Blueprint." },
+    { name: "Glimmerkin Safari Lodge", size: "≈ 160 × 160 m · lodge and grounds", tags: ["Main path", "Exit", "Boss"],
+      what: "A luxury hunting lodge for paying audience members: trophies, a guestbook, and Lord-Hunter Facet. The stairs down are inside. The Trophy Hall chamber (the Taxidermist).",
+      path: "Sign the Guestbook, Hunt Night, then Lord-Hunter Facet and the stairs.",
+      look: "Warm, rich, firelit wood: the only cosy place on the floor, and the most evil.",
+      unreal: "Hunt Night is a timed event: the lodge's hunters spawn in waves across the districts." },
+    { name: "Rope Bridges & Lantern Ridge", size: "≈ 250 × 200 m · canopy walkways", tags: ["Side", "Vertical"],
+      what: "Rope Bridge Hamlet strung between trees, and Lantern Ridge, where the Mothwing keep their lanterns. The safe way around the forest, if you don't fall.",
+      path: "Side quests; routes that avoid the hunters on the ground.",
+      look: "Swaying bridges, lanterns, the dark forest floor far below.",
+      unreal: "Bridges as spline meshes. Swaying is a slow animated material or a simple rotation, not real physics (too expensive and unfair)." },
+    { name: "Hornback Hunting Camp", size: "≈ 160 × 160 m · a hunters' camp", tags: ["Main path"],
+      what: "The hunters' camp: tents, kill boards, trophy racks. Tourist hunters and their hounds, no boss. Where you get Licensed: become a hunter yourself.",
+      path: "Turn the Tables, then Licensed.",
+      look: "Campfires, floodlights and tripwires. The hunters' searchlights sweep the trees.",
+      unreal: "Stealth: AI Perception (sight cones) and light levels. Hiding in bushes is a trigger volume that lowers detection." },
+    { name: "Hag Hollow & Mossy Hollow", size: "≈ 220 × 220 m · swamp forest", tags: ["Side"],
+      what: "A sunken swamp on the forest floor: Mossy Hollow village on stilts, and Hag Hollow, where Auntie Sludge brews.",
+      path: "Side quests; scent-masking (hide from the hunters).",
+      look: "Green mist, glowing fungus and black water.",
+      unreal: "Landscape with water, plus a foliage pass. Glowing fungus via emissive materials gives the light here." },
+    { name: "The Wild Kennel & the Tallest Tree", size: "≈ 220 × 220 m · deep forest", tags: ["Side", "Mystery", "Trap"],
+      what: "The hunters' runaway hounds, ruled by the Dog Park Matriarch, and the Kennel Pit trap chamber (Alpha). At its heart, the Tallest Tree, whose roots go somewhere that isn't down.",
+      path: "Side quests; the floor's mystery.",
+      look: "The darkest, most overgrown forest. The Tallest Tree should be visible from everywhere on the floor.",
+      unreal: "Dense forest is where Nanite foliage shines. Keep sightlines short and scary, with the Tallest Tree breaking through as the landmark." }
+  ],
+  chambers: [["The Trophy Hall", "The Taxidermist", "Keys."], ["The Kennel Pit", "Alpha", "Trap."]],
+  build: ["The first big outdoor floor: learn Landscape, the Foliage tool and PCG forests here.", "Two layers (forest floor and canopy) is the identity: block out the vertical routes first.", "Performance matters: Nanite trees and World Partition, and test on your PC early."]
+}
+];
+
+const $tabs = document.getElementById('tabs');
+const $floor = document.getElementById('floor');
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+function mapSVG(f) {
+  const m = f.map, [hx, hy, hname] = m.hub;
+  let s = `<svg viewBox="0 0 600 440" xmlns="http://www.w3.org/2000/svg" font-family="IBM Plex Mono, monospace" font-size="12">`;
+  for (const [n, x, y] of m.nodes) s += `<line x1="${hx}" y1="${hy}" x2="${x}" y2="${y}" stroke="var(--accent)" stroke-width="5" stroke-dasharray="2 9" stroke-linecap="round"/>`;
+  for (const [n, x, y] of m.chambers) {
+    const d = m.nodes.find(k => k[0] === n);
+    s += `<line x1="${d[1]}" y1="${d[2]}" x2="${x}" y2="${y}" stroke="var(--alarm)" stroke-width="1.5" stroke-dasharray="4 4"/>`;
+  }
+  for (const [n, x, y, name] of m.nodes) {
+    s += `<rect x="${x - 78}" y="${y - 24}" width="156" height="48" rx="3" fill="var(--sheet)" stroke="var(--ink)" stroke-width="1.5"/>`;
+    s += `<text x="${x}" y="${y - 4}" text-anchor="middle" fill="var(--accent-ink)" font-weight="600">${n}</text>`;
+    s += `<text x="${x}" y="${y + 13}" text-anchor="middle" fill="var(--ink)">${esc(name)}</text>`;
+  }
+  s += `<rect x="${hx - 92}" y="${hy - 28}" width="184" height="56" rx="28" fill="var(--hub)" stroke="var(--hub)"/>`;
+  s += `<text x="${hx}" y="${hy - 4}" text-anchor="middle" fill="var(--hub-ink)" font-weight="600">HUB</text>`;
+  s += `<text x="${hx}" y="${hy + 13}" text-anchor="middle" fill="var(--hub-ink)">${esc(hname)}</text>`;
+  for (const [n, x, y, name] of m.chambers) {
+    s += `<rect x="${x - 60}" y="${y - 14}" width="120" height="28" fill="var(--sheet)" stroke="var(--alarm)" stroke-width="1.5"/>`;
+    s += `<text x="${x}" y="${y + 4}" text-anchor="middle" fill="var(--alarm)" font-size="10.5">${esc(name)}</text>`;
+  }
+  const [ex, ey, ename] = m.exit;
+  s += `<g transform="translate(${ex + (ex === hx ? 0 : 0)},${ey + (ey === hy ? 38 : 34)})"><text text-anchor="middle" fill="var(--teal)" font-weight="600">▼ ${esc(ename)}</text></g>`;
+  s += `</svg>`;
+  return s;
+}
+
+function render(n) {
+  const f = FLOORS.find(x => x.n === n) || FLOORS[0];
+  $tabs.innerHTML = FLOORS.map(x => `<a href="#floor-${x.n}" class="${x.n === f.n ? 'on' : ''}">FLOOR ${x.n} · ${esc(x.name.toUpperCase())}</a>`).join('');
+  let h = `<div class="eyebrow">Floor ${f.n} · ${esc(f.verb)}</div><h2>${esc(f.name)}</h2><p class="feel">${esc(f.feel)}</p>`;
+  h += `<div class="facts">${f.facts.map(([k, v]) => `<div><b>${esc(k)}</b>${esc(v)}</div>`).join('')}</div>`;
+  h += `<p><b>The way down:</b> ${esc(f.how)}</p>`;
+  h += `<div class="map" role="img" aria-label="Floor ${f.n} district map: the hub in the middle connected to each district, with boss chambers off their districts">${mapSVG(f)}</div>`;
+  h += `<h3>Districts</h3>`;
+  f.districts.forEach((d, i) => {
+    const tags = d.tags.map(t => `<span class="tag ${t === 'Hub' ? 'hubt' : t.includes('Main') ? 'path' : (t === 'Boss' || t.includes('trap') || t === 'Trap') ? 'boss' : ''}">${esc(t)}</span>`).join('');
+    h += `<section class="district ${d.hub ? 'hub' : ''}"><div class="num">${d.hub ? 'H' : i}</div><div class="body">
+      <h4>${esc(d.name)}</h4><div class="dims">${esc(d.size)}</div>${tags}
+      <p>${esc(d.what)}</p>
+      <dl><dt>Main path</dt><dd>${esc(d.path)}</dd><dt>Look</dt><dd>${esc(d.look)}</dd><dt>Unreal</dt><dd>${d.unreal}</dd></dl></div></section>`;
+  });
+  h += `<h3>Boss chambers (separate small levels)</h3><div class="chambers">${f.chambers.map(([a, b, c]) => `<div class="chamber"><b>${esc(b)}</b> · ${esc(a)}<br><span class="mono">${esc(c)}</span></div>`).join('')}</div>`;
+  h += `<h3>Building this floor</h3><div class="note"><ol>${f.build.map(x => `<li>${esc(x)}</li>`).join('')}</ol></div>`;
+  $floor.innerHTML = h;
+}
+
+function route() {
+  const m = (location.hash || '').match(/^#floor-(\d)$/);
+  render(m ? +m[1] : 1);
+}
+window.addEventListener('hashchange', () => { route(); document.getElementById('tabs').scrollIntoView(); });
+route();
+</script>

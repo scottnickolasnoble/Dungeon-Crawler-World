@@ -1,0 +1,1327 @@
+{
+  "pip": {
+    "name": "Intern Pip",
+    "offers": [
+      "tut_desk"
+    ],
+    "start": [
+      {
+        "if": "not flag('met_pip')",
+        "go": "hello"
+      },
+      {
+        "if": "is_ready('tut_basics')",
+        "go": "arena"
+      },
+      {
+        "if": "is_ready('tut_arena')",
+        "go": "last"
+      },
+      {
+        "if": "active('tut_basics')",
+        "go": "remind"
+      },
+      {
+        "go": "later"
+      }
+    ],
+    "nodes": {
+      "hello": {
+        "text": "Oh! A new one! Hi! Welcome to the Network Orientation Centre! I'm Pip, I'm an intern, I'm not paid, I'm also technically a contestant. Before you go down to Floor One I have to make sure you know how to, um, not die. Immediately.",
+        "choices": [
+          {
+            "text": "Okay. What do I need to know?",
+            "do": [
+              "flag:met_pip",
+              "complete:tut_desk",
+              "start:tut_basics"
+            ],
+            "go": "basics"
+          },
+          {
+            "text": "Where am I, exactly?",
+            "go": "where"
+          }
+        ]
+      },
+      "where": {
+        "text": "Under your old building! Every stairwell on Earth leads here now. This is the Landing. It's safe. Below this, nothing is safe. That's the show!",
+        "choices": [
+          {
+            "text": "Great. What do I need to know?",
+            "do": [
+              "flag:met_pip",
+              "complete:tut_desk",
+              "start:tut_basics"
+            ],
+            "go": "basics"
+          },
+          {
+            "text": "There's a video playing behind you. It just skipped.",
+            "go": "video"
+          }
+        ]
+      },
+      "video": {
+        "text": "It does that sometimes! It's fine! It's an old tape. Anyway! Moving on! Very fast!",
+        "choices": [
+          {
+            "text": "There was a symbol on the screen when it skipped.",
+            "do": [
+              "flag:saw_symbol"
+            ],
+            "go": "symbol"
+          },
+          {
+            "text": "Okay. What do I need to know?",
+            "do": [
+              "flag:met_pip",
+              "complete:tut_desk",
+              "start:tut_basics"
+            ],
+            "go": "basics"
+          }
+        ]
+      },
+      "symbol": {
+        "text": "...No there wasn't. Okay, there was. I'm not supposed to talk about the tape. I'm also not supposed to have watched it forty times. What do you need to know! Basics! Let's do basics.",
+        "choices": [
+          {
+            "text": "Basics, then.",
+            "do": [
+              "flag:met_pip",
+              "complete:tut_desk",
+              "start:tut_basics"
+            ],
+            "go": "basics"
+          }
+        ]
+      },
+      "basics": {
+        "text": "Three things! One: drink from the fountain by the wall. Thirst gets you down here before the monsters do. Two: I left you a Welcome Box on the end of my desk. Open it! It has your Network Materials Ledger in it, for tracking everything you pick up. Three: hit a training dummy with your pipe. Left click. Five times. Then come back to me.",
+        "choices": [
+          {
+            "text": "Got it."
+          },
+          {
+            "text": "What do the bars on my screen mean?",
+            "go": "hud"
+          }
+        ]
+      },
+      "hud": {
+        "text": "Red, bottom left, is your health. If it hits zero, our revival team is very good. Mostly. Under it, stamina, for sprinting, heavy swings and dodging. The thin blue line along the bottom is experience. Your quests are top right. They tick off as you do things!",
+        "choices": [
+          {
+            "text": "Thanks."
+          }
+        ]
+      },
+      "remind": {
+        "text": "Fountain, Welcome Box, five dummy hits! The list is on the right if you forget. I also forget. Constantly.",
+        "choices": [
+          {
+            "text": "What do the bars on my screen mean?",
+            "go": "hud"
+          },
+          {
+            "text": "On it."
+          }
+        ]
+      },
+      "arena": {
+        "text": "You drank, you unboxed, you hit a dummy! You're a natural. Now the fun part: the practice arena past the dummies. Cardboard goblins. They hit back, but softly. Watch the floor: when red fills up under them, step out of it, dodge with V, or tap F right as it fills to parry. Hold F to block. Right click is a heavy swing.",
+        "choices": [
+          {
+            "text": "Let's go.",
+            "do": [
+              "complete:tut_basics",
+              "start:tut_arena"
+            ]
+          }
+        ]
+      },
+      "last": {
+        "text": "Look at you! Okay, last thing: everyone wakes up with no class. You choose a race and a calling at the Hall of Callings on Floor Three. Until then it's you, that pipe and your lighter. The stairs down are at the end of the hall. Good luck. Please don't die, the paperwork is awful.",
+        "choices": [
+          {
+            "text": "Thanks, Pip.",
+            "do": [
+              "complete:tut_arena",
+              "start:tut_down"
+            ],
+            "go": "bye"
+          }
+        ]
+      },
+      "bye": {
+        "text": "Bye! I'll... see you. Probably. People say that and then they don't, but you might! Go on.",
+        "choices": [
+          {
+            "text": "Leave."
+          }
+        ]
+      },
+      "later": {
+        "text": "The stairs are at the far end. Go on! The audience is waiting. They're always waiting.",
+        "choices": [
+          {
+            "text": "What do the bars on my screen mean?",
+            "go": "hud"
+          },
+          {
+            "text": "Bye, Pip."
+          }
+        ]
+      }
+    }
+  },
+  "marta": {
+    "name": "Marta Vance",
+    "offers": [
+      "nobody_out",
+      "water_line",
+      "find_leak"
+    ],
+    "start": [
+      {
+        "if": "active('arrival')",
+        "go": "arrive"
+      },
+      {
+        "if": "is_ready('nobody_out')",
+        "go": "exit_found"
+      },
+      {
+        "if": "is_ready('the_stairs')",
+        "go": "stairs_done"
+      },
+      {
+        "if": "is_ready('water_line') or is_ready('find_leak')",
+        "go": "work_done"
+      },
+      {
+        "if": "done('the_stairs')",
+        "go": "farewell"
+      },
+      {
+        "go": "hello"
+      }
+    ],
+    "nodes": {
+      "arrive": {
+        "text": "Bathrobe and a lighter. You must be fresh off the stairs. Breathe. Everyone gets the same broadcast and everyone ends up here, in Stairwell Camp. It's the only safe ground on this floor. Monsters won't come inside the lights.",
+        "choices": [
+          {
+            "text": "How do I get out of here?",
+            "go": "rule"
+          }
+        ]
+      },
+      "rule": {
+        "text": "First rule: nobody knows how to leave. The first lot spent days searching. Someone found a glowing EXIT sign and everyone cheered. Behind the door was solid concrete. It isn't an exit. It's bait.",
+        "choices": [
+          {
+            "text": "So what do I do now?",
+            "go": "arrive2"
+          }
+        ]
+      },
+      "arrive2": {
+        "text": "You get stronger before you go wandering. The goblin packs near camp are weak; the ones further out are not. Water's at the camp tap when it works. Sleep at the inn. Don't wander into the dark. You'll learn why the first time you do. And when you're ready, the stairwell behind me goes down. It's chained. Ask me about that later.",
+        "choices": [
+          {
+            "text": "Got it. Thanks, Marta.",
+            "do": [
+              "flag:met_marta",
+              "complete:arrival"
+            ]
+          },
+          {
+            "text": "Why has nobody reached the bottom?",
+            "do": [
+              "flag:met_marta",
+              "complete:arrival"
+            ],
+            "go": "why"
+          }
+        ]
+      },
+      "hello": {
+        "text": "Still breathing? Good. I keep this place standing, and I keep a list of everyone who went down those stairs. Want to know how many sent word they reached the bottom? None. Not one. What do you need?",
+        "choices": [
+          {
+            "text": "Why has nobody reached the bottom?",
+            "if": "not started('nobody_out')",
+            "go": "why"
+          },
+          {
+            "text": "Got any work for me?",
+            "go": "work"
+          },
+          {
+            "text": "Heard anything strange out there?",
+            "if": "not started('drowned_bracelet')",
+            "go": "rumour"
+          },
+          {
+            "text": "[Charisma 11] Any spare supplies for a new arrival?",
+            "if": "not flag('marta_gift')",
+            "check": {
+              "stat": "CHA",
+              "dc": 11,
+              "pass": "gift_yes",
+              "fail": "gift_no"
+            }
+          },
+          {
+            "text": "Patch me up. (10 gold)",
+            "if": "hurt() and gold() >= 10",
+            "do": [
+              "gold:-10",
+              "heal",
+              "notice:Marta patches you up. Full health."
+            ]
+          },
+          {
+            "text": "Goodbye."
+          }
+        ]
+      },
+      "why": {
+        "text": "Eighteen floors. Every contestant thinks they'll be the one. The Network says people have finished, but nobody's ever met one. Start with the Exit Sign everyone talks about, far end of the floor. Open the door. Then tell me what you think it means.",
+        "choices": [
+          {
+            "text": "I'll go and look.",
+            "do": [
+              "start:nobody_out"
+            ]
+          },
+          {
+            "text": "Not my problem.",
+            "go": "notmine"
+          }
+        ]
+      },
+      "notmine": {
+        "text": "It will be. Come back when it is.",
+        "choices": [
+          {
+            "text": "Fine. I'll look into it.",
+            "do": [
+              "start:nobody_out"
+            ]
+          },
+          {
+            "text": "Leave."
+          }
+        ]
+      },
+      "exit_found": {
+        "text": "You saw the wall. And the marks. Hundreds of them, old and new. And the one with the date, from before this season. So now you know what I know: people have been here before us. Long before. The real way down is the stairwell door behind me, and it's chained shut. Sergeant Pylon holds the key and charges a toll in cones.",
+        "choices": [
+          {
+            "text": "I'll deal with Pylon.",
+            "do": [
+              "complete:nobody_out",
+              "start:the_stairs"
+            ]
+          },
+          {
+            "text": "Who chained it?",
+            "go": "chain"
+          }
+        ]
+      },
+      "chain": {
+        "text": "The Network did. They like a toll gate. Makes for good television. Pylon just took the job. Though he guards it like a man who's scared of something, and it isn't us.",
+        "choices": [
+          {
+            "text": "Then I'll deal with Pylon.",
+            "do": [
+              "complete:nobody_out",
+              "start:the_stairs"
+            ]
+          }
+        ]
+      },
+      "work": {
+        "text": "Our water keeps going missing. The goblins out of Pylon Point raid the water line, and that's half of it. Thin out their packs. Or find out where the rest is going: the Ramp Spiral, maybe, or that bus that never stops burning. Do both if you're bored.",
+        "choices": [
+          {
+            "text": "I'll thin out the packs.",
+            "if": "not started('water_line')",
+            "do": [
+              "start:water_line"
+            ]
+          },
+          {
+            "text": "I'll find the leak.",
+            "if": "not started('find_leak')",
+            "do": [
+              "start:find_leak"
+            ]
+          },
+          {
+            "text": "Neither, for now."
+          }
+        ]
+      },
+      "rumour": {
+        "text": "The Flooded Bay. There's a big sucker of a thing in there that won't leave one spot. Folk think it's sitting on treasure. I think it's sitting on someone.",
+        "choices": [
+          {
+            "text": "I'll take a look.",
+            "do": [
+              "start:drowned_bracelet"
+            ]
+          },
+          {
+            "text": "Sounds grim. Pass."
+          }
+        ]
+      },
+      "work_done": {
+        "text": "The water's running again. I don't know how you did it and I'm not going to ask. You earned this.",
+        "choices": [
+          {
+            "text": "Glad to help.",
+            "do": [
+              "complete:water_line",
+              "complete:find_leak"
+            ]
+          }
+        ]
+      },
+      "gift_yes": {
+        "text": "Ha. You've got a face people want to help. Don't waste it. Here: some coin and a bandage. Don't tell the others.",
+        "choices": [
+          {
+            "text": "Thanks, Marta.",
+            "do": [
+              "flag:marta_gift",
+              "gold:25",
+              "heal"
+            ]
+          }
+        ]
+      },
+      "gift_no": {
+        "text": "Supplies are for people who've earned them. Go earn them.",
+        "choices": [
+          {
+            "text": "Fair enough.",
+            "do": [
+              "flag:marta_gift"
+            ]
+          }
+        ]
+      },
+      "stairs_done": {
+        "text": "Pylon's dealt with. The goblins are already arguing about who gets his cones. Here. The stairwell key.",
+        "choices": [
+          {
+            "text": "Take the key.",
+            "do": [
+              "complete:the_stairs",
+              "banner:FLOOR COMPLETION CONDITION: 1/1",
+              "network:Oh! You found the secret! ...There isn't one. Floor 2 is now open. It's damp down there. Like, emotionally too."
+            ],
+            "go": "farewell"
+          }
+        ]
+      },
+      "farewell": {
+        "text": "Nobody knew there was a condition. Did you hear it? 1/1. It's been counting all along. ...Go on. Come back if you can.",
+        "choices": [
+          {
+            "text": "And if I can't?",
+            "go": "most"
+          },
+          {
+            "text": "I'll come back."
+          }
+        ]
+      },
+      "most": {
+        "text": "Most don't.",
+        "choices": [
+          {
+            "text": "Leave."
+          }
+        ]
+      }
+    }
+  },
+  "pickles": {
+    "name": "Pickles",
+    "offers": [
+      "cone_collector"
+    ],
+    "start": [
+      {
+        "if": "is_ready('cone_collector')",
+        "go": "twelve"
+      },
+      {
+        "if": "is_ready('cone_coup')",
+        "go": "crown"
+      },
+      {
+        "go": "hello"
+      }
+    ],
+    "nodes": {
+      "hello": {
+        "text": "Pickles' Junk! Everything's junk! Some of it's good junk!",
+        "choices": [
+          {
+            "text": "Show me your junk.",
+            "go": "shop"
+          },
+          {
+            "text": "Why are you buying traffic cones?",
+            "if": "not started('cone_collector')",
+            "go": "cones"
+          },
+          {
+            "text": "About Pylon...",
+            "if": "done('cone_collector') and not flag('pylon_handled') and not started('cone_coup')",
+            "go": "again"
+          },
+          {
+            "text": "Goodbye."
+          }
+        ]
+      },
+      "shop": {
+        "text": "Ah. The shelves are, um, being restocked. With better junk. Come back when the Network delivers my stock. They said soon. They always say soon.",
+        "choices": [
+          {
+            "text": "Right."
+          }
+        ]
+      },
+      "cones": {
+        "text": "Reasons! Business reasons! Bring me twelve chunks of cone plastic and I'll tell you the reasons. The goblins drop it. Mostly when they're on fire.",
+        "choices": [
+          {
+            "text": "Twelve cones. Got it.",
+            "do": [
+              "start:cone_collector"
+            ]
+          },
+          {
+            "text": "Sounds shady."
+          }
+        ]
+      },
+      "twelve": {
+        "text": "Twelve! Lovely, lovely plastic. Right, the reasons. This isn't road cone. It's Network-grade. Machines down here go funny near it. I'm making a key. And Pylon? Pylon's coning off the stairwell. Toll forever. I can make him an offer he likes. Or you can make him an example.",
+        "choices": [
+          {
+            "text": "Make him the offer. (Pay 100 gold)",
+            "if": "gold() >= 100",
+            "do": [
+              "complete:cone_collector",
+              "gold:-100",
+              "truce:camp:Pylon Point",
+              "flag:pylon_handled",
+              "flag:pylon_truce",
+              "network:A truce with the goblins! Peace in our time. Ratings are down 40%."
+            ]
+          },
+          {
+            "text": "Make him an example.",
+            "do": [
+              "complete:cone_collector",
+              "start:cone_coup"
+            ]
+          },
+          {
+            "text": "I'll think about it.",
+            "do": [
+              "complete:cone_collector"
+            ]
+          }
+        ]
+      },
+      "again": {
+        "text": "Still thinking? The offer stands. A hundred gold and the goblins love you. Or no gold, and one dead sergeant.",
+        "choices": [
+          {
+            "text": "Make the offer. (Pay 100 gold)",
+            "if": "gold() >= 100",
+            "do": [
+              "gold:-100",
+              "truce:camp:Pylon Point",
+              "flag:pylon_handled",
+              "flag:pylon_truce"
+            ]
+          },
+          {
+            "text": "I'll take him down.",
+            "do": [
+              "start:cone_coup"
+            ]
+          },
+          {
+            "text": "Later."
+          }
+        ]
+      },
+      "crown": {
+        "text": "You did it! Pylon's cones are on the open market! I mean, I have them. Here, a crown. Made it myself. From him.",
+        "choices": [
+          {
+            "text": "It's... very orange.",
+            "do": [
+              "complete:cone_coup"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "bo": {
+    "name": "Benchwright Bo",
+    "offers": [
+      "bo_toolbox"
+    ],
+    "start": [
+      {
+        "if": "is_ready('bo_toolbox')",
+        "go": "found"
+      },
+      {
+        "go": "hello"
+      }
+    ],
+    "nodes": {
+      "hello": {
+        "text": "Bo's Benches. Tables built to last, delivered to your Crash Pad. Mostly in one piece.",
+        "choices": [
+          {
+            "text": "How do crafting tables work?",
+            "go": "how"
+          },
+          {
+            "text": "You look like you lost something.",
+            "if": "not started('bo_toolbox')",
+            "go": "lost"
+          },
+          {
+            "text": "Goodbye."
+          }
+        ]
+      },
+      "how": {
+        "text": "Each table makes its own things. Sixty recipes apiece, five tiers. Upgrade a table to unlock the next tier. And put tables next to each other: an Alchemy Lab beside a Boom Bench lets you brew firebombs. Tables talk to each other. Not literally. Mostly. My stock's still on the lorry, mind.",
+        "choices": [
+          {
+            "text": "Thanks."
+          }
+        ]
+      },
+      "lost": {
+        "text": "My toolbox. Dropped it out by the Ramp Spiral, and something nicked the springs out of it. Mimic springs. Those vending things at the Lost Property Office are full of them. Bring me the box and three springs and I'll give you the friends-and-family rate.",
+        "choices": [
+          {
+            "text": "I'll find it.",
+            "do": [
+              "start:bo_toolbox"
+            ]
+          },
+          {
+            "text": "Not today."
+          }
+        ]
+      },
+      "found": {
+        "text": "My box! And springs! You lovely lunatic. From now on you get the friends-and-family rate. Twenty percent off every table.",
+        "choices": [
+          {
+            "text": "Pleasure doing business.",
+            "do": [
+              "complete:bo_toolbox"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "exit_sign": {
+    "name": "The Exit Sign",
+    "start": [
+      {
+        "if": "flag('saw_wall')",
+        "go": "again"
+      },
+      {
+        "go": "door"
+      }
+    ],
+    "nodes": {
+      "door": {
+        "text": "A green EXIT sign, humming, brighter than anything else on the floor. Under it, a fire door. You push the bar. It opens onto concrete. Solid, poured, seamless concrete, a hand's width behind the frame.",
+        "choices": [
+          {
+            "text": "Look closer at the frame.",
+            "go": "marks"
+          }
+        ]
+      },
+      "marks": {
+        "text": "Scratch marks. Hundreds of them, all around the doorway: tally marks, initials, a few words. Some are fresh. Some have been painted over and scratched again. One, low down, has a date carved beside it. It's from before this season of the show began.",
+        "choices": [
+          {
+            "text": "Somebody else was here first.",
+            "do": [
+              "flag:saw_wall",
+              "network:Contestant! That door is decorative. Please enjoy it responsibly."
+            ],
+            "go": "booth"
+          }
+        ]
+      },
+      "booth": {
+        "text": "Next to the door, an old parking attendant's booth. Inside, a ticket machine with eighteen level buttons, on a floor that only has a few. There are torn tickets on the ground around it.",
+        "choices": [
+          {
+            "text": "Look for the tickets.",
+            "do": [
+              "start:ticket_machine"
+            ]
+          },
+          {
+            "text": "Leave it."
+          }
+        ]
+      },
+      "again": {
+        "text": "The wall. The marks. The date. It's still from before.",
+        "choices": [
+          {
+            "text": "Leave."
+          }
+        ]
+      }
+    }
+  },
+  "ticket_1": {
+    "name": "A torn parking ticket",
+    "start": [
+      {
+        "go": "read"
+      }
+    ],
+    "nodes": {
+      "read": {
+        "text": "A damp parking ticket. Printed on it: an open EYE. LEVEL 1. TIME IN 01:45.",
+        "choices": [
+          {
+            "text": "Keep it.",
+            "do": [
+              "start:ticket_machine",
+              "flag:ticket_1"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "ticket_2": {
+    "name": "A torn parking ticket",
+    "start": [
+      {
+        "go": "read"
+      }
+    ],
+    "nodes": {
+      "read": {
+        "text": "A singed parking ticket. Printed on it: a STAIR. LEVEL 7. TIME IN 02:30.",
+        "choices": [
+          {
+            "text": "Keep it.",
+            "do": [
+              "start:ticket_machine",
+              "flag:ticket_2"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "ticket_3": {
+    "name": "A torn parking ticket",
+    "start": [
+      {
+        "go": "read"
+      }
+    ],
+    "nodes": {
+      "read": {
+        "text": "A parking ticket chewed at the corner. Printed on it: a SPIRAL. LEVEL 18. TIME IN 03:10.",
+        "choices": [
+          {
+            "text": "Keep it.",
+            "do": [
+              "start:ticket_machine",
+              "flag:ticket_3"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "ticket_machine": {
+    "name": "Ticket machine",
+    "start": [
+      {
+        "if": "flag('machine_solved')",
+        "go": "solved"
+      },
+      {
+        "if": "not (flag('ticket_1') and flag('ticket_2') and flag('ticket_3'))",
+        "go": "missing"
+      },
+      {
+        "go": "first"
+      }
+    ],
+    "nodes": {
+      "missing": {
+        "text": "Eighteen buttons, each with a little symbol stamped above it. PLEASE INSERT TICKETS. There are three slots. You don't have three tickets yet; they're scattered around the booth.",
+        "choices": [
+          {
+            "text": "Leave."
+          }
+        ]
+      },
+      "first": {
+        "text": "Three tickets, three symbols, three times. The machine blinks: PRESS LEVEL. Which do you press first?",
+        "choices": [
+          {
+            "text": "The eye.",
+            "go": "second"
+          },
+          {
+            "text": "The stair.",
+            "go": "wrong"
+          },
+          {
+            "text": "The spiral.",
+            "go": "wrong"
+          }
+        ]
+      },
+      "second": {
+        "text": "Click. The eye button stays lit. PRESS LEVEL.",
+        "choices": [
+          {
+            "text": "The stair.",
+            "go": "third"
+          },
+          {
+            "text": "The spiral.",
+            "go": "wrong"
+          }
+        ]
+      },
+      "third": {
+        "text": "Click. Two buttons lit. One left.",
+        "choices": [
+          {
+            "text": "The spiral.",
+            "go": "right"
+          }
+        ]
+      },
+      "wrong": {
+        "text": "BZZT. The lights die. INVALID SEQUENCE. PLEASE PAY AT THE BOOTH. (Maybe the times on the tickets matter.)",
+        "choices": [
+          {
+            "text": "Try again.",
+            "go": "first"
+          },
+          {
+            "text": "Leave."
+          }
+        ]
+      },
+      "right": {
+        "text": "All three lit. The machine prints a ticket of its own and spits it at your feet. It doesn't say PAID. It says: THE BUILDING WAS HERE BEFORE THE CONTESTANTS. Under it, a symbol you've never seen. You have the feeling it has seen you.",
+        "choices": [
+          {
+            "text": "Pocket the ticket.",
+            "do": [
+              "flag:machine_solved",
+              "complete:ticket_machine",
+              "network:Congratulations, contestant! You have discovered a thing. Things are not currently redeemable for fan boxes."
+            ]
+          }
+        ]
+      },
+      "solved": {
+        "text": "The machine is dark. The little symbol above button eighteen is warm to the touch.",
+        "choices": [
+          {
+            "text": "Leave."
+          }
+        ]
+      }
+    }
+  },
+  "bracelet": {
+    "name": "A drowned contestant",
+    "start": [
+      {
+        "if": "flag('bay_bracelet')",
+        "go": "again"
+      },
+      {
+        "go": "body"
+      }
+    ],
+    "nodes": {
+      "body": {
+        "text": "Half under the water, wedged against a pillar: what's left of a contestant. Old. Years old. On the wrist, a Network bracelet with a cracked screen that is still, impossibly, lit.",
+        "choices": [
+          {
+            "text": "Read the bracelet.",
+            "go": "read"
+          },
+          {
+            "text": "Leave them be."
+          }
+        ]
+      },
+      "read": {
+        "text": "Thousands of unread notifications. Fan counts. Box alerts. Sponsor offers. You scroll to the very first one, from the day they arrived. It says: CONTESTANT, YOU HAVE BEEN SELECTED.",
+        "choices": [
+          {
+            "text": "Selected. Not unlucky. Selected.",
+            "do": [
+              "start:drowned_bracelet",
+              "flag:bay_bracelet",
+              "complete:drowned_bracelet"
+            ]
+          }
+        ]
+      },
+      "again": {
+        "text": "The bracelet buzzes. Another notification. Nobody will ever read it.",
+        "choices": [
+          {
+            "text": "Leave."
+          }
+        ]
+      }
+    }
+  },
+  "waterworks": {
+    "name": "Goblin waterworks",
+    "start": [
+      {
+        "if": "flag('valve_smashed') or flag('valve_shared')",
+        "go": "after"
+      },
+      {
+        "go": "look"
+      }
+    ],
+    "nodes": {
+      "look": {
+        "text": "Here's your water. A tangle of stolen pipe and valves, lashed together with cone tape, carrying the camp's water out to rows of sad goblin seedlings. They're not stealing it to be cruel. They're growing food. They need water too.",
+        "choices": [
+          {
+            "text": "Smash it. The camp comes first.",
+            "do": [
+              "flag:valve_smashed",
+              "force:water_line",
+              "notice:You wreck the pipes. Water rushes back toward camp. Somewhere in Pylon Point, goblins start shouting."
+            ]
+          },
+          {
+            "text": "Fix the valve so both sides get water.",
+            "do": [
+              "flag:valve_shared",
+              "force:water_line",
+              "truce:camp:Pylon Point",
+              "notice:You fit a splitter. Half for the camp, half for the seedlings. The goblins watching from the dark go quiet, then go home."
+            ]
+          },
+          {
+            "text": "Leave it. Maybe Pickles can talk to them.",
+            "do": [
+              "flag:pickles_knows"
+            ]
+          }
+        ]
+      },
+      "after": {
+        "text": "The pipes gurgle. Whatever you decided, the water's going somewhere now.",
+        "choices": [
+          {
+            "text": "Leave."
+          }
+        ]
+      }
+    }
+  },
+  "pylon": {
+    "name": "Sergeant Pylon",
+    "start": [
+      {
+        "if": "flag('pylon_killed')",
+        "go": "dead"
+      },
+      {
+        "if": "flag('pylon_handled')",
+        "go": "ally"
+      },
+      {
+        "if": "flag('truth_clue_1') and flag('truth_clue_2')",
+        "go": "truth"
+      },
+      {
+        "if": "done('cone_collector') or flag('pickles_knows')",
+        "go": "bargain"
+      },
+      {
+        "go": "halt"
+      }
+    ],
+    "nodes": {
+      "halt": {
+        "text": "HALT! This is a CONE ZONE! Nobody passes! Nobody goes down! Not without paying! Not even WITH paying, actually, I've changed the policy!",
+        "choices": [
+          {
+            "text": "Then I'll go through you.",
+            "go": "fight"
+          },
+          {
+            "text": "Back off."
+          }
+        ]
+      },
+      "fight": {
+        "text": "LADS! FALL IN!",
+        "choices": [
+          {
+            "text": "Fight."
+          }
+        ]
+      },
+      "bargain": {
+        "text": "You're the one Pickles sent? Fine. FINE. A hundred gold and the key's yours. Don't tell the lads I'm soft. And don't, whatever you do, touch the cones by the stairwell.",
+        "choices": [
+          {
+            "text": "Deal. (Pay 100 gold)",
+            "if": "gold() >= 100",
+            "do": [
+              "gold:-100",
+              "truce:camp:Pylon Point",
+              "flag:pylon_handled",
+              "flag:pylon_truce",
+              "network:A negotiated settlement! How grown-up. Viewers have left to make a sandwich."
+            ],
+            "go": "after_deal"
+          },
+          {
+            "text": "Why don't you want anyone touching the cones?",
+            "go": "scared"
+          },
+          {
+            "text": "No deal."
+          }
+        ]
+      },
+      "scared": {
+        "text": "...Because they're holding something. Under the Point. It scratches at night. I didn't stack those cones for decoration, contestant. I stacked them because it STOPS when I do.",
+        "choices": [
+          {
+            "text": "Deal, then. (Pay 100 gold)",
+            "if": "gold() >= 100",
+            "do": [
+              "gold:-100",
+              "truce:camp:Pylon Point",
+              "flag:pylon_handled",
+              "flag:pylon_truce"
+            ],
+            "go": "after_deal"
+          },
+          {
+            "text": "I'll think about it."
+          }
+        ]
+      },
+      "after_deal": {
+        "text": "Key's with Marta's lot now. And if you see me later, further down, you didn't. Got it?",
+        "choices": [
+          {
+            "text": "Got it."
+          }
+        ]
+      },
+      "truth": {
+        "text": "That ticket in your pocket. The bracelet. You know, don't you. You know it was here first. ...Come on. Quietly. I'll show you.",
+        "choices": [
+          {
+            "text": "Show me.",
+            "go": "seal"
+          },
+          {
+            "text": "I'd rather fight.",
+            "go": "fight"
+          }
+        ]
+      },
+      "seal": {
+        "text": "Behind the stairwell, under a hundred stacked cones: a hatch with the same symbol as your ticket. Something on the other side knocks, slow, like it's counting. Pylon pats the cones. \"Pickles reckons he can make a key from this plastic. One that opens their seals. Not this one. Never this one.\"",
+        "choices": [
+          {
+            "text": "Leave the seal. Take the stairwell key.",
+            "do": [
+              "truce:camp:Pylon Point",
+              "flag:pylon_handled",
+              "flag:pylon_truth",
+              "flag:cone_key",
+              "network:Contestant has found an UNSCHEDULED STORYLINE. Please return to the scheduled storyline."
+            ]
+          }
+        ]
+      },
+      "ally": {
+        "text": "Still here. Still stacking. You go on down. Somebody should.",
+        "choices": [
+          {
+            "text": "Leave."
+          }
+        ]
+      },
+      "dead": {
+        "text": "The Point is quiet. Cones lie everywhere, kicked over. Under the stairwell, something is knocking.",
+        "choices": [
+          {
+            "text": "Leave."
+          }
+        ]
+      }
+    }
+  },
+  "innkeeper": {
+    "name": "The innkeeper",
+    "start": [
+      {
+        "go": "hello"
+      }
+    ],
+    "nodes": {
+      "hello": {
+        "text": "Room for the night? Ten gold. You'll wake up rested, fed and watered. Mostly watered.",
+        "choices": [
+          {
+            "text": "A room, please. (10 gold)",
+            "if": "gold() >= 10",
+            "do": [
+              "gold:-10",
+              "heal",
+              "notice:You sleep. Badly. But you wake up whole."
+            ]
+          },
+          {
+            "text": "Not tonight."
+          }
+        ]
+      }
+    }
+  },
+  "merchant": {
+    "name": "Merchant",
+    "start": [
+      {
+        "go": "hello"
+      }
+    ],
+    "nodes": {
+      "hello": {
+        "text": "Stock's still on the Network lorry. They said it'd be here soon. They always say soon. Come back when you've got something to carry it in.",
+        "choices": [
+          {
+            "text": "Right."
+          }
+        ]
+      }
+    }
+  },
+  "crew_clinic": {
+    "name": "Priya Raman",
+    "start": [
+      {
+        "go": "hello"
+      }
+    ],
+    "nodes": {
+      "hello": {
+        "text": "Stairwell Clinic. I'm Priya. If you're bleeding, sit. If you're not, don't make me change that. We patch up anyone. Even the idiots. Especially the idiots.",
+        "choices": [
+          {
+            "text": "Patch me up. (15 gold)",
+            "if": "hurt() and gold() >= 15",
+            "do": [
+              "gold:-15",
+              "heal",
+              "notice:Priya stitches you up without anaesthetic and without sympathy. Full health."
+            ]
+          },
+          {
+            "text": "Patch me up. (I'm broke.)",
+            "if": "hurt() and gold() < 15",
+            "go": "broke"
+          },
+          {
+            "text": "Anything strange out there?",
+            "go": "rumour"
+          },
+          {
+            "text": "Goodbye."
+          }
+        ]
+      },
+      "broke": {
+        "text": "Course you are. Sit. Next time bring something. Or someone. We're short of hands.",
+        "choices": [
+          {
+            "text": "Thanks, Priya.",
+            "do": [
+              "heal"
+            ]
+          }
+        ]
+      },
+      "rumour": {
+        "text": "People keep finding bracelets on the dead. Old ones, from seasons nobody remembers. Still buzzing. I keep them in a box. I don't know why. If you find any, bring them here.",
+        "choices": [
+          {
+            "text": "I will."
+          }
+        ]
+      }
+    }
+  },
+  "crew_lamplighters": {
+    "name": "Ivy Marsh",
+    "start": [
+      {
+        "go": "hello"
+      }
+    ],
+    "nodes": {
+      "hello": {
+        "text": "Stand in the light, contestant. The dark is where they wait. The Lamplighters burn it out, floor by floor. Lady Lumen sees everything we light. Do you walk in the light?",
+        "choices": [
+          {
+            "text": "I walk where I like.",
+            "go": "cold"
+          },
+          {
+            "text": "Tell me about Lady Lumen.",
+            "go": "lumen"
+          },
+          {
+            "text": "Goodbye."
+          }
+        ]
+      },
+      "cold": {
+        "text": "Then the dark will have you, and I won't mourn. Go.",
+        "choices": [
+          {
+            "text": "Leave."
+          }
+        ]
+      },
+      "lumen": {
+        "text": "She is the brightest thing in every room. She asks only that we never let a light go out. Find her temple when you go deeper. You'll know it: it's the only warm place left.",
+        "choices": [
+          {
+            "text": "Thanks."
+          }
+        ]
+      }
+    }
+  },
+  "crew_teamdex": {
+    "name": "Dex Okafor",
+    "start": [
+      {
+        "go": "hello"
+      }
+    ],
+    "nodes": {
+      "hello": {
+        "text": "Hey! HEY! Camera's on, smile! Dex Okafor, Team Dex, number one on the leaderboard this week. Big fan of your work. Mostly the falling over. Want to team up? I get the kill shots, you get... the experience.",
+        "choices": [
+          {
+            "text": "Pass.",
+            "go": "pass"
+          },
+          {
+            "text": "Why are you so obsessed with fans?",
+            "go": "fans"
+          },
+          {
+            "text": "Goodbye."
+          }
+        ]
+      },
+      "pass": {
+        "text": "Your loss! Literally, your ratings are terrible. See you at the bottom. I'll be the one waving.",
+        "choices": [
+          {
+            "text": "Leave."
+          }
+        ]
+      },
+      "fans": {
+        "text": "Because you can feel them, can't you? Every new one. Like a hand on your back. Pushing you along. ...It's a good feeling. It's a good feeling.",
+        "choices": [
+          {
+            "text": "Leave."
+          }
+        ]
+      }
+    }
+  },
+  "crew_speedrun": {
+    "name": "Ming Zhao",
+    "start": [
+      {
+        "go": "hello"
+      }
+    ],
+    "nodes": {
+      "hello": {
+        "text": "Don't talk. Every second's a second. Fine: thirty seconds. Stairs are out past the big camp. There's a hidden hatch somewhere on every floor with a page in it. I skip those. You shouldn't. Time's up.",
+        "choices": [
+          {
+            "text": "What's at the bottom?",
+            "go": "bottom"
+          },
+          {
+            "text": "Leave."
+          }
+        ]
+      },
+      "bottom": {
+        "text": "Nobody's been. That's the point. First one there wins. ...I hope it's a door.",
+        "choices": [
+          {
+            "text": "Leave."
+          }
+        ]
+      }
+    }
+  }
+}

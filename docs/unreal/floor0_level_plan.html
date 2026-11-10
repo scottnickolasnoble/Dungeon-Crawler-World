@@ -1,0 +1,280 @@
+<title>Floor 0 Level Plan</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=IBM+Plex+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: a single reading column like a level-design doc; the map sits on drafting paper; zones are numbered because the order is the player's path. */
+:root {
+  --paper: #f3f1ea; --sheet: #fbfaf6; --ink: #1d2226; --muted: #5d656b; --rule: #d6d2c4;
+  --network: #e8b400; --network-ink: #6b5200; --teal: #0e8a8a; --alarm: #c2362b;
+  --display: "Archivo Black", "Arial Black", Impact, sans-serif;
+  --body: "Source Serif 4", Georgia, serif;
+  --mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --paper: #16191b; --sheet: #1e2225; --ink: #e7e5de; --muted: #9aa1a6; --rule: #353a3e;
+  --network: #f2c533; --network-ink: #f2c533; --teal: #3cc0c0; --alarm: #ef6a5e; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --paper: #16191b; --sheet: #1e2225; --ink: #e7e5de; --muted: #9aa1a6; --rule: #353a3e;
+  --network: #f2c533; --network-ink: #f2c533; --teal: #3cc0c0; --alarm: #ef6a5e; color-scheme: dark }
+body { background: var(--paper); color: var(--ink); font: 17px/1.6 var(--body); }
+.wrap { max-width: 780px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 32px 64px; }
+.eyebrow { font: 600 12px var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--network-ink); }
+h1 { font: 40px/1.05 var(--display); margin: 6px 0 10px; text-wrap: balance; }
+h2 { font: 22px/1.2 var(--display); margin: 44px 0 10px; text-wrap: balance; }
+h3 { font-size: 20px; margin: 0; text-wrap: balance; }
+p { margin: 8px 0; }
+.lede { font-size: 19px; color: var(--muted); }
+.mono { font-family: var(--mono); font-size: 13px; }
+.facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1px; background: var(--rule); border: 1px solid var(--rule); margin: 20px 0; }
+.facts div { background: var(--sheet); padding: 10px 12px; }
+.facts b { display: block; font: 600 11px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.facts span { font-variant-numeric: tabular-nums; }
+.map { background: var(--sheet); border: 1px solid var(--rule); padding: 10px; overflow-x: auto; }
+.map svg { display: block; width: 100%; min-width: 520px; height: auto; }
+.zone { border-top: 2px solid var(--ink); padding: 18px 0 8px; display: grid; grid-template-columns: 54px 1fr; gap: 0 14px; }
+.num { font: 34px/1 var(--display); color: var(--network-ink); }
+.zone .body { min-width: 0; }
+.dims { font: 13px var(--mono); color: var(--muted); margin: 2px 0 8px; }
+.teaches { display: inline-block; font: 600 11px var(--mono); letter-spacing: .06em; text-transform: uppercase; background: var(--network); color: #2a2100; padding: 2px 7px; border-radius: 2px; margin: 0 6px 6px 0; }
+dl { display: grid; grid-template-columns: 96px 1fr; gap: 6px 12px; margin: 10px 0; font-size: 15.5px; }
+dt { font: 600 11px var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); padding-top: 3px; }
+dd { margin: 0; }
+.quote { border-left: 3px solid var(--network); padding-left: 12px; font-style: italic; color: var(--muted); margin: 10px 0; }
+.mystery { color: var(--alarm); }
+table { border-collapse: collapse; font-size: 15px; width: 100%; }
+.tablewrap { overflow-x: auto; margin: 12px 0; }
+th, td { border-bottom: 1px solid var(--rule); padding: 7px 8px; text-align: left; vertical-align: top; }
+th { font: 600 11px var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+td code, p code, li code { font: 13px var(--mono); background: var(--sheet); border: 1px solid var(--rule); padding: 0 4px; border-radius: 2px; }
+ol.steps { padding-left: 22px; }
+ol.steps li { margin: 6px 0; }
+.note { background: var(--sheet); border: 1px solid var(--rule); padding: 12px 14px; font-size: 15.5px; }
+</style>
+
+<div class="wrap">
+  <div class="eyebrow">Downstairs · Unreal Engine 5 · Level design doc</div>
+  <h1>Floor 0: The Landing</h1>
+  <p class="lede">The Network's Orientation Centre. Bureaucratic, bright, wrong: a TV-studio lobby that's a little too eager. It teaches every system the game uses, plants the first seed of the mystery, and ends with the lights going out behind you.</p>
+
+  <div class="facts">
+    <div><b>Footprint</b><span>≈ 70 × 150 m</span></div>
+    <div><b>Main path</b><span>≈ 260 m walked</span></div>
+    <div><b>Play time</b><span>15–25 min</span></div>
+    <div><b>Zones</b><span>9, one optional</span></div>
+    <div><b>Enemies</b><span>Cardboard goblins only</span></div>
+  </div>
+
+  <h2>Scale in Unreal</h2>
+  <p>Unreal measures in <b>centimetres</b>: 1 m = 100 units. Turn grid snapping on (10 or 50 units) and keep these sizes so the place feels human:</p>
+  <div class="tablewrap"><table>
+    <tr><th>Thing</th><th>Size</th><th>In units</th></tr>
+    <tr><td>Player (default capsule)</td><td>1.8 m tall, 0.42 m radius</td><td class="mono">180 / 42</td></tr>
+    <tr><td>Doorway</td><td>1.2–1.5 m wide, 2.3 m tall</td><td class="mono">120–150 × 230</td></tr>
+    <tr><td>Corridor</td><td>3–4 m wide</td><td class="mono">300–400</td></tr>
+    <tr><td>Normal ceiling</td><td>3 m (Earth), 4–5 m (offices)</td><td class="mono">300–500</td></tr>
+    <tr><td>Big hall ceiling</td><td>8–10 m</td><td class="mono">800–1000</td></tr>
+    <tr><td>Step (character can climb)</td><td>up to 0.45 m by default</td><td class="mono">Max Step Height 45</td></tr>
+    <tr><td>Combat space</td><td>at least 12 × 12 m clear per enemy group</td><td class="mono">1200 × 1200</td></tr>
+  </table></div>
+
+  <h2>The map</h2>
+  <p>Top-down, not to exact scale. The numbers are the order the player goes through. Gates (<span class="mono">▬</span>) stay shut until the zone before is done.</p>
+  <div class="map" role="img" aria-label="Floor 0 top-down plan: the arrival stairwell at the bottom leads into the Welcome Atrium with the Orientation Desk; side wings hold the Amenities Hall and the Development Suite; then the Training Yard, the round Practice Arena with a hidden Staff Only corridor behind it, and the Going Down hall at the top.">
+    <svg viewBox="0 0 560 660" xmlns="http://www.w3.org/2000/svg" font-family="IBM Plex Mono, monospace" font-size="11">
+      <defs>
+        <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M20 0H0V20" fill="none" stroke="var(--rule)" stroke-width="0.6"/></pattern>
+      </defs>
+      <rect x="0" y="0" width="560" height="660" fill="url(#grid)"/>
+      <!-- path -->
+      <path d="M280 640 L280 520 L280 430 L280 330 L280 220 L280 140 L280 40" fill="none" stroke="var(--network)" stroke-width="6" stroke-dasharray="2 8" stroke-linecap="round"/>
+      <!-- 1 stairwell -->
+      <rect x="250" y="590" width="60" height="60" fill="var(--sheet)" stroke="var(--ink)" stroke-width="1.5"/>
+      <text x="280" y="625" text-anchor="middle" fill="var(--ink)">1 STAIRS</text>
+      <!-- 2 atrium + 3 desk -->
+      <rect x="160" y="440" width="240" height="150" fill="var(--sheet)" stroke="var(--ink)" stroke-width="2"/>
+      <text x="280" y="560" text-anchor="middle" fill="var(--ink)">2 WELCOME ATRIUM</text>
+      <rect x="230" y="455" width="100" height="22" rx="10" fill="var(--network)" stroke="var(--ink)"/>
+      <text x="280" y="470" text-anchor="middle" fill="#2a2100">3 DESK · PIP</text>
+      <rect x="170" y="500" width="10" height="70" fill="var(--teal)"/><text x="186" y="540" fill="var(--teal)">TV WALL</text>
+      <!-- 4 amenities (west wing) -->
+      <rect x="40" y="420" width="120" height="110" fill="var(--sheet)" stroke="var(--ink)" stroke-width="1.5"/>
+      <text x="100" y="470" text-anchor="middle" fill="var(--ink)">4 AMENITIES</text>
+      <text x="100" y="486" text-anchor="middle" fill="var(--muted)">water · food</text>
+      <text x="100" y="500" text-anchor="middle" fill="var(--muted)">crash pad</text>
+      <!-- 5 development (east wing) -->
+      <rect x="400" y="420" width="120" height="110" fill="var(--sheet)" stroke="var(--ink)" stroke-width="1.5"/>
+      <text x="460" y="470" text-anchor="middle" fill="var(--ink)">5 DEVELOPMENT</text>
+      <text x="460" y="486" text-anchor="middle" fill="var(--muted)">skills · crafting</text>
+      <!-- gate -->
+      <rect x="250" y="436" width="60" height="8" fill="var(--ink)"/>
+      <!-- 6 training yard -->
+      <rect x="180" y="320" width="200" height="110" fill="var(--sheet)" stroke="var(--ink)" stroke-width="1.5"/>
+      <text x="280" y="370" text-anchor="middle" fill="var(--ink)">6 TRAINING YARD</text>
+      <g fill="var(--muted)"><circle cx="220" cy="395" r="5"/><circle cx="250" cy="395" r="5"/><circle cx="310" cy="395" r="5"/><circle cx="340" cy="395" r="5"/></g>
+      <rect x="250" y="316" width="60" height="8" fill="var(--ink)"/>
+      <!-- 7 arena -->
+      <circle cx="280" cy="230" r="90" fill="var(--sheet)" stroke="var(--ink)" stroke-width="2"/>
+      <circle cx="280" cy="230" r="62" fill="none" stroke="var(--rule)" stroke-width="1.5" stroke-dasharray="4 4"/>
+      <text x="280" y="226" text-anchor="middle" fill="var(--ink)">7 PRACTICE ARENA</text>
+      <text x="280" y="242" text-anchor="middle" fill="var(--muted)">bleachers all round</text>
+      <rect x="250" y="136" width="60" height="8" fill="var(--ink)"/>
+      <!-- 8 staff only -->
+      <rect x="395" y="150" width="110" height="30" fill="var(--sheet)" stroke="var(--alarm)" stroke-width="1.5" stroke-dasharray="5 3"/>
+      <text x="450" y="169" text-anchor="middle" fill="var(--alarm)">8 STAFF ONLY</text>
+      <line x1="362" y1="190" x2="395" y2="170" stroke="var(--alarm)" stroke-width="1.5" stroke-dasharray="3 3"/>
+      <!-- 9 going down -->
+      <rect x="230" y="40" width="100" height="96" fill="var(--sheet)" stroke="var(--ink)" stroke-width="1.5"/>
+      <text x="280" y="80" text-anchor="middle" fill="var(--ink)">9 GOING DOWN</text>
+      <rect x="262" y="40" width="36" height="12" fill="var(--teal)"/>
+      <text x="280" y="30" text-anchor="middle" fill="var(--teal)">STAIRS → FLOOR 1</text>
+      <!-- legend -->
+      <g transform="translate(20,620)"><line x1="0" y1="0" x2="26" y2="0" stroke="var(--network)" stroke-width="5" stroke-dasharray="2 6" stroke-linecap="round"/><text x="34" y="4" fill="var(--muted)">main path</text></g>
+      <g transform="translate(20,640)"><rect x="0" y="-4" width="26" height="8" fill="var(--ink)"/><text x="34" y="4" fill="var(--muted)">gate</text></g>
+    </svg>
+  </div>
+
+  <h2>The zones, in order</h2>
+
+  <section class="zone"><div class="num">1</div><div class="body">
+    <h3>The Arrival Stairwell</h3>
+    <div class="dims">≈ 6 × 10 m · ceiling 3 m · two flights down</div>
+    <span class="teaches">Walking · looking</span>
+    <p>The last bit of Earth: a beige apartment stairwell. You come down in your bathrobe because the telly told you to. At the bottom, a heavy door with a bright Network logo that doesn't belong.</p>
+    <dl>
+      <dt>Props</dt><dd>Concrete stairs, handrail, fire extinguisher, takeaway menus on the floor, a flickering tube light, the Network door.</dd>
+      <dt>Light</dt><dd>One sickly, flickering fluorescent tube (cool white). Dim and ordinary, so the next room hits hard.</dd>
+      <dt>Sound</dt><dd>A TV playing upstairs, muffled; the tube buzzing; your footsteps.</dd>
+      <dt>Blueprint</dt><dd><code>BP_FlickerLight</code>; the door is an auto-opening <code>BP_Door</code>.</dd>
+    </dl>
+  </div></section>
+
+  <section class="zone"><div class="num">2</div><div class="body">
+    <h3>The Welcome Atrium</h3>
+    <div class="dims">≈ 30 × 24 m · ceiling 9 m · balcony at 5 m</div>
+    <span class="teaches">First impression · the show</span>
+    <p>The door opens onto blinding brightness: a double-height TV lobby, too clean, too cheerful. A giant TV wall shows the Host welcoming "Season 47". Queue barriers snake towards the desk. Six to ten other new arrivals in pyjamas mill about, confused. Camera drones drift overhead. A balcony runs round the top where no one ever goes.</p>
+    <dl>
+      <dt>Props</dt><dd>TV wall (12 m wide), queue stanchions, potted plastic plants, welcome banners, leaflet racks, a confetti cannon that fires once as you enter, camera drones, bins full of bathrobes.</dd>
+      <dt>Light</dt><dd>Hard white studio key lights (5600 K), a magenta and teal accent wash on the walls, spotlights picking out the desk. Over-bright on purpose: push exposure up a touch in this room's Post Process Volume.</dd>
+      <dt>Sound</dt><dd>Upbeat lobby muzak, PA announcements ("Please have your face ready"), a studio audience laughing at nothing.</dd>
+      <dt>Blueprint</dt><dd><code>BP_TVScreen</code> (plays a video with a Media Texture), <code>BP_NPC_Contestant</code> (idle and wander), <code>BP_CameraDrone</code> (drifts and turns to look at you).</dd>
+    </dl>
+    <p class="quote">PA: "Welcome, contestant! Please proceed to the Orientation Desk. Smiling is mandatory. Smiling is being monitored."</p>
+  </div></section>
+
+  <section class="zone"><div class="num">3</div><div class="body">
+    <h3>The Orientation Desk</h3>
+    <div class="dims">At the far end of the atrium · curved desk ≈ 8 m</div>
+    <span class="teaches">Talking · quests · inventory</span>
+    <p>Intern Pip paces behind a curved reception desk, far too nervous for the job. He starts <b>Orientation</b>, hands you a Welcome Box and the Network Materials Ledger, and points you to the wings. Behind him, a screen loops the orientation video.</p>
+    <dl>
+      <dt>Props</dt><dd>Curved desk, stacks of Welcome Boxes, a bell nobody answers, name-badge printer, a "Today's Contestants" counter ticking up.</dd>
+      <dt>Light</dt><dd>Two warm spotlights on Pip, so he's the first thing your eye finds.</dd>
+      <dt>Blueprint</dt><dd><code>BP_NPC_Pip</code> (paces, faces you when you talk, dialogue), <code>BP_WelcomeBox</code> (E to open: gives items), <code>BP_TVScreen</code> for the video.</dd>
+      <dt class="mystery">Mystery</dt><dd class="mystery">The video skips. Looking at the screen at that moment shows one frame of the Builders' symbol. Pip: "It does that sometimes. Anyway!"</dd>
+    </dl>
+  </div></section>
+
+  <section class="zone"><div class="num">4</div><div class="body">
+    <h3>The Amenities Hall</h3>
+    <div class="dims">West wing · ≈ 12 × 11 m plus a 3 m corridor</div>
+    <span class="teaches">Water · food · safe rooms · saving</span>
+    <p>The survival lesson. Drink from the fountain, take a snack, and see a Crash Pad: the safe-room booth you'll rent on every floor, where you sleep, heal and save.</p>
+    <dl>
+      <dt>Props</dt><dd>Water fountain (the tutorial step), vending machines (one OUT OF ORDER, one eating coins), a snack table of grey "Nutrient Bars", a Crash Pad booth with a bunk and a TV that won't turn off.</dd>
+      <dt>Light</dt><dd>Cool office fluorescents, one buzzing. Less glamorous than the atrium: you're seeing behind the set.</dd>
+      <dt>Blueprint</dt><dd><code>BP_Interactable</code> children: <code>BP_Fountain</code>, <code>BP_Vending</code>, <code>BP_CrashPad</code> (save point).</dd>
+    </dl>
+  </div></section>
+
+  <section class="zone"><div class="num">5</div><div class="body">
+    <h3>The Development Suite</h3>
+    <div class="dims">East wing · ≈ 14 × 12 m</div>
+    <span class="teaches">Skill tree · crafting · materials</span>
+    <p>A "Contestant Development" room in corporate-motivational style. A big touchscreen kiosk opens the skill tree. A workbench teaches crafting with the starter kit: make your first pipe weapon from scrap and cone plastic.</p>
+    <dl>
+      <dt>Props</dt><dd>Skill kiosk, crafting bench with vice and tools, a wall chart of materials ("Cone Plastic: RARE?"), motivational posters ("YOUR DEATH IS CONTENT").</dd>
+      <dt>Light</dt><dd>Warm desk lamps and a cold glow from the kiosk screen.</dd>
+      <dt>Blueprint</dt><dd><code>BP_SkillKiosk</code> (opens the skill UI), <code>BP_CraftingBench</code> (opens the crafting UI).</dd>
+    </dl>
+  </div></section>
+
+  <section class="zone"><div class="num">6</div><div class="body">
+    <h3>The Training Yard</h3>
+    <div class="dims">≈ 20 × 16 m · ceiling 6 m · gate opens after zones 4 and 5</div>
+    <span class="teaches">Light and heavy attacks · stamina · block and parry</span>
+    <p>A rubber-floored gym. Training dummies teach swinging. A heavy dummy shows stamina. A slow mechanical "parry dummy" swings at you on a timer, with a red warning on the floor, to teach block, parry and dodge before anything can hurt you.</p>
+    <dl>
+      <dt>Props</dt><dd>Dummies (one with a Network smile painted on), a heavy bag, the parry dummy (a robot arm with a foam bat), stamina charts, lockers.</dd>
+      <dt>Light</dt><dd>Gym high-bay lights: bright, even and functional.</dd>
+      <dt>Blueprint</dt><dd><code>BP_TrainingDummy</code> (takes hits and shows numbers), <code>BP_ParryDummy</code> (telegraphed swing), <code>BP_Gate</code> (opens when the quest step is done).</dd>
+    </dl>
+  </div></section>
+
+  <section class="zone"><div class="num">7</div><div class="body">
+    <h3>The Practice Arena</h3>
+    <div class="dims">Round, ≈ 26 m across · bleachers all round · ceiling 12 m</div>
+    <span class="teaches">Real combat · telegraphs · dodging · fans</span>
+    <p>The set piece. A small round arena with a cheap sports-show feel. The bleachers are full of cardboard cut-out audience members, plus a handful of real, bored spectators. Three waves of cardboard goblins come out of side gates: two, then four, then six with a "Captain" in a party hat. Your first kill puts the viewer count on the scoreboard from 3 up to 11, and Pip celebrates far too much over the PA.</p>
+    <dl>
+      <dt>Props</dt><dd>Low arena wall, spawn gates, scoreboard ("VIEWERS: 3"), cardboard audience, tyres and sandbags as cover, a commentator booth where Pip appears.</dd>
+      <dt>Light</dt><dd>Stadium rig: four spotlights from above, coloured washes that change per wave, flashing red when a wave starts.</dd>
+      <dt>Blueprint</dt><dd><code>BP_ArenaManager</code> (runs the waves and opens the exit when done), <code>BP_CardboardGoblin</code> (a child of the C++ monster class), <code>BP_Scoreboard</code>.</dd>
+      <dt>Note</dt><dd>Drop a <b>NavMesh Bounds Volume</b> over the arena so goblins can path round the cover.</dd>
+    </dl>
+    <p class="quote">Pip, over the PA: "THAT'S A KILL! On camera! Oh, they're going to LOVE you. Probably. Statistically, some of them."</p>
+  </div></section>
+
+  <section class="zone"><div class="num">8</div><div class="body">
+    <h3 class="mystery">Staff Only (optional, hidden)</h3>
+    <div class="dims">Behind the arena · ≈ 4 × 12 m service corridor</div>
+    <span class="teaches">Exploring pays · the mystery</span>
+    <p>A "STAFF ONLY" door behind the bleachers is propped open with a broken chair. Behind it, the Network's set dressing stops. Peeling studio wallpaper shows much older concrete underneath, covered in human scratch tallies, and the Builders' symbol cut into the wall, older than everything around it. A lore page lies on the floor.</p>
+    <dl>
+      <dt>Props</dt><dd>Peeling wallpaper decals over old stone, scratch-mark decals, the symbol, cables, a broken chair, a dropped lanyard from a previous season.</dd>
+      <dt>Light</dt><dd>One bare bulb, and a red emergency light. The only room that's genuinely dark.</dd>
+      <dt>Sound</dt><dd>The lobby music muffled through the wall, and something deep and mechanical humming below.</dd>
+      <dt>Blueprint</dt><dd><code>BP_LorePage</code> (E to read); decals for the scratches.</dd>
+    </dl>
+  </div></section>
+
+  <section class="zone"><div class="num">9</div><div class="body">
+    <h3>Going Down</h3>
+    <div class="dims">≈ 8 × 20 m hall · ceiling dropping from 6 m to 3 m</div>
+    <span class="teaches">Leaving · tone shift</span>
+    <p>The exit hall to the stairs. Pip is waiting at the door and says goodbye like someone who has said it hundreds of times and doesn't expect to see you again. As you walk on, the lights switch off one by one behind you, the cheerful music slows and detunes, and only the green FLOOR 1 sign is left. Through the door: dark stairs going down.</p>
+    <dl>
+      <dt>Props</dt><dd>A long hall, a "THANK YOU FOR ORIENTATING" banner, the stair door, the FLOOR 1 sign.</dd>
+      <dt>Light</dt><dd>A row of ceiling lights set up in a Blueprint so each one turns off as you pass. The green exit sign is the last light.</dd>
+      <dt>Blueprint</dt><dd><code>BP_LightsOutCorridor</code> (trigger boxes switch the lights off in order), <code>BP_LevelExit</code> (loads Floor 1).</dd>
+    </dl>
+    <p class="quote">Pip: "Right. Well. This is where I... yeah. Good luck down there. Really. I mean it this time."</p>
+  </div></section>
+
+  <h2>The Blueprints you'll need</h2>
+  <p>Build the first ones once and reuse them everywhere. <code>BP_Interactable</code> is the parent: anything you press E on is a child of it.</p>
+  <div class="tablewrap"><table>
+    <tr><th>Blueprint</th><th>What it does</th><th>Who builds it</th></tr>
+    <tr><td><code>BP_Interactable</code></td><td>Shows "Press E", does something when used</td><td>Me in C++, you extend it</td></tr>
+    <tr><td><code>BP_Door</code>, <code>BP_Gate</code></td><td>Open on approach, or when a quest step is done</td><td>You, with my steps</td></tr>
+    <tr><td><code>BP_NPC_Pip</code>, <code>BP_NPC_Contestant</code></td><td>Walk, idle, face you, talk</td><td>Me (C++ base), you (Blueprint)</td></tr>
+    <tr><td><code>BP_TVScreen</code></td><td>Plays a video; can glitch</td><td>You, with my steps</td></tr>
+    <tr><td><code>BP_TrainingDummy</code>, <code>BP_ParryDummy</code></td><td>Take hits; telegraphed swing</td><td>Me (C++ combat), you</td></tr>
+    <tr><td><code>BP_CardboardGoblin</code></td><td>The first monster</td><td>Me (C++ monster and AI), you</td></tr>
+    <tr><td><code>BP_ArenaManager</code></td><td>Waves, scoreboard, exit</td><td>You, with my steps</td></tr>
+    <tr><td><code>BP_LightsOutCorridor</code>, <code>BP_FlickerLight</code></td><td>Lighting moments</td><td>You (good first Blueprints)</td></tr>
+    <tr><td><code>BP_LevelExit</code></td><td>Loads Floor 1</td><td>You (one node: Open Level)</td></tr>
+  </table></div>
+
+  <h2>The order to build it in</h2>
+  <ol class="steps">
+    <li><b>Grey blockout (days 1–3).</b> All nine zones in plain boxes with Modeling Mode, at the sizes above. No art. Walk the whole path in first person, many times.</li>
+    <li><b>Lighting on grey (day 4).</b> Light each zone as described, still in grey. If it already feels bright-then-wrong-then-dark, the level works.</li>
+    <li><b>The path works (days 5–7).</b> Doors, gates, Pip with placeholder text, the fountain and the dummies. You can play start to finish.</li>
+    <li><b>The arena (week 2).</b> Navmesh, cardboard goblins, waves, the scoreboard.</li>
+    <li><b>Art pass (week 3+).</b> Swap grey boxes for real models: the Tripo props, a modular wall kit, decals, the TV videos.</li>
+    <li><b>Polish.</b> Sound, the confetti, the lights-out corridor, the video glitch, Nigel's lines.</li>
+  </ol>
+
+  <div class="note"><b>Folders to start with</b> (inside Content): <code>Downstairs/Maps</code>, <code>/Blueprints</code>, <code>/Characters</code>, <code>/Props/Landing</code>, <code>/Materials</code>, <code>/Audio</code>, <code>/Data</code>, <code>/UI</code>. Name the map <code>L_Floor0_Landing</code>. Prefixes: <code>BP_</code> Blueprint, <code>SM_</code> static mesh, <code>SK_</code> skeletal mesh, <code>M_</code> material, <code>MI_</code> material instance, <code>T_</code> texture, <code>A_</code> animation, <code>DT_</code> data table.</div>
+</div>

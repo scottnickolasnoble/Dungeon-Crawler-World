@@ -1,0 +1,1298 @@
+[
+ {
+  "folder": "clerk_damp",
+  "prompt": "Full-body 3D game character, stylized comic book cartoon with a clear, expressive, readable face and believable proportions, hand-painted texture with bold black ink lines and cel-shaded colours. A damp, earnest tenant advocate in a soggy cardigan and wellies, clutching a dripping folder of complaints, glasses fogged. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 1.7
+ },
+ {
+  "folder": "rivet_rosie",
+  "prompt": "Full-body 3D game character, stylized comic book cartoon with a clear, expressive, readable face and believable proportions, hand-painted texture with bold black ink lines and cel-shaded colours. A muscular riveter armourer in a welding apron covered in rivets, a bandana, rolled sleeves and a hammer on her belt. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 1.75
+ },
+ {
+  "folder": "galley_gwen",
+  "prompt": "Full-body 3D game character, stylized comic book cartoon with a clear, expressive, readable face and believable proportions, hand-painted texture with bold black ink lines and cel-shaded colours. A cheerful ship's cook in a stained apron and sailor cap, ladle tucked in her belt, tattoos of fish on her arms. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 1.65
+ },
+ {
+  "folder": "flotsam",
+  "prompt": "Full-body 3D game character, stylized comic book cartoon with a clear, expressive, readable face and believable proportions, hand-painted texture with bold black ink lines and cel-shaded colours. A small gutterkin rat-folk junk dealer wearing a coat stitched from fishing nets and life rings, bottles hanging from his belt. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 1.4
+ },
+ {
+  "folder": "damp_maud",
+  "prompt": "Full-body 3D game character, stylized comic book cartoon with a clear, expressive, readable face and believable proportions, hand-painted texture with bold black ink lines and cel-shaded colours. A tall gloomy innkeeper in a long black dress with a dripping hem, keys on a chain, hair in a wet bun. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 1.7
+ },
+ {
+  "folder": "canary",
+  "prompt": "Full-body 3D game character, stylized comic book cartoon with a clear, expressive, readable face and believable proportions, hand-painted texture with bold black ink lines and cel-shaded colours. A young miner with a yellow feathered hood and goggles, a birdcage lantern on her back, soot on her cheeks. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 1.55
+ },
+ {
+  "folder": "cookie",
+  "prompt": "Full-body 3D game character, stylized comic book cartoon with a clear, expressive, readable face and believable proportions, hand-painted texture with bold black ink lines and cel-shaded colours. A broad mining-camp cook in a sweat-stained vest and hairnet, forearms like hams, a frying pan on his back. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 1.8
+ },
+ {
+  "folder": "tailings",
+  "prompt": "Full-body 3D game character, stylized comic book cartoon with a clear, expressive, readable face and believable proportions, hand-painted texture with bold black ink lines and cel-shaded colours. A hunched stoneblood scrap dealer made of grey rubble with a sack of ore and odd treasures over his shoulder. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 1.5
+ },
+ {
+  "folder": "bunk_bertha",
+  "prompt": "Full-body 3D game character, stylized comic book cartoon with a clear, expressive, readable face and believable proportions, hand-painted texture with bold black ink lines and cel-shaded colours. A big friendly bunkhouse matron in overalls and a hard hat with a candle stuck on it, a stack of folded blankets. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 1.85
+ },
+ {
+  "folder": "the_returning_officer",
+  "prompt": "Full-body 3D game character, stylized comic book cartoon with a clear, expressive, readable face and believable proportions, hand-painted texture with bold black ink lines and cel-shaded colours. A gaunt election official in a long grey coat and a rosette, an abacus in one hand and tally marks drawn all over his skin. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 1.9
+ },
+ {
+  "folder": "halberd_armourer",
+  "prompt": "Full-body 3D game character, stylized comic book cartoon with a clear, expressive, readable face and believable proportions, hand-painted texture with bold black ink lines and cel-shaded colours. A stern old armourer in a leather apron with a ceremonial halberd strapped to his back and a monocle. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 1.85
+ },
+ {
+  "folder": "canteen_lady_doris",
+  "prompt": "Full-body 3D game character, stylized comic book cartoon with a clear, expressive, readable face and believable proportions, hand-painted texture with bold black ink lines and cel-shaded colours. A stout civic canteen dinner lady with a hairnet, tabard and a huge serving spoon, pursed lips. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 1.6
+ },
+ {
+  "folder": "clerk_lostwell",
+  "prompt": "Full-body 3D game character, stylized comic book cartoon with a clear, expressive, readable face and believable proportions, hand-painted texture with bold black ink lines and cel-shaded colours. A fussy lost-property clerk in a brown coat covered in luggage tags, holding a lone umbrella and a teddy. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 1.7
+ },
+ {
+  "folder": "madame_ledger",
+  "prompt": "Full-body 3D game character, stylized comic book cartoon with a clear, expressive, readable face and believable proportions, hand-painted texture with bold black ink lines and cel-shaded colours. An elegant, severe hotel owner in a high-collared Victorian dress with a ledger book and quill, ink on her fingers. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 1.75
+ },
+ {
+  "folder": "cone_priest",
+  "prompt": "Full-body 3D game character, scary stylized comic book horror cartoon with a clear, readable, menacing face, hand-painted texture with bold black ink lines and cel-shaded colours. A goblin shaman wearing a tall stack of traffic cones as a mitre, robes of hi-vis vests, a smoking cone censer. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 1.35
+ },
+ {
+  "folder": "wick_page",
+  "prompt": "Full-body 3D game character, scary stylized comic book horror cartoon with a clear, readable, menacing face, hand-painted texture with bold black ink lines and cel-shaded colours. A small pale moth-servant with stubby wings and a candle stub burning on its head, carrying a lamp on a pole. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 1.4
+ },
+ {
+  "folder": "bucket_brute",
+  "prompt": "Full-body 3D game character, scary stylized comic book horror cartoon with a clear, readable, menacing face, hand-painted texture with bold black ink lines and cel-shaded colours. A hulking janitor wight with a mop bucket jammed on its head and a wringer for a fist, rotting overalls. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 2.2
+ },
+ {
+  "folder": "change_imp",
+  "prompt": "Full-body 3D game character, scary stylized comic book horror cartoon with a clear, readable, menacing face, hand-painted texture with bold black ink lines and cel-shaded colours. A tiny gremlin made of coins and a coin-return slot for a mouth, spilling pennies when it moves. One single character, neutral pose, facing forward, no ground, no base, no scenery.",
+  "humanoid": false,
+  "height": 0.9
+ },
+ {
+  "folder": "ladle_boy",
+  "prompt": "Full-body 3D game character, scary stylized comic book horror cartoon with a clear, readable, menacing face, hand-painted texture with bold black ink lines and cel-shaded colours. A scrawny hag apprentice in an oversized apron carrying a ladle as long as he is, soup stains everywhere. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 1.3
+ },
+ {
+  "folder": "taser_kid",
+  "prompt": "Full-body 3D game character, scary stylized comic book horror cartoon with a clear, readable, menacing face, hand-painted texture with bold black ink lines and cel-shaded colours. A twitchy teenage mall cop with sparking taser gloves, too-big uniform and a mouth full of braces. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 1.5
+ },
+ {
+  "folder": "beater",
+  "prompt": "Full-body 3D game character, scary stylized comic book horror cartoon with a clear, readable, menacing face, hand-painted texture with bold black ink lines and cel-shaded colours. A safari beater in khaki shorts and a pith helmet with a drum and stick, eyes wide and mad, flowers in his hatband. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 1.8
+ },
+ {
+  "folder": "sluice_boy",
+  "prompt": "Full-body 3D game character, scary stylized comic book horror cartoon with a clear, readable, menacing face, hand-painted texture with bold black ink lines and cel-shaded colours. A sewer worker zombie in rubber waders and a gas mask, a long sluice pole and a lantern. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 1.6
+ },
+ {
+  "folder": "dex_okafor",
+  "prompt": "Full-body 3D game character, stylized comic book cartoon with a clear, expressive, readable face and believable proportions, hand-painted texture with bold black ink lines and cel-shaded colours. A cocky athletic man in a torn tracksuit and a sweatband, a glowing sword strapped to his back, a winning grin for the camera. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 1.85
+ },
+ {
+  "folder": "nell_brightwater",
+  "prompt": "Full-body 3D game character, stylized comic book cartoon with a clear, expressive, readable face and believable proportions, hand-painted texture with bold black ink lines and cel-shaded colours. A gentle frog-folk woman in a raincoat and wellies, a seashell necklace and a little notebook of names. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 1.35
+ },
+ {
+  "folder": "tank_wisniewski",
+  "prompt": "Full-body 3D game character, stylized comic book cartoon with a clear, expressive, readable face and believable proportions, hand-painted texture with bold black ink lines and cel-shaded colours. A huge soft-spoken ogre man in a hard hat and demolition vest, bandoliers of dynamite, nervous expression. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 2.3
+ },
+ {
+  "folder": "priya_raman",
+  "prompt": "Full-body 3D game character, stylized comic book cartoon with a clear, expressive, readable face and believable proportions, hand-painted texture with bold black ink lines and cel-shaded colours. A fierce paramedic in a bloodied green uniform, a defibrillator on her back and a first-aid bag, hair tied up. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 1.65
+ },
+ {
+  "folder": "jojo_spark",
+  "prompt": "Full-body 3D game character, stylized comic book cartoon with a clear, expressive, readable face and believable proportions, hand-painted texture with bold black ink lines and cel-shaded colours. A fox-folk streamer in a neon hoodie and gaming headset, lightning crackling at her fingertips, phone on a selfie stick holster. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 1.55
+ },
+ {
+  "folder": "brother_kettle",
+  "prompt": "Full-body 3D game character, stylized comic book cartoon with a clear, expressive, readable face and believable proportions, hand-painted texture with bold black ink lines and cel-shaded colours. A calm stone-skinned monk in brown robes with a kettle hanging from his belt and bone charms on a cord. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 1.8
+ },
+ {
+  "folder": "vasquez_twins_ana",
+  "prompt": "Full-body 3D game character, stylized comic book cartoon with a clear, expressive, readable face and believable proportions, hand-painted texture with bold black ink lines and cel-shaded colours. A sharp-eyed repo agent woman in a leather jacket with a tow hook on a chain and a clipboard of debts. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 1.7
+ },
+ {
+  "folder": "vasquez_twins_lu",
+  "prompt": "Full-body 3D game character, stylized comic book cartoon with a clear, expressive, readable face and believable proportions, hand-painted texture with bold black ink lines and cel-shaded colours. An exterminator woman in a canister backpack and goggles with a spray wand, identical face to her twin, scowling. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 1.7
+ },
+ {
+  "folder": "grandpa_mo",
+  "prompt": "Full-body 3D game character, stylized comic book cartoon with a clear, expressive, readable face and believable proportions, hand-painted texture with bold black ink lines and cel-shaded colours. A delighted 84-year-old rat-folk plumber in a flat cap and overalls, a plunger on his back and a pipe in his teeth. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 1.3
+ },
+ {
+  "folder": "ivy_marsh",
+  "prompt": "Full-body 3D game character, stylized comic book cartoon with a clear, expressive, readable face and believable proportions, hand-painted texture with bold black ink lines and cel-shaded colours. A zealous elf-like lumen woman in white robes with a lantern staff, a cold bright stare and a sun pendant. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 1.8
+ },
+ {
+  "folder": "kofi_mensah",
+  "prompt": "Full-body 3D game character, stylized comic book cartoon with a clear, expressive, readable face and believable proportions, hand-painted texture with bold black ink lines and cel-shaded colours. A calm dentist in a white tunic with a head mirror, a belt of pliers and drills, dry smile. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 1.8
+ },
+ {
+  "folder": "rattle",
+  "prompt": "Full-body 3D game character, stylized comic book cartoon with a clear, expressive, readable face and believable proportions, hand-painted texture with bold black ink lines and cel-shaded colours. A battered security robot in a night watchman's cap and torch, one eye flickering, a bent name badge. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 1.9
+ },
+ {
+  "folder": "big_sal",
+  "prompt": "Full-body 3D game character, stylized comic book cartoon with a clear, expressive, readable face and believable proportions, hand-painted texture with bold black ink lines and cel-shaded colours. A jolly orc mall Santa in a stained red suit with a sack of gifts and grenades, a candy cane club. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 2
+ },
+ {
+  "folder": "ming_zhao",
+  "prompt": "Full-body 3D game character, stylized comic book cartoon with a clear, expressive, readable face and believable proportions, hand-painted texture with bold black ink lines and cel-shaded colours. A speedrunner in running gear with a stopwatch, clockwork bracers and a timer glowing over her wrist. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 1.65
+ },
+ {
+  "folder": "ada_lockwood",
+  "prompt": "Full-body 3D game character, stylized comic book cartoon with a clear, expressive, readable face and believable proportions, hand-painted texture with bold black ink lines and cel-shaded colours. An ex-lawyer lumen woman in a sharp suit with a rune-covered briefcase and reading glasses, hex sigils on her sleeves. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 1.8
+ },
+ {
+  "folder": "pocket",
+  "prompt": "Full-body 3D game character, stylized comic book cartoon with a clear, expressive, readable face and believable proportions, hand-painted texture with bold black ink lines and cel-shaded colours. A tiny cheerful hedgehog-folk with mushrooms growing out of his quills and one arm made of soft mould. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 1.1
+ },
+ {
+  "folder": "mags_bartender",
+  "prompt": "Full-body 3D game character, stylized comic book cartoon with a clear, expressive, readable face and believable proportions, hand-painted texture with bold black ink lines and cel-shaded colours. A wiry old woman bartender with a grey quiff, rolled sleeves, faded contestant tattoos, a bar towel over her shoulder and a knowing smirk. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 1.7
+ },
+ {
+  "folder": "the_fence",
+  "prompt": "Full-body 3D game character, stylized comic book cartoon with a clear, expressive, readable face and believable proportions, hand-painted texture with bold black ink lines and cel-shaded colours. A shifty black-market fence in a long coat lined with stolen items, rings on every finger and one gold tooth. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 1.75
+ },
+ {
+  "folder": "the_forger",
+  "prompt": "Full-body 3D game character, stylized comic book cartoon with a clear, expressive, readable face and believable proportions, hand-painted texture with bold black ink lines and cel-shaded colours. A twitchy forger with ink-stained hands, jeweller's loupe, a stamp in each pocket and a stack of fake passports. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 1.6
+ },
+ {
+  "folder": "slip_smuggler",
+  "prompt": "Full-body 3D game character, stylized comic book cartoon with a clear, expressive, readable face and believable proportions, hand-painted texture with bold black ink lines and cel-shaded colours. A slick smuggler in a hooded rain cape with hidden pockets, a map tube on her back and a crooked grin. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 1.7
+ },
+ {
+  "folder": "stagehand_ollie",
+  "prompt": "Full-body 3D game character, stylized comic book cartoon with a clear, expressive, readable face and believable proportions, hand-painted texture with bold black ink lines and cel-shaded colours. A defected TV stagehand in black crew clothes with a cut headset cable and a gaffer-tape bracelet, guilty eyes. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 1.75
+ },
+ {
+  "folder": "god_saint_tally",
+  "prompt": "Full-body 3D game character, an imposing, uncanny god from a comic book horror story, clear readable face or mask, hand-painted texture with bold black ink lines and cel-shaded colours. A tall saint made of ledger pages with abacus beads for eyes, every inch of skin covered in tally marks, a halo of numbers. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 3.2
+ },
+ {
+  "folder": "god_old_damp",
+  "prompt": "Full-body 3D game character, an imposing, uncanny god from a comic book horror story, clear readable face or mask, hand-painted texture with bold black ink lines and cel-shaded colours. A bloated kindly old man made of wet newspaper and puddle water, dripping, with a soggy hat and gentle sad eyes. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 3
+ },
+ {
+  "folder": "god_hollow_chef",
+  "prompt": "Full-body 3D game character, an imposing, uncanny god from a comic book horror story, clear readable face or mask, hand-painted texture with bold black ink lines and cel-shaded colours. A towering cook in a stained white jacket whose head is an empty iron pot, ladles for fingers, steam pouring from the pot. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 3.6
+ },
+ {
+  "folder": "god_mother_mould",
+  "prompt": "Full-body 3D game character, an imposing, uncanny god from a comic book horror story, clear readable face or mask, hand-painted texture with bold black ink lines and cel-shaded colours. A soft grey-green matron made of warm mould and bread dough, sleepy smile, mushrooms crowning her head like a veil. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 3.2
+ },
+ {
+  "folder": "god_rustwright",
+  "prompt": "Full-body 3D game character, an imposing, uncanny god from a comic book horror story, clear readable face or mask, hand-painted texture with bold black ink lines and cel-shaded colours. A soot-black blacksmith god with a drill for one hand and a ticking clock in his open chest, sparks for a beard. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 3.4
+ },
+ {
+  "folder": "god_good_neighbour",
+  "prompt": "Full-body 3D game character, an imposing, uncanny god from a comic book horror story, clear readable face or mask, hand-painted texture with bold black ink lines and cel-shaded colours. A smiling man in a perfect cardigan whose face is a painted white picket fence with eyes, holding a welcome casserole. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 3
+ },
+ {
+  "folder": "god_lady_lumen",
+  "prompt": "Full-body 3D game character, an imposing, uncanny god from a comic book horror story, clear readable face or mask, hand-painted texture with bold black ink lines and cel-shaded colours. A tall moth-winged goddess of soft lamplight with glowing skin and a lampshade crown, light spilling from her hands. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 3.4
+ },
+ {
+  "folder": "god_antlered_viewer",
+  "prompt": "Full-body 3D game character, an imposing, uncanny god from a comic book horror story, clear readable face or mask, hand-painted texture with bold black ink lines and cel-shaded colours. A stag-headed hunter god in a tweed hunting coat, one eye replaced by a big camera lens, antlers hung with trophies. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 3.6
+ },
+ {
+  "folder": "god_encore",
+  "prompt": "Full-body 3D game character, an imposing, uncanny god from a comic book horror story, clear readable face or mask, hand-painted texture with bold black ink lines and cel-shaded colours. A shimmering figure made of spotlights and perfect white teeth, a sequinned suit, arms raised for applause. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 3.2
+ },
+ {
+  "folder": "god_the_index",
+  "prompt": "Full-body 3D game character, an imposing, uncanny god from a comic book horror story, clear readable face or mask, hand-painted texture with bold black ink lines and cel-shaded colours. A librarian god whose body is built of card-catalogue drawers, some open, index cards fluttering, spectacles on a chain. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 3.2
+ },
+ {
+  "folder": "god_mother_of_static",
+  "prompt": "Full-body 3D game character, an imposing, uncanny god from a comic book horror story, clear readable face or mask, hand-painted texture with bold black ink lines and cel-shaded colours. A woman shape made entirely of TV static and scan lines, an old TV for a head showing a test card, cables trailing. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 3.4
+ },
+ {
+  "folder": "priest_tally_abbot",
+  "prompt": "Full-body 3D game character, stylized comic book cartoon with a clear, expressive, readable face and believable proportions, hand-painted texture with bold black ink lines and cel-shaded colours. A counting-house abbot in grey robes stitched with tally marks, an abacus rosary and ink-blackened fingers. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 1.75
+ },
+ {
+  "folder": "priest_hollow_friar",
+  "prompt": "Full-body 3D game character, stylized comic book cartoon with a clear, expressive, readable face and believable proportions, hand-painted texture with bold black ink lines and cel-shaded colours. A fat friar in a chef's robe with an empty bowl hung round his neck and a wooden spoon sceptre. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 1.8
+ },
+ {
+  "folder": "priest_mould_midwife",
+  "prompt": "Full-body 3D game character, stylized comic book cartoon with a clear, expressive, readable face and believable proportions, hand-painted texture with bold black ink lines and cel-shaded colours. A gentle midwife in a mossy nurse's cap and apron, mould blooming on her sleeves, a warm blanket over one arm. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 1.7
+ },
+ {
+  "folder": "priest_rust_deacon",
+  "prompt": "Full-body 3D game character, stylized comic book cartoon with a clear, expressive, readable face and believable proportions, hand-painted texture with bold black ink lines and cel-shaded colours. A deacon in an oil-stained boiler suit and a clerical collar, a wrench censer swinging, gears on his stole. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 1.85
+ },
+ {
+  "folder": "priest_neighbour_pastor",
+  "prompt": "Full-body 3D game character, stylized comic book cartoon with a clear, expressive, readable face and believable proportions, hand-painted texture with bold black ink lines and cel-shaded colours. An unnervingly cheerful pastor in a pastel cardigan with a clipboard of rules and a whistle, perfect teeth. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 1.8
+ },
+ {
+  "folder": "priest_lumen_abbess",
+  "prompt": "Full-body 3D game character, stylized comic book cartoon with a clear, expressive, readable face and believable proportions, hand-painted texture with bold black ink lines and cel-shaded colours. A lamp abbess in white and gold robes with a lampshade wimple, moths settled on her shoulders. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 1.85
+ },
+ {
+  "folder": "priest_viewer_huntsman",
+  "prompt": "Full-body 3D game character, stylized comic book cartoon with a clear, expressive, readable face and believable proportions, hand-painted texture with bold black ink lines and cel-shaded colours. A huntsman priest in a tweed cape with antler headdress, a horn and a camera on a strap. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 1.85
+ },
+ {
+  "folder": "priest_encore_hype",
+  "prompt": "Full-body 3D game character, stylized comic book cartoon with a clear, expressive, readable face and believable proportions, hand-painted texture with bold black ink lines and cel-shaded colours. A hype priest in a glittering game-show suit with a microphone sceptre and a sash reading APPLAUSE. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 1.75
+ },
+ {
+  "folder": "priest_index_archdeacon",
+  "prompt": "Full-body 3D game character, stylized comic book cartoon with a clear, expressive, readable face and believable proportions, hand-painted texture with bold black ink lines and cel-shaded colours. An archdeacon in robes made of library catalogue cards, half-moon glasses and a rubber stamp seal. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 1.8
+ },
+ {
+  "folder": "priest_static_choir",
+  "prompt": "Full-body 3D game character, stylized comic book cartoon with a clear, expressive, readable face and believable proportions, hand-painted texture with bold black ink lines and cel-shaded colours. A choir engineer in a white lab coat and a satellite-dish halo, headphones, static crackling in her mouth. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 1.75
+ },
+ {
+  "folder": "stagehand",
+  "prompt": "Full-body 3D game character, scary stylized comic book horror cartoon with a clear, readable, menacing face, hand-painted texture with bold black ink lines and cel-shaded colours. A faceless TV stagehand in all-black crew clothes, a headset clamped over a blank face, clipboard and gaffer tape. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 1.8
+ },
+ {
+  "folder": "boom_gremlin",
+  "prompt": "Full-body 3D game character, scary stylized comic book horror cartoon with a clear, readable, menacing face, hand-painted texture with bold black ink lines and cel-shaded colours. A wiry gremlin holding a boom microphone pole twice its size, fuzzy windshield head, big ears and needle teeth. One single character, neutral pose, facing forward, no ground, no base, no scenery.",
+  "humanoid": false,
+  "height": 1
+ },
+ {
+  "folder": "the_extras",
+  "prompt": "Full-body 3D game character, scary stylized comic book horror cartoon with a clear, readable, menacing face, hand-painted texture with bold black ink lines and cel-shaded colours. A grey-faced background actor still in a cowboy costume, dead eyes, frozen polite smile, number pinned to his chest. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 1.8
+ },
+ {
+  "folder": "floor_manager",
+  "prompt": "Full-body 3D game character, scary stylized comic book horror cartoon with a clear, readable, menacing face, hand-painted texture with bold black ink lines and cel-shaded colours. A towering floor manager with a headset fused to her skull, a megaphone arm and a stopwatch for an eye. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 2
+ },
+ {
+  "folder": "the_stunt_double",
+  "prompt": "Full-body 3D game character, scary stylized comic book horror cartoon with a clear, readable, menacing face, hand-painted texture with bold black ink lines and cel-shaded colours. A scarred stuntman wrapped in burn bandages and pads, harness straps, a crash helmet and one arm in a cast. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 2.1
+ },
+ {
+  "folder": "makeup_witch",
+  "prompt": "Full-body 3D game character, scary stylized comic book horror cartoon with a clear, readable, menacing face, hand-painted texture with bold black ink lines and cel-shaded colours. A makeup artist witch with a belt of brushes like knives, a powder puff and a face painted to look like everyone. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 1.9
+ },
+ {
+  "folder": "craft_services_glutton",
+  "prompt": "Full-body 3D game character, scary stylized comic book horror cartoon with a clear, readable, menacing face, hand-painted texture with bold black ink lines and cel-shaded colours. An enormous caterer with a buffet table grown into his belly, trays of food on his arms and a hungry wide mouth. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 2.6
+ },
+ {
+  "folder": "the_showrunner",
+  "prompt": "Full-body 3D game character, scary stylized comic book horror cartoon with a clear, readable, menacing face, hand-painted texture with bold black ink lines and cel-shaded colours. A showrunner in a director's chair harness, a clapperboard jaw, a cap reading BOSS and a script spine for a back. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 2.4
+ },
+ {
+  "folder": "script_sue",
+  "prompt": "Full-body 3D game character, stylized comic book cartoon with a clear, expressive, readable face and believable proportions, hand-painted texture with bold black ink lines and cel-shaded colours. A frazzled script supervisor with pencils in her hair, a fat ring binder and a stopwatch, highlighter in her teeth. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 1.65
+ },
+ {
+  "folder": "gaffer_gus",
+  "prompt": "Full-body 3D game character, stylized comic book cartoon with a clear, expressive, readable face and believable proportions, hand-painted texture with bold black ink lines and cel-shaded colours. A burly lighting gaffer with coils of cable over his shoulder, a tool belt and gaffer tape on his knuckles. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 1.85
+ },
+ {
+  "folder": "wardrobe_wendy",
+  "prompt": "Full-body 3D game character, stylized comic book cartoon with a clear, expressive, readable face and believable proportions, hand-painted texture with bold black ink lines and cel-shaded colours. A wardrobe mistress covered in pinned fabric samples, a tape measure necklace and a pincushion wristband. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 1.7
+ },
+ {
+  "folder": "chef_polenta",
+  "prompt": "Full-body 3D game character, stylized comic book cartoon with a clear, expressive, readable face and believable proportions, hand-painted texture with bold black ink lines and cel-shaded colours. A catering chef in a crumpled white hat with a tray of sandwiches and a burnt oven glove. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 1.75
+ },
+ {
+  "folder": "props_master",
+  "prompt": "Full-body 3D game character, stylized comic book cartoon with a clear, expressive, readable face and believable proportions, hand-painted texture with bold black ink lines and cel-shaded colours. A props master in a waistcoat with prop weapons, rubber chickens and fake money sticking out of every pocket. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 1.6
+ },
+ {
+  "folder": "trailer_tina",
+  "prompt": "Full-body 3D game character, stylized comic book cartoon with a clear, expressive, readable face and believable proportions, hand-painted texture with bold black ink lines and cel-shaded colours. A trailer park innkeeper in a dressing gown and curlers, fluffy slippers and a mug reading STAR. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 1.7
+ },
+ {
+  "folder": "mascot",
+  "prompt": "Full-body 3D game character, scary stylized comic book horror cartoon with a clear, readable, menacing face, hand-painted texture with bold black ink lines and cel-shaded colours. A giant fuzzy sports mascot costume with a huge grinning foam head; the eyes are holes and something real looks out. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 2.2
+ },
+ {
+  "folder": "ultra",
+  "prompt": "Full-body 3D game character, scary stylized comic book horror cartoon with a clear, readable, menacing face, hand-painted texture with bold black ink lines and cel-shaded colours. A wild football hooligan in a scarf and face paint, a lit red flare in one hand and a broken chair leg. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 1.8
+ },
+ {
+  "folder": "cheer_squad",
+  "prompt": "Full-body 3D game character, scary stylized comic book horror cartoon with a clear, readable, menacing face, hand-painted texture with bold black ink lines and cel-shaded colours. A cheerleader with pom-poms made of razor ribbons, a fixed huge smile and blank, staring eyes. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 1.7
+ },
+ {
+  "folder": "big_foam_finger",
+  "prompt": "Full-body 3D game character, scary stylized comic book horror cartoon with a clear, readable, menacing face, hand-painted texture with bold black ink lines and cel-shaded colours. A giant mascot made of a huge foam finger with a body, little legs and arms, the finger pointing, a hungry grin. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 3
+ },
+ {
+  "folder": "the_capo",
+  "prompt": "Full-body 3D game character, scary stylized comic book horror cartoon with a clear, readable, menacing face, hand-painted texture with bold black ink lines and cel-shaded colours. A hooligan chant leader standing tall with a drum on his chest, a megaphone and a scarf mask. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 2.1
+ },
+ {
+  "folder": "head_cheerleader",
+  "prompt": "Full-body 3D game character, scary stylized comic book horror cartoon with a clear, readable, menacing face, hand-painted texture with bold black ink lines and cel-shaded colours. A towering head cheerleader with too many arms holding pom-poms, a crown of ribbons and a terrifying grin. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 2
+ },
+ {
+  "folder": "the_ref",
+  "prompt": "Full-body 3D game character, scary stylized comic book horror cartoon with a clear, readable, menacing face, hand-painted texture with bold black ink lines and cel-shaded colours. A gaunt striped referee with a whistle, red and yellow cards like blades and a stopwatch heart. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 2.2
+ },
+ {
+  "folder": "the_champion",
+  "prompt": "Full-body 3D game character, scary stylized comic book horror cartoon with a clear, readable, menacing face, hand-painted texture with bold black ink lines and cel-shaded colours. Last season's champion in battered golden armour covered in sponsor logos, a trophy for a helmet, kept alive by tubes. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 2.4
+ },
+ {
+  "folder": "groundskeeper_turf",
+  "prompt": "Full-body 3D game character, stylized comic book cartoon with a clear, expressive, readable face and believable proportions, hand-painted texture with bold black ink lines and cel-shaded colours. A weathered groundskeeper with a line-marking trolley, a flat cap and grass-stained overalls. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 1.75
+ },
+ {
+  "folder": "commentator_booth",
+  "prompt": "Full-body 3D game character, stylized comic book cartoon with a clear, expressive, readable face and believable proportions, hand-painted texture with bold black ink lines and cel-shaded colours. A sports commentator in a blazer with a headset mic and a sheaf of stats, overexcited face. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 1.75
+ },
+ {
+  "folder": "kit_man_kev",
+  "prompt": "Full-body 3D game character, stylized comic book cartoon with a clear, expressive, readable face and believable proportions, hand-painted texture with bold black ink lines and cel-shaded colours. A kit man with bags of shirts and pads on his shoulders and a whistle, a tired grin. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 1.8
+ },
+ {
+  "folder": "hot_dog_hattie",
+  "prompt": "Full-body 3D game character, stylized comic book cartoon with a clear, expressive, readable face and believable proportions, hand-painted texture with bold black ink lines and cel-shaded colours. A stadium food vendor with a hot dog tray strapped round her neck and a paper hat. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 1.65
+ },
+ {
+  "folder": "ticket_tout_terry",
+  "prompt": "Full-body 3D game character, stylized comic book cartoon with a clear, expressive, readable face and believable proportions, hand-painted texture with bold black ink lines and cel-shaded colours. A shifty ticket tout in a long coat lined with tickets, a flat cap and a sly grin. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 1.7
+ },
+ {
+  "folder": "coach_bunk",
+  "prompt": "Full-body 3D game character, stylized comic book cartoon with a clear, expressive, readable face and believable proportions, hand-painted texture with bold black ink lines and cel-shaded colours. A retired football coach innkeeper in a tracksuit with a whistle and a clipboard of room numbers. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 1.85
+ },
+ {
+  "folder": "laugher",
+  "prompt": "Full-body 3D game character, scary stylized comic book horror cartoon with a clear, readable, menacing face, hand-painted texture with bold black ink lines and cel-shaded colours. A ghost made of dozens of laughing mouths floating in a grey sheet, tears of laughter, no eyes. One single character, neutral pose, facing forward, no ground, no base, no scenery.",
+  "humanoid": false,
+  "height": 1.8
+ },
+ {
+  "folder": "paparazzo",
+  "prompt": "Full-body 3D game character, scary stylized comic book horror cartoon with a clear, readable, menacing face, hand-painted texture with bold black ink lines and cel-shaded colours. A hunched paparazzi photographer whose head is a camera with a flash bulb, long lenses for arms. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 1.7
+ },
+ {
+  "folder": "autograph_hound",
+  "prompt": "Full-body 3D game character, scary stylized comic book horror cartoon with a clear, readable, menacing face, hand-painted texture with bold black ink lines and cel-shaded colours. A ragged dog-like creature with a pen for a tongue, covered in signed photos, desperate eyes. One single character, neutral pose, facing forward, no ground, no base, no scenery.",
+  "humanoid": false,
+  "height": 1.1
+ },
+ {
+  "folder": "the_laugh_track",
+  "prompt": "Full-body 3D game character, scary stylized comic book horror cartoon with a clear, readable, menacing face, hand-painted texture with bold black ink lines and cel-shaded colours. A huge reel-to-reel tape machine monster with laughing mouths on its spools and tape tentacles. One single character, neutral pose, facing forward, no ground, no base, no scenery.",
+  "humanoid": false,
+  "height": 3
+ },
+ {
+  "folder": "flash_mob",
+  "prompt": "Full-body 3D game character, scary stylized comic book horror cartoon with a clear, readable, menacing face, hand-painted texture with bold black ink lines and cel-shaded colours. A crowd of paparazzi fused into one giant body with dozens of camera flashes for eyes. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 2.2
+ },
+ {
+  "folder": "agent_twelve_percent",
+  "prompt": "Full-body 3D game character, scary stylized comic book horror cartoon with a clear, readable, menacing face, hand-painted texture with bold black ink lines and cel-shaded colours. A slick talent agent with a shark grin, a contract scroll, a phone headset and twelve gold rings. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 2
+ },
+ {
+  "folder": "jolly_jack_brightly",
+  "prompt": "Full-body 3D game character, scary stylized comic book horror cartoon with a clear, readable, menacing face, hand-painted texture with bold black ink lines and cel-shaded colours. A grinning talk-show host with a frozen too-wide smile, a microphone fused to his hand and a glitter suit. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 2.1
+ },
+ {
+  "folder": "the_producer",
+  "prompt": "Full-body 3D game character, scary stylized comic book horror cartoon with a clear, readable, menacing face, hand-painted texture with bold black ink lines and cel-shaded colours. A producer in a sharp suit whose head is a ratings chart screen, contracts trailing from his pockets. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 2.3
+ },
+ {
+  "folder": "runner_rhys",
+  "prompt": "Full-body 3D game character, stylized comic book cartoon with a clear, expressive, readable face and believable proportions, hand-painted texture with bold black ink lines and cel-shaded colours. A young TV runner in a lanyard and headset carrying a tray of coffees, permanently out of breath. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 1.75
+ },
+ {
+  "folder": "staff_writer_wren",
+  "prompt": "Full-body 3D game character, stylized comic book cartoon with a clear, expressive, readable face and believable proportions, hand-painted texture with bold black ink lines and cel-shaded colours. A tired staff writer in a cardigan with a pencil behind each ear and a stack of rejected jokes. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 1.7
+ },
+ {
+  "folder": "hettie_makeup",
+  "prompt": "Full-body 3D game character, stylized comic book cartoon with a clear, expressive, readable face and believable proportions, hand-painted texture with bold black ink lines and cel-shaded colours. A hair and makeup artist with a brush belt, a powder puff and an enormous bouffant. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 1.65
+ },
+ {
+  "folder": "commissary_carl",
+  "prompt": "Full-body 3D game character, stylized comic book cartoon with a clear, expressive, readable face and believable proportions, hand-painted texture with bold black ink lines and cel-shaded colours. A canteen cook in a paper hat with a soup ladle, nametag reading CARL. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 1.8
+ },
+ {
+  "folder": "lost_props_lou",
+  "prompt": "Full-body 3D game character, stylized comic book cartoon with a clear, expressive, readable face and believable proportions, hand-painted texture with bold black ink lines and cel-shaded colours. A small props-cupboard keeper with a feather boa, a rubber sword and a box of wigs. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 1.6
+ },
+ {
+  "folder": "green_room_gloria",
+  "prompt": "Full-body 3D game character, stylized comic book cartoon with a clear, expressive, readable face and believable proportions, hand-painted texture with bold black ink lines and cel-shaded colours. A faded star hostess in a sequinned gown and feather stole, a cocktail and a tired smile. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 1.75
+ },
+ {
+  "folder": "bookwyrm",
+  "prompt": "Full-body 3D game character, scary stylized comic book horror cartoon with a clear, readable, menacing face, hand-painted texture with bold black ink lines and cel-shaded colours. A long serpent made of book spines and torn pages, a reading-lamp glow for eyes, dust trailing. One single character, neutral pose, facing forward, no ground, no base, no scenery.",
+  "humanoid": false,
+  "height": 2
+ },
+ {
+  "folder": "shusher",
+  "prompt": "Full-body 3D game character, scary stylized comic book horror cartoon with a clear, readable, menacing face, hand-painted texture with bold black ink lines and cel-shaded colours. A tall thin librarian wraith with a finger fused to its lips, a grey cardigan and no eyes, only spectacles. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 2
+ },
+ {
+  "folder": "paper_golem",
+  "prompt": "Full-body 3D game character, scary stylized comic book horror cartoon with a clear, readable, menacing face, hand-painted texture with bold black ink lines and cel-shaded colours. A golem of crumpled paper and newspaper bound with string, headlines across its chest, ink-blot face. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 2.3
+ },
+ {
+  "folder": "head_librarian",
+  "prompt": "Full-body 3D game character, scary stylized comic book horror cartoon with a clear, readable, menacing face, hand-painted texture with bold black ink lines and cel-shaded colours. A towering head librarian with a date-stamp hand, a bun skewered with pencils and a shushing mouth. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 2.4
+ },
+ {
+  "folder": "overdue",
+  "prompt": "Full-body 3D game character, scary stylized comic book horror cartoon with a clear, readable, menacing face, hand-painted texture with bold black ink lines and cel-shaded colours. A beast made of overdue notices and late-fee jars, a library card for a tongue, hungry. One single character, neutral pose, facing forward, no ground, no base, no scenery.",
+  "humanoid": false,
+  "height": 2.6
+ },
+ {
+  "folder": "bindery_foreman",
+  "prompt": "Full-body 3D game character, scary stylized comic book horror cartoon with a clear, readable, menacing face, hand-painted texture with bold black ink lines and cel-shaded colours. A bookbinder brute with a guillotine cutter for one arm and spools of thread, glue-slick apron. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 2.3
+ },
+ {
+  "folder": "index_clerk",
+  "prompt": "Full-body 3D game character, scary stylized comic book horror cartoon with a clear, readable, menacing face, hand-painted texture with bold black ink lines and cel-shaded colours. A clerk with a card-catalogue drawer for a chest, filing cards with long fingers, a hood of index cards. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 2
+ },
+ {
+  "folder": "the_archivist",
+  "prompt": "Full-body 3D game character, scary stylized comic book horror cartoon with a clear, readable, menacing face, hand-painted texture with bold black ink lines and cel-shaded colours. A giant archivist in robes of filing folders with a lantern head and keys to every room on its belt. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 2.6
+ },
+ {
+  "folder": "page_turner_pim",
+  "prompt": "Full-body 3D game character, stylized comic book cartoon with a clear, expressive, readable face and believable proportions, hand-painted texture with bold black ink lines and cel-shaded colours. A small library assistant hedgehog-folk with a book trolley and tiny spectacles. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 1.3
+ },
+ {
+  "folder": "fines_desk_freda",
+  "prompt": "Full-body 3D game character, stylized comic book cartoon with a clear, expressive, readable face and believable proportions, hand-painted texture with bold black ink lines and cel-shaded colours. A stern fines-desk librarian with a date stamp and a cash box, cat-eye glasses. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 1.65
+ },
+ {
+  "folder": "reading_room_rory",
+  "prompt": "Full-body 3D game character, stylized comic book cartoon with a clear, expressive, readable face and believable proportions, hand-painted texture with bold black ink lines and cel-shaded colours. A reading-room tea man with a trolley urn and a tray of biscuits, slippers. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 1.75
+ },
+ {
+  "folder": "bookbinder_bram",
+  "prompt": "Full-body 3D game character, stylized comic book cartoon with a clear, expressive, readable face and believable proportions, hand-painted texture with bold black ink lines and cel-shaded colours. A bookbinder with leather offcuts, an awl and a bound tome under his arm. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 1.8
+ },
+ {
+  "folder": "quiet_quentin",
+  "prompt": "Full-body 3D game character, stylized comic book cartoon with a clear, expressive, readable face and believable proportions, hand-painted texture with bold black ink lines and cel-shaded colours. A whispering innkeeper in felt slippers with a finger to his lips and a candle. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 1.75
+ },
+ {
+  "folder": "the_restless",
+  "prompt": "Full-body 3D game character, scary stylized comic book horror cartoon with a clear, readable, menacing face, hand-painted texture with bold black ink lines and cel-shaded colours. A ghostly grey contestant in tattered clothes from an old season, a hollow face and chains of name tags. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 1.8
+ },
+ {
+  "folder": "hollow_guard",
+  "prompt": "Full-body 3D game character, scary stylized comic book horror cartoon with a clear, readable, menacing face, hand-painted texture with bold black ink lines and cel-shaded colours. An empty suit of rusted plate armour with a glowing green light where a face should be, a halberd. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 2.1
+ },
+ {
+  "folder": "waxwork",
+  "prompt": "Full-body 3D game character, scary stylized comic book horror cartoon with a clear, readable, menacing face, hand-painted texture with bold black ink lines and cel-shaded colours. A melting wax figure of a horror-film victim, drips frozen mid-fall, glassy eyes, half its face gone. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 1.8
+ },
+ {
+  "folder": "gravedigger",
+  "prompt": "Full-body 3D game character, scary stylized comic book horror cartoon with a clear, readable, menacing face, hand-painted texture with bold black ink lines and cel-shaded colours. A hulking hunchbacked gravedigger with a spade, a lantern and dirt in his grin, coffin nails in his hat. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 2.2
+ },
+ {
+  "folder": "wax_witch",
+  "prompt": "Full-body 3D game character, scary stylized comic book horror cartoon with a clear, readable, menacing face, hand-painted texture with bold black ink lines and cel-shaded colours. A witch made of candle wax with burning wicks for hair and dripping hands, a black candle staff. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 2
+ },
+ {
+  "folder": "portcullis_knight",
+  "prompt": "Full-body 3D game character, scary stylized comic book horror cartoon with a clear, readable, menacing face, hand-painted texture with bold black ink lines and cel-shaded colours. A giant knight whose visor is a portcullis grate, chains for a cloak and a drawbridge-plank shield. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 2.6
+ },
+ {
+  "folder": "the_ossuary",
+  "prompt": "Full-body 3D game character, scary stylized comic book horror cartoon with a clear, readable, menacing face, hand-painted texture with bold black ink lines and cel-shaded colours. A shambling heap of skulls and bones arranged like a chapel, candles on its back and a choir of jaws. One single character, neutral pose, facing forward, no ground, no base, no scenery.",
+  "humanoid": false,
+  "height": 3
+ },
+ {
+  "folder": "the_count",
+  "prompt": "Full-body 3D game character, scary stylized comic book horror cartoon with a clear, readable, menacing face, hand-painted texture with bold black ink lines and cel-shaded colours. A gaunt gothic count in a high-collared cape with stage makeup, theatrical fangs and a director's megaphone hidden in his cloak. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 2.3
+ },
+ {
+  "folder": "lamplighter_lisbet",
+  "prompt": "Full-body 3D game character, stylized comic book cartoon with a clear, expressive, readable face and believable proportions, hand-painted texture with bold black ink lines and cel-shaded colours. A brave lamplighter girl with a long lighting pole and a lantern, a shawl and muddy boots. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 1.65
+ },
+ {
+  "folder": "widow_grimsby",
+  "prompt": "Full-body 3D game character, stylized comic book cartoon with a clear, expressive, readable face and believable proportions, hand-painted texture with bold black ink lines and cel-shaded colours. A gravekeeper's widow in black lace mourning dress with a bouquet of dead roses. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 1.7
+ },
+ {
+  "folder": "blacksmith_morrow",
+  "prompt": "Full-body 3D game character, stylized comic book cartoon with a clear, expressive, readable face and believable proportions, hand-painted texture with bold black ink lines and cel-shaded colours. A village blacksmith with a leather apron, hammer and a horseshoe charm on a cord. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 1.9
+ },
+ {
+  "folder": "goodwife_gall",
+  "prompt": "Full-body 3D game character, stylized comic book cartoon with a clear, expressive, readable face and believable proportions, hand-painted texture with bold black ink lines and cel-shaded colours. A village goodwife with a basket of bread and garlic garlands round her neck. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 1.6
+ },
+ {
+  "folder": "pedlar_crook",
+  "prompt": "Full-body 3D game character, stylized comic book cartoon with a clear, expressive, readable face and believable proportions, hand-painted texture with bold black ink lines and cel-shaded colours. A hunched pedlar with a tray of charms, rosaries and stakes, a crooked hat. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 1.5
+ },
+ {
+  "folder": "old_mother_lych",
+  "prompt": "Full-body 3D game character, stylized comic book cartoon with a clear, expressive, readable face and believable proportions, hand-painted texture with bold black ink lines and cel-shaded colours. An ancient coaching-inn landlady with a candle, a shawl and a ring of iron keys. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 1.6
+ },
+ {
+  "folder": "cable_crawler",
+  "prompt": "Full-body 3D game character, scary stylized comic book horror cartoon with a clear, readable, menacing face, hand-painted texture with bold black ink lines and cel-shaded colours. A spider-like creature made of tangled network cables and plugs, blinking LED eyes. One single character, neutral pose, facing forward, no ground, no base, no scenery.",
+  "humanoid": false,
+  "height": 1.2
+ },
+ {
+  "folder": "fan_wraith",
+  "prompt": "Full-body 3D game character, scary stylized comic book horror cartoon with a clear, readable, menacing face, hand-painted texture with bold black ink lines and cel-shaded colours. A ghost made of whirling cooling fans and frost, a cold blue glow and icicle teeth. One single character, neutral pose, facing forward, no ground, no base, no scenery.",
+  "humanoid": false,
+  "height": 2
+ },
+ {
+  "folder": "bit_rot",
+  "prompt": "Full-body 3D game character, scary stylized comic book horror cartoon with a clear, readable, menacing face, hand-painted texture with bold black ink lines and cel-shaded colours. A glitching corrupted human figure with pixelated missing chunks and doubled faces. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 1.8
+ },
+ {
+  "folder": "cable_mother",
+  "prompt": "Full-body 3D game character, scary stylized comic book horror cartoon with a clear, readable, menacing face, hand-painted texture with bold black ink lines and cel-shaded colours. A huge nest-creature of cables with a server-rack body and many plug-headed limbs. One single character, neutral pose, facing forward, no ground, no base, no scenery.",
+  "humanoid": false,
+  "height": 3.2
+ },
+ {
+  "folder": "fan_wraith_king",
+  "prompt": "Full-body 3D game character, scary stylized comic book horror cartoon with a clear, readable, menacing face, hand-painted texture with bold black ink lines and cel-shaded colours. A crowned storm of cooling fans and ice with a frozen face in the middle. One single character, neutral pose, facing forward, no ground, no base, no scenery.",
+  "humanoid": false,
+  "height": 3
+ },
+ {
+  "folder": "the_backup",
+  "prompt": "Full-body 3D game character, scary stylized comic book horror cartoon with a clear, readable, menacing face, hand-painted texture with bold black ink lines and cel-shaded colours. A blank grey mannequin copy of a person with a progress bar across its chest, half-loaded. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 2
+ },
+ {
+  "folder": "the_firewall",
+  "prompt": "Full-body 3D game character, scary stylized comic book horror cartoon with a clear, readable, menacing face, hand-painted texture with bold black ink lines and cel-shaded colours. A burning golem made of a brick wall with flames running along its mortar and a padlock heart. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 3
+ },
+ {
+  "folder": "the_recorder",
+  "prompt": "Full-body 3D game character, scary stylized comic book horror cartoon with a clear, readable, menacing face, hand-painted texture with bold black ink lines and cel-shaded colours. An enormous ancient tape-recorder machine on spider legs with a microphone eye and a red REC light. One single character, neutral pose, facing forward, no ground, no base, no scenery.",
+  "humanoid": false,
+  "height": 3.4
+ },
+ {
+  "folder": "sysadmin_sven",
+  "prompt": "Full-body 3D game character, stylized comic book cartoon with a clear, expressive, readable face and believable proportions, hand-painted texture with bold black ink lines and cel-shaded colours. A bearded sysadmin in a cardigan and fingerless gloves with a laptop and a lanyard of keys. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 1.85
+ },
+ {
+  "folder": "defrag_dot",
+  "prompt": "Full-body 3D game character, stylized comic book cartoon with a clear, expressive, readable face and believable proportions, hand-painted texture with bold black ink lines and cel-shaded colours. A cheerful tiny clanker robot technician with a screwdriver hand and a beanie. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 1.55
+ },
+ {
+  "folder": "coolant_cass",
+  "prompt": "Full-body 3D game character, stylized comic book cartoon with a clear, expressive, readable face and believable proportions, hand-painted texture with bold black ink lines and cel-shaded colours. A coolant engineer in a frost-covered parka with a canister backpack and goggles. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 1.7
+ },
+ {
+  "folder": "warm_room_wes",
+  "prompt": "Full-body 3D game character, stylized comic book cartoon with a clear, expressive, readable face and believable proportions, hand-painted texture with bold black ink lines and cel-shaded colours. A cook in a woolly hat and apron with a steaming soup flask and a heater on his back. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 1.75
+ },
+ {
+  "folder": "spare_parts_sparks",
+  "prompt": "Full-body 3D game character, stylized comic book cartoon with a clear, expressive, readable face and believable proportions, hand-painted texture with bold black ink lines and cel-shaded colours. A scrap tinkerer with magnifying goggles and a coat covered in circuit boards. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 1.6
+ },
+ {
+  "folder": "night_shift_noor",
+  "prompt": "Full-body 3D game character, stylized comic book cartoon with a clear, expressive, readable face and believable proportions, hand-painted texture with bold black ink lines and cel-shaded colours. A night-shift innkeeper in a hi-vis jacket with a torch and a thermos. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 1.7
+ },
+ {
+  "folder": "static_man",
+  "prompt": "Full-body 3D game character, scary stylized comic book horror cartoon with a clear, readable, menacing face, hand-painted texture with bold black ink lines and cel-shaded colours. A man-shaped figure made of TV static and snow, an old TV-set head showing interference. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 1.9
+ },
+ {
+  "folder": "ratings_ghoul",
+  "prompt": "Full-body 3D game character, scary stylized comic book horror cartoon with a clear, readable, menacing face, hand-painted texture with bold black ink lines and cel-shaded colours. A gaunt ghoul with a ratings bar chart for a ribcage and a clipboard of numbers it chews on. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 1.8
+ },
+ {
+  "folder": "censor_bar",
+  "prompt": "Full-body 3D game character, scary stylized comic book horror cartoon with a clear, readable, menacing face, hand-painted texture with bold black ink lines and cel-shaded colours. A floating black censor bar creature with a single bleep-mouth and grasping thin arms. One single character, neutral pose, facing forward, no ground, no base, no scenery.",
+  "humanoid": false,
+  "height": 2
+ },
+ {
+  "folder": "static_king",
+  "prompt": "Full-body 3D game character, scary stylized comic book horror cartoon with a clear, readable, menacing face, hand-painted texture with bold black ink lines and cel-shaded colours. A king of static in a crown of antennae and a cape of tangled cables, his face a dead channel. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 3
+ },
+ {
+  "folder": "the_censor",
+  "prompt": "Full-body 3D game character, scary stylized comic book horror cartoon with a clear, readable, menacing face, hand-painted texture with bold black ink lines and cel-shaded colours. A towering censor with black bars over its eyes and mouth, giant scissors and a red stamp. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 2.4
+ },
+ {
+  "folder": "the_feed",
+  "prompt": "Full-body 3D game character, scary stylized comic book horror cartoon with a clear, readable, menacing face, hand-painted texture with bold black ink lines and cel-shaded colours. A screen-faced creature made of dozens of monitors showing faces, cables for legs. One single character, neutral pose, facing forward, no ground, no base, no scenery.",
+  "humanoid": false,
+  "height": 3
+ },
+ {
+  "folder": "the_teleprompter",
+  "prompt": "Full-body 3D game character, scary stylized comic book horror cartoon with a clear, readable, menacing face, hand-painted texture with bold black ink lines and cel-shaded colours. A gaunt figure with a teleprompter for a head, scrolling words in its glass and puppet strings. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 2.3
+ },
+ {
+  "folder": "the_director",
+  "prompt": "Full-body 3D game character, scary stylized comic book horror cartoon with a clear, readable, menacing face, hand-painted texture with bold black ink lines and cel-shaded colours. A director in a beret and long coat with a megaphone for a mouth and a camera viewfinder eye. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 2.5
+ },
+ {
+  "folder": "engineer_okonkwo",
+  "prompt": "Full-body 3D game character, stylized comic book cartoon with a clear, expressive, readable face and believable proportions, hand-painted texture with bold black ink lines and cel-shaded colours. A Network broadcast engineer in a white jumpsuit with a tool belt and a cut ID badge, determined face. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 1.8
+ },
+ {
+  "folder": "lineman_lou",
+  "prompt": "Full-body 3D game character, stylized comic book cartoon with a clear, expressive, readable face and believable proportions, hand-painted texture with bold black ink lines and cel-shaded colours. A mast lineman with a safety harness, climbing spikes and coils of cable. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 1.85
+ },
+ {
+  "folder": "canteen_connie",
+  "prompt": "Full-body 3D game character, stylized comic book cartoon with a clear, expressive, readable face and believable proportions, hand-painted texture with bold black ink lines and cel-shaded colours. A canteen cook in a hairnet with a tray of jelly and a cheerful scowl. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 1.65
+ },
+ {
+  "folder": "fuse_room_fitz",
+  "prompt": "Full-body 3D game character, stylized comic book cartoon with a clear, expressive, readable face and believable proportions, hand-painted texture with bold black ink lines and cel-shaded colours. An electrician armourer with fuses on a bandolier and a crackling wrench. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 1.75
+ },
+ {
+  "folder": "uplink_ula",
+  "prompt": "Full-body 3D game character, stylized comic book cartoon with a clear, expressive, readable face and believable proportions, hand-painted texture with bold black ink lines and cel-shaded colours. A small satellite-dish tinkerer with a dish on her back and wires in her hair. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 1.6
+ },
+ {
+  "folder": "relay_ruth",
+  "prompt": "Full-body 3D game character, stylized comic book cartoon with a clear, expressive, readable face and believable proportions, hand-painted texture with bold black ink lines and cel-shaded colours. A switchboard operator innkeeper with a headset and a board of plugs. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 1.7
+ },
+ {
+  "folder": "fan_zealot",
+  "prompt": "Full-body 3D game character, scary stylized comic book horror cartoon with a clear, readable, menacing face, hand-painted texture with bold black ink lines and cel-shaded colours. A fan club zealot in a T-shirt printed with the Host's face, homemade badges and a glowing devoted stare. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 1.75
+ },
+ {
+  "folder": "host_clone",
+  "prompt": "Full-body 3D game character, scary stylized comic book horror cartoon with a clear, readable, menacing face, hand-painted texture with bold black ink lines and cel-shaded colours. A stand-in in the Host's exact suit with a blank smooth face and a painted-on smile. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 1.85
+ },
+ {
+  "folder": "mirror_self",
+  "prompt": "Full-body 3D game character, scary stylized comic book horror cartoon with a clear, readable, menacing face, hand-painted texture with bold black ink lines and cel-shaded colours. A figure made of cracked mirror shards, reflecting whoever looks at it, edges like knives. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 1.8
+ },
+ {
+  "folder": "fan_club_president",
+  "prompt": "Full-body 3D game character, scary stylized comic book horror cartoon with a clear, readable, menacing face, hand-painted texture with bold black ink lines and cel-shaded colours. A fan club president in a cardigan covered in Host badges with a giant autograph book and a manic grin. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 2
+ },
+ {
+  "folder": "the_stand_in",
+  "prompt": "Full-body 3D game character, scary stylized comic book horror cartoon with a clear, readable, menacing face, hand-painted texture with bold black ink lines and cel-shaded colours. A towering stand-in in the Host's suit, face a blank mask with a hundred faint faces behind it. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 2.2
+ },
+ {
+  "folder": "the_runner_up",
+  "prompt": "Full-body 3D game character, scary stylized comic book horror cartoon with a clear, readable, menacing face, hand-painted texture with bold black ink lines and cel-shaded colours. A bitter runner-up contestant in a silver sash and faded glitter suit, a cracked second-place trophy. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 2.1
+ },
+ {
+  "folder": "the_mother",
+  "prompt": "Full-body 3D game character, scary stylized comic book horror cartoon with a clear, readable, menacing face, hand-painted texture with bold black ink lines and cel-shaded colours. A 1950s housewife giantess in a pearl necklace and apron, a perfect frozen smile and a rolling pin. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 2.3
+ },
+ {
+  "folder": "the_host",
+  "prompt": "Full-body 3D game character, scary stylized comic book horror cartoon with a clear, readable, menacing face, hand-painted texture with bold black ink lines and cel-shaded colours. The Host: an impossibly charming game-show host in a sparkling tuxedo with perfect hair and a microphone, eyes that never blink. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 2
+ },
+ {
+  "folder": "the_milkman",
+  "prompt": "Full-body 3D game character, stylized comic book cartoon with a clear, expressive, readable face and believable proportions, hand-painted texture with bold black ink lines and cel-shaded colours. A 1950s milkman in white with a crate of milk bottles and a too-friendly wave. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 1.8
+ },
+ {
+  "folder": "miss_kindly",
+  "prompt": "Full-body 3D game character, stylized comic book cartoon with a clear, expressive, readable face and believable proportions, hand-painted texture with bold black ink lines and cel-shaded colours. A 1950s schoolteacher in a pencil skirt and cardigan with a ruler and an apple. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 1.7
+ },
+ {
+  "folder": "soda_jerk_sid",
+  "prompt": "Full-body 3D game character, stylized comic book cartoon with a clear, expressive, readable face and believable proportions, hand-painted texture with bold black ink lines and cel-shaded colours. A soda jerk in a paper hat and bow tie with a milkshake glass and a scoop. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 1.75
+ },
+ {
+  "folder": "hardware_hank",
+  "prompt": "Full-body 3D game character, stylized comic book cartoon with a clear, expressive, readable face and believable proportions, hand-painted texture with bold black ink lines and cel-shaded colours. A hardware store owner in a brown coat with a hammer, a tape measure and a pencil behind his ear. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 1.85
+ },
+ {
+  "folder": "pawn_paula",
+  "prompt": "Full-body 3D game character, stylized comic book cartoon with a clear, expressive, readable face and believable proportions, hand-painted texture with bold black ink lines and cel-shaded colours. A pawnbroker in a cardigan with a jeweller's loupe and a tray of rings. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 1.65
+ },
+ {
+  "folder": "diner_dolores",
+  "prompt": "Full-body 3D game character, stylized comic book cartoon with a clear, expressive, readable face and believable proportions, hand-painted texture with bold black ink lines and cel-shaded colours. A diner waitress innkeeper with a coffee pot, a beehive hairdo and roller skates. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 1.7
+ },
+ {
+  "folder": "maintainer",
+  "prompt": "Full-body 3D game character, scary stylized comic book horror cartoon with a clear, readable, menacing face, hand-painted texture with bold black ink lines and cel-shaded colours. A faceless grey maintenance figure in a concrete-coloured jumpsuit with tool-hands, moving like a machine. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 2
+ },
+ {
+  "folder": "echo",
+  "prompt": "Full-body 3D game character, scary stylized comic book horror cartoon with a clear, readable, menacing face, hand-painted texture with bold black ink lines and cel-shaded colours. A translucent echo of a past contestant made of overlapping outlines, mouth open mid-scream. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 1.8
+ },
+ {
+  "folder": "the_warden",
+  "prompt": "Full-body 3D game character, scary stylized comic book horror cartoon with a clear, readable, menacing face, hand-painted texture with bold black ink lines and cel-shaded colours. A colossal concrete warden with a keyhole face, a ring of huge keys and brutalist armour. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 3
+ },
+ {
+  "folder": "the_first_contestant",
+  "prompt": "Full-body 3D game character, scary stylized comic book horror cartoon with a clear, readable, menacing face, hand-painted texture with bold black ink lines and cel-shaded colours. The first contestant ever: a starved figure in a rotted bathrobe and fuzzy slippers, a wristband glowing on bare bone. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 1.9
+ },
+ {
+  "folder": "the_absence",
+  "prompt": "Full-body 3D game character, an imposing, uncanny god from a comic book horror story, clear readable face or mask, hand-painted texture with bold black ink lines and cel-shaded colours. The Absence: a towering shape that is a hole in the world, outlined in ink, with stars inside and many faint hands at its edges. One single character, neutral pose, facing forward, no ground, no base, no scenery.",
+  "humanoid": false,
+  "height": 4
+ },
+ {
+  "folder": "clamp",
+  "prompt": "Full-body 3D game character, scary stylized comic book horror cartoon with a clear, readable, menacing face, hand-painted texture with bold black ink lines and cel-shaded colours. A hulking yellow-jacketed parking warden ogre with a giant wheel clamp for one hand and a ticket machine embedded in his chest, printing endless fines. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 2.6
+ },
+ {
+  "folder": "drowned_valet",
+  "prompt": "Full-body 3D game character, scary stylized comic book horror cartoon with a clear, readable, menacing face, hand-painted texture with bold black ink lines and cel-shaded colours. A drowned car-park valet in a soaked red waistcoat and cap, skin blue and swollen, eels coiling round his arms, holding a ring of dripping car keys. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 2.6
+ },
+ {
+  "folder": "agitator",
+  "prompt": "Full-body 3D game character, scary stylized comic book horror cartoon with a clear, readable, menacing face, hand-painted texture with bold black ink lines and cel-shaded colours. A towering golem built from a giant industrial washing drum, porthole face with a churning eye, arms of dryer ducting, socks and soap foam pouring from its joints. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 2.6
+ },
+ {
+  "folder": "trouser_press",
+  "prompt": "Full-body 3D game character, scary stylized comic book horror cartoon with a clear, readable, menacing face, hand-painted texture with bold black ink lines and cel-shaded colours. A gaunt tailor-monster whose torso is a giant steaming trouser press that opens like jaws, tape-measure tongue, irons for hands. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 2.6
+ },
+ {
+  "folder": "brisket",
+  "prompt": "Full-body 3D game character, scary stylized comic book horror cartoon with a clear, readable, menacing face, hand-painted texture with bold black ink lines and cel-shaded colours. A huge hag butcher in a blood-stained striped apron with meat cleavers for fingers, sausage-link necklace and a grin of rotten teeth. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 2.6
+ },
+ {
+  "folder": "bone_broth",
+  "prompt": "Full-body 3D game character, scary stylized comic book horror cartoon with a clear, readable, menacing face, hand-painted texture with bold black ink lines and cel-shaded colours. A living vat of brown broth rising into a monstrous shape, bones and skulls bobbing inside, ladles stuck in its back, steam pouring off it. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 2.6
+ },
+ {
+  "folder": "mannequin_bride",
+  "prompt": "Full-body 3D game character, scary stylized comic book horror cartoon with a clear, readable, menacing face, hand-painted texture with bold black ink lines and cel-shaded colours. A cracked porcelain shop mannequin in a tattered wedding dress with too many jointed arms, veil over a blank face, price tag hanging from its neck. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 2.6
+ },
+ {
+  "folder": "down_escalator",
+  "prompt": "Full-body 3D game character, scary stylized comic book horror cartoon with a clear, readable, menacing face, hand-painted texture with bold black ink lines and cel-shaded colours. A monster made of a broken escalator twisted into a serpent, metal steps for scales, handrail tongue, shopping bags caught in its teeth. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 2.6
+ },
+ {
+  "folder": "grill_dad",
+  "prompt": "Full-body 3D game character, scary stylized comic book horror cartoon with a clear, readable, menacing face, hand-painted texture with bold black ink lines and cel-shaded colours. A huge suburban dad monster in a novelty KISS THE COOK apron and flip-flops, barbecue grill for a chest, tongs for hands, sunglasses and a terrifying smile. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 2.6
+ },
+ {
+  "folder": "lifeguard",
+  "prompt": "Full-body 3D game character, scary stylized comic book horror cartoon with a clear, readable, menacing face, hand-painted texture with bold black ink lines and cel-shaded colours. A tall drowned lifeguard with a whistle, red swim shorts, a rescue float as a weapon, seaweed hair and blank white eyes. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 2.6
+ },
+ {
+  "folder": "taxidermist",
+  "prompt": "Full-body 3D game character, scary stylized comic book horror cartoon with a clear, readable, menacing face, hand-painted texture with bold black ink lines and cel-shaded colours. A gaunt hunter-taxidermist in a leather apron and pith helmet with a sewing needle spear and glass eyes in jars on his belt, stuffed heads on his back. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 2.6
+ },
+ {
+  "folder": "alpha",
+  "prompt": "Full-body 3D game character, scary stylized comic book horror cartoon with a clear, readable, menacing face, hand-painted texture with bold black ink lines and cel-shaded colours. A monstrous three-headed dog the size of a car, studded collars on every neck, a name tag on each, wild and starved. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 2.6
+ },
+ {
+  "folder": "bailiff",
+  "prompt": "Full-body 3D game character, scary stylized comic book horror cartoon with a clear, readable, menacing face, hand-painted texture with bold black ink lines and cel-shaded colours. An enormous bailiff in a soaked grey suit and bowler hat with a battering ram arm and a clipboard of eviction notices, chains dragging from his belt. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 2.6
+ },
+ {
+  "folder": "drowned_debutante",
+  "prompt": "Full-body 3D game character, scary stylized comic book horror cartoon with a clear, readable, menacing face, hand-painted texture with bold black ink lines and cel-shaded colours. A drowned young debutante in a waterlogged ballgown and tiara, hair floating like weed, dancing slippers, barnacles on her arms. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 2.6
+ },
+ {
+  "folder": "old_bellows",
+  "prompt": "Full-body 3D game character, scary stylized comic book horror cartoon with a clear, readable, menacing face, hand-painted texture with bold black ink lines and cel-shaded colours. A giant soot-black furnace man with leather bellows for lungs, a glowing coal-fire belly and a chimney top hat belching smoke. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 2.6
+ },
+ {
+  "folder": "foremans_ghost",
+  "prompt": "Full-body 3D game character, scary stylized comic book horror cartoon with a clear, readable, menacing face, hand-painted texture with bold black ink lines and cel-shaded colours. A ghostly mine foreman in a hard hat and lamp, translucent and green, a pocket watch chain and a pickaxe, face of an angry old man. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 2.6
+ },
+ {
+  "folder": "chief_whip",
+  "prompt": "Full-body 3D game character, scary stylized comic book horror cartoon with a clear, readable, menacing face, hand-painted texture with bold black ink lines and cel-shaded colours. A huge rat politician in a tailcoat and chain of office with a bullwhip made of a living rat tail, gavel in the other paw. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 2.6
+ },
+ {
+  "folder": "auditor",
+  "prompt": "Full-body 3D game character, scary stylized comic book horror cartoon with a clear, readable, menacing face, hand-painted texture with bold black ink lines and cel-shaded colours. A tall thin auditor in a green eyeshade and sleeve garters, twelve long fingers on each hand, ledgers stitched into his coat and an abacus spine. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 2.6
+ },
+ {
+  "folder": "leading_man",
+  "prompt": "Full-body 3D game character, scary stylized comic book horror cartoon with a clear, readable, menacing face, hand-painted texture with bold black ink lines and cel-shaded colours. A dashing matinee idol with a perfect jaw and slicked hair whose face is cracking like old makeup to show something underneath, tuxedo, rapier. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 2.6
+ },
+ {
+  "folder": "the_cutter",
+  "prompt": "Full-body 3D game character, scary stylized comic book horror cartoon with a clear, readable, menacing face, hand-painted texture with bold black ink lines and cel-shaded colours. A spindly film editor creature with scissor-blade fingers, strips of film trailing from its body like bandages and a lens for one eye. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 2.6
+ },
+ {
+  "folder": "the_manager",
+  "prompt": "Full-body 3D game character, scary stylized comic book horror cartoon with a clear, readable, menacing face, hand-painted texture with bold black ink lines and cel-shaded colours. A red-faced furious football manager in a sheepskin coat and flat cap, veins bulging, clipboard snapped in half, tactics board shield. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 2.6
+ },
+ {
+  "folder": "the_replay",
+  "prompt": "Full-body 3D game character, scary stylized comic book horror cartoon with a clear, readable, menacing face, hand-painted texture with bold black ink lines and cel-shaded colours. A flickering humanoid made of stacked TV screens each showing the same moment, a remote control hand and a pause-symbol face. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 2.6
+ },
+ {
+  "folder": "the_face",
+  "prompt": "Full-body 3D game character, scary stylized comic book horror cartoon with a clear, readable, menacing face, hand-painted texture with bold black ink lines and cel-shaded colours. A makeup artist monster whose head is a cluster of dozens of stolen faces like masks, brushes and lipsticks for fingers, a ring light halo. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 2.6
+ },
+ {
+  "folder": "ghostwriter",
+  "prompt": "Full-body 3D game character, scary stylized comic book horror cartoon with a clear, readable, menacing face, hand-painted texture with bold black ink lines and cel-shaded colours. A pale ghostly writer with a typewriter for a chest, paper streaming from it, ink-stained fingers and a cigarette, hollow eyes. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 2.6
+ },
+ {
+  "folder": "first_edition",
+  "prompt": "Full-body 3D game character, scary stylized comic book horror cartoon with a clear, readable, menacing face, hand-painted texture with bold black ink lines and cel-shaded colours. A giant ancient leather-bound book with clawed page-arms, a lock for a mouth and ink dripping from its spine, chained to a lectern it drags. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 2.6
+ },
+ {
+  "folder": "hush",
+  "prompt": "Full-body 3D game character, scary stylized comic book horror cartoon with a clear, readable, menacing face, hand-painted texture with bold black ink lines and cel-shaded colours. A tall faceless librarian wraith with one enormous finger pressed where a mouth should be, cardigan of grey mist, soundless and long-limbed. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 2.6
+ },
+ {
+  "folder": "iron_maiden",
+  "prompt": "Full-body 3D game character, scary stylized comic book horror cartoon with a clear, readable, menacing face, hand-painted texture with bold black ink lines and cel-shaded colours. A walking spiked iron maiden cabinet with a sad painted woman's face on its lid, opening to show spikes, chains hanging, rust everywhere. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 2.6
+ },
+ {
+  "folder": "the_banquet",
+  "prompt": "Full-body 3D game character, scary stylized comic book horror cartoon with a clear, readable, menacing face, hand-painted texture with bold black ink lines and cel-shaded colours. A monstrous feast table come to life, with a roast pig head, candelabra horns, cutlery legs and a tablecloth cape, goblets for eyes. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 2.6
+ },
+ {
+  "folder": "corrupted_save",
+  "prompt": "Full-body 3D game character, scary stylized comic book horror cartoon with a clear, readable, menacing face, hand-painted texture with bold black ink lines and cel-shaded colours. A glitching, half-rendered copy of a contestant, pixelated and fractured, with a progress bar frozen across its chest and a doubled screaming face. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 2.6
+ },
+ {
+  "folder": "frost_kernel",
+  "prompt": "Full-body 3D game character, scary stylized comic book horror cartoon with a clear, readable, menacing face, hand-painted texture with bold black ink lines and cel-shaded colours. A giant crystalline ice creature grown around a glowing server core, icicle claws, frozen cables like hair and a blue blinking heart. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 2.6
+ },
+ {
+  "folder": "the_chroma",
+  "prompt": "Full-body 3D game character, scary stylized comic book horror cartoon with a clear, readable, menacing face, hand-painted texture with bold black ink lines and cel-shaded colours. A tall bright green figure with no features that is half invisible, edges shimmering like a bad special effect, long chroma-key arms. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 2.6
+ },
+ {
+  "folder": "vision_mixer",
+  "prompt": "Full-body 3D game character, scary stylized comic book horror cartoon with a clear, readable, menacing face, hand-painted texture with bold black ink lines and cel-shaded colours. A many-armed broadcast technician fused into a huge mixing desk, headphones grown into its skull, faders for fingers, a red tally light eye. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 2.6
+ },
+ {
+  "folder": "baby_host",
+  "prompt": "Full-body 3D game character, scary stylized comic book horror cartoon with a clear, readable, menacing face, hand-painted texture with bold black ink lines and cel-shaded colours. A huge uncanny baby in a tiny tuxedo and bib with the Host's perfect hair and smile, holding a microphone rattle, eyes far too old. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 2.6
+ },
+ {
+  "folder": "under_the_bed",
+  "prompt": "Full-body 3D game character, scary stylized comic book horror cartoon with a clear, readable, menacing face, hand-painted texture with bold black ink lines and cel-shaded colours. A long spidery shadow creature with too many arms and a wide white grin, crawling out from under a child's bed, wearing a stolen game-show bow tie. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 2.6
+ },
+ {
+  "folder": "doorkeeper",
+  "prompt": "Full-body 3D game character, scary stylized comic book horror cartoon with a clear, readable, menacing face, hand-painted texture with bold black ink lines and cel-shaded colours. A colossal grey stone figure made of a doorframe, a giant key held across its body, a blank face with a keyhole, ancient and patient. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 2.6
+ },
+ {
+  "folder": "every_previous_host",
+  "prompt": "Full-body 3D game character, scary stylized comic book horror cartoon with a clear, readable, menacing face, hand-painted texture with bold black ink lines and cel-shaded colours. A towering tangle of a dozen game-show hosts fused together, many tuxedo arms, many microphones, many perfect smiles stacked into one body. Standing in a T-pose, arms straight out, facing forward, empty hands, no base.",
+  "humanoid": true,
+  "height": 2.6
+ }
+]

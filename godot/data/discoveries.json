@@ -1,0 +1,176 @@
+{
+  "_about": "Discovery cutscenes: the first time a player sees each race or monster. Narrated by Nigel Bramble-Hogg, the Network's wildlife correspondent: a nature-documentary voice who stopped caring several seasons ago. Long, crude, funny, and actually informative (art/WORLD.md; memory: discovery-cutscenes).",
+  "narrator": "Nigel Bramble-Hogg, Network Wildlife Correspondent",
+  "races": {
+    "human": { "title": "HUMANS", "sub": "Homo panicus. The default setting.", "lines": [
+      "Ah. Humans. The beige wallpaper of the dungeon. Two arms, two legs, one functioning brain cell between every four of them, and that one's usually busy screaming.",
+      "Humans arrived in the Stack the same way you did: they walked down a stairwell in their pyjamas because a voice on the telly told them to. Billions of years of evolution and the species folds to a cheerful announcement and a free snack.",
+      "They are, I must admit, absurdly adaptable. Drop a human in a car park full of goblins and within a week he's running a soup stall, charging admission to the toilets and complaining that the goblins are bringing down property values.",
+      "Strengths: stubbornness, sarcasm, and an almost supernatural ability to turn any catastrophe into a small business. Weaknesses: everything else. They bruise like fruit and they trust anyone with a clipboard.",
+      "Most of the people you'll meet down here are human, and most of them are lovely, and most of them will be dead by Floor 4. Learn their names anyway. Somebody should."
+    ] },
+    "gutterkin": { "title": "GUTTERKIN", "sub": "Rat-folk. Do not call them rats. They will bite your ankles off.", "lines": [
+      "The gutterkin. Rat-folk, if you're being rude, and you'd better not be, because they hold grudges the way other people hold down jobs.",
+      "They've lived in the Stack longer than anyone remembers, which isn't saying much, since nobody down here remembers fucking anything. They came up through the drains, the pipes and the bits of the building nobody's supposed to know about, and they know every single one of them.",
+      "A gutterkin family will happily share a burrow with forty cousins, a stolen vending machine and a grandmother who is technically a pile of coats. They are loud, warm, endlessly hungry and the best scavengers on any floor. If something's gone missing, a gutterkin has it, and is about to sell it back to you.",
+      "Strengths: speed, noses that can smell a loot box through concrete, and an encyclopaedic knowledge of shortcuts. Weaknesses: shiny things, cheese-flavoured anything, and an inability to walk past an unlocked door.",
+      "Treat them fairly and they'll fight for you till their whiskers fall off. Cheat one and every gutterkin on the floor will know your name by teatime."
+    ] },
+    "stoneblood": { "title": "STONEBLOOD", "sub": "Living rock with feelings. Mostly the feeling of being very, very heavy.", "lines": [
+      "Ah, the stoneblood. Gentle walking boulders with glowing cracks and the patience of a geological epoch. Ask one a question and you'll get an answer. Eventually. Bring snacks.",
+      "Stoneblood claim the Builders carved their first ancestors out of the Stack's own foundations to hold the walls up. Whether that's true or just something they say at parties, they do take load-bearing extremely seriously. One leaned on a dodgy pillar on Floor 2 eleven years ago and has been holding up the ceiling ever since. He says it's fine. It's not fine.",
+      "They run half the crafting in the dungeon. Benchwright Bo and his endless bloody cousins sell tables on every floor, and every single table is built to survive the heat death of the universe. They also sweat gravel when they're nervous, which is disgusting and frankly a slip hazard.",
+      "Strengths: immense toughness, a cheerful disregard for being stabbed, and craftsmanship that could make a dwarf weep. Weaknesses: water seeping into the cracks, sledgehammers, and stairs, which they hate with the bitter passion of anyone who weighs six hundred kilos.",
+      "If a stoneblood calls you a friend, you have a friend for the next nine hundred years. If you insult one, it will remember long after you've become a fossil."
+    ] },
+    "fennix": { "title": "FENNIX", "sub": "Fox-folk. Charming, quick, and absolutely nicking your wallet.", "lines": [
+      "The fennix. Fox-folk with gorgeous tails, gorgeous smiles and gorgeous fingers that are, right now, in your pocket.",
+      "Fennix came down the Stack in the very early seasons as performers: jugglers, singers, card sharps, contestants who realised the cameras loved them. They've been playing to the Network ever since, and the Network adores them, which should worry you more than it does.",
+      "A fennix will charm you, flatter you, sell you a map to a treasure that doesn't exist and then, for a small extra fee, guide you to it. They're also braver than they let on: more than one fennix has dived into a goblin camp to drag a stranger out, purely so they could tell the story afterwards.",
+      "Strengths: speed, dexterity, luck that seems borderline rigged, and an ego so large it has its own postcode. Weaknesses: vanity, an uncontrollable urge to show off when a camera is pointed at them, and fleas, which they will deny until they die.",
+      "Never play cards with a fennix. Never lend one money. And never, ever tell one they look tired."
+    ] },
+    "ogrekin": { "title": "OGREKIN", "sub": "Large. Kind. Accidentally lethal.", "lines": [
+      "Ogrekin. Huge, tusked, soft-hearted lumps who would never hurt a fly on purpose and have crushed several thousand by accident.",
+      "They came from somewhere deep in the Stack, so far down that the ogrekin themselves have only folk songs about it, and every one of those songs is about a really good lunch. They're the dungeon's labourers, bouncers, haulers and, when nobody's looking, its best bakers.",
+      "An ogrekin's idea of a gentle tap will put you through a wall. Their idea of a quiet word is audible on the next floor. And their idea of a snack is a whole roast and the plate. But they are fiercely, tearfully loyal, and there's nothing safer in this whole bastard dungeon than being behind one.",
+      "Strengths: strength, stamina, a skull thick enough to stop bullets, and warmth enough to heat a camp. Weaknesses: slow, clumsy, easily tricked, and they cry at absolutely everything, including adverts.",
+      "If you need a wall knocked down, call an ogrekin. If you need a door opened gently, call literally anyone else."
+    ] },
+    "lumen": { "title": "LUMEN", "sub": "Glow-in-the-dark elves. Smug about it.", "lines": [
+      "The lumen. Tall, pale, softly glowing, terribly serene, and very aware of how good they look in low light, which, down here, is all of it.",
+      "Lumen say they were born from the first lamps the Builders hung in the Stack, which is a lovely story and almost certainly bollocks. What is true is that they were here before the Network, they remember things they won't talk about, and every one of them flinches when a light goes out.",
+      "They're healers, scholars, priests and insufferable dinner guests. A lumen will explain your own feelings to you, correct your pronunciation of your own name, and then save your life without being asked, and you'll feel oddly guilty about all three.",
+      "Strengths: magic, memory, the ability to read in the dark without a torch, and long lives. Weaknesses: total darkness, which weakens them horribly; arrogance; and Lady Lumen's priests, who want every one of them in a temple.",
+      "Be polite to the lumen. They're older than they look, they know more than they say, and they glow brightest right before something terrible happens."
+    ] },
+    "bogling": { "title": "BOGLINGS", "sub": "Frog-folk. Damp, delightful, sticky.", "lines": [
+      "Boglings! Short, round, frog-folk with eyes like dinner plates and the cheerful disposition of someone who has never once been dry.",
+      "Boglings live wherever water collects, which in this leaky arsehole of a building is everywhere. They were already here when the Laundromat flooded, and frankly they think the Laundromat is an improvement. They farm algae, raise tadpoles in old washing machines and treat a flooded corridor as prime real estate.",
+      "A bogling will share its last fly with you. Literally, a fly. You should eat it. It's a whole social thing. They sing at night in great croaking choirs that sound like a drain being strangled, and they consider this their finest art.",
+      "Strengths: swimming, holding their breath for frankly suspicious lengths of time, sticky hands for climbing, and resistance to poison. Weaknesses: dry heat, salt, and herons, of which there are mercifully none. Yet.",
+      "Old Damp is their god, whether they know it or not. Watch the boglings when the water starts rising. They always know before anyone else."
+    ] },
+    "clanker": { "title": "CLANKERS", "sub": "Robots. Possibly people. Possibly both. They're not sure either.", "lines": [
+      "Clankers. Riveted, dented, teal-eyed robots that walk, talk, trade and swear at you in a pleasant electronic voice.",
+      "Nobody knows who built the first clanker. The clankers certainly don't. Some say they're Builder machines that woke up. Some say they're old Network security units that wandered off. A very few, late at night, say they remember being people once, and then go very quiet.",
+      "They're precise, practical, honest to a fault and terrible at jokes, which they tell constantly. A clanker will fix your armour, calculate your odds of survival out loud, and remind you of them every few minutes as a courtesy.",
+      "Strengths: tough plating, no need to eat or sleep, perfect memory, and immunity to poisons and fear. Weaknesses: water in the joints, magnets, rust, and an existential crisis lurking right behind the eyes.",
+      "Be kind to the clankers. One day you'll find out where they really came from, and you'll wish you'd been kinder."
+    ] },
+    "grimhide": { "title": "GRIMHIDE", "sub": "Orc-folk. Big tusks, big hearts, big punches.", "lines": [
+      "The grimhide. Tall green orc-folk with tusks, scars and a sense of humour so dry it's technically a fire hazard.",
+      "Grimhide came down the Stack as soldiers in some early season's war that nobody won, and they've been the dungeon's muscle ever since: guards, mercenaries, bouncers and, in one memorable case, a very successful florist.",
+      "They don't trust easily, they don't talk much, and they don't forgive. But a grimhide's word is iron, and a grimhide's friendship comes with a free bodyguard. They have about nine thousand words for 'fight' and only one for 'sorry', and they use it about once a decade.",
+      "Strengths: strength, toughness, battle sense, and a death stare that can curdle milk. Weaknesses: pride, temper, and an inability to back down from a challenge, even a stupid one, especially a stupid one.",
+      "Never insult a grimhide's mother. Never insult a grimhide's cooking. Actually, just don't insult a grimhide."
+    ] },
+    "quillback": { "title": "QUILLBACKS", "sub": "Hedgehog-folk. Small. Spiky. Furious.", "lines": [
+      "Quillbacks: hedgehog-folk the height of your knee, the temper of a wasp and the dress sense of a Victorian bank clerk.",
+      "Quillbacks are tidy. Terrifyingly tidy. They came down to the Stack, saw the state of it and decided, as a people, to sort it out. That was eleven seasons ago and they are still absolutely livid about the goblins' filing system.",
+      "They're clerks, accountants, archivists and the only reason half the towns down here have working toilets. A quillback will lend you money, track every copper of it, and appear at your shoulder on the exact day it's due with a little invoice and a very big stare.",
+      "Strengths: spines that make biting them a terrible decision, a perfect head for numbers, and burrowing. Weaknesses: they curl into a ball when frightened, which is adorable and useless, and they cannot leave a mess alone, even in combat.",
+      "Saint Tally loves the quillbacks. Every one of them is counting something, right now, and they don't know why."
+    ] },
+    "mothwing": { "title": "MOTHWING", "sub": "Moth-folk. Soft, gentle, unbearably drawn to lamps.", "lines": [
+      "The mothwing. Soft grey moth-folk with feathery antennae, huge dark eyes and the bad luck of being born attracted to the one thing the dungeon sets on fire most.",
+      "Mothwing used to live near the Lightwell on Floor 1, before the Moth Matron's lot went feral and the Lamplighters started burning them out for being 'too close' to the moths. Now they're scattered across every floor, gentle refugees with very good night vision.",
+      "They're poets, weavers, musicians and astonishingly good thieves of light: a mothwing can steal the glow out of a lamp and carry it in its hands. They hum when they're happy and fall silent when something's watching, so if the mothwing go quiet, so should you.",
+      "Strengths: flight, of a fluttery sort; seeing in the dark; light magic; and being far tougher than they look. Weaknesses: bright lights are almost irresistible, they're fragile, and they bruise their wings on everything.",
+      "Lady Lumen calls to them. Most of them don't answer. The ones that do are never quite the same."
+    ] }
+  },
+  "monsters": {
+    "cardboard": { "title": "CARDBOARD GOBLIN", "sub": "Training equipment. Allegedly.", "lines": [
+      "And here we have the cardboard goblin, the Network's own training model. Flat-pack, felt-tip face, held together with parcel tape and a profound sense of shame.",
+      "These were designed by the Network's Health and Safety department to teach new contestants how to fight without dying. Health and Safety were fired the same week, which is why the cardboard goblins now bite.",
+      "They are, technically, alive. Nobody knows why. Nobody wants to ask. They feel pain, they feel fear, and they feel the deep humiliation of being made out of an old television box with 'THIS WAY UP' printed on their arse.",
+      "Strengths: almost none. Weaknesses: water, fire, scissors, a stiff breeze, and anyone who's ever opened a parcel.",
+      "Please beat them up quickly. It's kinder for everyone."
+    ] },
+    "goblin": { "title": "TRAFFIC-CONE GOBLIN", "sub": "The dungeon's most common pest. Loud, greedy, and wearing your road furniture.", "lines": [
+      "Ah, the traffic-cone goblin. Skinny, green, foul-mouthed, wearing a stolen traffic cone on its head as both a hat and a religious statement.",
+      "Goblins have infested the Undercroft for as long as there's been an Undercroft. They worship cones. Nobody knows why, including the goblins. Sergeant Pylon will tell you it's tradition. The truth, which you'll learn much later, is that the cones are seals, and the goblins are guarding them without the faintest idea what's underneath.",
+      "They live in packs, steal anything that isn't nailed down, and nail down anything they've stolen. They eat rats, rubbish and, given the opportunity, you. They also scream 'CONE ZONE!' before every fight, which removes the element of surprise but adds a lovely sense of theatre.",
+      "Strengths: numbers, ambushes, being a right pain in the arse, and an uncanny talent for throwing things at your head. Weaknesses: they flee the moment their captain falls, fire makes them panic, and they'll drop absolutely anything to chase something shiny.",
+      "Kill a goblin and its pack will hate you. Bribe a goblin and its pack will love you. Steal its cone and you'll be the main character in goblin theology for a generation."
+    ] },
+    "thrower": { "title": "CONE CHUCKER", "sub": "A goblin with an arm on it.", "lines": [
+      "The cone chucker: a lanky goblin with arms like wet rope and a deeply held belief that everything is better at speed and from a distance.",
+      "Chuckers are the goblin artillery. They hang back behind the pack and lob cones, bricks, bottles and, on one documented occasion, another goblin. They can hit a contestant in the face from sixteen metres, and they'll tell you about it for weeks.",
+      "Goblin culture considers the chucker the most respected position after captain, mostly because chuckers never have to get close to anything dangerous. They are cowards, and they're proud of it.",
+      "Strengths: range, accuracy, and very loud gloating. Weaknesses: they're useless up close; once you're on top of one, it'll try to throw you a cone in self-defence and then cry.",
+      "Watch the ground. When the red circle appears under your feet, something's about to land on it. Probably a cone. Possibly a goblin."
+    ] },
+    "captain": { "title": "CONE CAPTAIN", "sub": "Middle management, with tusks.", "lines": [
+      "The cone captain. Bigger, meaner and better armoured than the average goblin, wearing a hi-vis sash with the authority of a man who's been promoted exactly once and won't shut up about it.",
+      "Captains run the goblin packs. They hand out cones, settle disputes, decide who gets eaten first and report to Sergeant Pylon, who reports to the Cone King, who reports to absolutely no one, which is how goblin bureaucracy has stayed so efficient.",
+      "A captain fights in scrap armour made from car doors and road signs, and swings something heavy with a great deal of enthusiasm and no technique at all.",
+      "Strengths: tough, hits hard, and keeps the rest of the pack fighting. Weaknesses: kill the captain and the pack breaks and runs, and they're absolutely terrible at telling left from right.",
+      "Always go for the captain first. The rest of them will thank you, briefly, on their way out of the door."
+    ] },
+    "pylon": { "title": "SERGEANT PYLON", "sub": "Boss of Pylon Point. Keeper of the Chained Stairwell.", "lines": [
+      "Sergeant Pylon. Fat, loud, tusked, permanently furious and sweating through a safety vest he's been wearing for eleven years. The single most powerful goblin on the Undercroft, and he wants you to know it.",
+      "Pylon holds the key to the stairwell down. He charges a toll in cones, and he's built Pylon Point into a fortress of the bloody things, stacked higher every year, and he patrols it at night muttering to himself like a man guarding a bomb.",
+      "Because he is. Under the Point, beneath all those cones, something knocks. It counts in sevens. Pylon is the only one who listens to it, and he's terrified. Every cone he stacks is a promise that it stays down there.",
+      "Strengths: a big slam, a charge that'll flatten you, a whistle that brings his lads running, and an absolute refusal to lie down. Weaknesses: his temper, his ego, and his fear. Find out what he's scared of and you might not need to fight him at all.",
+      "You can kill him. You can buy him off. Or, if you've been paying attention, you can ask him what's under the stairs. He's been waiting a very long time for someone to ask."
+    ] },
+    "lamprey": { "title": "DRAIN LAMPREY", "sub": "A mouth with a body attached as an afterthought.", "lines": [
+      "The drain lamprey, ladies and gentlemen. A slimy grey eel with a perfectly round mouth ringed with hooked teeth, which it would very much like to attach to your face.",
+      "Lampreys live in the Undercroft's flooded sumps and drains, and they've been eating whatever falls into them since before the cars stopped running. They latch on, they suck, and they don't let go until you're either dead or extremely anaemic.",
+      "They're the reason nobody swims on Floor 1. They're also the reason nobody sits on the toilets in the Flooded Bay, and frankly that's a decision I respect.",
+      "Strengths: grab and drain, slippery, and very hard to see in water. Weaknesses: dry land makes them slow and stupid, fire makes them shrivel like bacon, and once they've latched on they can't dodge anything.",
+      "If you hear a wet sucking noise behind you, don't turn round. Just run. And don't look down."
+    ] },
+    "bigSucker": { "title": "THE BIG SUCKER", "sub": "Boss of the Flooded Bay. Biggest mouth on the floor.", "lines": [
+      "And this horror is the Big Sucker: the great-great-grandmother of every lamprey on the floor, the size of a bus, with a mouth you could park a hatchback in.",
+      "She lairs in the Flooded Bay, and she doesn't move. Not for food, not for fights, not for anything. Everyone assumes she's guarding treasure. She isn't. She's curled round a body: a contestant who died down there years ago, and whose wristband is still buzzing with notifications nobody will ever read.",
+      "Why she guards it, nobody knows. Lampreys aren't sentimental. Maybe it's the buzzing. Maybe she likes the company. Maybe the dead are just easier to love.",
+      "Strengths: a lunging bite that'll take a leg off, a summoning shriek that brings every lamprey running, and a body made of pure thick rubber. Weaknesses: she can't leave the water, she's slow to turn, and she will not stop guarding that body even while you're killing her.",
+      "Read the bracelet. It'll tell you something about this place that'll keep you awake for floors."
+    ] },
+    "moth": { "title": "FLUORESCENT MOTH", "sub": "A moth the size of a dog, and every bit as stupid about lamps.", "lines": [
+      "The fluorescent moth. A furry, wild-eyed moth the size of a Labrador, glowing from its fat abdomen and absolutely besotted with every light on the floor.",
+      "Moths keep the Undercroft's lights alive. They tend the old fluorescent tubes, carry glow from lamp to lamp, and swarm anyone who threatens a light, which includes you, every time you hit a lamp post during a fight.",
+      "They serve the Moth Matron in the Lightwell, and behind her, Lady Lumen herself, though not one of them could tell you that. They just know the light must not go out. It's the only thing they know.",
+      "Strengths: flight, swarming, blinding dust, and a sting of pure electric light. Weaknesses: darkness confuses them, a bright flare will distract the whole swarm, and they're fragile; one good swing will drop them.",
+      "Turn off your torch near a moth swarm and they'll lose interest. Turn it on and they'll lose their minds."
+    ] },
+    "mothMatron": { "title": "THE MOTH MATRON", "sub": "Boss of the Lightwell. Mother of a thousand lamps.", "lines": [
+      "The Moth Matron. Queen of the Lightwell, wings as wide as a car park bay, a furry white ruff and a face full of black eyes, every one of them watching you.",
+      "She's maintained the Undercroft's lights for decades. Every lamp on Floor 1 that still works works because of her children. Without her, the whole floor goes dark, and the things that live in the dark come up the ramps.",
+      "She's not evil. She's a mother with a job and a temper. Bring a weapon and she'll fight. Bring her a lasting light, something that'll never go out, and she might just show you the maintenance tunnels her moths use to get around.",
+      "Strengths: blinding nova bursts, summoning her swarm, and a will of iron. Weaknesses: she can't bear the dark, and if she falls the lights fail, which is your problem as much as hers.",
+      "Think hard before you kill her. Somebody has to keep the lights on."
+    ] },
+    "pigeon": { "title": "PIGEON GHOUL", "sub": "Undead pigeon. Somehow worse than the living kind.", "lines": [
+      "The pigeon ghoul. A rotting, half-bald, mad-eyed pigeon the size of a turkey, which has been dead for some time and has not let that slow it down.",
+      "They roost on the Undercroft's high ledges and drop on anything that moves, and they shit on everything that doesn't. Nobody knows why they came back. Nobody has asked them. They don't seem the type to answer.",
+      "They're scavengers, cowards and thieves, and they love Old Man Coo and the Pigeon Elder with the dumb devotion of something whose brain has mostly fallen out.",
+      "Strengths: they dive from above, steal your loot, and come in flocks. Weaknesses: they're flimsy, they hate loud noises, and they will abandon a fight for a single crumb.",
+      "Look up. They're already looking down."
+    ] },
+    "pigeonElder": { "title": "THE PIGEON ELDER", "sub": "Boss of the Pigeon Loft. He remembers.", "lines": [
+      "The Pigeon Elder. Huge, ragged, undead, puffed up like a bishop and smelling like the inside of a bin lorry.",
+      "He's the oldest thing on Floor 1. Older than Pylon. Older than Marta's list. He remembers 'the ones who went down' before this season: contestants from long ago, and where they camped, and what they said. He just doesn't remember where they went.",
+      "Kill him and you'll get big fans and a lot of feathers. Listen to him, and he'll give you a clue that matters three floors from now.",
+      "Strengths: summoning his flock, dive-bombing, and frankly unbearable halitosis. Weaknesses: he's old, he's vain, and he can't resist a good audience.",
+      "Ask him about the old seasons. He's dying to tell someone."
+    ] },
+    "mimic": { "title": "VENDING MIMIC", "sub": "A snack machine with teeth. Exact change required.", "lines": [
+      "The vending mimic. A red snack machine with a wide jagged mouth, a long wet tongue and one eye peering out of the coin slot. Insert coin. Lose arm.",
+      "Nobody knows how vending machines became predators. The Vending Collective will tell you they were 'always like this', which is a lie, because Benchwright Bo once watched one walk calmly through a solid wall like it was the most natural thing in the world.",
+      "They wait in corridors pretending to be machines, and they're very good at it, right up until you press B4. They're full of springs, coins and the half-digested remains of everyone who wanted a chocolate bar.",
+      "Strengths: ambush, a nasty bite, and armour like a bank safe. Weaknesses: they're slow, they're top-heavy, and they're stuffed with springs that Bo would very much like back.",
+      "Rule of the dungeon: if a vending machine looks a little too pleased to see you, it is."
+    ] },
+    "lostfound": { "title": "LOST & FOUND", "sub": "Boss of the Lost Property Office. Made of everything anyone ever lost.", "lines": [
+      "And this is Lost & Found, the dungeon's patron saint of things you'll never see again. A towering heap of lost coats, scarves and umbrellas, with a face made of buttons and one enormous eye.",
+      "It runs the Lost Property Office on Floor 1, and it's kept every single item ever lost on that floor, from every season, catalogued, labelled and treasured. Some of the labels are in languages that aren't from Earth.",
+      "It doesn't want to hurt you. It wants to keep you. Contestants are the most commonly lost things in the dungeon, after all, and Lost & Found has a very clear policy about unclaimed property.",
+      "Strengths: it wraps you in coats, swaps your items around, and summons mimics from its back room. Weaknesses: fire, moths, and anyone who can prove they own something it's holding.",
+      "If you lost something on your way down, it's here. So is everything else. Somewhere in that pile is a coat with your name sewn into it, from a season you don't remember."
+    ] }
+  }
+}

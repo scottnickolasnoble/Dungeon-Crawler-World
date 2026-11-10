@@ -1,0 +1,442 @@
+[
+ {
+  "folder": "castle_wall",
+  "size": "b",
+  "height": 6
+ },
+ {
+  "folder": "castle_tower_top",
+  "size": "b",
+  "height": 5
+ },
+ {
+  "folder": "castle_gatehouse",
+  "size": "b",
+  "height": 10
+ },
+ {
+  "folder": "drawbridge",
+  "size": "b",
+  "height": 1.2
+ },
+ {
+  "folder": "gargoyle",
+  "size": "m",
+  "height": 1.4
+ },
+ {
+  "folder": "coffin",
+  "size": "m",
+  "height": 0.8
+ },
+ {
+  "folder": "candelabra",
+  "size": "s",
+  "height": 1.8
+ },
+ {
+  "folder": "iron_chandelier",
+  "size": "m",
+  "height": 1.6
+ },
+ {
+  "folder": "gothic_throne",
+  "size": "m",
+  "height": 2.6
+ },
+ {
+  "folder": "gallows",
+  "size": "b",
+  "height": 4.5
+ },
+ {
+  "folder": "headstone_row",
+  "size": "m",
+  "height": 1.3
+ },
+ {
+  "folder": "crypt_door",
+  "size": "m",
+  "height": 3
+ },
+ {
+  "folder": "armour_stand",
+  "size": "m",
+  "height": 2
+ },
+ {
+  "folder": "haunted_portrait",
+  "size": "m",
+  "height": 1.8
+ },
+ {
+  "folder": "iron_fence",
+  "size": "m",
+  "height": 2
+ },
+ {
+  "folder": "witch_tower",
+  "size": "b",
+  "height": 12
+ },
+ {
+  "folder": "dead_mill",
+  "size": "b",
+  "height": 7
+ },
+ {
+  "folder": "stone_bridge",
+  "size": "b",
+  "height": 3
+ },
+ {
+  "folder": "club_bar",
+  "size": "b",
+  "height": 1.3
+ },
+ {
+  "folder": "club_backbar",
+  "size": "b",
+  "height": 2.6
+ },
+ {
+  "folder": "club_jukebox",
+  "size": "m",
+  "height": 1.6
+ },
+ {
+  "folder": "club_booth",
+  "size": "m",
+  "height": 1.2
+ },
+ {
+  "folder": "card_table",
+  "size": "m",
+  "height": 1.1
+ },
+ {
+  "folder": "fight_cage",
+  "size": "b",
+  "height": 3
+ },
+ {
+  "folder": "black_market_shelf",
+  "size": "m",
+  "height": 2
+ },
+ {
+  "folder": "walk_in_safe",
+  "size": "b",
+  "height": 2.6
+ },
+ {
+  "folder": "bounty_board",
+  "size": "m",
+  "height": 2
+ },
+ {
+  "folder": "hidden_door_freezer",
+  "size": "b",
+  "height": 2.4
+ },
+ {
+  "folder": "shrine_small",
+  "size": "m",
+  "height": 1.5
+ },
+ {
+  "folder": "altar_tally",
+  "size": "b",
+  "height": 2
+ },
+ {
+  "folder": "altar_damp",
+  "size": "b",
+  "height": 1.5
+ },
+ {
+  "folder": "altar_hollow_chef",
+  "size": "b",
+  "height": 1.8
+ },
+ {
+  "folder": "altar_mother_mould",
+  "size": "b",
+  "height": 1.4
+ },
+ {
+  "folder": "altar_rustwright",
+  "size": "b",
+  "height": 2.2
+ },
+ {
+  "folder": "altar_good_neighbour",
+  "size": "b",
+  "height": 1.6
+ },
+ {
+  "folder": "altar_lady_lumen",
+  "size": "b",
+  "height": 2.5
+ },
+ {
+  "folder": "altar_antlered_viewer",
+  "size": "b",
+  "height": 2.4
+ },
+ {
+  "folder": "altar_encore",
+  "size": "b",
+  "height": 2.2
+ },
+ {
+  "folder": "altar_index",
+  "size": "b",
+  "height": 2.4
+ },
+ {
+  "folder": "altar_static",
+  "size": "b",
+  "height": 2.4
+ },
+ {
+  "folder": "empty_plinth",
+  "size": "m",
+  "height": 1.6
+ },
+ {
+  "folder": "set_front_western",
+  "size": "b",
+  "height": 7
+ },
+ {
+  "folder": "set_front_moonbase",
+  "size": "b",
+  "height": 6
+ },
+ {
+  "folder": "set_front_alley",
+  "size": "b",
+  "height": 7
+ },
+ {
+  "folder": "camera_crane",
+  "size": "b",
+  "height": 6
+ },
+ {
+  "folder": "clapperboard_giant",
+  "size": "b",
+  "height": 5
+ },
+ {
+  "folder": "catering_tent",
+  "size": "b",
+  "height": 3.5
+ },
+ {
+  "folder": "makeup_trailer",
+  "size": "b",
+  "height": 3.2
+ },
+ {
+  "folder": "bleachers",
+  "size": "b",
+  "height": 4
+ },
+ {
+  "folder": "spotlight_rig",
+  "size": "m",
+  "height": 4
+ },
+ {
+  "folder": "stadium_stand",
+  "size": "b",
+  "height": 8
+ },
+ {
+  "folder": "jumbotron",
+  "size": "b",
+  "height": 8
+ },
+ {
+  "folder": "goalpost",
+  "size": "b",
+  "height": 3
+ },
+ {
+  "folder": "burger_stand",
+  "size": "m",
+  "height": 3
+ },
+ {
+  "folder": "trophy_cabinet",
+  "size": "b",
+  "height": 3
+ },
+ {
+  "folder": "locker_bank",
+  "size": "m",
+  "height": 2
+ },
+ {
+  "folder": "halftime_stage",
+  "size": "b",
+  "height": 3
+ },
+ {
+  "folder": "turnstile",
+  "size": "m",
+  "height": 1.2
+ },
+ {
+  "folder": "star_dressing_door",
+  "size": "m",
+  "height": 2.5
+ },
+ {
+  "folder": "makeup_mirror_desk",
+  "size": "m",
+  "height": 1.8
+ },
+ {
+  "folder": "talk_show_couch",
+  "size": "b",
+  "height": 1.2
+ },
+ {
+  "folder": "applause_sign",
+  "size": "m",
+  "height": 1
+ },
+ {
+  "folder": "writers_table",
+  "size": "b",
+  "height": 1.2
+ },
+ {
+  "folder": "laugh_machine",
+  "size": "b",
+  "height": 2.5
+ },
+ {
+  "folder": "costume_rail",
+  "size": "m",
+  "height": 2
+ },
+ {
+  "folder": "bookshelf_tall",
+  "size": "b",
+  "height": 6
+ },
+ {
+  "folder": "card_catalogue",
+  "size": "m",
+  "height": 1.6
+ },
+ {
+  "folder": "reading_desk",
+  "size": "m",
+  "height": 1.2
+ },
+ {
+  "folder": "book_pile",
+  "size": "s",
+  "height": 1
+ },
+ {
+  "folder": "returns_chute",
+  "size": "m",
+  "height": 2.2
+ },
+ {
+  "folder": "library_gantry",
+  "size": "b",
+  "height": 1.5
+ },
+ {
+  "folder": "server_rack",
+  "size": "m",
+  "height": 2.2
+ },
+ {
+  "folder": "cooling_tower",
+  "size": "b",
+  "height": 10
+ },
+ {
+  "folder": "cable_bundle",
+  "size": "m",
+  "height": 1
+ },
+ {
+  "folder": "tape_reel_stack",
+  "size": "m",
+  "height": 2
+ },
+ {
+  "folder": "big_red_switch",
+  "size": "m",
+  "height": 2
+ },
+ {
+  "folder": "satellite_dish",
+  "size": "b",
+  "height": 5
+ },
+ {
+  "folder": "broadcast_mast",
+  "size": "b",
+  "height": 16
+ },
+ {
+  "folder": "mixing_desk",
+  "size": "b",
+  "height": 1.4
+ },
+ {
+  "folder": "on_air_light",
+  "size": "s",
+  "height": 0.6
+ },
+ {
+  "folder": "fifties_house",
+  "size": "b",
+  "height": 8
+ },
+ {
+  "folder": "drive_in_screen",
+  "size": "b",
+  "height": 12
+ },
+ {
+  "folder": "fifties_diner",
+  "size": "b",
+  "height": 4.5
+ },
+ {
+  "folder": "mirror_panel",
+  "size": "m",
+  "height": 2.5
+ },
+ {
+  "folder": "school_desk",
+  "size": "s",
+  "height": 1
+ },
+ {
+  "folder": "builder_machine",
+  "size": "b",
+  "height": 8
+ },
+ {
+  "folder": "impossible_stair",
+  "size": "b",
+  "height": 6
+ },
+ {
+  "folder": "control_console",
+  "size": "b",
+  "height": 1.5
+ }
+]

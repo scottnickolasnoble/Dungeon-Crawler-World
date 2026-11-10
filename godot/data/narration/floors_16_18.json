@@ -1,0 +1,128 @@
+{
+ "static_man": { "title": "STATIC MAN", "sub": "The Transmitter's interference. Kssshhh.", "lines": [
+  "Static Men. Tall, flickering figures made of television snow, the grey fizz between channels, crackling and hissing, with faces that are just a blur and voices that sound like a radio losing signal in a tunnel.",
+  "They're interference. Every broken broadcast, every dropped signal, every bit of noise the Transmitter throws off ends up taking shape and walking around the dish fields, buzzing like a fridge with a grudge.",
+  "Touch one and your teeth fizz, your hair stands up and, for one hideous second, you can hear every channel at once, including the shopping one, and the one with the bloke selling knives.",
+  "Strengths: they shock, they disrupt your abilities and they pass through walls like a bad smell. Weaknesses: a clear signal. Tune them in.",
+  "Kill one and it goes 'kssshhhhh' and fades out, like a telly at the end of the night when your dad's fallen asleep in front of it with his hand down his trousers."]},
+ "static_king": { "title": "STATIC KING", "sub": "Boss of the Dish Array. Reroutes everything.", "lines": [
+  "The Static King. A giant made of television snow, thirty feet tall, standing in the middle of the Dish Array with satellite dishes for shoulders and an aerial for a crown, crackling so loud you can hear him three fields away.",
+  "He reroutes the signal. If any part of the Transmitter goes down, the Static King routes the broadcast around it. Dead air is impossible while he's standing. He's the reason nobody has ever, ever turned the Network off.",
+  "He's the Mother of Static's favourite son, and the most smug, self-satisfied lump of interference you've ever met. He talks over you. Constantly. He's every man in every meeting you've ever been in.",
+  "Strengths: lightning, dishes he aims at you like cannons and a court of Static Men. Weaknesses: the dishes. Break them and he can't reroute anything.",
+  "Topple him and the whole Array goes dark, dish by dish, with a sound like someone pulling the plug on God."]},
+ "censor_bar": { "title": "CENSOR BAR", "sub": "Black rectangles. Covering what shouldn't be seen.", "lines": [
+  "Censor Bars. Floating black rectangles, the kind they put over people's eyes and bits on the telly, drifting around the Censor's Office in a silent, ominous swarm.",
+  "They cover things. Faces, words, people, truths. Anything the Network doesn't want broadcast gets a censor bar slapped on it, and the bar stays there. Forever. Some of the contestants on this floor have been censored so long they've forgotten they had faces.",
+  "Get covered by one and you're not just hidden. You're erased. Nobody can see you, hear you or remember you, and the Network carries on as if you never existed. Which, as far as the audience knows, you didn't.",
+  "Strengths: they blind you, silence you and erase your buffs. Weaknesses: they can't cover what's already been seen. Get in front of a camera.",
+  "Rip one off a contestant and you'll find a face underneath, screaming. They've been screaming for years. Nobody heard."]},
+ "the_censor": { "title": "THE CENSOR", "sub": "Boss of the Censor's Office. Redacts people.", "lines": [
+  "The Censor. A man with a black bar where his eyes should be, another over his mouth, a third over his crotch for reasons that, frankly, you don't want to explore, sitting behind a desk with a big black marker pen, redacting.",
+  "He decides what the audience is allowed to see. Swearing, bleeped. Violence, approved. Truth, redacted. He has redacted whole contestants out of existence, and he did it with a big black pen while humming.",
+  "He's very prim. He thinks you're filthy. He thinks the whole dungeon's filthy. And he's right, honestly. He's just wrong about which bits.",
+  "Strengths: he silences your abilities, he blinds you, and he redacts you right off the screen. Weaknesses: his keys. He holds the keys to the whole broadcast, and he's terrified of losing them.",
+  "Take his keys. When you do, say something absolutely disgusting. He'll faint. Every time."]},
+ "ratings_ghoul": { "title": "RATINGS GHOUL", "sub": "They feed on numbers.", "lines": [
+  "Ratings Ghouls. Pale, gaunt, grey-skinned creatures in suits, with numbers scrolling across their foreheads and long, long fingers that twitch like they're scrolling through something.",
+  "They feed on ratings. Your fans, your views, your popularity. They suck the numbers out of contestants until there's nothing left but a husk, a forgotten name and a zero.",
+  "They're always hungry. Always. A ratings ghoul is never satisfied. It's never enough. It's never, ever enough. You've met people like this. You've probably shagged one.",
+  "Strengths: they drain your fans, they swarm and they're drawn to whoever's most popular. Weaknesses: they starve on obscurity. Be boring.",
+  "If one ever tells you that you're 'trending', run."]},
+ "the_feed": { "title": "THE FEED", "sub": "Boss of the Ratings Room. Your number, live.", "lines": [
+  "The Feed. A great swollen thing of screens, hundreds of them, stitched together into a body, each one scrolling numbers, comments, likes, hearts and, mostly, abuse, at a speed that makes you feel sick.",
+  "It's the Ratings Room, made flesh. It knows your number. It knows everyone's number. It decides whose number goes up and whose goes down, and it does it based on nothing, absolutely nothing, but whether you're interesting right now.",
+  "It's horrible. It's addictive. It's every bad night you've ever spent scrolling your phone in the dark until three in the morning, given a body and a grudge.",
+  "Strengths: it changes your fans mid-fight, it summons ghouls and it hurls comments at you that hurt more than knives. Weaknesses: unplug it.",
+  "Unplug the Feed and the screens go black, one by one, and the silence is the sweetest thing you've ever heard. Then you'll want to check your number. Don't."]},
+ "the_teleprompter": { "title": "THE TELEPROMPTER", "sub": "Boss of the Teleprompter. Your lines, forever.", "lines": [
+  "The Teleprompter. A tall glass screen on a stand, with scrolling text, a reflection that isn't quite you and a voice that reads the text out loud in your own voice, slightly before you say it.",
+  "It has your lines. All of them. For the rest of your life. Everything you're going to say, scrolling past, and you have to say it, because the Teleprompter has already said it, and it's never wrong.",
+  "It's how the Network keeps the Host on script. It's how it keeps everyone on script. It's why every contestant interview sounds the same. They're all reading.",
+  "Strengths: it makes you say what it wants, it predicts your attacks and it can freeze you mid-sentence. Weaknesses: go off script. Swear. A lot.",
+  "Say something that isn't on the screen. Something filthy. The Teleprompter will stutter, freeze and blue-screen. Then you're free."]},
+ "the_director": { "title": "THE DIRECTOR", "sub": "Floor Boss of the Gallery. Runs every camera.", "lines": [
+  "The Director. A small, intense woman in a black polo neck, with headphones on, a hundred screens in front of her and a voice that cuts through everything: 'Camera three. Camera three. CAMERA THREE.'",
+  "She runs the Gallery. Every camera in the dungeon feeds into her screens. She decides what the audience sees, and when, and from what angle. She's been doing it for longer than you've been alive, and she hasn't blinked once.",
+  "She knows about the dead air. She knows about the off-air engineer. She's been waiting. She's been planning. She has a camera on you right now, and she's chosen the angle that makes your arse look biggest.",
+  "Strengths: she controls every camera, she summons ghouls and static and she cuts you off mid-ability. Weaknesses: dead air. In the dark, she's blind.",
+  "Take the Gallery. Sit in her chair. Look at all those screens. Every one of them is someone, somewhere, watching you."]},
+ "fan_zealot": { "title": "FAN ZEALOT", "sub": "The Host's fan club. Devoted.", "lines": [
+  "Fan Zealots. People in matching T-shirts with the Host's face printed on them, holding signs, banners and pictures of him they've drawn themselves, screaming his name like he's the second coming.",
+  "They love the Host. They love him more than they love anything. They've followed every season, collected every souvenir, written fan fiction you would not believe. Some of it has been confiscated by the Censor.",
+  "They live on Main Street, in the Host's childhood town, and they'll defend him to the death. Your death, specifically.",
+  "Strengths: there are hundreds, they mob you and they're fanatical. Weaknesses: show them who he really is.",
+  "Tell one the truth about the Host and they'll scream, cover their ears and run away. Some of them will come back with questions."]},
+ "fan_club_president": { "title": "FAN CLUB PRESIDENT", "sub": "Boss of the Fan Club. Very, very excited.", "lines": [
+  "The Fan Club President. A middle-aged woman in a cardigan covered in badges, with a lanyard of passes, a scrapbook the size of a gravestone and the frantic, shining eyes of someone who has met their hero and never, ever recovered.",
+  "She's been president of the Host's fan club since season one. She knows everything about him. His favourite colour, his shoe size, his childhood dog's name. She has a lock of his hair. Nobody knows how she got it.",
+  "She's very, very excited to meet you. You're on the show! You're famous! You're going to meet him! And if you're thinking of hurting him, she will gnaw your face off.",
+  "Strengths: she summons the whole club, she screams loud enough to deafen and she'll defend him to her last breath. Weaknesses: she's obsessed. Distract her with a souvenir.",
+  "Beat her and she'll sob, 'But he's so lovely,' into her scrapbook. He isn't. She's going to find that out."]},
+ "mirror_self": { "title": "MIRROR SELF", "sub": "You. But wrong.", "lines": [
+  "Mirror Selves. Copies of you, stepping out of the mirrors in the Mirror Maze, wearing your face, your clothes and your expression, except slightly wrong. A bit to the left. A bit too smiley. Eyes a little dead.",
+  "They're your reflections, given a body by the Maze. They know your moves because they're your moves. They've watched you every time you looked in a mirror. They've seen you pick your nose. They've seen you practise what you'd say to your ex.",
+  "They want to be you. They think they'd do a better job of it. Honestly? Some of them might.",
+  "Strengths: they copy everything you do, they come in numbers and they're very hard to tell apart from the real you. Weaknesses: break the mirror.",
+  "Kill one and it shatters into glass on the floor, and every shard shows your face, looking disappointed."]},
+ "the_stand_in": { "title": "THE STAND-IN", "sub": "Boss of the Mirror Maze. Has your face. Does it better.", "lines": [
+  "The Stand-In. You. Perfectly you. Your face, your body, your voice, your clothes, but taller, better lit and with better posture, standing in the heart of the Mirror Maze delivering your lines better than you've ever delivered them.",
+  "Every contestant who makes it to Floor 17 gets a stand-in, ready to take their place in the show if they die. He's been rehearsing being you since the moment you came down the stairs. He's very good. The audience likes him more.",
+  "He's not evil. He's just ready. And if he beats you, he walks out of the Maze, and the show carries on, and nobody up there ever notices you're gone.",
+  "Strengths: everything you can do, he can do, better. Weaknesses: he only knows who you were. Become someone else.",
+  "Beat your Stand-In. Look him in the eye. He'll smile your smile and say, 'Good luck. You'll need it more than I would have.'"]},
+ "host_clone": { "title": "HOST CLONE", "sub": "Everybody's the Host here.", "lines": [
+  "Host Clones. The Host. Again. And again. And again. Copies of him at every age, from little boy to old man, all with the same teeth, the same hair and the same professionally warm smile, walking the streets of his childhood town.",
+  "They're his memories, made solid. Every version of himself he's ever been, living in the town he grew up in, playing out the same scenes over and over: little Host at school, teenage Host at the prom, young Host at his first audition.",
+  "They all love you. They all want you to stay. They all smile at you like you're their best friend in the whole wide world, which is, if anything, the most terrifying thing in the dungeon.",
+  "Strengths: they swarm, they charm and they pile on. Weaknesses: they're memories. Make them remember something he wants to forget.",
+  "Kill one and it says 'Thanks for watching!' in his voice. Every time. Every single fucking time."]},
+ "the_runner_up": { "title": "THE RUNNER-UP", "sub": "Boss of the Runner-Up's House. Almost won.", "lines": [
+  "The Runner-Up. A tired-looking man in his forties in a dressing gown, with a silver medal round his neck, a mug of tea gone cold and the haunted eyes of someone who came within inches of winning and has thanked God every day since that he didn't.",
+  "He was last season's runner-up. He made it all the way to the Studio. He stood in front of the Host. And he lost. Just. He's lived in a little house on Main Street ever since, and he never, ever goes out.",
+  "He knows what winning means. He saw it. He saw the contract. He saw what happens to the winner. And he's very, very glad it wasn't him.",
+  "Strengths: he knows all the Host's tricks, he summons clones and he fights like a man defending his home. Weaknesses: he doesn't want to fight. Let him talk.",
+  "Hear him out. Make him a fresh cup of tea. He'll tell you something about winning that'll make your blood run cold."]},
+ "the_mother": { "title": "THE MOTHER", "sub": "Boss of the Trophy Room. Kept every trophy.", "lines": [
+  "The Mother. The Host's mother. An immaculately dressed woman in pearls and a twinset, with lacquered hair and a smile as rigid as a mannequin's, standing in a room full of trophies, polishing them. Every single one.",
+  "She kept every trophy her son ever won. Every swimming certificate. Every school prize. Every gold star. Every award, every ratings record, every Network accolade. She polishes them all day, every day, and she has never once told him she was proud of him.",
+  "She's the reason he is the way he is. She wanted a star. She got one. She just never thought about what it would cost him, and she's never once cared.",
+  "Strengths: she throws trophies, summons clones and her disapproval is a physical weapon. Weaknesses: the first trophy. The one he won as a little boy. Break it.",
+  "Get past her, and she'll look at you, coldly, and say, 'He could have been anything.' She doesn't mean it as a compliment."]},
+ "the_host": { "title": "THE HOST", "sub": "Floor Boss of the Studio. The Previous Winner.", "lines": [
+  "The Host. The man himself. Tall, tanned, white-toothed, immaculately suited, with a microphone in one hand and a cue card in the other, standing in the middle of his own Studio in front of a live studio audience, beaming at you like you're the best thing that ever happened to him.",
+  "He's hosted every season since the Network began. He's welcomed every contestant, mocked every death and celebrated every victory. He's the most famous face in the universe. He's never once stopped smiling. His cheeks must be fucking agony.",
+  "And he was a contestant. The very first winner. He came down the stairs, he went all the way, and when he got to the bottom, they offered him this. Winning is how you become the Host. And there can only ever be one.",
+  "Strengths: he controls the whole studio, he summons every clone and every fan and the audience buffs him every time he lands a gag. Weaknesses: he's tired. He's so tired. And he's scared of what's below.",
+  "Face him. And when it's over, whatever happens, look at the empty chair behind his desk. That's yours, if you want it."]},
+ "maintainer": { "title": "MAINTAINER", "sub": "The Builders' last workers. Keeping it running.", "lines": [
+  "Maintainers. Tall, grey, faceless figures in overalls, carrying spanners, oil cans and clipboards, moving silently through the bare concrete corridors of the floor that doesn't exist, keeping everything running.",
+  "They were made by the Builders, to look after the Stack. They don't know the Builders are gone. They don't know about the Network. They don't know about contestants. They just keep the machines turning, oiled and clean, as they have since the beginning of everything.",
+  "To them, you're a fault. A foreign object in the machine. A bit of grit in the works. And faults get fixed.",
+  "Strengths: they don't stop, they don't feel and they fix themselves. Weaknesses: they can't attack anything that's part of the machine. Stand on something important.",
+  "If one stops and looks at you, really looks, it's the first time in a thousand years it's looked at anything that wasn't a machine. It doesn't know what to do."]},
+ "the_warden": { "title": "THE WARDEN", "sub": "Boss of the Wardens' Gate. Decides who sees.", "lines": [
+  "The Warden. An enormous Maintainer, twelve feet tall, in grey overalls covered in keys, with a lantern for a head that shines a cold white light into every corner of the Wardens' Gate.",
+  "He decides who sees the Builders' work. Nobody has ever passed him. Nobody has ever got this far. The Network doesn't even know he exists. He has been standing at this gate since before there were contestants to stand against.",
+  "He doesn't care who you are. He doesn't care what you've done. He only cares whether you're ready to see. And nobody's ever ready.",
+  "Strengths: he locks you out, he calls every Maintainer and his light burns. Weaknesses: show him the Builders' mark. Show him you know.",
+  "Get past him and he'll stand aside, and dim his light, and say, in a voice like grinding gears, 'Mind the step.'"]},
+ "echo": { "title": "ECHO", "sub": "What's left of the first contestant's words.", "lines": [
+  "Echoes. Shimmering, translucent shapes of a man, flickering, repeating, the same few seconds over and over, wandering the Echo Hall like reflections on water.",
+  "They're the First Contestant's words. Everything he ever said, in the Echo Hall, bouncing round and round and round for thousands of years until they took shape and started walking.",
+  "They say the same things. 'Is anyone there?' 'Hello?' 'I don't want to win.' 'Please.' Over and over. Forever.",
+  "Strengths: they repeat your attacks back at you, they multiply and they're hard to pin down. Weaknesses: silence. An echo needs a sound.",
+  "Stand still and say nothing. The echoes will slowly, slowly fade away, one by one, until only one is left, saying 'please'."]},
+ "the_first_contestant": { "title": "THE FIRST CONTESTANT", "sub": "Boss of the Echo Hall. The first one down.", "lines": [
+  "The First Contestant. A thin old man in rags, a beard down to his knees, sitting cross-legged in the middle of the Echo Hall, talking. Constantly. Every word bounces off the walls a hundred times.",
+  "He was the very first person to come down the stairs. Before the Network. Before the Host. Before contestants. The Builders brought him here to test the Stack, and he went all the way down, and he's been sitting here ever since, talking, because nobody ever came to hear him.",
+  "He knows what the Stack is for. He knows what the Builders were. He knows what's in the Builders' Seat. And he's desperate, absolutely desperate, to tell someone. He's been rehearsing it for ten thousand years.",
+  "Strengths: his voice is a weapon in the Echo Hall, every word multiplied a hundred times. Weaknesses: he wants to talk. Let him.",
+  "Hear him out, or silence him. If you hear him out, you'll know what you're choosing. If you silence him, you'll choose blind. Either way, he'll thank you."]},
+ "the_absence": { "title": "THE ABSENCE", "sub": "Floor Boss of the Builders' Seat. The one nobody names.", "lines": [
+  "The Absence. Nothing. A chair, in an empty room, at the bottom of everything, with nobody in it. And yet, when you look at the chair, something looks back.",
+  "It's what the Builders were. Or what they became. Or what they left behind when they went. Every temple has an empty plinth for it. Every god is afraid of it. It has never once been seen, because there's nothing there to see.",
+  "It's been waiting for someone to come and sit down. It doesn't care who. It doesn't care why. It just needs somebody in the seat, because a machine needs an operator, and the Stack has been running on autopilot for a very, very long time.",
+  "Strengths: everything. It is the Stack. Weaknesses: you. You're the first thing that's ever got here and had a choice.",
+  "So: what are you going to do? Sit down? Switch it off? Or open every door and let the gods out? Nigel's going to have to stop talking now. This one's yours."]}
+}

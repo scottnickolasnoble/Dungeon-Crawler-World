@@ -3,9 +3,11 @@ extends Node3D
 ## FLOOR 0, THE LANDING: the Network's Orientation Centre, seen as a shabby TV-studio lobby.
 ## The layout and everyone's positions are the prototype's (worlds/floor0.js). The look is the comic redesign:
 ## props from tools/blender/build_landing_kit.py, textures from tools/paint_landing_textures.mjs.
-## Pip, the dummies and the cardboard goblins stand in place for now. Dialog comes in Phase 3 and fighting in Phase 2.
+## Pip paces behind his desk and runs the tutorial (data/dialogue.json). The dummies take hits and the cardboard goblins fight back.
 
 const FLOOR_NAME := "FLOOR 0 · THE LANDING"
+const PIP_PACE := 4.0
+const PIP_WALK_SPEED := 1.3
 const SPAWN := Vector3(0, 0, 56)
 const CEILING := 7.0
 const WIDTH := 28.0
@@ -131,6 +133,7 @@ func _build_ceiling_rig() -> void:
 
 func _build_arrival() -> void:
 	_prop("arrival_stairs", Vector3(0, 0, 56.5), PI)
+	_person("res://models/characters/sergeant_pylon.glb", Vector3(5, 0, 44), 1.0) # test: the Floor 1 boss, on show until he has a home
 	# The prototype lets you walk through these steps. Here they block you, just behind the spawn point.
 	_collider(Vector3(0, 2, 58.2), Vector3(4.2, 2, 1.75))
 	_hanging_sign("sign_welcome", 14, 2, Vector3(0, 5.2, 46))
@@ -213,6 +216,8 @@ func _build_desk() -> void:
 	_prop("desk", Vector3(0, 0, 30))
 	_collider(Vector3(0, 2, 30), Vector3(3.5, 2, 0.8))
 	_hanging_sign("sign_orientation", 5, 0.9, Vector3(0, 2.75, 30.1))
+	# the Welcome Box, waiting by the end of the desk
+	_prop("boxes", Vector3(4.6, 0, 32.2), 0.3)
 
 
 func _build_fountain() -> void:
@@ -249,20 +254,28 @@ func _build_exit() -> void:
 	_collider(Vector3(0, CEILING / 2.0, -68), Vector3(4, CEILING / 2.0, 1))
 	_wall_sign("sign_floor1", 5, 1.1, Vector3(0, 6.45, -66.88), 0.0)
 	interactables.append({ "pos": Vector3(0, 0, -64), "r": 4.0, "text": "Press E: take the stairs down to Floor 1", "to": 1 })
+	# the tutorial: Pip at the desk, the fountain, and the Welcome Box on the end of the desk
+	interactables.append({ "pos": Vector3(0, 0, 32.0), "r": 3.6, "text": "", "talk": "pip" })
+	interactables.append({ "pos": Vector3(-11.6, 0, 18), "r": 2.6, "text": "Press E: drink from the fountain", "act": ["flag:tut_drank", "heal", "notice:You drink. It tastes of pennies and pool. You feel better anyway."], "once": false })
+	interactables.append({ "pos": Vector3(4.6, 0, 32.2), "r": 2.4, "text": "Press E: open your Welcome Box", "after": "An empty Welcome Box. The ribbon says CONGRATULATIONS!", "act": ["flag:tut_box", "gold:15", "flag:has_ledger", "notice:WELCOME BOX · 15 gold and a Network Materials Ledger. Everything you pick up gets written in it. Somebody already wrote your name."] })
 	_light(Color("#5aff7a"), 3.2, 11.0, Vector3(0, 3.4, -63), true)
 
 
 func _place_people() -> void:
 	# yaw 0 faces the arrival stairs (+Z), the way everyone in the prototype's Landing faces
-	_person("res://models/npcs/pool/human_quest.glb", Vector3(0, 0, 28.4), 1.0) # Intern Pip
-	_person("res://models/npcs/pool/human_guard.glb", Vector3(-10, 0, 44), 1.06)
-	_person("res://models/npcs/pool/gutterkin_gossip.glb", Vector3(9, 0, 20), 0.98)
+	_pacing_pip()
+	_person("res://models/characters/human_townsperson.glb", Vector3(-10, 0, 44), 1.0)
+	_person("res://models/characters/gutterkin_townsperson.glb", Vector3(9, 0, 20), 1.0)
+	# practice dummies take hits and never hit back
 	for x: float in [-6.0, 0.0, 6.0]:
-		_person("res://models/monsters/dummy.glb", Vector3(x, 0, 5), 1.0)
+		Mob.spawn("dummy", 1, "res://models/monsters/dummy.glb", self, Vector3(x, 0, 5))
+	# the first real fight: three cardboard goblins between you and the stairs
 	var goblins := [[1, -5.0, -32.0], [4, 5.0, -32.0], [6, 0.0, -38.0]]
 	for g: Array in goblins:
 		var variant: int = g[0]
-		_person("res://models/monsters/goblin_v%d.glb" % variant, Vector3(g[1], 0, g[2]), 0.95 + (variant % 3) * 0.05)
+		var goblin := Mob.spawn("cardboard", 1, "res://models/characters/cardboard_goblin.glb", self, Vector3(g[1], 0, g[2]), 0.0, 0.95 + (variant % 3) * 0.05)
+		if goblin:
+			goblin.group = "landing"
 
 
 # ---------------------------------------------------------------- building blocks
@@ -271,7 +284,7 @@ func _tex(texture_name: String) -> Texture2D:
 
 
 func _prop(prop_name: String, pos: Vector3, yaw := 0.0, collide_half := Vector3.ZERO) -> Node3D:
-	var model := Models.instantiate(PROPS % prop_name)
+	var model := Models.instantiate(PROPS % prop_name if ResourceLoader.exists(PROPS % prop_name) else "res://models/props/wilds/%s.glb" % prop_name)
 	if model == null:
 		return null
 	model.position = pos
@@ -288,20 +301,75 @@ func _prop(prop_name: String, pos: Vector3, yaw := 0.0, collide_half := Vector3.
 	return model
 
 
-func _person(path: String, pos: Vector3, model_scale: float) -> void:
-	var model := Models.instantiate(path)
-	if model == null:
+## Intern Pip walks nervously up and down behind the desk. His walk is a Mixamo clip, on the spot, so the feet only stay
+## planted if he moves at PIP_WALK_SPEED, which is measured from the clip.
+func _pacing_pip() -> void:
+	var pip := Models.instantiate("res://models/characters/rigged/intern_pip.glb")
+	if pip == null:
 		return
+	const LEFT_END := Vector3(-PIP_PACE, 0, 28.4)
+	const RIGHT_END := Vector3(PIP_PACE, 0, 28.4)
+	pip.position = LEFT_END
+	pip.rotation.y = PI / 2.0
+	add_child(pip)
+	var player: AnimationPlayer = pip.find_children("*", "AnimationPlayer", true, false)[0]
+	for clip: String in ["walk", "idle", "talk"]:
+		if player.has_animation(clip):
+			player.get_animation(clip).loop_mode = Animation.LOOP_LINEAR
+	player.play("walk")
+	var leg_time := PIP_PACE * 2.0 / PIP_WALK_SPEED
+	# he walks to one end, stops and stands there fretting, turns, and walks back
+	var tween := create_tween().set_loops()
+	tween.tween_property(pip, "position", RIGHT_END, leg_time)
+	tween.tween_callback(player.play.bind("idle", 0.3))
+	tween.tween_interval(2.5)
+	tween.tween_property(pip, "rotation:y", -PI / 2.0, 0.5)
+	tween.tween_callback(player.play.bind("walk", 0.3))
+	tween.tween_property(pip, "position", LEFT_END, leg_time)
+	tween.tween_callback(player.play.bind("idle", 0.3))
+	tween.tween_interval(2.5)
+	tween.tween_property(pip, "rotation:y", PI / 2.0, 0.5)
+	tween.tween_callback(player.play.bind("walk", 0.3))
+
+
+func _person(path: String, pos: Vector3, model_scale: float) -> Node3D:
+	var model := Models.instantiate(Models.rigged(path))
+	if model == null:
+		return null
 	model.position = pos
 	model.scale = Vector3.ONE * model_scale
 	add_child(model)
-	var shape := CylinderShape3D.new()
-	shape.radius = 0.45
-	shape.height = 2.0
-	var body := CollisionShape3D.new()
-	body.shape = shape
-	body.position = pos + Vector3.UP
-	_colliders.add_child(body)
+	model.scale *= Models.people_scale(model)
+	Models.bring_to_life(model)
+	_colliders.add_child(Models.body_for(model))
+	return model
+
+
+## Fixes a prop to a character's head, so a hat moves with them, keeping it exactly where it was placed.
+func _wear(model: Node3D, item: Node3D, bone := "mixamorig:Head") -> void:
+	if model == null or item == null:
+		return
+	var found := model.find_children("*", "Skeleton3D", true, false)
+	if found.is_empty():
+		return
+	var skeleton: Skeleton3D = found[0]
+	var index := skeleton.find_bone(bone)
+	if index < 0:
+		# Godot swaps the colon in Mixamo's names for an underscore when it imports them
+		bone = bone.replace(":", "_")
+		index = skeleton.find_bone(bone)
+	if index < 0:
+		push_warning("No bone %s to wear things on" % bone)
+		return
+	# where the head is when the character stands as modelled, which is where the hat was placed
+	var head_at := skeleton.global_transform * skeleton.get_bone_global_rest(index)
+	var offset := head_at.affine_inverse() * item.global_transform
+	var mount := BoneAttachment3D.new()
+	mount.bone_name = bone
+	skeleton.add_child(mount)
+	item.get_parent().remove_child(item)
+	mount.add_child(item)
+	item.transform = offset
 
 
 func _unshaded(color: Color, texture: Texture2D = null) -> StandardMaterial3D:

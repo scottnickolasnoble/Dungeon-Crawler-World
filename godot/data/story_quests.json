@@ -1,0 +1,6 @@
+{
+  "quests": {
+    "ticket_machine": { "name": "Validated Parking", "giver": "", "desc": "An attendant's booth near the Exit Sign has a ticket machine with eighteen level buttons. Three damaged tickets lie around it, each with a symbol, a number and a time. They read like instructions.", "obj": [{ "t": "flag", "flag": "ticket_1", "label": "Find the first ticket" }, { "t": "flag", "flag": "ticket_2", "label": "Find the second ticket" }, { "t": "flag", "flag": "ticket_3", "label": "Find the third ticket" }, { "t": "flag", "flag": "machine_solved", "label": "Enter the symbols into the machine" }], "reward": { "xp": 220, "flags": ["truth_clue_1"] } },
+    "drowned_bracelet": { "name": "Still Receiving", "giver": "", "desc": "Something at the Flooded Bay is guarding a body, not treasure. The bracelet on its wrist is still getting Network notifications.", "obj": [{ "t": "flag", "flag": "bay_bracelet", "label": "Read the bracelet at the Flooded Bay" }], "reward": { "xp": 180, "flags": ["truth_clue_2"] } }
+  }
+}

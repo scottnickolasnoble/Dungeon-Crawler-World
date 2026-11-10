@@ -1,0 +1,128 @@
+{
+ "wyrm": { "title": "SEWER WYRM", "sub": "What lives in the Cistern. And what it lives on.", "lines": [
+  "The Sewer Wyrm. Twenty feet of grey-brown serpent, slick as a wet turd and roughly the same colour, with a mouth like a drain cover that's learned to open.",
+  "They breed in the Drowned Cistern, in water so thick with the Undercity's leavings you could stand a spoon up in it. Everything that gets flushed on every floor above ends up down here, and the wyrms eat all of it. All of it. Think about that next time you go.",
+  "They're attracted by movement in the water. Splashing. Wading. Opening a sluice gate, for instance. Every time the water level drops, they come up to see where their dinner's gone.",
+  "Strengths: they lunge from the water, they wrap and crush, and they come in numbers when the tide turns. Weaknesses: they can't leave the wet. Get on dry ground and they're just very angry pipes.",
+  "If you see the water start to move in a circle, stop wading. Just stop. Stand very still and think about your choices."]},
+ "collector": { "title": "CLOCKWORK DEBT COLLECTOR", "sub": "The Landlord's bailiffs. Interest accrues.", "lines": [
+  "Clockwork Debt Collectors. Brass-and-iron men in bowler hats, ticking loudly, with a ledger bolted to one arm and a truncheon bolted to the other, and a little bell on top that rings every time interest goes up.",
+  "Everybody on the Drowned Cistern owes rent. Nobody remembers borrowing anything. That doesn't matter to the Collectors. The debt is in the ledger, and the ledger is never wrong. If the ledger says you owe three weeks, you owe three weeks, plus interest, plus a fee for arguing.",
+  "They were built by the Landlord out of the furniture of evicted tenants. You can see a chair leg in that one's knee. That one's got a clock face from somebody's mantelpiece for a chest. They tick like the clock's still counting down to something.",
+  "Strengths: they don't feel pain, they don't stop and every hit adds to your bill. Weaknesses: they're wound up by hand, and they run down. Wait long enough and they'll stop mid-swing.",
+  "You can pay them. Nobody has ever paid them off. That's the point."]},
+ "bathwater": { "title": "OLD LADY BATHWATER", "sub": "Boss of the Bathwater Baths. The water never drains.", "lines": [
+  "Old Lady Bathwater. An ancient woman, wrinkled like a prune that's been in the bath too long, which she has, sitting up to her neck in a tub the size of a swimming pool, surrounded by foam, rubber ducks and things that are not rubber ducks.",
+  "She ran a bath one evening, a hundred years ago, and she never got out. The water stayed warm. The foam stayed up. And slowly, the bath filled the room, then the house, then the street. Half the Cistern is technically her bathwater. You're paddling in it right now. You're welcome.",
+  "She's lonely, really. She invites people to share her bath. Some of them say yes. They're still in there, in the foam, pink and wrinkled and very, very relaxed.",
+  "Strengths: scalding splashes, puddles that pull you under and sewer wyrms who'll do anything for her. Weaknesses: the plug. There's always a plug.",
+  "Pull the plug and the whole Baths drains in a roar that sounds like the end of the world, and she'll look up at you, quite small, and say, 'Oh. Is it time?'"]},
+ "landlord": { "title": "THE LANDLORD", "sub": "Borough Boss of the Rent Tribunal. Owns your home.", "lines": [
+  "The Landlord. A great swollen man in a waistcoat that's given up trying to button, with rings on every finger, a gold tooth in every other socket and a keyring the size of a dinner plate jangling off his belt.",
+  "He owns every room on the Drowned Cistern. Every flat, every houseboat, every flooded cellar. Your tenancy began the moment you stepped off the stairs, and the rent began the second after that, and he's had the bailiffs on you since before you knew his name.",
+  "He doesn't need your money. There isn't any money worth having down here. He needs you to owe him. Debt keeps people in place. Debt keeps people in their functions. That's how the whole Undercity works, and he's just the one honest enough to charge for it.",
+  "Strengths: he summons Debt Collectors, he locks doors behind you with that keyring and every hit he lands adds to your arrears. Weaknesses: he can't stand being ignored. Pay him in insults and he'll lose his mind.",
+  "Settle up with him, one way or another. His evidence locker has the sluice crank in it, and he has absolutely no idea what it's for."]},
+ "organ": { "title": "PIPE ORGAN WYRM", "sub": "Borough Boss of the Organ Loft. Plays one song.", "lines": [
+  "The Pipe Organ Wyrm. A sewer wyrm the length of a train that crawled into the Drowned Cathedral's organ decades ago and grew into it. Its spine is brass pipes. Its ribs are stops. When it breathes, the cathedral sings.",
+  "It plays one song. It's been playing the same song for so long that the notes have worn grooves in the walls. It only sleeps when someone plays the right tune back to it, and nobody's played it right since the drowning.",
+  "The sheet music is somewhere in the Cathedral. Floating, probably. Soggy. Smudged. Some of it was used as bog roll, and you should not think about that too hard when you're reading it.",
+  "Strengths: sound blasts that throw you across the nave, a sweeping tail and a chord so low it loosens your bowels. Literally. Bring spare trousers. Weaknesses: silence. Smash the pipes and it chokes.",
+  "Play it the right song and it'll lay its head down on the keys and sleep like a baby. Play it the wrong one and you'll have the worst ten minutes of your life."]},
+ "sanking": { "title": "THE SANITATION KING", "sub": "City Boss of the Landfill Barge. Everything ends up here.", "lines": [
+  "The Sanitation King. A mountain of a man made of rubbish, bin bags for skin and a crown made of a traffic cone, a bike wheel and a toilet seat, sitting on a throne of mattresses on the deck of a barge that is ninety per cent landfill.",
+  "Every bit of rubbish from every floor above comes down here eventually, and he decides what happens to it. He takes some. He keeps some. Most of it, he just sits on. He's been blocking the Great Outfall with his barge for years, so the Cistern never drains, so the Undercity stays wet, so he stays in charge.",
+  "He's not cruel. He's just a man who found out that if you sit on enough shit for long enough, people start calling you 'Your Majesty'.",
+  "Strengths: he's huge, he summons wyrms from the rubbish, he throws bins like cannonballs and his charge could flatten a terrace. Weaknesses: he's rubbish. He burns, he rots and he falls apart if you pull the right bag out.",
+  "Move him. Sink him. Set fire to him. Whatever it takes. The stairs are under ten metres of his stubbornness."]},
+ "outfall": { "title": "THE OUTFALL BISHOP", "sub": "City Boss of the Great Outfall. Priest of Old Damp.", "lines": [
+  "The Outfall Bishop. A tall, drowned priest in rotting robes the colour of algae, with a mitre made from a bucket and a crozier made from a drain rod, standing in the mouth of the Great Outfall with water pouring past his ankles forever.",
+  "He serves Old Damp, the god of leaks and what's left behind. His congregation is everyone who ever drowned in the Cistern, and they all still turn up on Sundays. They stand in the water in rows, swaying, gurgling hymns, with eels coming out of their ears.",
+  "He believes everything should drain down, eventually. Everything, everyone, all of it, down into the dark and the wet. He thinks he's giving people peace. He's giving them pneumonia, mainly.",
+  "Strengths: tidal waves of filthy water, a drowned congregation that'll drag you under and a sermon that makes your lungs feel full. Weaknesses: dry ground, and doubt. He's never been sure Old Damp is listening.",
+  "If you ever choose Old Damp as your god, he'll bless you. If you don't, he'll hold you under until you change your mind."]},
+ "molekin": { "title": "TUNNEL MOLE-KIN", "sub": "The miners of the Workings. Dig, dig, dig.", "lines": [
+  "Tunnel Mole-Kin. Squat, furry, half-blind diggers with spade-shaped hands, tiny round spectacles and hard hats with candles stuck on top, muttering 'dig, dig, dig' under their breath like a prayer.",
+  "They're the workforce of the Workings, the floor where the Stack's machinery gets maintained. They dig the shafts, lay the track and keep the drills turning, twelve hours a shift, for no pay and no reason anybody's ever explained.",
+  "Chief Grubtooth pulled up every rail on the floor to build himself a throne, and the mole-kin went along with it, because a chief is a chief. They're good at following orders. They've been following orders for so long that they've forgotten there was ever a time without them.",
+  "Strengths: they burrow under you and pop up behind, they come in crews and those spade hands can take your face off. Weaknesses: bright light, and they're slow on open ground.",
+  "Ask one what they're digging towards. He'll stop, and frown, and say, 'Down,' and then he'll go back to digging, and he won't look at you again."]},
+ "grease": { "title": "GREASE GOLEM", "sub": "Fryer Manor's staff. Deep-fried.", "lines": [
+  "Grease Golems. Seven-foot hulks made of congealed chip fat, with batter for skin and a few chips still sticking out of their heads, wobbling across the floor like a lard sculpture at a summer fete.",
+  "The Fryer Baron makes them in his vats. Pour enough used oil into a mould, add a bit of the Baron's special seasoning, and up stands a servant. They're not clever. They don't need to be. They just need to carry things and slap people.",
+  "They sweat constantly. Their sweat is boiling oil. Being hugged by one is like being dunked in a deep fat fryer, which is exactly what happens to most of the people who meet them.",
+  "Strengths: they're tough, they burn on contact and they leave slippery puddles everywhere. Weaknesses: water. Pour water on a grease golem and stand well back, because it is going to go off like a bomb.",
+  "When they die, they smell absolutely delicious. That's the worst bit."]},
+ "choir": { "title": "FUNGAL CHOIR", "sub": "Big Momma Mold's children. Always singing.", "lines": [
+  "The Fungal Choir. Little mushroom people, pale and spongy, in rows, with caps like choirboys' hats and mouths like holes in a cheese, singing one long, soft, endless note.",
+  "They grow wherever Big Momma Mold has been. In the Nursery, in the Opera House, in the cracks of the old walls. They sing to keep you calm. Their spores make you sleepy. Sleepy people lie down. People who lie down near Big Momma Mold don't get up again.",
+  "They're not malicious. They're lullabies with legs. They just want everyone to rest, forever, in a big soft pile, all together, with the mould growing over them like a duvet.",
+  "Strengths: spore clouds that slow you down, ranged blobs of goo and a song that makes your eyelids heavy. Weaknesses: fire, light, and anyone who's had enough coffee.",
+  "If you find yourself yawning, run. That's not tiredness. That's them."]},
+ "repo": { "title": "REPOSSESSOR MK. IX", "sub": "Boss of the Repo Yard. Item flagged for recovery.", "lines": [
+  "Repossessor Mk. IX. A rusting yellow machine the size of a tractor, with a crane arm, a grabber claw and a bright red light on top, endlessly announcing 'ITEM FLAGGED FOR RECOVERY' in a voice like a broken satnav.",
+  "It repossesses things. Gear, weapons, armour, boots, the occasional arm. If you've been given something by a sponsor, the Repossessor thinks it's still theirs. And it's right. Read the small print. It's always right.",
+  "It was the ninth model. Nobody knows what happened to the first eight, but the Repo Yard is full of scrap, and some of the scrap is yellow, and some of the scrap is still twitching.",
+  "Strengths: it grabs and yanks, it charges like a bulldozer and it repossesses your buffs mid-fight. Weaknesses: its paperwork. Show it a receipt and it has to check.",
+  "Repossess the repossessor. Strip it for parts. It'll announce 'ITEM RECOVERED' as you take its battery, and you'll feel a real sense of justice."]},
+ "grubtooth": { "title": "CHIEF GRUBTOOTH", "sub": "Boss of Grubtooth's Dig. Sits on the track.", "lines": [
+  "Chief Grubtooth. The biggest mole-kin in the Workings, built like a beer barrel with a moustache, sitting on a throne made of every iron rail on the floor, bolted together into something that looks like a very angry climbing frame.",
+  "He decided one day that the mole-kin deserved a proper chief, and that the chief deserved a proper throne. So he pulled up the track. All of it. Now nothing moves on the Workings unless he says so, and he mostly says 'no', because it's more fun.",
+  "He's not evil. He's management. He's the bloke who got promoted for being loud, and then discovered that being loud is most of the job.",
+  "Strengths: he burrows under you, calls his crews and slams the ground hard enough to collapse a tunnel. Weaknesses: he can't stand being laughed at. Mock the throne.",
+  "Get the track back and the carts will run again. He'll sulk. He'll sulk for a very long time."]},
+ "drill": { "title": "DRILL PROPHET", "sub": "Borough Boss of the Drill Chapel. The bit speaks.", "lines": [
+  "The Drill Prophet. A mole-kin preacher in a cassock made from tarpaulin, with a mining drill bit the size of a church bell strapped to his back and a congregation of mole-kin who hang on his every word.",
+  "He believes the drill speaks to him. And honestly? It might. It's the last good bit on the floor, and it's very old, and it has the Builders' mark engraved on its shank. He kneels in front of it every morning, and he listens, and then he tells everyone to dig deeper.",
+  "Down. Always down. 'The drill knows the way,' he says. 'The drill has always known the way.' The thing is, he's right. That bit can go through anything. It just needs someone to let it.",
+  "Strengths: drilling charges, spinning sweeps and a sermon that whips his followers into a frenzy. Weaknesses: he won't let go of the bit, even when it's the thing killing him.",
+  "Take the bit. He'll scream that you're stealing God. You might be."]},
+ "baron": { "title": "THE FRYER BARON", "sub": "Borough Boss of the Fryer Manor. Everything's better battered.", "lines": [
+  "The Fryer Baron. A man so steeped in chip fat he's practically translucent, in a velvet smoking jacket with a crust of batter on the lapels, presiding over a manor of bubbling vats like a lord of the manor in hell's chippy.",
+  "He believes everything is better battered. Fish, chips, sausages, Mars bars, shoes, cats, enemies. He has deep-fried things that should never have met oil. He once deep-fried a contestant's entire personality, and they were much nicer afterwards.",
+  "His vats are full of the best fuel on the floor: grease that burns hot, slow and dirty. The drill needs it. He needs it more.",
+  "Strengths: he flings boiling oil, summons golems and leaves puddles that set you alight. Weaknesses: water, and his own vanity. Insult his batter.",
+  "Kill him and the manor smells like a seaside town for weeks. Lovely, really."]},
+ "mold": { "title": "BIG MOMMA MOLD", "sub": "City Boss of the Nursery. You've done enough.", "lines": [
+  "Big Momma Mold. A great grey-green mound of mould and fungus the size of a house, soft as bread dough and twice as warm, with a kind, motherly face in the middle of it all, smiling at you like you've come home.",
+  "She's the Nursery of the Workings. Tired miners come to her to rest. She tucks them in. She sings to them. She grows over them like a blanket, and they sleep, and they never wake up, and they've never been happier.",
+  "She's sitting on the only soft seam on the floor, the only place the drill could break through. And she's sitting there on purpose. She knows what's down there. She's seen it. She'd rather everyone slept forever than went and saw it too.",
+  "Strengths: spore clouds, a choir of children and a hug that will absolutely kill you. Weaknesses: fire, and the truth. She's scared. Tell her you're scared too.",
+  "'Shh,' she'll say. 'Lie down, sweetie. You've done enough.' And part of you, a big part, will want to. Don't."]},
+ "ratking": { "title": "RATKING CHOIR", "sub": "The Undercity's voters. All in favour.", "lines": [
+  "Ratking Choirs. A dozen rats with their tails tied together in a great wriggling knot, moving as one, squeaking in harmony, with a dozen pairs of beady eyes and one shared opinion.",
+  "In the Undercity, they're citizens. Proper citizens, with votes. Each knot counts as one voter, which is more than the humans get, and they always vote the same way, which is however the Rat Throne King tells them to.",
+  "Their tails are knotted so tight they can't come apart. They eat together, sleep together, shit together. It's a political commentary. Make of it what you will.",
+  "Strengths: they swarm, they bite from twelve directions at once and they're very hard to kill all of. Weaknesses: they can't agree on which way to run. Cut the knot.",
+  "Ask one who they're voting for, and they'll all answer at once. In twelve different voices. All saying the same name."]},
+ "soloist": { "title": "THE SOLOIST", "sub": "Boss of the Opera House. One endless note.", "lines": [
+  "The Soloist. A diva in a ballgown that was white once, with a beehive of grey hair and a face powdered so thick it cracks when she breathes, standing alone on the Opera House stage, holding one note.",
+  "She has been holding that note for decades. It started as the final note of her final aria on her final night, and when it ended, the applause would end, and she couldn't bear it. So she just didn't stop.",
+  "The whole east side of the Undercity votes however she sings, because her note is the most beautiful sound anyone's heard in a hundred years. She lost her sheet music long ago. She doesn't know what comes next. She's terrified to find out.",
+  "Strengths: sound waves that shatter glass, bone and dignity, and a fungal choir backing her up. Weaknesses: silence. Or giving her the next note.",
+  "Find her score. Let her finish. When she does, the silence afterwards will be the loudest thing you've ever heard."]},
+ "senate": { "title": "THE RAT SENATE", "sub": "Borough Boss of the Rat Senate. The motion carries.", "lines": [
+  "The Rat Senate. Thirty rats in tiny togas, sitting in a horseshoe of tiny marble seats, amending things. Constantly. Forever. Their chamber smells of piss and procedure.",
+  "They are the Undercity's legislature, and they have never passed a single law, because every motion gets amended, and every amendment gets amended, and every amendment to the amendment gets filibustered by a rat called Gerald who just squeaks for nine hours.",
+  "They're the only body in the Undercity that can certify an election. Which means if you want to win, you need thirty rats to agree on something. Good luck. Good fucking luck.",
+  "Strengths: they summon Ratking Choirs, throw scrolls of legislation like knives and swarm when the vote turns. Weaknesses: they can't act until a motion passes. Call the question.",
+  "Win the Senate's vote and they'll bang a tiny gavel and squeak 'the motion carries' in perfect unison. It's the proudest they've been in decades."]},
+ "lockjaw": { "title": "LOCKJAW", "sub": "Borough Boss of the Vault. Tumblers turning.", "lines": [
+  "Lockjaw. A creature made of a bank vault door, round and steel and two metres across, with a combination dial for a nose, bolts for teeth and a jaw that opens with the sound of a thousand tumblers clicking.",
+  "He guards the Vault under City Hall, where the Undermayor keeps everything that matters: the treasury, the deeds, the ballot boxes, and a few people who asked the wrong questions. Mags' old crew is in there. They've been in there forty years.",
+  "He doesn't talk. He just clicks. He's said one thing in all that time, and that was 'no', and it took him three weeks.",
+  "Strengths: he's armoured to the eyeballs, he charges like a falling safe and his bite locks shut. Weaknesses: the combination. Everything has a combination.",
+  "Spin the dial right and his jaw swings open, and you'll see the inside of the Vault, and you'll understand why the Undermayor never wanted anyone to."]},
+ "ratthrone": { "title": "THE RAT THRONE KING", "sub": "Boss of the Rat Throne. Kneel.", "lines": [
+  "The Rat Throne King. The biggest Ratking Choir in the Undercity: three hundred rats knotted together into the shape of a fat old monarch, sitting on a throne made of more rats, wearing a crown made of, yes, rats.",
+  "He controls every ratking on the east side. They vote how he votes. He votes for whoever kneels to him first, and so far, that's always been the Undermayor, who kneels very prettily for a man with his bad knees.",
+  "Nobody's ever refused to kneel. It's never occurred to anyone. He doesn't even know what he'd do.",
+  "Strengths: he's three hundred rats, he summons more rats and he can split into a swarm when he's hurt. Weaknesses: his ego. Refuse to kneel and he'll come apart at the seams. Literally.",
+  "Stand tall. Look him in his six hundred eyes. And say 'no'. It's the best feeling in the Undercity."]},
+ "undermayor": { "title": "THE UNDERMAYOR", "sub": "City Boss of City Hall. Never elected.", "lines": [
+  "The Undermayor. A thin, sleek man in a pinstripe suit, with a chain of office, a smile like a shark that's been to finishing school and a voice so smooth it could talk the paint off a wall.",
+  "He runs the Undercity. He has never once been elected. He was installed, years ago, by someone who doesn't live down here, and his job is very simple: keep the survivors happy enough that they never go any deeper, and keep the elections exciting enough that nobody notices the result never changes.",
+  "He works for the Network. He'd never say it, but you can tell. He gets memos. He gets them on paper that glows.",
+  "Strengths: he summons ratkings, he talks so well that you lose your turn, he's protected by procedure and he will never, ever concede. Weaknesses: votes. Real ones. And the truth.",
+  "Win the election. Watch him smile and say 'recount'. Then drag him out of City Hall by his chain of office. The Undercity will cheer louder than it has in a hundred years."]}
+}

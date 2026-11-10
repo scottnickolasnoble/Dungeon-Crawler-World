@@ -1,0 +1,340 @@
+<title>Floors 0–6 Layouts and Build Lists</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=IBM+Plex+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: reading column with floor tabs; each floor = build lists (two tables) then a stack of to-scale layout cards. */
+:root {
+  --paper: #f3f1ea; --sheet: #fbfaf6; --ink: #1d2226; --muted: #5d656b; --rule: #d6d2c4; --grid: #e6e2d6;
+  --accent: #e8b400; --accent-ink: #6b5200; --teal: #0e8a8a; --alarm: #c2362b;
+  --safe: #d4ece9; --enemy: #f6d9d5; --water: #cfe1f2; --high: #efe6c8; --green: #dcebd0;
+  --display: "Archivo Black", "Arial Black", Impact, sans-serif;
+  --body: "Source Serif 4", Georgia, serif;
+  --mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --paper: #16191b; --sheet: #1e2225; --ink: #e7e5de; --muted: #9aa1a6; --rule: #353a3e; --grid: #262b2f;
+  --accent: #f2c533; --accent-ink: #f2c533; --teal: #3cc0c0; --alarm: #ef6a5e;
+  --safe: #17393a; --enemy: #432421; --water: #1b3147; --high: #3a3420; --green: #233420; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --paper: #16191b; --sheet: #1e2225; --ink: #e7e5de; --muted: #9aa1a6; --rule: #353a3e; --grid: #262b2f;
+  --accent: #f2c533; --accent-ink: #f2c533; --teal: #3cc0c0; --alarm: #ef6a5e;
+  --safe: #17393a; --enemy: #432421; --water: #1b3147; --high: #3a3420; --green: #233420; color-scheme: dark }
+body { background: var(--paper); color: var(--ink); font: 17px/1.55 var(--body); }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--paper); }
+.wrap { max-width: 860px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 28px 64px; }
+.eyebrow { font: 600 12px var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--accent-ink); }
+h1 { font: 36px/1.05 var(--display); margin: 6px 0 10px; text-wrap: balance; }
+h2 { font: 28px/1.1 var(--display); margin: 4px 0 8px; text-wrap: balance; }
+h3 { font: 18px/1.25 var(--display); margin: 34px 0 10px; text-wrap: balance; }
+p { margin: 8px 0; }
+.lede { color: var(--muted); font-size: 18px; }
+nav.floors { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--paper); display: flex; gap: 6px; overflow-x: auto; padding: 10px 0; border-bottom: 1px solid var(--rule); margin: 16px 0; }
+nav.floors a { flex: none; font: 600 12px var(--mono); text-decoration: none; color: var(--ink); border: 1px solid var(--rule); background: var(--sheet); padding: 6px 10px; border-radius: 2px; }
+nav.floors a.on { background: var(--accent); border-color: var(--accent); color: #2a2100; }
+nav.floors a:focus-visible { outline: 2px solid var(--teal); outline-offset: 2px; }
+.lists { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+@media (max-width: 720px) { .lists { grid-template-columns: 1fr; } }
+.list { background: var(--sheet); border: 1px solid var(--rule); padding: 12px 14px; min-width: 0; }
+.list h4 { margin: 0 0 6px; font: 600 12px var(--mono); letter-spacing: .08em; text-transform: uppercase; }
+.list.me h4 { color: var(--accent-ink); }
+.list.fab h4 { color: var(--teal); }
+.list ul { margin: 0; padding-left: 18px; font-size: 15px; }
+.list li { margin: 3px 0; }
+.list .s { font: 12.5px var(--mono); color: var(--muted); }
+.card { background: var(--sheet); border: 1px solid var(--rule); margin: 14px 0; }
+.card header { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 12px; padding: 10px 14px; border-bottom: 1px solid var(--rule); }
+.card header b { font-family: var(--display); font-weight: 400; font-size: 17px; }
+.card header span { font: 12.5px var(--mono); color: var(--muted); }
+.card .svgwrap { overflow-x: auto; padding: 8px; }
+.card svg { display: block; width: 100%; min-width: 520px; height: auto; }
+.card .notes { padding: 0 14px 12px; font-size: 15px; color: var(--muted); }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 14px; font: 12px var(--mono); color: var(--muted); margin: 10px 0; }
+.legend i { display: inline-block; width: 14px; height: 10px; border: 1px solid var(--ink); vertical-align: -1px; margin-right: 5px; }
+.note { background: var(--sheet); border: 1px solid var(--rule); padding: 12px 14px; font-size: 15.5px; }
+code { font: 13px var(--mono); }
+</style>
+
+<div class="wrap">
+  <div class="eyebrow">Downstairs · Unreal Engine 5 · Floors 0–6</div>
+  <h1>Layouts and build lists</h1>
+  <p class="lede">For every floor: what Claude models in Blender (Unreal-ready FBX, centimetre scale, collision included), what you grab free from Fab, and a to-scale top-down layout of every area: hub, districts and boss chambers.</p>
+  <div class="note"><b>How to read the layouts.</b> North is up. The grid is 10 m (20 m on big districts). The dashed yellow line is the main route. Sizes are suggestions: change them while blocking out, and keep the relationships (what's next to what, what you see first). Free materials for every surface come from Megascans on Fab.</div>
+  <div class="legend">
+    <span><i style="background:var(--sheet)"></i>building / room</span><span><i style="background:var(--safe)"></i>safe</span><span><i style="background:var(--enemy)"></i>enemy camp</span><span><i style="background:var(--water)"></i>water</span><span><i style="background:var(--high);border-style:dashed"></i>raised</span><span><i style="background:var(--green)"></i>green / open</span>
+    <span>● person · ✕ enemies · ★ landmark · ■ connection · ▲ way down · ◆ boss chamber gate</span>
+  </div>
+  <nav class="floors" id="tabs" aria-label="Floors"></nav>
+  <main id="floor"></main>
+</div>
+
+<script>
+// Layout spec: size [w, h] in metres; items:
+// ["R", x, y, w, h, label, kind]  rect   (kind: room safe enemy water high green dark)
+// ["C", x, y, r, label, kind]     circle
+// ["P", [[x,y],...]]              main route
+// ["D", x, y, label]  connection   ["X", x, y, label] way down   ["G", x, y, label] chamber gate
+// ["N", x, y, label]  person       ["M", x, y, label] enemies    ["L", x, y, label] landmark   ["T", x, y, label] text
+const F = [
+{ n: 0, name: "The Landing",
+  me: ["Curved reception desk (8 m)", "Welcome Box stack", "Queue stanchions and belts", "TV wall frame (12 m) and smaller TV mounts", "Camera drone (hovering prop)", "Water fountain", "Vending machine (2 variants: working, OUT OF ORDER)", "Crash Pad booth with bunk", "Skill kiosk (touchscreen)", "Crafting bench with vice", "Lockers (single, row of 4)", "Bleachers (modular step sections)", "Arena wall sections and spawn gates", "Scoreboard (VIEWERS counter)", "Commentator booth", "Stair door with FLOOR 1 sign", "Modular lobby kit: wall, column, ceiling panel, trim, doorframe", "Signs: WELCOME, ORIENTATION, WATER, TRAINING, ARENA, STAFF ONLY, FLOOR 1"],
+  fab: [["Floors and walls", "Megascans: tiles, terrazzo, painted plaster, ceiling tiles, rubber floor"], ["Stairwell surfaces", "Megascans: concrete, painted concrete, stained wall"], ["Plants", "Megascans / Megaplants: potted plant, ficus"], ["Clutter", "Megascans: paper debris, trash, cardboard box, fire extinguisher"], ["Arena cover", "Megascans: tire, sandbag; City Sample barriers"], ["Lights", "City Sample / Megascans: fluorescent light, light bulb, cables"], ["Grime and history", "Megascans decals: scratches, grime, leak, peeling paint, old stone wall"], ["Training dummies", "Fab Free: \"training dummy\" (if none free, ask Claude)"]],
+  areas: [
+    { title: "The whole level", size: [70, 150], notes: "One map, L_Floor0_Landing. Zones run south to north; the wings branch off the atrium.", items: [
+      ["R", 31, 138, 8, 10, "1 Stairwell", "dark"], ["R", 20, 104, 30, 30, "2 Welcome Atrium", "room"], ["R", 27, 104, 16, 4, "3 Desk", "safe"],
+      ["R", 4, 106, 16, 14, "4 Amenities", "room"], ["R", 50, 106, 16, 14, "5 Development", "room"], ["R", 25, 80, 20, 20, "6 Training Yard", "room"],
+      ["C", 35, 58, 15, "7 Arena", "enemy"], ["R", 52, 48, 4, 14, "8", "dark"], ["R", 31, 10, 8, 30, "9 Going Down", "room"],
+      ["P", [[35, 146], [35, 120], [35, 108], [12, 113], [35, 112], [58, 113], [35, 110], [35, 92], [35, 73], [35, 52], [35, 40], [35, 12]]],
+      ["N", 35, 106, "Pip"], ["D", 35, 104, "gate"], ["D", 35, 80, "gate"], ["D", 35, 43, "gate"], ["G", 50, 52, "Staff Only"], ["X", 35, 11, "FLOOR 1"] ] },
+    { title: "Welcome Atrium and the desk", size: [30, 30], notes: "Double height (9 m) with a balcony round three sides at 5 m. The TV wall faces you as you come in; the queue snakes to the desk.", items: [
+      ["R", 0, 0, 30, 30, "", "room"], ["R", 0, 10, 2, 12, "TV wall", "dark"], ["R", 8, 2, 14, 3, "Reception desk", "safe"], ["N", 15, 1.5, "Pip"],
+      ["R", 23, 2, 4, 3, "Welcome Boxes", "room"], ["R", 2, 0, 26, 1.5, "balcony above", "high"], ["R", 28.5, 0, 1.5, 30, "", "high"],
+      ["P", [[15, 30], [15, 24], [8, 22], [22, 18], [8, 14], [15, 9], [15, 6]]], ["T", 15, 16, "queue stanchions"],
+      ["N", 5, 25, "contestants"], ["N", 24, 22, ""], ["N", 20, 26, ""], ["D", 15, 30, "from stairwell"], ["D", 0, 4, "Amenities"], ["D", 30, 4, "Development"], ["D", 15, 0, "Training"] ] },
+    { title: "Amenities Hall and Development Suite", size: [60, 16], notes: "The two wings either side of the atrium. Both must be done to open the Training Yard gate.", items: [
+      ["R", 0, 0, 16, 14, "Amenities", "room"], ["R", 1, 1, 2, 3, "fountain", "safe"], ["R", 5, 1, 3, 2, "vending", "room"], ["R", 9, 1, 3, 2, "vending ✕", "room"],
+      ["R", 1, 9, 6, 4, "Crash Pad", "safe"], ["R", 9, 9, 6, 3, "snack table", "room"], ["R", 16, 5, 28, 4, "atrium", "high"],
+      ["R", 44, 0, 16, 14, "Development", "room"], ["R", 52, 1, 6, 3, "skill kiosk", "safe"], ["R", 46, 9, 8, 3, "crafting bench", "room"], ["R", 55, 9, 4, 4, "posters", "room"],
+      ["D", 16, 7, ""], ["D", 44, 7, ""] ] },
+    { title: "Training Yard", size: [20, 20], notes: "Rubber floor, 6 m ceiling. Light and heavy dummies in a row, the parry dummy in its own red-marked circle at the back.", items: [
+      ["R", 0, 0, 20, 20, "", "room"], ["M", 4, 12, "dummy"], ["M", 8, 12, "dummy"], ["M", 12, 12, "heavy"], ["M", 16, 12, "dummy"],
+      ["C", 10, 5, 3, "parry dummy", "enemy"], ["R", 0, 16, 3, 4, "lockers", "room"], ["R", 17, 16, 3, 4, "charts", "room"],
+      ["P", [[10, 20], [10, 15], [10, 9], [10, 0]]], ["D", 10, 20, "from atrium"], ["D", 10, 0, "Arena gate"] ] },
+    { title: "Practice Arena", size: [36, 36], notes: "26 m floor inside a ring of bleachers. Waves come from the two side gates; tyres and sandbags give cover. Commentator booth over the north gate.", items: [
+      ["C", 18, 18, 17, "bleachers", "high"], ["C", 18, 18, 13, "", "enemy"], ["D", 18, 35, "from Training"], ["D", 18, 1, "exit gate"],
+      ["G", 3, 18, "spawn"], ["G", 33, 18, "spawn"], ["R", 14, 2, 8, 3, "commentator", "safe"], ["R", 27, 5, 6, 3, "scoreboard", "dark"],
+      ["L", 12, 14, "tyres"], ["L", 24, 22, "sandbags"], ["L", 22, 12, "tyres"], ["M", 8, 18, "wave"], ["M", 28, 18, "wave"], ["G", 31, 9, "Staff Only door"] ] },
+    { title: "Staff Only and Going Down", size: [40, 34], notes: "Left: the hidden service corridor behind the arena. Right: the exit hall, ceiling dropping from 6 m to 3 m as the lights go out behind you.", items: [
+      ["R", 2, 4, 6, 28, "Staff Only", "dark"], ["L", 5, 12, "symbol"], ["T", 5, 20, "scratch marks"], ["N", 5, 27, "lore page"],
+      ["R", 22, 2, 10, 30, "Going Down", "room"], ["N", 27, 26, "Pip"], ["P", [[27, 32], [27, 20], [27, 4]]], ["X", 27, 3, "stairs: FLOOR 1"], ["T", 27, 14, "lights off one by one"] ] }
+  ] },
+{ n: 1, name: "The Undercroft",
+  me: ["Modular car-park kit: deck slab, pillar, ramp, crash barrier, kerb, drainage channel", "Chained stairwell with four padlocks", "Ticket machine booth (attendant's booth)", "Exit sign and the concrete wall behind it", "Oil-drum fire (with fire socket for Niagara)", "Market stalls from pallets and car bonnets", "Barb's minibus inn (enterable)", "Goblin barricades: stacked cones, barrier walls, scaffold tower", "Pylon Point fort (kit pieces)", "Burning bus shell", "Valet booths", "Lost Property wire cages and shelving", "Lightwell spiral ramp (spline piece)", "Lift shaft cage and platforms", "Pay-and-display machines (Clamp's chamber)", "Chamber pieces: causeway, dais and steps, gate arch"],
+  fab: [["Cars and vans", "City Sample vehicles (static)"], ["Concrete and asphalt", "Megascans: concrete floor, asphalt, oil stains, puddles"], ["Parking-bay lines and arrows", "Megascans decals: road markings, paint lines"], ["Junk and debris", "Megascans: trash, cardboard, tyres, crates, barrels"], ["Suitcases and lost items", "Fab Free: luggage, suitcase, umbrella"], ["Lights", "City Sample: street lamps, sodium lights"], ["Fairy lights and cables", "Fab Free: string lights"], ["Pigeons and moths", "Particles in Niagara (no asset needed)"]],
+  areas: [
+    { title: "Hub: Stairwell Camp", size: [120, 90], notes: "Camp is a ring of parked cars and pallets round the chained stairwell. The Ticket Booth and the EXIT sign are at the north-east edge, the first mystery you can walk to.", items: [
+      ["R", 30, 20, 60, 50, "camp ring", "safe"], ["R", 54, 38, 12, 12, "Chained stairwell", "dark"], ["X", 60, 44, "4 padlocks"],
+      ["N", 45, 32, "Marta"], ["R", 34, 24, 10, 6, "Pickles", "room"], ["R", 34, 58, 10, 6, "Dot", "room"], ["R", 76, 24, 10, 6, "Rusty Kell", "room"], ["R", 76, 58, 10, 6, "Bo", "room"],
+      ["R", 46, 62, 14, 6, "Barb's minibus inn", "room"], ["R", 96, 6, 12, 10, "Ticket Booth", "room"], ["L", 112, 4, "EXIT sign"],
+      ["L", 40, 45, "fire"], ["L", 80, 45, "fire"], ["D", 60, 0, "Level B"], ["D", 0, 45, "Flooded Levels"], ["D", 120, 45, "Lost Property"], ["D", 60, 90, "The Lightwell"],
+      ["P", [[60, 88], [60, 70], [48, 34], [60, 30], [100, 12], [60, 30], [60, 2]]] ] },
+    { title: "Level B", size: [160, 160], notes: "Two decks of pillars. The Burning Bus is the landmark in the middle. Goblin outposts thicken towards Pylon Point in the north-east corner, raised on the roof-deck ramp.", items: [
+      ["R", 0, 0, 160, 160, "", "room"], ["R", 6, 60, 26, 30, "Level B Village", "safe"], ["L", 80, 80, "Burning Bus"],
+      ["R", 104, 8, 50, 44, "Pylon Point", "enemy"], ["R", 116, 14, 24, 20, "fort (raised)", "high"], ["N", 128, 22, "Sgt Pylon"],
+      ["M", 60, 50, "goblins"], ["M", 100, 70, "goblins"], ["M", 120, 64, "chuckers"], ["R", 60, 120, 70, 14, "ramp to roof deck", "high"],
+      ["D", 80, 160, "camp"], ["P", [[80, 158], [80, 110], [20, 75], [80, 90], [110, 60], [128, 30]]] ] },
+    { title: "The Flooded Levels", size: [150, 150], notes: "Most of the floor is under knee-to-waist water. A path of car roofs and dry islands crosses it. Valet Row runs along the east wall; the lamprey nest is south-west; the Sump's door is under water.", items: [
+      ["R", 0, 0, 150, 150, "", "water"], ["R", 120, 10, 26, 120, "Valet Row", "safe"], ["R", 6, 96, 50, 48, "Flooded Bay", "enemy"], ["N", 30, 120, "Big Sucker"],
+      ["R", 60, 60, 16, 12, "island", "high"], ["R", 86, 90, 14, 10, "island", "high"], ["G", 70, 130, "The Sump"], ["M", 40, 70, "lampreys"],
+      ["D", 150, 70, "camp"], ["P", [[148, 70], [125, 70], [92, 95], [68, 66], [40, 110], [70, 130]]] ] },
+    { title: "Lost Property", size: [140, 140], notes: "Office corridor in front, the huge Lost Property cage hall behind. Suitcase piles hide mimics. The Ticket Hall's gate is at the back of the management offices.", items: [
+      ["R", 0, 50, 40, 40, "offices", "room"], ["R", 50, 10, 84, 120, "Lost Property cage hall", "enemy"], ["R", 6, 6, 36, 34, "management", "room"],
+      ["M", 70, 40, "mimics"], ["M", 100, 90, "mimics"], ["M", 80, 110, "goblins"], ["N", 112, 30, "Lost & Found"], ["G", 20, 8, "Ticket Hall"],
+      ["D", 0, 70, "camp"], ["P", [[2, 70], [40, 70], [80, 70], [112, 32], [80, 70], [24, 40], [20, 10]]] ] },
+    { title: "The Lightwell", size: [100, 100], notes: "A 40 m shaft with a spiral ramp round it; three platforms on the way up (village, hive, loft). The light pours down from the top.", items: [
+      ["C", 50, 50, 46, "", "room"], ["C", 50, 50, 24, "the well (open)", "dark"], ["C", 50, 50, 36, "spiral ramp", "high"],
+      ["R", 6, 40, 16, 20, "Lift Shaft village (8 m up)", "safe"], ["R", 70, 10, 24, 16, "Moth hive (20 m)", "enemy"], ["N", 82, 18, "Moth Matron"],
+      ["R", 40, 2, 22, 10, "Pigeon Loft (36 m)", "enemy"], ["D", 50, 100, "camp"], ["P", [[50, 98], [86, 60], [80, 22], [16, 30], [50, 8]]] ] },
+    { title: "Chamber: The Ticket Hall (Clamp)", size: [60, 60], notes: "Gate, glowing causeway, raised dais with steps, galleries round the walls. Three pay machines; amber lights for Tow-Away Zone.", items: [
+      ["R", 0, 0, 60, 60, "", "room"], ["R", 27, 42, 6, 18, "causeway", "high"], ["C", 30, 26, 9, "dais", "high"], ["R", 27, 34, 6, 6, "steps", "high"],
+      ["N", 30, 24, "Clamp"], ["L", 8, 20, "pay"], ["L", 52, 20, "pay"], ["L", 30, 52, ""], ["T", 30, 55, "pay machine"], ["R", 0, 0, 60, 4, "gallery", "high"],
+      ["D", 30, 60, "gate"], ["P", [[30, 60], [30, 40], [30, 32]]] ] },
+    { title: "Chamber: The Sump (Drowned Valet)", size: [50, 60], notes: "A flooded underground garage: pillars, half-sunk cars, two headlight beams sweeping. The water rises in three stages.", items: [
+      ["R", 0, 0, 50, 60, "", "water"], ["L", 12, 15, ""], ["L", 38, 15, ""], ["L", 12, 35, ""], ["L", 38, 35, ""], ["T", 25, 26, "pillars + sunken cars"],
+      ["R", 2, 2, 6, 3, "headlight", "dark"], ["R", 42, 2, 6, 3, "headlight", "dark"], ["N", 25, 14, "Valet"], ["D", 25, 60, "the trap door"] ] }
+  ] },
+{ n: 2, name: "Spin City",
+  me: ["Washing machine (3 sizes), dryer, industrial washer: with spinning drum part", "Laundry folding tables, carts, baskets", "Customer Service desk and big screen", "Coin-op change machine", "Dryer-drum bed (Mangle's inn)", "Boiler / furnace unit, pressure valve wheel, gauge panel", "Catwalk kit: walkway, stairs, railing", "Pipe kit: straight, bend, junction, valve", "Lint filter tunnel segments", "Great Dryer (hero set piece)", "Sock Mountain pile (shell)", "Junk stack pieces for the Machine Graveyard", "Chamber pieces: drum interior, trouser presses"],
+  fab: [["Tiles and laminate", "Megascans: white tile, laminate floor, wet floor"], ["Industrial surfaces", "Megascans: rusty metal, painted metal, steel grating"], ["Clothes and fabric", "Fab Free: laundry, clothes pile, fabric"], ["Bottles and boxes", "Megascans: plastic bottles, detergent, boxes"], ["Steam and water", "Niagara (built in)"], ["Lint and dust", "Megascans: dust, fluff decals"], ["Mop and bucket", "Megascans / Fab Free: mop, bucket, wet floor sign"]],
+  areas: [
+    { title: "Hub: The Laundromat", size: [100, 70], notes: "Rows of machines in the centre, the market along the south wall, the Customer Service desk and screen at the north. Four doors out.", items: [
+      ["R", 0, 0, 100, 70, "", "safe"], ["R", 20, 16, 60, 6, "machines", "room"], ["R", 20, 28, 60, 6, "machines", "room"], ["R", 20, 40, 60, 6, "machines", "room"],
+      ["R", 36, 2, 28, 8, "Customer Service + screen", "room"], ["R", 4, 54, 50, 12, "Coin-Op Corner market", "room"], ["R", 62, 54, 34, 12, "Mangle's inn", "room"],
+      ["N", 30, 12, "Spin Cycle"], ["N", 70, 12, "Old Reggie"], ["D", 0, 30, "Boiler Room"], ["D", 100, 30, "Graveyard"], ["D", 0, 60, "Lint Traps"], ["D", 100, 60, "Dryer Heights"] ] },
+    { title: "Boiler Room 0", size: [130, 100], notes: "Furnaces along the north wall, catwalks above. Three pressure valves spread out, Ebb's office in the corner.", items: [
+      ["R", 0, 0, 130, 14, "furnaces", "enemy"], ["R", 10, 30, 110, 6, "catwalk (raised)", "high"], ["R", 10, 60, 110, 6, "catwalk (raised)", "high"],
+      ["L", 20, 46, "valve 1"], ["L", 70, 20, "valve 2"], ["L", 118, 82, "valve 3"], ["R", 4, 72, 36, 24, "Bleach Wells", "safe"], ["R", 100, 4, 26, 20, "Ebb's office", "enemy"], ["N", 112, 14, "Ebb"],
+      ["M", 60, 48, "mop wights"], ["M", 90, 80, "mop wights"], ["D", 130, 50, "hub"], ["P", [[128, 50], [20, 46], [70, 22], [118, 82], [112, 18]]] ] },
+    { title: "The Machine Graveyard", size: [140, 140], notes: "Canyons of stacked machines. Dave's pit in the middle. The Drum's gate is inside a toppled washer.", items: [
+      ["R", 20, 10, 10, 120, "junk wall", "dark"], ["R", 60, 0, 10, 60, "junk wall", "dark"], ["R", 60, 80, 10, 60, "junk wall", "dark"], ["R", 100, 20, 10, 100, "junk wall", "dark"],
+      ["C", 84, 70, 14, "Dave's pit", "enemy"], ["M", 44, 40, "mimics"], ["M", 124, 100, "mimics"], ["G", 124, 16, "The Drum"], ["D", 0, 70, "hub"], ["P", [[2, 70], [44, 70], [84, 70], [124, 18]]] ] },
+    { title: "The Lint Traps", size: [120, 120], notes: "Soft grey tunnels between giant filters. Lint Hollow village in a widening; the Lint King's court at the end.", items: [
+      ["R", 0, 50, 70, 14, "filter tunnel", "room"], ["R", 56, 10, 14, 54, "filter tunnel", "room"], ["R", 56, 64, 14, 50, "filter tunnel", "room"],
+      ["R", 20, 80, 30, 26, "Lint Hollow", "safe"], ["R", 80, 4, 36, 34, "Lint King's court", "enemy"], ["N", 98, 20, "Lint King"], ["M", 63, 90, "lampreys"],
+      ["D", 0, 57, "hub"], ["P", [[2, 57], [63, 57], [63, 22], [98, 20]]] ] },
+    { title: "Dryer Heights", size: [160, 160], notes: "Tall and layered: gantry village on the walls, Sock Mountain and Soap Falls as landmarks, the Great Dryer on its platform at the top.", items: [
+      ["R", 0, 120, 60, 36, "gantry village (raised)", "safe"], ["L", 100, 110, "Sock Mountain"], ["R", 10, 20, 20, 60, "Soap Falls", "water"],
+      ["C", 110, 36, 26, "Great Dryer platform", "high"], ["X", 110, 36, "Great Dryer"], ["G", 150, 140, "Pressing Room"], ["M", 70, 70, "goblins"],
+      ["D", 0, 100, "hub"], ["P", [[2, 100], [40, 110], [80, 80], [110, 40]]] ] },
+    { title: "Chamber: The Drum (The Agitator)", size: [40, 40], notes: "You fight inside a giant drum. The floor tilts and turns as switches are thrown; paddles sweep across.", items: [
+      ["C", 20, 20, 19, "", "room"], ["R", 18, 1, 4, 10, "paddle", "dark"], ["R", 18, 29, 4, 10, "paddle", "dark"], ["N", 20, 20, "Agitator"], ["D", 20, 39, "door"] ] },
+    { title: "Chamber: The Pressing Room (Trouser Press)", size: [40, 60], notes: "Two rows of steam presses slamming on a timer. Safe lanes open and close.", items: [
+      ["R", 0, 0, 40, 60, "", "room"], ["R", 2, 10, 12, 8, "press", "enemy"], ["R", 2, 26, 12, 8, "press", "enemy"], ["R", 2, 42, 12, 8, "press", "enemy"],
+      ["R", 26, 10, 12, 8, "press", "enemy"], ["R", 26, 26, 12, 8, "press", "enemy"], ["R", 26, 42, 12, 8, "press", "enemy"], ["N", 20, 6, "Trouser Press"], ["D", 20, 60, "door"] ] }
+  ] },
+{ n: 3, name: "The Soup District",
+  me: ["Modular old-town kit: wall, window, door, roof, chimney, balcony", "Market stall (3 styles) with awnings", "Soup pot (giant cauldron, small pot)", "Dinner Bell tower", "Hall of Callings machines", "Plank bridges and roof walkways", "Candle racks and lamp posts", "Lamp Market lamp clusters", "Gristle's kitchen fittings (hero interior)", "Auntie Brine's Pot (giant landmark)", "Cone Cathedral (hero building, from cone kit)", "Scratch Marks wall", "Throne of cones and the stair under it"],
+  fab: [["Cobbles and brick", "Megascans: cobblestone, brick wall, plaster"], ["Wood", "Megascans: planks, beams, barrels, crates"], ["Food and kitchen", "Megascans / Fab Free: vegetables, bread, pots, pans, herbs"], ["Candles and lanterns", "Fab Free: candle, lantern"], ["Washing lines and cloth", "Fab Free: cloth, banner"], ["Crowd", "Your townsfolk + Quaternius base bodies"], ["Night sky", "Poly Haven HDRI"]],
+  areas: [
+    { title: "Hub: Soup Row", size: [150, 80], notes: "One long market street. Stalls both sides, the Dinner Bell tower at the west end, the Hall of Callings to the north, Gravy's inn south.", items: [
+      ["R", 0, 30, 150, 20, "Soup Row (street)", "safe"], ["R", 10, 14, 30, 14, "stalls", "room"], ["R", 50, 14, 30, 14, "stalls", "room"], ["R", 90, 52, 30, 14, "stalls", "room"],
+      ["R", 96, 2, 40, 26, "Hall of Callings", "room"], ["R", 20, 52, 30, 24, "Gravy's inn", "room"], ["L", 6, 40, "Dinner Bell"],
+      ["N", 60, 40, "Wickley"], ["N", 110, 30, "Brother Ash"], ["N", 130, 44, "Judge Vrask"], ["D", 0, 40, "Candlewick"], ["D", 150, 40, "Cathedral"], ["D", 75, 0, "Rooftops"], ["D", 75, 80, "Bonebroth"] ] },
+    { title: "Candlewick Lane and the Lamp Market", size: [160, 160], notes: "Tight lanes open suddenly into the Lamp Market plaza.", items: [
+      ["R", 0, 70, 70, 10, "lane", "room"], ["R", 60, 20, 10, 60, "lane", "room"], ["R", 60, 80, 10, 60, "lane", "room"], ["R", 10, 10, 40, 50, "candle shops", "room"],
+      ["C", 115, 80, 38, "Lamp Market", "enemy"], ["N", 115, 80, "Bulb Queen"], ["M", 90, 50, "moths"], ["D", 160, 75, "hub"], ["P", [[158, 75], [130, 80], [65, 75], [65, 30]]] ] },
+    { title: "The Rooftops", size: [160, 160], notes: "Roof blocks at different heights joined by plank bridges. The Roost tower in the north-east is the highest point.", items: [
+      ["R", 10, 100, 40, 40, "roofs 10 m", "high"], ["R", 60, 90, 36, 30, "roofs 14 m", "high"], ["R", 20, 30, 40, 40, "roofs 16 m", "high"], ["R", 100, 40, 30, 30, "roofs 20 m", "high"],
+      ["R", 128, 4, 28, 28, "Roost tower 25 m", "enemy"], ["N", 142, 18, "Old Man Coo"], ["D", 80, 160, "hub (ladder)"], ["P", [[80, 158], [78, 105], [30, 120], [40, 50], [115, 55], [142, 18]]] ] },
+    { title: "Bonebroth Commons", size: [170, 170], notes: "The old quarter: Ladle Gate in, Pantry Keep, the commons green with Auntie Brine's Pot, and Gristle's Kitchen at the back. The Larder is under the kitchen.", items: [
+      ["R", 70, 150, 30, 16, "Ladle Gate", "room"], ["C", 85, 95, 30, "the Commons", "green"], ["L", 85, 95, "Brine's Pot"], ["R", 8, 60, 40, 50, "Pantry Keep", "room"],
+      ["R", 110, 10, 52, 46, "Gristle's Kitchen", "enemy"], ["N", 136, 30, "Grandma Gristle"], ["G", 150, 60, "The Larder"], ["M", 120, 80, "hags"],
+      ["D", 85, 170, "hub"], ["P", [[85, 168], [85, 140], [85, 100], [136, 34]]] ] },
+    { title: "Cathedral Quarter", size: [180, 180], notes: "A great plaza before the Cone Cathedral. Guard posts in front, the Scratch Marks wall to one side, the Stock Cellar under the plaza.", items: [
+      ["R", 30, 90, 120, 80, "the plaza", "green"], ["R", 50, 6, 80, 70, "Cone Cathedral", "enemy"], ["N", 90, 20, "Cone King"], ["X", 90, 12, "under the throne"],
+      ["L", 166, 40, "Scratch Marks"], ["G", 20, 120, "Stock Cellar"], ["M", 60, 100, "goblins"], ["M", 120, 100, "captains"],
+      ["D", 0, 140, "hub"], ["P", [[2, 140], [90, 130], [90, 76], [90, 20]]] ] },
+    { title: "Chamber: The Larder (Brisket)", size: [40, 50], notes: "Meat hooks swinging on rails, a cold room you can't see across.", items: [
+      ["R", 0, 0, 40, 50, "", "room"], ["R", 4, 8, 32, 2, "hook rail", "dark"], ["R", 4, 24, 32, 2, "hook rail", "dark"], ["N", 20, 38, "Brisket"], ["D", 20, 50, "trap door"] ] },
+    { title: "Chamber: The Stock Cellar (Bone Broth)", size: [44, 44], notes: "A giant stockpot in the middle; the boss rises out of it.", items: [
+      ["R", 0, 0, 44, 44, "", "room"], ["C", 22, 22, 10, "stockpot", "enemy"], ["N", 22, 22, "Bone Broth"], ["D", 22, 44, "password door"] ] }
+  ] },
+{ n: 4, name: "The Endless Mall",
+  me: ["Modular shopfront kit: window, door, sign box, roller shutter", "Food counters and food-court seating", "Kraken grate (see-through floor)", "Escalator (moving) and stairs", "Kiosks (3 types)", "Changing cubicles and mirror frames", "Soft-play pieces (Bounce Castle)", "Security desk, CCTV wall frame, cells", "Loading bay doors, dock levellers", "Service lift (exit set piece)", "Atrium balcony rings and the veins (spline)", "Mattress Mo's bed displays", "Chamber pieces: wedding display, escalator shaft"],
+  fab: [["Mall floors", "Megascans: polished stone, marble, tiles"], ["Glass and metal", "Megascans: brushed metal, glass"], ["Shop stock", "Fab Free: clothes racks, shoes, toys, boxes"], ["Plants", "Megascans / Megaplants: indoor plants, palms"], ["Mannequins", "Fab Free: mannequin"], ["Trolleys and bins", "Megascans / Fab Free: shopping trolley, bin"], ["Office kit", "Fab Free: monitors, chairs, filing cabinets"]],
+  areas: [
+    { title: "Hub: Food Court Free State", size: [120, 100], notes: "Seating in the middle over the Kraken grate, counters round the edge, the bed shop inn and Sunny's sponsor booth.", items: [
+      ["R", 0, 0, 120, 100, "", "safe"], ["R", 30, 30, 60, 40, "seating", "room"], ["C", 60, 50, 10, "Kraken grate", "water"], ["R", 0, 0, 120, 10, "food counters", "room"],
+      ["R", 4, 84, 30, 14, "Mattress Mo", "room"], ["R", 86, 84, 30, 14, "Sunny's booth", "room"], ["N", 60, 88, "Madame Prickle"],
+      ["D", 60, 0, "Atrium"], ["D", 0, 30, "Escalator Rise"], ["D", 120, 30, "Security HQ"], ["D", 0, 70, "Changing Rooms"], ["D", 120, 70, "Loading Dock"] ] },
+    { title: "The Atrium", size: [120, 120], notes: "Five storeys round a glass-roofed void. The veins run across the floors to the Mall Mother at the centre.", items: [
+      ["C", 60, 60, 58, "balconies (5 storeys)", "high"], ["C", 60, 60, 36, "the void", "room"], ["C", 60, 60, 10, "Mall Mother", "enemy"],
+      ["M", 30, 40, "mall cops"], ["M", 90, 80, "mimics"], ["D", 60, 120, "hub"], ["P", [[60, 118], [60, 92], [30, 60], [60, 72]]] ] },
+    { title: "Escalator Rise", size: [150, 150], notes: "Criss-crossing escalators between four storeys. The Kiosk Ring and the Coupon Den on the lower levels; the Escalator to Nowhere goes up into the dark.", items: [
+      ["R", 20, 20, 110, 8, "escalator", "high"], ["R", 20, 60, 110, 8, "escalator", "high"], ["R", 20, 100, 110, 8, "escalator", "high"],
+      ["C", 40, 130, 16, "Kiosk Ring", "room"], ["R", 96, 112, 48, 34, "Coupon Den", "enemy"], ["N", 120, 128, "Final Notice"], ["L", 130, 10, "Escalator to Nowhere"], ["G", 10, 10, "Escalator Shaft"],
+      ["D", 150, 75, "hub"], ["P", [[148, 75], [80, 64], [40, 130], [120, 128]]] ] },
+    { title: "Mall Security HQ", size: [110, 110], notes: "Lobby, CCTV room, offices, holding cells. Kevlar's office at the back holds the staff badge.", items: [
+      ["R", 0, 40, 30, 30, "lobby", "room"], ["R", 34, 10, 40, 30, "CCTV room", "room"], ["R", 34, 70, 40, 30, "cells", "enemy"], ["R", 80, 30, 26, 50, "Kevlar's office", "enemy"],
+      ["N", 93, 55, "Kevlar"], ["M", 50, 55, "mall cops"], ["D", 0, 55, "hub"], ["P", [[2, 55], [50, 55], [93, 55]]] ] },
+    { title: "The Changing Rooms and the Bounce Castle", size: [140, 140], notes: "A maze of cubicles and a mirror hall, opening into the soft-play centre. The Mannequin Bride's chamber is behind the bridal shop.", items: [
+      ["R", 0, 0, 70, 80, "cubicle maze", "room"], ["R", 0, 84, 70, 20, "mirror hall", "room"], ["R", 80, 20, 56, 70, "Bounce Castle", "enemy"], ["N", 108, 50, "Birthday Blob"],
+      ["R", 80, 100, 56, 36, "bridal shop", "room"], ["G", 108, 132, "Mannequin Bride"], ["D", 140, 10, "hub"], ["P", [[138, 10], [35, 40], [35, 94], [108, 50]]] ] },
+    { title: "Loading Dock 9", size: [150, 150], notes: "Loading bays, storerooms, the Food Court Depths (the Kraken) and the service lift. During Closing Time the shutters drop across these routes in order.", items: [
+      ["R", 0, 0, 150, 20, "loading bays", "room"], ["R", 10, 40, 50, 40, "storerooms", "room"], ["R", 70, 40, 70, 60, "Food Court Depths", "water"], ["N", 105, 70, "Kraken"],
+      ["R", 120, 120, 26, 26, "service lift", "safe"], ["X", 133, 133, "service lift"], ["T", 60, 110, "shutters drop in order"], ["D", 0, 120, "hub"],
+      ["P", [[2, 120], [40, 110], [80, 110], [133, 132]]] ] },
+    { title: "Chamber: The Mannequin Bride", size: [40, 50], notes: "A bridal display hall: mannequins that move when unseen.", items: [["R", 0, 0, 40, 50, "", "room"], ["T", 20, 18, "mannequin rows"], ["N", 20, 8, "Bride"], ["D", 20, 50, "door"]] },
+    { title: "Chamber: The Escalator Shaft", size: [30, 60], notes: "A long down-escalator that never ends; you fight while it carries you.", items: [["R", 8, 0, 14, 60, "escalator (moving)", "high"], ["N", 15, 10, "Down Escalator"], ["D", 15, 60, "trap"]] }
+  ] },
+{ n: 5, name: "Suburbia Infinite",
+  me: ["The House (hero, 3 variants + 'wrong' versions)", "Garden kit: picket fence, gate, mailbox, garden shed", "Garage with door (Bo's Garage)", "Lemonade stand, yard-sale tables", "Fort barricade from fences and cars", "Town Hall (hero building) and bandstand", "HOA Clubhouse building and manhole", "Gnome Pope's shed-cathedral", "Dog-park agility pieces", "Pool House and pool", "Rec Room grill set (chamber)"],
+  fab: [["Lawns, roads, pavements", "Megascans: grass, asphalt, kerbs, concrete paving"], ["Plants and hedges", "Megascans / Megaplants: hedge, shrub, flowers, trees"], ["Garden props", "Megascans / Fab Free: hose, sprinkler, BBQ, garden furniture"], ["Lawn gnomes", "Fab Free: garden gnome (or ask Claude)"], ["Cars", "City Sample vehicles"], ["Sky", "Poly Haven HDRI (bright noon)"]],
+  areas: [
+    { title: "Hub: Fort Cul-de-Sac", size: [120, 120], notes: "Houses round a turning circle, fenced and barricaded. One gate in.", items: [
+      ["C", 60, 60, 50, "", "safe"], ["C", 60, 60, 18, "turning circle", "green"], ["R", 10, 10, 26, 22, "Big Deb", "room"], ["R", 84, 10, 26, 22, "Mrs Doily B&B", "room"],
+      ["R", 6, 70, 24, 22, "Bo's Garage", "room"], ["R", 90, 70, 24, 22, "Yolanda's yard", "room"], ["N", 60, 40, "Lemonade Lee"], ["N", 40, 80, "Curbside Cal"], ["N", 80, 50, "Watch"],
+      ["D", 60, 120, "gate: Maple Drive"], ["D", 60, 0, "Town Hall"], ["D", 0, 60, "Gnome Garden"], ["D", 120, 60, "HOA"], ["D", 110, 110, "Dog Park"] ] },
+    { title: "Town Hall", size: [150, 150], notes: "A civic square with a bandstand; the hall at the north with the Mayor's office upstairs.", items: [
+      ["R", 30, 6, 90, 50, "Town Hall", "enemy"], ["N", 75, 24, "Mayor Eternal"], ["R", 20, 70, 110, 70, "civic square", "green"], ["C", 75, 105, 10, "bandstand", "room"],
+      ["M", 40, 90, "hounds"], ["D", 75, 150, "hub"], ["P", [[75, 148], [75, 120], [75, 56], [75, 24]]] ] },
+    { title: "Maple Drive", size: [260, 120], notes: "One long street of the same house. The further east, the more wrong: shifted colours, inside-out rooms, faster waving.", items: [
+      ["R", 0, 50, 260, 20, "Maple Drive", "room"], ["R", 10, 10, 30, 30, "house", "room"], ["R", 60, 10, 30, 30, "house", "room"], ["R", 110, 10, 30, 30, "house", "room"], ["R", 160, 10, 30, 30, "house?", "room"], ["R", 210, 10, 30, 30, "HOUSE", "enemy"],
+      ["R", 10, 80, 30, 30, "house", "room"], ["R", 60, 80, 30, 30, "house", "room"], ["L", 125, 95, "Block Party"], ["R", 160, 80, 90, 34, "Sprinkler Field", "green"],
+      ["D", 0, 60, "hub"], ["T", 130, 46, "more wrong →"] ] },
+    { title: "HOA Clubhouse", size: [160, 160], notes: "Clubhouse, golf lawn, and the fenced grounds round the manhole.", items: [
+      ["R", 10, 10, 60, 40, "Clubhouse", "enemy"], ["N", 40, 30, "HOA President"], ["R", 80, 10, 74, 90, "golf lawn", "green"], ["R", 20, 110, 60, 44, "fenced grounds", "room"],
+      ["X", 50, 132, "the manhole"], ["G", 140, 140, "Rec Room"], ["M", 110, 60, "gnomes"], ["D", 0, 80, "hub"], ["P", [[2, 80], [40, 50], [40, 30], [50, 130]]] ] },
+    { title: "The Gnome Garden", size: [160, 160], notes: "Allotments and greenhouses; the Gnome Pope's shed-cathedral at the end. The Garage Band plays (badly) by the entrance.", items: [
+      ["R", 10, 10, 60, 60, "allotments", "green"], ["R", 80, 10, 30, 60, "greenhouses", "room"], ["R", 110, 100, 46, 54, "shed-cathedral", "enemy"], ["N", 133, 120, "Gnome Pope"],
+      ["R", 10, 110, 40, 40, "Garage Band", "safe"], ["M", 60, 90, "gnomes"], ["D", 160, 40, "hub"], ["P", [[158, 40], [90, 80], [133, 118]]] ] },
+    { title: "The Dog Park", size: [160, 160], notes: "Open grass with agility gear, the Pool House village, and the Lifeguard's pool house (ring the bell).", items: [
+      ["R", 10, 10, 100, 90, "dog park", "green"], ["N", 60, 50, "Mr Fetch"], ["R", 120, 20, 36, 40, "Pool House village", "safe"], ["R", 110, 110, 46, 44, "pool", "water"],
+      ["G", 133, 108, "Pool House (bell)"], ["M", 40, 80, "hounds"], ["D", 0, 140, "hub"], ["P", [[2, 140], [60, 60], [133, 110]]] ] },
+    { title: "Chamber: The Rec Room (Dad, grilling)", size: [40, 40], notes: "A basement rec room and a grill that won't stop.", items: [["R", 0, 0, 40, 40, "", "room"], ["R", 16, 6, 8, 4, "grill", "enemy"], ["N", 20, 14, "Dad"], ["D", 20, 40, "trap"]] },
+    { title: "Chamber: The Pool House (The Lifeguard)", size: [40, 50], notes: "An indoor pool: fight on the edge, don't fall in.", items: [["R", 0, 0, 40, 50, "", "room"], ["R", 8, 10, 24, 30, "pool", "water"], ["N", 20, 6, "Lifeguard"], ["D", 20, 50, "bell door"]] }
+  ] },
+{ n: 6, name: "The Canopy",
+  me: ["Treehouse platform kit: deck, railing, ladder, rope lift", "Rope bridge (spline piece)", "Lantern posts and hanging lanterns", "Safari Lodge (hero building) and guestbook stand", "Trophy mounts and display cases", "Hunters' tents, kill board, searchlight tower", "Stilt huts (Mossy Hollow)", "Sludge's hut and cauldron", "Kennel ruins, cages", "The Tallest Tree (hero trunk)", "Chamber pieces: taxidermy workshop, kennel pit"],
+  fab: [["Forest", "Megascans / Megaplants: trees, ferns, roots, logs, moss, rocks"], ["Ground", "Megascans: forest floor, mud, leaves"], ["Swamp", "Megascans: swamp water, reeds"], ["Mushrooms", "Megascans: fungi (make them glow with an emissive tweak)"], ["Camping gear", "Fab Free: tent, crates, rifles rack"], ["Lodge interior", "Megascans / Fab Free: rugs, leather sofa, fireplace, wood panelling"]],
+  areas: [
+    { title: "Hub: The Treehouse", size: [80, 80], notes: "Platforms round a giant trunk at 25 m. Rope lifts go down to the forest floor.", items: [
+      ["C", 40, 40, 10, "trunk", "dark"], ["C", 40, 40, 34, "platforms (25 m)", "safe"], ["R", 6, 6, 22, 16, "Old Bramble's inn", "room"], ["R", 52, 6, 22, 16, "Acorn Store", "room"],
+      ["N", 20, 56, "Gusset"], ["N", 60, 56, "Elder Lantern"], ["D", 40, 80, "lift down"], ["D", 0, 40, "bridge west"], ["D", 80, 40, "bridge east"], ["D", 40, 0, "bridge north"] ] },
+    { title: "Glimmerkin Safari Lodge", size: [160, 160], notes: "The lodge, its trophy gallery, the guestbook, the kennels. The stairs down are inside the lodge.", items: [
+      ["R", 40, 10, 80, 60, "Safari Lodge", "enemy"], ["N", 80, 30, "Lord-Hunter Facet"], ["X", 110, 20, "stairs"], ["R", 40, 80, 80, 30, "lawns", "green"],
+      ["G", 146, 30, "Trophy Hall"], ["M", 30, 120, "hunters"], ["D", 80, 160, "forest"], ["P", [[80, 158], [80, 110], [80, 70], [110, 22]]] ] },
+    { title: "Rope Bridges and Lantern Ridge", size: [250, 200], notes: "A network of tree platforms 20–30 m up. The safe route round the forest, if you don't fall.", items: [
+      ["C", 30, 160, 14, "platform", "high"], ["C", 90, 120, 14, "Rope Bridge Hamlet", "safe"], ["C", 150, 150, 12, "platform", "high"], ["C", 200, 90, 16, "Lantern Ridge", "safe"], ["C", 120, 50, 12, "platform", "high"],
+      ["P", [[30, 160], [90, 120], [150, 150], [200, 90], [120, 50]]], ["D", 0, 160, "Treehouse"] ] },
+    { title: "Hornback Hunting Camp", size: [160, 160], notes: "Tents and floodlit towers. Get Licensed in the camp office tent.", items: [
+      ["R", 20, 20, 120, 120, "camp", "enemy"], ["R", 60, 60, 40, 30, "office tent", "room"], ["L", 30, 30, "searchlight"], ["L", 130, 30, "searchlight"], ["L", 30, 130, "searchlight"], ["L", 130, 130, "searchlight"],
+      ["M", 50, 110, "hunters"], ["M", 110, 50, "hounds"], ["D", 0, 80, "forest"], ["P", [[2, 80], [80, 75]]] ] },
+    { title: "Hag Hollow and Mossy Hollow", size: [220, 220], notes: "A sunken swamp. Mossy Hollow on stilts; Auntie Sludge's hut on an island.", items: [
+      ["R", 0, 0, 220, 220, "", "water"], ["R", 20, 30, 70, 60, "Mossy Hollow (stilts)", "safe"], ["C", 150, 150, 30, "Sludge's island", "enemy"], ["N", 150, 150, "Auntie Sludge"],
+      ["R", 90, 60, 20, 100, "boardwalk", "high"], ["D", 0, 120, "forest"], ["P", [[2, 120], [55, 80], [100, 110], [150, 150]]] ] },
+    { title: "The Wild Kennel and the Tallest Tree", size: [220, 220], notes: "Deep forest: kennel ruins, the Matriarch's den, the Kennel Pit. The Tallest Tree rises in the middle, visible from the whole floor.", items: [
+      ["R", 20, 20, 70, 60, "kennel ruins", "enemy"], ["N", 55, 50, "Matriarch"], ["G", 30, 100, "Kennel Pit"], ["C", 140, 130, 30, "Tallest Tree", "green"], ["L", 140, 130, "roots"],
+      ["M", 100, 60, "hounds"], ["D", 220, 200, "forest"], ["P", [[218, 200], [140, 130], [55, 52]]] ] },
+    { title: "Chamber: The Trophy Hall (Taxidermist)", size: [40, 50], notes: "A taxidermy workshop: mounted trophies that come down off the walls.", items: [["R", 0, 0, 40, 50, "", "room"], ["T", 20, 25, "trophy walls"], ["N", 20, 8, "Taxidermist"], ["D", 20, 50, "door"]] },
+    { title: "Chamber: The Kennel Pit (Alpha)", size: [40, 40], notes: "A round fighting pit; cage doors open round the edge.", items: [["C", 20, 20, 19, "", "enemy"], ["N", 20, 20, "Alpha"], ["G", 2, 20, "cage"], ["G", 38, 20, "cage"], ["D", 20, 40, "trap"]] }
+  ] }
+];
+
+const $tabs = document.getElementById('tabs'), $floor = document.getElementById('floor');
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const FILL = { room: 'var(--sheet)', safe: 'var(--safe)', enemy: 'var(--enemy)', water: 'var(--water)', high: 'var(--high)', green: 'var(--green)', dark: 'var(--rule)' };
+
+function layoutSVG(a) {
+  const [w, h] = a.size, pad = Math.max(w, h) * 0.07, fs = Math.max(w, h) / 42;
+  const step = Math.max(w, h) > 150 ? 20 : 10;
+  let s = `<svg viewBox="${-pad} ${-pad} ${w + pad * 2} ${h + pad * 2}" xmlns="http://www.w3.org/2000/svg" font-family="IBM Plex Mono, monospace" font-size="${fs}">`;
+  for (let x = 0; x <= w; x += step) s += `<line x1="${x}" y1="0" x2="${x}" y2="${h}" stroke="var(--grid)" stroke-width="${fs * 0.06}"/>`;
+  for (let y = 0; y <= h; y += step) s += `<line x1="0" y1="${y}" x2="${w}" y2="${y}" stroke="var(--grid)" stroke-width="${fs * 0.06}"/>`;
+  s += `<rect x="0" y="0" width="${w}" height="${h}" fill="none" stroke="var(--muted)" stroke-width="${fs * 0.08}"/>`;
+  const sw = fs * 0.12;
+  for (const it of a.items) {
+    const t = it[0];
+    if (t === 'R') { const [, x, y, rw, rh, label, kind] = it; const dash = kind === 'high' ? `stroke-dasharray="${fs * 0.5} ${fs * 0.3}"` : '';
+      s += `<rect x="${x}" y="${y}" width="${rw}" height="${rh}" fill="${FILL[kind] || FILL.room}" stroke="var(--ink)" stroke-width="${sw}" ${dash}/>`;
+      if (label) s += `<text x="${x + rw / 2}" y="${y + rh / 2 + fs * 0.35}" text-anchor="middle" fill="var(--ink)">${esc(label)}</text>`; }
+    else if (t === 'C') { const [, x, y, r, label, kind] = it; const dash = kind === 'high' ? `stroke-dasharray="${fs * 0.5} ${fs * 0.3}"` : '';
+      s += `<circle cx="${x}" cy="${y}" r="${r}" fill="${FILL[kind] || FILL.room}" stroke="var(--ink)" stroke-width="${sw}" ${dash}/>`;
+      if (label) s += `<text x="${x}" y="${y - r + fs * 1.3}" text-anchor="middle" fill="var(--ink)">${esc(label)}</text>`; }
+  }
+  for (const it of a.items) if (it[0] === 'P') s += `<polyline points="${it[1].map(p => p.join(',')).join(' ')}" fill="none" stroke="var(--accent)" stroke-width="${fs * 0.45}" stroke-dasharray="${fs * 0.15} ${fs * 0.7}" stroke-linecap="round" stroke-linejoin="round"/>`;
+  for (const it of a.items) {
+    const [t, x, y, label] = it; const k = fs * 0.55;
+    if (t === 'D') s += `<rect x="${x - k}" y="${y - k}" width="${k * 2}" height="${k * 2}" fill="var(--ink)"/>`;
+    else if (t === 'X') s += `<path d="M${x - k * 1.4} ${y - k} L${x + k * 1.4} ${y - k} L${x} ${y + k * 1.3} Z" fill="var(--teal)"/>`;
+    else if (t === 'G') s += `<path d="M${x} ${y - k * 1.3} L${x + k * 1.3} ${y} L${x} ${y + k * 1.3} L${x - k * 1.3} ${y} Z" fill="var(--alarm)"/>`;
+    else if (t === 'N') s += `<circle cx="${x}" cy="${y}" r="${k * 0.8}" fill="var(--teal)" stroke="var(--sheet)" stroke-width="${fs * 0.1}"/>`;
+    else if (t === 'M') s += `<text x="${x}" y="${y + fs * 0.4}" text-anchor="middle" fill="var(--alarm)" font-size="${fs * 1.4}" font-weight="600">✕</text>`;
+    else if (t === 'L') s += `<text x="${x}" y="${y + fs * 0.45}" text-anchor="middle" fill="var(--accent-ink)" font-size="${fs * 1.4}">★</text>`;
+    else continue;
+    if (label) { const dy = t === 'M' || t === 'L' ? fs * 1.8 : fs * 1.9; const col = t === 'G' || t === 'M' ? 'var(--alarm)' : t === 'X' || t === 'N' ? 'var(--teal)' : 'var(--ink)';
+      s += `<text x="${x}" y="${y + dy}" text-anchor="middle" fill="${col}" font-weight="600" paint-order="stroke" stroke="var(--sheet)" stroke-width="${fs * 0.25}">${esc(label)}</text>`; }
+  }
+  for (const it of a.items) if (it[0] === 'T') s += `<text x="${it[1]}" y="${it[2]}" text-anchor="middle" fill="var(--muted)" font-style="italic">${esc(it[3])}</text>`;
+  // scale bar
+  const bar = step * 2;
+  s += `<line x1="0" y1="${h + pad * 0.55}" x2="${bar}" y2="${h + pad * 0.55}" stroke="var(--ink)" stroke-width="${fs * 0.2}"/><text x="${bar + fs * 0.5}" y="${h + pad * 0.55 + fs * 0.35}" fill="var(--muted)">${bar} m</text>`;
+  s += `<text x="${w}" y="${-pad * 0.3}" text-anchor="end" fill="var(--muted)">N ↑</text>`;
+  return s + `</svg>`;
+}
+
+function render(n) {
+  const f = F.find(x => x.n === n) || F[0];
+  $tabs.innerHTML = F.map(x => `<a href="#floor-${x.n}" class="${x.n === f.n ? 'on' : ''}">FLOOR ${x.n} · ${esc(x.name.toUpperCase())}</a>`).join('');
+  let h = `<div class="eyebrow">Floor ${f.n}</div><h2>${esc(f.name)}</h2>`;
+  h += `<h3>Build list</h3><div class="lists">
+    <div class="list me"><h4>Claude builds in Blender (${f.me.length})</h4><ul>${f.me.map(x => `<li>${esc(x)}</li>`).join('')}</ul></div>
+    <div class="list fab"><h4>You grab free on Fab</h4><ul>${f.fab.map(([a, b]) => `<li>${esc(a)}<br><span class="s">${esc(b)}</span></li>`).join('')}</ul></div></div>`;
+  h += `<h3>Layouts (${f.areas.length})</h3>`;
+  for (const a of f.areas) h += `<div class="card"><header><b>${esc(a.title)}</b><span>${a.size[0]} × ${a.size[1]} m</span></header>
+    <div class="svgwrap" role="img" aria-label="${esc(a.title)} layout, top-down">${layoutSVG(a)}</div><p class="notes">${esc(a.notes)}</p></div>`;
+  $floor.innerHTML = h;
+}
+function route() { const m = (location.hash || '').match(/^#floor-(\d)$/); render(m ? +m[1] : 0); }
+window.addEventListener('hashchange', () => { route(); $tabs.scrollIntoView(); });
+route();
+</script>

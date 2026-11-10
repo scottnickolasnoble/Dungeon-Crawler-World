@@ -1,0 +1,2306 @@
+{
+ "10": {
+  "floor": 10,
+  "name": "FLOOR 10 · THE BACKLOT",
+  "hub_name": "Craft Services",
+  "spawn": [
+   0,
+   1.7,
+   52
+  ],
+  "ceil": 60,
+  "hub": {
+   "style": "garage",
+   "w": 156,
+   "d": 120
+  },
+  "villages": [
+   {
+    "name": "Wardrobe Row",
+    "x": -240,
+    "z": -180,
+    "races": [
+     "human",
+     "fennix"
+    ],
+    "merchants": [
+     {
+      "id": "v10a",
+      "name": "Row Trader",
+      "title": "Gear",
+      "shop": "gear"
+     }
+    ]
+   },
+   {
+    "name": "The Props Warehouse",
+    "x": 250,
+    "z": -170,
+    "races": [
+     "clanker",
+     "gutterkin"
+    ],
+    "merchants": [
+     {
+      "id": "v10b",
+      "name": "Warehouse Trader",
+      "title": "Food, water, potions",
+      "shop": "provisions"
+     }
+    ]
+   },
+   {
+    "name": "Extras' Holding",
+    "x": -250,
+    "z": 200,
+    "races": [
+     "human",
+     "mothwing"
+    ],
+    "merchants": [
+     {
+      "id": "v10c",
+      "name": "Holding Trader",
+      "title": "Junk",
+      "shop": "pickles"
+     }
+    ]
+   },
+   {
+    "name": "The Car Park",
+    "x": 250,
+    "z": 240,
+    "races": [
+     "grimhide",
+     "human"
+    ],
+    "merchants": [
+     {
+      "id": "v10d",
+      "name": "Park Trader",
+      "title": "Gear",
+      "shop": "gear"
+     }
+    ]
+   }
+  ],
+  "camps": [
+   {
+    "name": "Sound Stage 4",
+    "camp": "c10_0",
+    "x": -200,
+    "z": -40,
+    "r": 22,
+    "style": "crew",
+    "mob": "stagehand",
+    "lvl": [
+     90,
+     92
+    ],
+    "count": 10,
+    "boss": "floor_manager",
+    "level": "90-94 · Neighbourhood"
+   },
+   {
+    "name": "The Western Set",
+    "camp": "c10_1",
+    "x": 170,
+    "z": -250,
+    "r": 22,
+    "style": "crew",
+    "mob": [
+     "the_extras",
+     "stagehand"
+    ],
+    "lvl": [
+     92,
+     94
+    ],
+    "count": 10,
+    "boss": "the_stunt_double",
+    "level": "92-96 · Borough"
+   },
+   {
+    "name": "Makeup Trailers",
+    "camp": "c10_2",
+    "x": -60,
+    "z": 280,
+    "r": 22,
+    "style": "crew",
+    "mob": [
+     "boom_gremlin",
+     "the_extras"
+    ],
+    "lvl": [
+     94,
+     96
+    ],
+    "count": 10,
+    "boss": "makeup_witch",
+    "level": "94-98 · Neighbourhood"
+   },
+   {
+    "name": "Catering",
+    "camp": "c10_3",
+    "x": 280,
+    "z": 40,
+    "r": 22,
+    "style": "crew",
+    "mob": [
+     "the_extras",
+     "boom_gremlin"
+    ],
+    "lvl": [
+     96,
+     98
+    ],
+    "count": 10,
+    "boss": "craft_services_glutton",
+    "level": "96-100 · Borough"
+   },
+   {
+    "name": "The Water Tank",
+    "camp": "c10_4",
+    "x": 0,
+    "z": -320,
+    "r": 26,
+    "style": "crew",
+    "mob": [
+     "stagehand",
+     "boom_gremlin"
+    ],
+    "lvl": [
+     98,
+     100
+    ],
+    "count": 10,
+    "boss": "the_showrunner",
+    "level": "98-102 · City"
+   }
+  ],
+  "landmarks": [
+   {
+    "name": "The Giant Clapperboard",
+    "x": 110,
+    "z": 170,
+    "r": 16
+   },
+   {
+    "name": "The Fake Moon",
+    "x": -150,
+    "z": 180,
+    "r": 16
+   },
+   {
+    "name": "The Audience Bleachers",
+    "x": 220,
+    "z": -130,
+    "r": 16
+   }
+  ],
+  "merchants": [
+   {
+    "id": "m10g",
+    "name": "Wardrobe Wendy",
+    "title": "Weapons & armour",
+    "shop": "gear",
+    "model": "wardrobe_wendy"
+   },
+   {
+    "id": "m10p",
+    "name": "Chef Polenta",
+    "title": "Food, water, potions",
+    "shop": "provisions",
+    "model": "chef_polenta"
+   },
+   {
+    "id": "m10t",
+    "name": "Bo's Deepest Branch",
+    "title": "Table merchant",
+    "shop": "tables",
+    "race": "stoneblood",
+    "voice": "bo"
+   },
+   {
+    "id": "m10j",
+    "name": "Props Master",
+    "title": "Junk",
+    "shop": "pickles",
+    "model": "props_master"
+   }
+  ],
+  "innkeeper": "Trailer Tina",
+  "innkeeper_model": "trailer_tina",
+  "townsfolk": {
+   "races": [
+    "human",
+    "fennix"
+   ]
+  },
+  "stairs": {
+   "x": 0,
+   "z": -312,
+   "r": 3.4,
+   "to": "11",
+   "flag": "the_showrunner_handled",
+   "how": "Wrap the Showrunner at the Water Tank.",
+   "locked": "The way down is guarded. Wrap the Showrunner at the Water Tank."
+  },
+  "quest_npcs": [
+   {
+    "id": "sue",
+    "kind": "quest",
+    "name": "Script Sue",
+    "title": "Script supervisor",
+    "x": 0,
+    "z": 0,
+    "yaw": 0
+   },
+   {
+    "id": "gus",
+    "kind": "quest",
+    "name": "Gaffer Gus",
+    "title": "Head of lighting",
+    "x": 0,
+    "z": 0,
+    "yaw": 2
+   }
+  ]
+ },
+ "11": {
+  "floor": 11,
+  "name": "FLOOR 11 · THE ARENA",
+  "hub_name": "The Concourse",
+  "spawn": [
+   0,
+   1.7,
+   52
+  ],
+  "ceil": 70,
+  "hub": {
+   "style": "civic",
+   "w": 156,
+   "d": 120
+  },
+  "villages": [
+   {
+    "name": "The Away End",
+    "x": -240,
+    "z": -180,
+    "races": [
+     "grimhide",
+     "ogrekin"
+    ],
+    "merchants": [
+     {
+      "id": "v11a",
+      "name": "End Trader",
+      "title": "Gear",
+      "shop": "gear"
+     }
+    ]
+   },
+   {
+    "name": "The Car Wash",
+    "x": 250,
+    "z": -170,
+    "races": [
+     "human",
+     "bogling"
+    ],
+    "merchants": [
+     {
+      "id": "v11b",
+      "name": "Wash Trader",
+      "title": "Food, water, potions",
+      "shop": "provisions"
+     }
+    ]
+   },
+   {
+    "name": "The Sports Bar",
+    "x": -250,
+    "z": 200,
+    "races": [
+     "human",
+     "fennix"
+    ],
+    "merchants": [
+     {
+      "id": "v11c",
+      "name": "Bar Trader",
+      "title": "Junk",
+      "shop": "pickles"
+     }
+    ]
+   },
+   {
+    "name": "The Ticket Office",
+    "x": 250,
+    "z": 240,
+    "races": [
+     "clanker",
+     "gutterkin"
+    ],
+    "merchants": [
+     {
+      "id": "v11d",
+      "name": "Office Trader",
+      "title": "Gear",
+      "shop": "gear"
+     }
+    ]
+   }
+  ],
+  "camps": [
+   {
+    "name": "The Mascot Pen",
+    "camp": "c11_0",
+    "x": -200,
+    "z": -40,
+    "r": 22,
+    "style": "arena",
+    "mob": "mascot",
+    "lvl": [
+     99,
+     101
+    ],
+    "count": 10,
+    "boss": "big_foam_finger",
+    "level": "99-103 · Neighbourhood"
+   },
+   {
+    "name": "The Ultras' End",
+    "camp": "c11_1",
+    "x": 170,
+    "z": -250,
+    "r": 22,
+    "style": "arena",
+    "mob": "ultra",
+    "lvl": [
+     101,
+     103
+    ],
+    "count": 10,
+    "boss": "the_capo",
+    "level": "101-105 · Borough"
+   },
+   {
+    "name": "The Cheer Pyramid",
+    "camp": "c11_2",
+    "x": -60,
+    "z": 280,
+    "r": 22,
+    "style": "arena",
+    "mob": [
+     "cheer_squad",
+     "mascot"
+    ],
+    "lvl": [
+     103,
+     105
+    ],
+    "count": 10,
+    "boss": "head_cheerleader",
+    "level": "103-107 · Neighbourhood"
+   },
+   {
+    "name": "The Officials' Room",
+    "camp": "c11_3",
+    "x": 280,
+    "z": 40,
+    "r": 22,
+    "style": "arena",
+    "mob": [
+     "ultra",
+     "cheer_squad"
+    ],
+    "lvl": [
+     105,
+     107
+    ],
+    "count": 10,
+    "boss": "the_ref",
+    "level": "105-109 · Borough"
+   },
+   {
+    "name": "The Centre Circle",
+    "camp": "c11_4",
+    "x": 0,
+    "z": -320,
+    "r": 26,
+    "style": "arena",
+    "mob": [
+     "mascot",
+     "ultra"
+    ],
+    "lvl": [
+     107,
+     109
+    ],
+    "count": 10,
+    "boss": "the_champion",
+    "level": "107-111 · City"
+   }
+  ],
+  "landmarks": [
+   {
+    "name": "The Jumbotron",
+    "x": 110,
+    "z": 170,
+    "r": 16
+   },
+   {
+    "name": "The Trophy Cabinet",
+    "x": -150,
+    "z": 180,
+    "r": 16
+   },
+   {
+    "name": "The Halftime Stage",
+    "x": 220,
+    "z": -130,
+    "r": 16
+   }
+  ],
+  "merchants": [
+   {
+    "id": "m11g",
+    "name": "Kit Man Kev",
+    "title": "Weapons & armour",
+    "shop": "gear",
+    "model": "kit_man_kev"
+   },
+   {
+    "id": "m11p",
+    "name": "Hot Dog Hattie",
+    "title": "Food, water, potions",
+    "shop": "provisions",
+    "model": "hot_dog_hattie"
+   },
+   {
+    "id": "m11t",
+    "name": "Bo's Deepest Branch",
+    "title": "Table merchant",
+    "shop": "tables",
+    "race": "stoneblood",
+    "voice": "bo"
+   },
+   {
+    "id": "m11j",
+    "name": "Ticket Tout Terry",
+    "title": "Junk",
+    "shop": "pickles",
+    "model": "ticket_tout_terry"
+   }
+  ],
+  "innkeeper": "Coach Bunk",
+  "innkeeper_model": "coach_bunk",
+  "townsfolk": {
+   "races": [
+    "grimhide",
+    "ogrekin"
+   ]
+  },
+  "stairs": {
+   "x": 0,
+   "z": -312,
+   "r": 3.4,
+   "to": "12",
+   "flag": "the_champion_handled",
+   "how": "Beat the Champion in the Centre Circle.",
+   "locked": "The way down is guarded. Beat the Champion in the Centre Circle."
+  },
+  "quest_npcs": [
+   {
+    "id": "turf",
+    "kind": "quest",
+    "name": "Groundskeeper Turf",
+    "title": "Keeps the pitch",
+    "x": 0,
+    "z": 0,
+    "yaw": 0
+   },
+   {
+    "id": "booth",
+    "kind": "quest",
+    "name": "Commentator Booth",
+    "title": "Calls every play",
+    "x": 0,
+    "z": 0,
+    "yaw": 2
+   }
+  ]
+ },
+ "12": {
+  "floor": 12,
+  "name": "FLOOR 12 · THE GREEN ROOM",
+  "hub_name": "The Commissary",
+  "spawn": [
+   0,
+   1.7,
+   52
+  ],
+  "ceil": 30,
+  "hub": {
+   "style": "mall",
+   "w": 156,
+   "d": 120
+  },
+  "villages": [
+   {
+    "name": "Dressing Room Row",
+    "x": -240,
+    "z": -180,
+    "races": [
+     "human",
+     "lumen"
+    ],
+    "merchants": [
+     {
+      "id": "v12a",
+      "name": "Row Trader",
+      "title": "Gear",
+      "shop": "gear"
+     }
+    ]
+   },
+   {
+    "name": "The Writers' Pit",
+    "x": 250,
+    "z": -170,
+    "races": [
+     "human",
+     "quillback"
+    ],
+    "merchants": [
+     {
+      "id": "v12b",
+      "name": "Pit Trader",
+      "title": "Food, water, potions",
+      "shop": "provisions"
+     }
+    ]
+   },
+   {
+    "name": "The Loading Bay",
+    "x": -250,
+    "z": 200,
+    "races": [
+     "grimhide",
+     "stoneblood"
+    ],
+    "merchants": [
+     {
+      "id": "v12c",
+      "name": "Bay Trader",
+      "title": "Junk",
+      "shop": "pickles"
+     }
+    ]
+   },
+   {
+    "name": "Hair & Makeup",
+    "x": 250,
+    "z": 240,
+    "races": [
+     "fennix",
+     "mothwing"
+    ],
+    "merchants": [
+     {
+      "id": "v12d",
+      "name": "Makeup Trader",
+      "title": "Gear",
+      "shop": "gear"
+     }
+    ]
+   }
+  ],
+  "camps": [
+   {
+    "name": "The Laugh Track Factory",
+    "camp": "c12_0",
+    "x": -200,
+    "z": -40,
+    "r": 22,
+    "style": "studio",
+    "mob": "laugher",
+    "lvl": [
+     108,
+     110
+    ],
+    "count": 10,
+    "boss": "the_laugh_track",
+    "level": "108-112 · Neighbourhood"
+   },
+   {
+    "name": "The Paparazzi Pit",
+    "camp": "c12_1",
+    "x": 170,
+    "z": -250,
+    "r": 22,
+    "style": "studio",
+    "mob": "paparazzo",
+    "lvl": [
+     110,
+     112
+    ],
+    "count": 10,
+    "boss": "flash_mob",
+    "level": "110-114 · Borough"
+   },
+   {
+    "name": "The Agency",
+    "camp": "c12_2",
+    "x": -60,
+    "z": 280,
+    "r": 22,
+    "style": "studio",
+    "mob": [
+     "autograph_hound",
+     "paparazzo"
+    ],
+    "lvl": [
+     112,
+     114
+    ],
+    "count": 10,
+    "boss": "agent_twelve_percent",
+    "level": "112-116 · Neighbourhood"
+   },
+   {
+    "name": "The Talk Show",
+    "camp": "c12_3",
+    "x": 280,
+    "z": 40,
+    "r": 22,
+    "style": "studio",
+    "mob": [
+     "laugher",
+     "autograph_hound"
+    ],
+    "lvl": [
+     114,
+     116
+    ],
+    "count": 10,
+    "boss": "jolly_jack_brightly",
+    "level": "114-118 · Borough"
+   },
+   {
+    "name": "The Producers' Floor",
+    "camp": "c12_4",
+    "x": 0,
+    "z": -320,
+    "r": 26,
+    "style": "studio",
+    "mob": [
+     "paparazzo",
+     "laugher"
+    ],
+    "lvl": [
+     116,
+     118
+    ],
+    "count": 10,
+    "boss": "the_producer",
+    "level": "116-120 · City"
+   }
+  ],
+  "landmarks": [
+   {
+    "name": "The Star Door Corridor",
+    "x": 110,
+    "z": 170,
+    "r": 16
+   },
+   {
+    "name": "The Big Couch",
+    "x": -150,
+    "z": 180,
+    "r": 16
+   },
+   {
+    "name": "The Applause Sign",
+    "x": 220,
+    "z": -130,
+    "r": 16
+   }
+  ],
+  "merchants": [
+   {
+    "id": "m12g",
+    "name": "Hettie Makeup",
+    "title": "Weapons & armour",
+    "shop": "gear",
+    "model": "hettie_makeup"
+   },
+   {
+    "id": "m12p",
+    "name": "Commissary Carl",
+    "title": "Food, water, potions",
+    "shop": "provisions",
+    "model": "commissary_carl"
+   },
+   {
+    "id": "m12t",
+    "name": "Bo's Deepest Branch",
+    "title": "Table merchant",
+    "shop": "tables",
+    "race": "stoneblood",
+    "voice": "bo"
+   },
+   {
+    "id": "m12j",
+    "name": "Lost Props Lou",
+    "title": "Junk",
+    "shop": "pickles",
+    "model": "lost_props_lou"
+   }
+  ],
+  "innkeeper": "Green Room Gloria",
+  "innkeeper_model": "green_room_gloria",
+  "townsfolk": {
+   "races": [
+    "human",
+    "lumen"
+   ]
+  },
+  "stairs": {
+   "x": 0,
+   "z": -312,
+   "r": 3.4,
+   "to": "13",
+   "flag": "the_producer_handled",
+   "how": "Get past the Producer on the Producers' Floor.",
+   "locked": "The way down is guarded. Get past the Producer on the Producers' Floor."
+  },
+  "quest_npcs": [
+   {
+    "id": "rhys",
+    "kind": "quest",
+    "name": "Runner Rhys",
+    "title": "Runs everything, everywhere",
+    "x": 0,
+    "z": 0,
+    "yaw": 0
+   },
+   {
+    "id": "wren",
+    "kind": "quest",
+    "name": "Staff Writer Wren",
+    "title": "Writes your lines",
+    "x": 0,
+    "z": 0,
+    "yaw": 2
+   }
+  ]
+ },
+ "13": {
+  "floor": 13,
+  "name": "FLOOR 13 · THE STACKS",
+  "hub_name": "Quiet Corner",
+  "spawn": [
+   0,
+   1.7,
+   52
+  ],
+  "ceil": 70,
+  "hub": {
+   "style": "brick",
+   "w": 156,
+   "d": 120
+  },
+  "villages": [
+   {
+    "name": "Periodicals",
+    "x": -240,
+    "z": -180,
+    "races": [
+     "lumen",
+     "human"
+    ],
+    "merchants": [
+     {
+      "id": "v13a",
+      "name": "Periodicals Trader",
+      "title": "Gear",
+      "shop": "gear"
+     }
+    ]
+   },
+   {
+    "name": "Large Print",
+    "x": 250,
+    "z": -170,
+    "races": [
+     "quillback",
+     "bogling"
+    ],
+    "merchants": [
+     {
+      "id": "v13b",
+      "name": "Print Trader",
+      "title": "Food, water, potions",
+      "shop": "provisions"
+     }
+    ]
+   },
+   {
+    "name": "Microfiche",
+    "x": -250,
+    "z": 200,
+    "races": [
+     "clanker",
+     "human"
+    ],
+    "merchants": [
+     {
+      "id": "v13c",
+      "name": "Microfiche Trader",
+      "title": "Junk",
+      "shop": "pickles"
+     }
+    ]
+   },
+   {
+    "name": "Overdue",
+    "x": 250,
+    "z": 240,
+    "races": [
+     "gutterkin",
+     "stoneblood"
+    ],
+    "merchants": [
+     {
+      "id": "v13d",
+      "name": "Overdue Trader",
+      "title": "Gear",
+      "shop": "gear"
+     }
+    ]
+   }
+  ],
+  "camps": [
+   {
+    "name": "The Reading Room",
+    "camp": "c13_0",
+    "x": -200,
+    "z": -40,
+    "r": 22,
+    "style": "library",
+    "mob": "shusher",
+    "lvl": [
+     117,
+     119
+    ],
+    "count": 10,
+    "boss": "head_librarian",
+    "level": "117-121 · Neighbourhood"
+   },
+   {
+    "name": "The Returns Chute",
+    "camp": "c13_1",
+    "x": 170,
+    "z": -250,
+    "r": 22,
+    "style": "library",
+    "mob": "bookwyrm",
+    "lvl": [
+     119,
+     121
+    ],
+    "count": 10,
+    "boss": "overdue",
+    "level": "119-123 · Borough"
+   },
+   {
+    "name": "The Bindery",
+    "camp": "c13_2",
+    "x": -60,
+    "z": 280,
+    "r": 22,
+    "style": "library",
+    "mob": "paper_golem",
+    "lvl": [
+     121,
+     123
+    ],
+    "count": 10,
+    "boss": "bindery_foreman",
+    "level": "121-125 · Neighbourhood"
+   },
+   {
+    "name": "The Index Vault",
+    "camp": "c13_3",
+    "x": 280,
+    "z": 40,
+    "r": 22,
+    "style": "library",
+    "mob": [
+     "shusher",
+     "paper_golem"
+    ],
+    "lvl": [
+     123,
+     125
+    ],
+    "count": 10,
+    "boss": "index_clerk",
+    "level": "123-127 · Borough"
+   },
+   {
+    "name": "The Restricted Section",
+    "camp": "c13_4",
+    "x": 0,
+    "z": -320,
+    "r": 26,
+    "style": "library",
+    "mob": [
+     "bookwyrm",
+     "shusher"
+    ],
+    "lvl": [
+     125,
+     127
+    ],
+    "count": 10,
+    "boss": "the_archivist",
+    "level": "125-129 · City"
+   }
+  ],
+  "landmarks": [
+   {
+    "name": "The Card Catalogue Spire",
+    "x": 110,
+    "z": 170,
+    "r": 16
+   },
+   {
+    "name": "The Lost & Found of Books",
+    "x": -150,
+    "z": 180,
+    "r": 16
+   },
+   {
+    "name": "The Endless Ladder",
+    "x": 220,
+    "z": -130,
+    "r": 16
+   }
+  ],
+  "merchants": [
+   {
+    "id": "m13g",
+    "name": "Fines Desk Freda",
+    "title": "Weapons & armour",
+    "shop": "gear",
+    "model": "fines_desk_freda"
+   },
+   {
+    "id": "m13p",
+    "name": "Reading Room Rory",
+    "title": "Food, water, potions",
+    "shop": "provisions",
+    "model": "reading_room_rory"
+   },
+   {
+    "id": "m13t",
+    "name": "Bo's Deepest Branch",
+    "title": "Table merchant",
+    "shop": "tables",
+    "race": "stoneblood",
+    "voice": "bo"
+   },
+   {
+    "id": "m13j",
+    "name": "Bookbinder Bram",
+    "title": "Junk",
+    "shop": "pickles",
+    "model": "bookbinder_bram"
+   }
+  ],
+  "innkeeper": "Quiet Quentin",
+  "innkeeper_model": "quiet_quentin",
+  "townsfolk": {
+   "races": [
+    "lumen",
+    "human"
+   ]
+  },
+  "stairs": {
+   "x": 0,
+   "z": -312,
+   "r": 3.4,
+   "to": "14",
+   "flag": "the_archivist_handled",
+   "how": "The Archivist keeps the only key to the stairs, in the Restricted Section.",
+   "locked": "The way down is guarded. The Archivist keeps the only key to the stairs, in the Restricted Section."
+  },
+  "quest_npcs": [
+   {
+    "id": "kettle",
+    "kind": "quest",
+    "name": "Brother Kettle",
+    "title": "Reads the Builders' mark",
+    "x": 0,
+    "z": 0,
+    "yaw": 0
+   },
+   {
+    "id": "pim",
+    "kind": "quest",
+    "name": "Page Turner Pim",
+    "title": "Knows every shelf",
+    "x": 0,
+    "z": 0,
+    "yaw": 2
+   }
+  ]
+ },
+ "14": {
+  "floor": 14,
+  "name": "FLOOR 14 · CASTLE DREAD",
+  "hub_name": "The Lych Gate Inn",
+  "spawn": [
+   0,
+   1.7,
+   52
+  ],
+  "ceil": 80,
+  "hub": {
+   "style": "timber",
+   "w": 156,
+   "d": 120
+  },
+  "villages": [
+   {
+    "name": "Ashen Hamlet",
+    "x": -240,
+    "z": -180,
+    "races": [
+     "human",
+     "bogling"
+    ],
+    "merchants": [
+     {
+      "id": "v14a",
+      "name": "Hamlet Trader",
+      "title": "Gear",
+      "shop": "gear"
+     }
+    ]
+   },
+   {
+    "name": "The Gibbet Crossroads",
+    "x": 250,
+    "z": -170,
+    "races": [
+     "grimhide",
+     "human"
+    ],
+    "merchants": [
+     {
+      "id": "v14b",
+      "name": "Crossroads Trader",
+      "title": "Food, water, potions",
+      "shop": "provisions"
+     }
+    ]
+   },
+   {
+    "name": "The Mill",
+    "x": -250,
+    "z": 200,
+    "races": [
+     "stoneblood",
+     "gutterkin"
+    ],
+    "merchants": [
+     {
+      "id": "v14c",
+      "name": "Mill Trader",
+      "title": "Junk",
+      "shop": "pickles"
+     }
+    ]
+   },
+   {
+    "name": "Hollow Chapel",
+    "x": 250,
+    "z": 240,
+    "races": [
+     "lumen",
+     "mothwing"
+    ],
+    "merchants": [
+     {
+      "id": "v14d",
+      "name": "Chapel Trader",
+      "title": "Gear",
+      "shop": "gear"
+     }
+    ]
+   }
+  ],
+  "camps": [
+   {
+    "name": "The Graveyard",
+    "camp": "c14_0",
+    "x": -200,
+    "z": -40,
+    "r": 22,
+    "style": "castle",
+    "mob": "the_restless",
+    "lvl": [
+     126,
+     128
+    ],
+    "count": 10,
+    "boss": "gravedigger",
+    "level": "126-130 · Neighbourhood"
+   },
+   {
+    "name": "The Witch's Tower",
+    "camp": "c14_1",
+    "x": 170,
+    "z": -250,
+    "r": 22,
+    "style": "castle",
+    "mob": "waxwork",
+    "lvl": [
+     128,
+     130
+    ],
+    "count": 10,
+    "boss": "wax_witch",
+    "level": "128-132 · Borough"
+   },
+   {
+    "name": "The Gatehouse",
+    "camp": "c14_2",
+    "x": -60,
+    "z": 280,
+    "r": 22,
+    "style": "castle",
+    "mob": "hollow_guard",
+    "lvl": [
+     130,
+     132
+    ],
+    "count": 10,
+    "boss": "portcullis_knight",
+    "level": "130-134 · Neighbourhood"
+   },
+   {
+    "name": "The Crypts",
+    "camp": "c14_3",
+    "x": 280,
+    "z": 40,
+    "r": 22,
+    "style": "castle",
+    "mob": [
+     "the_restless",
+     "waxwork"
+    ],
+    "lvl": [
+     132,
+     134
+    ],
+    "count": 10,
+    "boss": "the_ossuary",
+    "level": "132-136 · Borough"
+   },
+   {
+    "name": "The Keep",
+    "camp": "c14_4",
+    "x": 0,
+    "z": -320,
+    "r": 26,
+    "style": "castle",
+    "mob": [
+     "hollow_guard",
+     "the_restless"
+    ],
+    "lvl": [
+     134,
+     136
+    ],
+    "count": 10,
+    "boss": "the_count",
+    "level": "134-138 · City"
+   }
+  ],
+  "landmarks": [
+   {
+    "name": "The Drawbridge",
+    "x": 110,
+    "z": 170,
+    "r": 16
+   },
+   {
+    "name": "Gallows Hill",
+    "x": -150,
+    "z": 180,
+    "r": 16
+   },
+   {
+    "name": "The Great Hall's Chandelier",
+    "x": 220,
+    "z": -130,
+    "r": 16
+   }
+  ],
+  "merchants": [
+   {
+    "id": "m14g",
+    "name": "Blacksmith Morrow",
+    "title": "Weapons & armour",
+    "shop": "gear",
+    "model": "blacksmith_morrow"
+   },
+   {
+    "id": "m14p",
+    "name": "Goodwife Gall",
+    "title": "Food, water, potions",
+    "shop": "provisions",
+    "model": "goodwife_gall"
+   },
+   {
+    "id": "m14t",
+    "name": "Bo's Deepest Branch",
+    "title": "Table merchant",
+    "shop": "tables",
+    "race": "stoneblood",
+    "voice": "bo"
+   },
+   {
+    "id": "m14j",
+    "name": "Pedlar Crook",
+    "title": "Junk",
+    "shop": "pickles",
+    "model": "pedlar_crook"
+   }
+  ],
+  "innkeeper": "Old Mother Lych",
+  "innkeeper_model": "old_mother_lych",
+  "townsfolk": {
+   "races": [
+    "human",
+    "bogling"
+   ]
+  },
+  "stairs": {
+   "x": 0,
+   "z": -312,
+   "r": 3.4,
+   "to": "15",
+   "flag": "the_count_handled",
+   "how": "The way down is beneath the Keep. The Count holds it.",
+   "locked": "The way down is guarded. The way down is beneath the Keep. The Count holds it."
+  },
+  "quest_npcs": [
+   {
+    "id": "lisbet",
+    "kind": "quest",
+    "name": "Lamplighter Lisbet",
+    "title": "Keeps the road lit",
+    "x": 0,
+    "z": 0,
+    "yaw": 0
+   },
+   {
+    "id": "widow",
+    "kind": "quest",
+    "name": "Widow Grimsby",
+    "title": "Mourns the whole village",
+    "x": 0,
+    "z": 0,
+    "yaw": 2
+   }
+  ]
+ },
+ "15": {
+  "floor": 15,
+  "name": "FLOOR 15 · THE COLD STORE",
+  "hub_name": "The Warm Room",
+  "spawn": [
+   0,
+   1.7,
+   52
+  ],
+  "ceil": 40,
+  "hub": {
+   "style": "garage",
+   "w": 156,
+   "d": 120
+  },
+  "villages": [
+   {
+    "name": "Rack 9",
+    "x": -240,
+    "z": -180,
+    "races": [
+     "clanker",
+     "human"
+    ],
+    "merchants": [
+     {
+      "id": "v15a",
+      "name": "9 Trader",
+      "title": "Gear",
+      "shop": "gear"
+     }
+    ]
+   },
+   {
+    "name": "The Cooling Plant",
+    "x": 250,
+    "z": -170,
+    "races": [
+     "stoneblood",
+     "grimhide"
+    ],
+    "merchants": [
+     {
+      "id": "v15b",
+      "name": "Plant Trader",
+      "title": "Food, water, potions",
+      "shop": "provisions"
+     }
+    ]
+   },
+   {
+    "name": "Tape Library",
+    "x": -250,
+    "z": 200,
+    "races": [
+     "human",
+     "lumen"
+    ],
+    "merchants": [
+     {
+      "id": "v15c",
+      "name": "Library Trader",
+      "title": "Junk",
+      "shop": "pickles"
+     }
+    ]
+   },
+   {
+    "name": "Fibre Junction",
+    "x": 250,
+    "z": 240,
+    "races": [
+     "clanker",
+     "gutterkin"
+    ],
+    "merchants": [
+     {
+      "id": "v15d",
+      "name": "Junction Trader",
+      "title": "Gear",
+      "shop": "gear"
+     }
+    ]
+   }
+  ],
+  "camps": [
+   {
+    "name": "The Cable Jungle",
+    "camp": "c15_0",
+    "x": -200,
+    "z": -40,
+    "r": 22,
+    "style": "server",
+    "mob": "cable_crawler",
+    "lvl": [
+     135,
+     137
+    ],
+    "count": 10,
+    "boss": "cable_mother",
+    "level": "135-139 · Neighbourhood"
+   },
+   {
+    "name": "The Cooling Towers",
+    "camp": "c15_1",
+    "x": 170,
+    "z": -250,
+    "r": 22,
+    "style": "server",
+    "mob": "fan_wraith",
+    "lvl": [
+     137,
+     139
+    ],
+    "count": 10,
+    "boss": "fan_wraith_king",
+    "level": "137-141 · Borough"
+   },
+   {
+    "name": "The Tape Library",
+    "camp": "c15_2",
+    "x": -60,
+    "z": 280,
+    "r": 22,
+    "style": "server",
+    "mob": "bit_rot",
+    "lvl": [
+     139,
+     141
+    ],
+    "count": 10,
+    "boss": "the_backup",
+    "level": "139-143 · Neighbourhood"
+   },
+   {
+    "name": "The Firewall",
+    "camp": "c15_3",
+    "x": 280,
+    "z": 40,
+    "r": 22,
+    "style": "server",
+    "mob": [
+     "bit_rot",
+     "cable_crawler"
+    ],
+    "lvl": [
+     141,
+     143
+    ],
+    "count": 10,
+    "boss": "the_firewall",
+    "level": "141-145 · Borough"
+   },
+   {
+    "name": "The Core",
+    "camp": "c15_4",
+    "x": 0,
+    "z": -320,
+    "r": 26,
+    "style": "server",
+    "mob": [
+     "fan_wraith",
+     "bit_rot"
+    ],
+    "lvl": [
+     143,
+     145
+    ],
+    "count": 10,
+    "boss": "the_recorder",
+    "level": "143-147 · City"
+   }
+  ],
+  "landmarks": [
+   {
+    "name": "The Frozen Server",
+    "x": 110,
+    "z": 170,
+    "r": 16
+   },
+   {
+    "name": "The Blinking Light",
+    "x": -150,
+    "z": 180,
+    "r": 16
+   },
+   {
+    "name": "The Big Red Switch",
+    "x": 220,
+    "z": -130,
+    "r": 16
+   }
+  ],
+  "merchants": [
+   {
+    "id": "m15g",
+    "name": "Spare Parts Sparks",
+    "title": "Weapons & armour",
+    "shop": "gear",
+    "model": "spare_parts_sparks"
+   },
+   {
+    "id": "m15p",
+    "name": "Warm Room Wes",
+    "title": "Food, water, potions",
+    "shop": "provisions",
+    "model": "warm_room_wes"
+   },
+   {
+    "id": "m15t",
+    "name": "Bo's Deepest Branch",
+    "title": "Table merchant",
+    "shop": "tables",
+    "race": "stoneblood",
+    "voice": "bo"
+   },
+   {
+    "id": "m15j",
+    "name": "Coolant Cass",
+    "title": "Junk",
+    "shop": "pickles",
+    "model": "coolant_cass"
+   }
+  ],
+  "innkeeper": "Night Shift Noor",
+  "innkeeper_model": "night_shift_noor",
+  "townsfolk": {
+   "races": [
+    "clanker",
+    "human"
+   ]
+  },
+  "stairs": {
+   "x": 0,
+   "z": -312,
+   "r": 3.4,
+   "to": "16",
+   "flag": "the_recorder_handled",
+   "how": "Hear the Recorder out, in the Core.",
+   "locked": "The way down is guarded. Hear the Recorder out, in the Core."
+  },
+  "quest_npcs": [
+   {
+    "id": "sven",
+    "kind": "quest",
+    "name": "Sysadmin Sven",
+    "title": "Keeps the Builders' machines alive",
+    "x": 0,
+    "z": 0,
+    "yaw": 0
+   },
+   {
+    "id": "rattle",
+    "kind": "quest",
+    "name": "Rattle",
+    "title": "A robot who is starting to remember",
+    "x": 0,
+    "z": 0,
+    "yaw": 2
+   }
+  ]
+ },
+ "16": {
+  "floor": 16,
+  "name": "FLOOR 16 · THE TRANSMITTER",
+  "hub_name": "The Engineers' Canteen",
+  "spawn": [
+   0,
+   1.7,
+   52
+  ],
+  "ceil": 90,
+  "hub": {
+   "style": "civic",
+   "w": 156,
+   "d": 120
+  },
+  "villages": [
+   {
+    "name": "Dish Field",
+    "x": -240,
+    "z": -180,
+    "races": [
+     "clanker",
+     "human"
+    ],
+    "merchants": [
+     {
+      "id": "v16a",
+      "name": "Field Trader",
+      "title": "Gear",
+      "shop": "gear"
+     }
+    ]
+   },
+   {
+    "name": "Relay Town",
+    "x": 250,
+    "z": -170,
+    "races": [
+     "human",
+     "fennix"
+    ],
+    "merchants": [
+     {
+      "id": "v16b",
+      "name": "Town Trader",
+      "title": "Food, water, potions",
+      "shop": "provisions"
+     }
+    ]
+   },
+   {
+    "name": "The Fuse Room",
+    "x": -250,
+    "z": 200,
+    "races": [
+     "stoneblood",
+     "grimhide"
+    ],
+    "merchants": [
+     {
+      "id": "v16c",
+      "name": "Room Trader",
+      "title": "Junk",
+      "shop": "pickles"
+     }
+    ]
+   },
+   {
+    "name": "Uplink",
+    "x": 250,
+    "z": 240,
+    "races": [
+     "lumen",
+     "clanker"
+    ],
+    "merchants": [
+     {
+      "id": "v16d",
+      "name": "Uplink Trader",
+      "title": "Gear",
+      "shop": "gear"
+     }
+    ]
+   }
+  ],
+  "camps": [
+   {
+    "name": "The Dish Array",
+    "camp": "c16_0",
+    "x": -200,
+    "z": -40,
+    "r": 22,
+    "style": "broadcast",
+    "mob": "static_man",
+    "lvl": [
+     144,
+     146
+    ],
+    "count": 10,
+    "boss": "static_king",
+    "level": "144-148 · Neighbourhood"
+   },
+   {
+    "name": "The Censor's Office",
+    "camp": "c16_1",
+    "x": 170,
+    "z": -250,
+    "r": 22,
+    "style": "broadcast",
+    "mob": "censor_bar",
+    "lvl": [
+     146,
+     148
+    ],
+    "count": 10,
+    "boss": "the_censor",
+    "level": "146-150 · Borough"
+   },
+   {
+    "name": "The Ratings Room",
+    "camp": "c16_2",
+    "x": -60,
+    "z": 280,
+    "r": 22,
+    "style": "broadcast",
+    "mob": "ratings_ghoul",
+    "lvl": [
+     148,
+     150
+    ],
+    "count": 10,
+    "boss": "the_feed",
+    "level": "148-152 · Neighbourhood"
+   },
+   {
+    "name": "The Teleprompter",
+    "camp": "c16_3",
+    "x": 280,
+    "z": 40,
+    "r": 22,
+    "style": "broadcast",
+    "mob": [
+     "static_man",
+     "censor_bar"
+    ],
+    "lvl": [
+     150,
+     152
+    ],
+    "count": 10,
+    "boss": "the_teleprompter",
+    "level": "150-154 · Borough"
+   },
+   {
+    "name": "The Gallery",
+    "camp": "c16_4",
+    "x": 0,
+    "z": -320,
+    "r": 26,
+    "style": "broadcast",
+    "mob": [
+     "ratings_ghoul",
+     "static_man"
+    ],
+    "lvl": [
+     152,
+     154
+    ],
+    "count": 10,
+    "boss": "the_director",
+    "level": "152-156 · City"
+   }
+  ],
+  "landmarks": [
+   {
+    "name": "The Big Mast",
+    "x": 110,
+    "z": 170,
+    "r": 16
+   },
+   {
+    "name": "The Dead Air Zone",
+    "x": -150,
+    "z": 180,
+    "r": 16
+   },
+   {
+    "name": "The Live Light",
+    "x": 220,
+    "z": -130,
+    "r": 16
+   }
+  ],
+  "merchants": [
+   {
+    "id": "m16g",
+    "name": "Fuse Room Fitz",
+    "title": "Weapons & armour",
+    "shop": "gear",
+    "model": "fuse_room_fitz"
+   },
+   {
+    "id": "m16p",
+    "name": "Canteen Connie",
+    "title": "Food, water, potions",
+    "shop": "provisions",
+    "model": "canteen_connie"
+   },
+   {
+    "id": "m16t",
+    "name": "Bo's Deepest Branch",
+    "title": "Table merchant",
+    "shop": "tables",
+    "race": "stoneblood",
+    "voice": "bo"
+   },
+   {
+    "id": "m16j",
+    "name": "Uplink Ula",
+    "title": "Junk",
+    "shop": "pickles",
+    "model": "uplink_ula"
+   }
+  ],
+  "innkeeper": "Relay Ruth",
+  "innkeeper_model": "relay_ruth",
+  "townsfolk": {
+   "races": [
+    "clanker",
+    "human"
+   ]
+  },
+  "stairs": {
+   "x": 0,
+   "z": -312,
+   "r": 3.4,
+   "to": "17",
+   "flag": "the_director_handled",
+   "how": "Take the Gallery from the Director.",
+   "locked": "The way down is guarded. Take the Gallery from the Director."
+  },
+  "quest_npcs": [
+   {
+    "id": "okonkwo",
+    "kind": "quest",
+    "name": "Engineer Okonkwo",
+    "title": "Knows where the off switch is",
+    "x": 0,
+    "z": 0,
+    "yaw": 0
+   },
+   {
+    "id": "lou",
+    "kind": "quest",
+    "name": "Lineman Lou",
+    "title": "Climbs the masts",
+    "x": 0,
+    "z": 0,
+    "yaw": 2
+   }
+  ]
+ },
+ "17": {
+  "floor": 17,
+  "name": "FLOOR 17 · THE HOST'S HOUSE",
+  "hub_name": "Main Street",
+  "spawn": [
+   0,
+   1.7,
+   52
+  ],
+  "ceil": 60,
+  "hub": {
+   "style": "picket",
+   "w": 156,
+   "d": 120
+  },
+  "villages": [
+   {
+    "name": "Elm Street",
+    "x": -240,
+    "z": -180,
+    "races": [
+     "human",
+     "human"
+    ],
+    "merchants": [
+     {
+      "id": "v17a",
+      "name": "Street Trader",
+      "title": "Gear",
+      "shop": "gear"
+     }
+    ]
+   },
+   {
+    "name": "The School",
+    "x": 250,
+    "z": -170,
+    "races": [
+     "human",
+     "fennix"
+    ],
+    "merchants": [
+     {
+      "id": "v17b",
+      "name": "School Trader",
+      "title": "Food, water, potions",
+      "shop": "provisions"
+     }
+    ]
+   },
+   {
+    "name": "The Diner",
+    "x": -250,
+    "z": 200,
+    "races": [
+     "human",
+     "bogling"
+    ],
+    "merchants": [
+     {
+      "id": "v17c",
+      "name": "Diner Trader",
+      "title": "Junk",
+      "shop": "pickles"
+     }
+    ]
+   },
+   {
+    "name": "The Drive-In",
+    "x": 250,
+    "z": 240,
+    "races": [
+     "human",
+     "grimhide"
+    ],
+    "merchants": [
+     {
+      "id": "v17d",
+      "name": "Drive-In Trader",
+      "title": "Gear",
+      "shop": "gear"
+     }
+    ]
+   }
+  ],
+  "camps": [
+   {
+    "name": "The Fan Club",
+    "camp": "c17_0",
+    "x": -200,
+    "z": -40,
+    "r": 22,
+    "style": "host",
+    "mob": "fan_zealot",
+    "lvl": [
+     153,
+     155
+    ],
+    "count": 10,
+    "boss": "fan_club_president",
+    "level": "153-157 · Neighbourhood"
+   },
+   {
+    "name": "The Mirror Maze",
+    "camp": "c17_1",
+    "x": 170,
+    "z": -250,
+    "r": 22,
+    "style": "host",
+    "mob": "mirror_self",
+    "lvl": [
+     155,
+     157
+    ],
+    "count": 10,
+    "boss": "the_stand_in",
+    "level": "155-159 · Borough"
+   },
+   {
+    "name": "The Runner-Up's House",
+    "camp": "c17_2",
+    "x": -60,
+    "z": 280,
+    "r": 22,
+    "style": "host",
+    "mob": [
+     "host_clone",
+     "fan_zealot"
+    ],
+    "lvl": [
+     157,
+     159
+    ],
+    "count": 10,
+    "boss": "the_runner_up",
+    "level": "157-161 · Neighbourhood"
+   },
+   {
+    "name": "The Trophy Room",
+    "camp": "c17_3",
+    "x": 280,
+    "z": 40,
+    "r": 22,
+    "style": "host",
+    "mob": [
+     "host_clone",
+     "mirror_self"
+    ],
+    "lvl": [
+     159,
+     161
+    ],
+    "count": 10,
+    "boss": "the_mother",
+    "level": "159-163 · Borough"
+   },
+   {
+    "name": "The Studio",
+    "camp": "c17_4",
+    "x": 0,
+    "z": -320,
+    "r": 26,
+    "style": "host",
+    "mob": [
+     "host_clone",
+     "fan_zealot"
+    ],
+    "lvl": [
+     161,
+     163
+    ],
+    "count": 10,
+    "boss": "the_host",
+    "level": "161-165 · City"
+   }
+  ],
+  "landmarks": [
+   {
+    "name": "The House",
+    "x": 110,
+    "z": 170,
+    "r": 16
+   },
+   {
+    "name": "The Drive-In Screen",
+    "x": -150,
+    "z": 180,
+    "r": 16
+   },
+   {
+    "name": "The Mirror Maze",
+    "x": 220,
+    "z": -130,
+    "r": 16
+   }
+  ],
+  "merchants": [
+   {
+    "id": "m17g",
+    "name": "Hardware Hank",
+    "title": "Weapons & armour",
+    "shop": "gear",
+    "model": "hardware_hank"
+   },
+   {
+    "id": "m17p",
+    "name": "Soda Jerk Sid",
+    "title": "Food, water, potions",
+    "shop": "provisions",
+    "model": "soda_jerk_sid"
+   },
+   {
+    "id": "m17t",
+    "name": "Bo's Deepest Branch",
+    "title": "Table merchant",
+    "shop": "tables",
+    "race": "stoneblood",
+    "voice": "bo"
+   },
+   {
+    "id": "m17j",
+    "name": "Pawn Paula",
+    "title": "Junk",
+    "shop": "pickles",
+    "model": "pawn_paula"
+   }
+  ],
+  "innkeeper": "Diner Dolores",
+  "innkeeper_model": "diner_dolores",
+  "townsfolk": {
+   "races": [
+    "human",
+    "human"
+   ]
+  },
+  "stairs": {
+   "x": 0,
+   "z": -312,
+   "r": 3.4,
+   "to": "18",
+   "flag": "the_host_handled",
+   "how": "The Host is waiting in the Studio.",
+   "locked": "The way down is guarded. The Host is waiting in the Studio."
+  },
+  "quest_npcs": [
+   {
+    "id": "milkman",
+    "kind": "quest",
+    "name": "The Milkman",
+    "title": "Delivers every morning, forever",
+    "x": 0,
+    "z": 0,
+    "yaw": 0
+   },
+   {
+    "id": "kindly",
+    "kind": "quest",
+    "name": "Miss Kindly",
+    "title": "Taught the Host everything",
+    "x": 0,
+    "z": 0,
+    "yaw": 2
+   }
+  ]
+ },
+ "18": {
+  "floor": 18,
+  "name": "FLOOR 18 · THE FLOOR THAT DOES NOT EXIST",
+  "hub_name": "The Builders' Lobby",
+  "spawn": [
+   0,
+   1.7,
+   52
+  ],
+  "ceil": 100,
+  "hub": {
+   "style": "civic",
+   "w": 156,
+   "d": 120
+  },
+  "villages": [
+   {
+    "name": "The Last Waiting Room",
+    "x": -240,
+    "z": -180,
+    "races": [
+     "human",
+     "clanker"
+    ],
+    "merchants": [
+     {
+      "id": "v18a",
+      "name": "Room Trader",
+      "title": "Gear",
+      "shop": "gear"
+     }
+    ]
+   },
+   {
+    "name": "The Echo Steps",
+    "x": 250,
+    "z": -170,
+    "races": [
+     "lumen",
+     "mothwing"
+    ],
+    "merchants": [
+     {
+      "id": "v18b",
+      "name": "Steps Trader",
+      "title": "Food, water, potions",
+      "shop": "provisions"
+     }
+    ]
+   }
+  ],
+  "camps": [
+   {
+    "name": "The Wardens' Gate",
+    "camp": "c18_0",
+    "x": -200,
+    "z": -40,
+    "r": 22,
+    "style": "void",
+    "mob": "maintainer",
+    "lvl": [
+     162,
+     164
+    ],
+    "count": 10,
+    "boss": "the_warden",
+    "level": "162-166 · Neighbourhood"
+   },
+   {
+    "name": "The Echo Hall",
+    "camp": "c18_1",
+    "x": 170,
+    "z": -250,
+    "r": 22,
+    "style": "void",
+    "mob": "echo",
+    "lvl": [
+     164,
+     166
+    ],
+    "count": 10,
+    "boss": "the_first_contestant",
+    "level": "164-168 · Borough"
+   },
+   {
+    "name": "The Builders' Seat",
+    "camp": "c18_2",
+    "x": -60,
+    "z": 280,
+    "r": 26,
+    "style": "void",
+    "mob": [
+     "maintainer",
+     "echo"
+    ],
+    "lvl": [
+     166,
+     168
+    ],
+    "count": 10,
+    "boss": "the_absence",
+    "level": "166-170 · City"
+   }
+  ],
+  "landmarks": [
+   {
+    "name": "The Control Room",
+    "x": 110,
+    "z": 170,
+    "r": 16
+   },
+   {
+    "name": "The Stack's Heart",
+    "x": -150,
+    "z": 180,
+    "r": 16
+   },
+   {
+    "name": "The Door",
+    "x": 220,
+    "z": -130,
+    "r": 16
+   }
+  ],
+  "merchants": [
+   {
+    "id": "m18g",
+    "name": "Priest Index Archdeacon",
+    "title": "Weapons & armour",
+    "shop": "gear",
+    "model": "priest_index_archdeacon"
+   },
+   {
+    "id": "m18p",
+    "name": "Engineer Okonkwo",
+    "title": "Food, water, potions",
+    "shop": "provisions",
+    "model": "engineer_okonkwo"
+   },
+   {
+    "id": "m18t",
+    "name": "Bo's Deepest Branch",
+    "title": "Table merchant",
+    "shop": "tables",
+    "race": "stoneblood",
+    "voice": "bo"
+   },
+   {
+    "id": "m18j",
+    "name": "The Fence",
+    "title": "Junk",
+    "shop": "pickles",
+    "model": "the_fence"
+   }
+  ],
+  "innkeeper": "Mags Bartender",
+  "innkeeper_model": "mags_bartender",
+  "townsfolk": {
+   "races": [
+    "human",
+    "clanker"
+   ]
+  },
+  "stairs": {
+   "x": 0,
+   "z": -312,
+   "r": 3.4,
+   "to": "19",
+   "flag": "the_absence_handled",
+   "how": "There is nothing below this. Choose.",
+   "locked": "There is nothing below this. Choose."
+  },
+  "quest_npcs": [
+   {
+    "id": "mags",
+    "kind": "quest",
+    "name": "Mags",
+    "title": "Somehow already here",
+    "x": 0,
+    "z": 0,
+    "yaw": 0
+   },
+   {
+    "id": "kettle2",
+    "kind": "quest",
+    "name": "Brother Kettle",
+    "title": "Has been here before, he thinks",
+    "x": 0,
+    "z": 0,
+    "yaw": 2
+   }
+  ]
+ }
+}

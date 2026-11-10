@@ -12,6 +12,8 @@ config/features=PackedStringArray("4.7", "Forward Plus")
 [autoload]
 
 Data="*res://scripts/autoload/data.gd"
+Combat="*res://scripts/combat/combat.gd"
+Story="*res://scripts/story/story.gd"
 
 [display]
 

@@ -413,14 +413,6 @@ def sandbags():
     p.export()
 
 
-def tires():
-    p = Prop("tires", 19)
-    for k, (x, y) in enumerate(((0, 0), (0.02, 0.03), (-0.03, 0.0), (0.03, -0.02))):
-        p.lathe([(0.2, 0), (0.33, 0), (0.42, 0.06), (0.42, 0.2), (0.33, 0.26), (0.2, 0.26), (0.18, 0.13)], (x, y, k * 0.26), "#26252b", segs=18)
-    p.lathe([(0.2, 0), (0.33, 0), (0.42, 0.06), (0.42, 0.2), (0.33, 0.26), (0.2, 0.26), (0.18, 0.13)], (0.86, -0.1, 0), "#d7c13a", segs=18)
-    p.export()
-
-
 def boxes():
     p = Prop("boxes", 20)
     # Welcome Boxes waiting to be handed out: taped cardboard, one left open.
@@ -644,7 +636,7 @@ def filing():
 
 
 if __name__ == "__main__":
-    for build in (desk, stanchions, column, ceiling_light, truss, spotlight, ceiling_beam, conduit, bench, plant, trash_can, fountain, tv_mount, camera_rig, barrier, sandbags, tires, boxes, wet_floor, folding_chair, cones, stair_door, arrival_stairs, fp_hand, lead_pipe, noticeboard, shelf, filing):
+    for build in (desk, stanchions, column, ceiling_light, truss, spotlight, ceiling_beam, conduit, bench, plant, trash_can, fountain, tv_mount, camera_rig, barrier, sandbags, boxes, wet_floor, folding_chair, cones, stair_door, arrival_stairs, fp_hand, lead_pipe, noticeboard, shelf, filing):
         try:
             build()
         except Exception as error:

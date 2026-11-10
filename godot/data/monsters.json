@@ -8,7 +8,7 @@
    "speed": 3.4,
    "reach": 1.9,
    "arc": 1.4,
-   "windup": 0.6,
+   "windup": 0.9,
    "swing": 0.18,
    "recover": 0.65,
    "xp": 20,
@@ -19,7 +19,8 @@
     "Get the tall one!",
     "Hrrk! Fresh meat!",
     "Boss said nobody passes!"
-   ]
+   ],
+   "attack_pace": 1.45
   },
   "thrower": {
    "name": "Cone Chucker",
@@ -37,9 +38,10 @@
    "ranged": {
     "min": 6,
     "max": 16,
-    "windup": 0.85,
+    "windup": 1.2,
     "speed": 13,
-    "cd": 2.2
+    "cd": 3.0,
+    "pace": 1.4
    },
    "barks": [
     "Heads up! HEH HEH.",
@@ -53,11 +55,11 @@
    "hp": 120,
    "dmg": 12,
    "speed": 3.6,
-   "reach": 2.2,
+   "reach": 2.5,
    "arc": 1.6,
-   "windup": 0.75,
-   "swing": 0.2,
-   "recover": 0.7,
+   "windup": 1.2,
+   "swing": 0.25,
+   "recover": 0.9,
    "xp": 70,
    "aggro": 16,
    "elite": true,
@@ -68,6 +70,13 @@
     "FORM UP, YOU LOT!",
     "For the Sergeant!",
     "You picked the wrong car park."
+   ],
+   "taunt": 0.5,
+   "taunts": [
+    "FORM UP, YOU LOT!",
+    "Nobody parks here. NOBODY.",
+    "You're nicked, sunshine!",
+    "Right. Hands where I can bite 'em."
    ]
   },
   "wight": {
@@ -100,16 +109,15 @@
    "reach": 3,
    "arc": 1.7,
    "windup": 0.8,
-   "swing": 0.22,
-   "recover": 0.75,
+   "swing": 0.2,
+   "recover": 1.0,
    "xp": 650,
    "aggro": 18,
    "leash": 30,
    "abilities": [
-    "slam",
-    "charge",
-    "whistle",
-    "barrage"
+    "powerup",
+    "leap",
+    "spin"
    ],
    "barks": [
     "HALT! This is a CONE ZONE!",
@@ -117,7 +125,14 @@
     "You are parked in MY spot.",
     "I have twenty years on the force. Okay, two. In cones."
    ],
-   "enrage": "SERGEANT PYLON BLOWS HIS WHISTLE IN RAGE"
+   "enrage": "SERGEANT PYLON BLOWS HIS WHISTLE IN RAGE",
+   "combo": {
+    "hits": [
+     2.05,
+     3.0
+    ],
+    "speed": 1.3
+   }
   },
   "ebb": {
    "name": "Head Custodian Ebb",
@@ -1181,6 +1196,34 @@
   "keys": {
    "cd": 9,
    "windup": 0.8,
+   "range": 18
+  },
+  "leap": {
+   "cd": 11,
+   "windup": 1.55,
+   "range": 11,
+   "min": 4.5,
+   "chance": 0.45
+  },
+  "spin": {
+   "cd": 9,
+   "windup": 1.05,
+   "range": 3.4
+  },
+  "powerup": {
+   "cd": 30,
+   "windup": 1.4,
+   "uses": 2
+  },
+  "grab": {
+   "cd": 12,
+   "windup": 1.3,
+   "range": 7,
+   "min": 2.0
+  },
+  "tickets": {
+   "cd": 14,
+   "windup": 1.15,
    "range": 18
   }
  }

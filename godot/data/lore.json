@@ -1,0 +1,53 @@
+{
+  "_about": "Lore pages, found in hidden encampments. Each act has its pages, handed out in order; collected pages assemble the hidden story (art/WORLD.md, section 7).",
+  "acts": {
+    "1": { "title": "The Builders' Mark", "pages": [
+      { "title": "A survey note, very old paper", "text": "Site confirmed. The structure predates the city above it by a margin we cannot measure. Every floor carries the same mark: a square with a line through it, like a door seen edge-on." },
+      { "title": "A contractor's warning sign", "text": "DO NOT REMOVE SEALS. Orange, conical, standard issue. The contractor laughed when we ordered ten thousand traffic cones. He stopped laughing when we told him where they were going." },
+      { "title": "A child's drawing", "text": "Crayon: a tall building going down instead of up. Eighteen floors. At the bottom, a big face with no eyes. Written underneath, carefully: THE BUILDING WAS HERE FIRST." },
+      { "title": "A torn page of a site diary", "text": "Day 41. The knocking under Floor 1 counts in sevens. The foreman says it's pipes. There are no pipes. We stacked more cones and it stopped." },
+      { "title": "A laminated safety card", "text": "IF YOU HEAR YOUR NAME FROM BELOW: do not answer. Do not count along. Do not open any door marked with the symbol. Report to your floor warden. (There are no floor wardens. Not any more.)" },
+      { "title": "Scratched into a stair rail", "text": "We were the first season. There was no show yet. Just us, and the stairs, and the counting." }
+    ] },
+    "2": { "title": "Past Seasons", "pages": [
+      { "title": "A season pass, Season 3", "text": "ADMIT ONE CONTESTANT. VALID FOR ALL FLOORS. NON-REFUNDABLE. NON-TRANSFERABLE. NON-RETURNABLE. The holder's photo is a woman who looks a lot like Marta, only forty years younger." },
+      { "title": "A fan letter", "text": "Dear Contestant 0412, you are my favourite. I watch you every night. I have watched you for nine years. Please never reach the bottom, because then the show will end." },
+      { "title": "A wristband log", "text": "Fans: 1,204,881. Fans: 1,207,330. Fans: 0. Fans: 0. Fans: 0. The last entry is dated the day the wearer reached Floor 9." },
+      { "title": "A production memo", "text": "Re: winners. Under no circumstances is a winner to be shown leaving. The audience must believe there is an exit. Wardrobe will handle the rest." },
+      { "title": "A season-wrap photo", "text": "Forty contestants smiling on the stairs. On the back, in pen, a tick beside every name but one. The one has been scratched out so hard the paper tore." },
+      { "title": "A suggestion-box card", "text": "Could we please have a floor that isn't trying to kill us? Signed, everyone. The reply, stamped in red: NOTED. RATINGS DISAGREE." }
+    ] },
+    "3": { "title": "What They Sealed", "pages": [
+      { "title": "A Builders' tablet, translated", "text": "We did not build a prison for monsters. We built a stomach for appetites, and sealed it, so that it would digest them slowly and the world above could forget it was ever hungry." },
+      { "title": "A priest's confession", "text": "Saint Tally doesn't want the debt paid. She wants the counting. If every debt were paid there would be nothing left to count, and she would starve." },
+      { "title": "A flooded hymn book", "text": "Old Damp only wants what anyone wants: to be remembered. That is why the water rises. Everything left behind floats up eventually." },
+      { "title": "A Builders' maintenance schedule", "text": "Seal check, Floors 1-18. Appetites quiet. Then, in a different hand, years later: SIGNAL DETECTED. SOMEONE IS FEEDING THEM. SOMEONE IS WATCHING." },
+      { "title": "Mags' notebook", "text": "Gods are just hungers with good PR. I picked none. Forty years and I've never been better rested." },
+      { "title": "A rat's ballot", "text": "Vote for the Good Neighbour: everyone the same, everyone home. The rats tick the box every year. They never ask what home means." }
+    ] },
+    "4": { "title": "How the Show is Made", "pages": [
+      { "title": "A rating sheet", "text": "Fan count is not popularity. It is load. Each viewer's attention is metered, converted and routed down. Contestants are the wick. Fans are the flame." },
+      { "title": "A stagehand's notebook", "text": "We don't film them. We point the cameras so the audience looks, and the looking does the rest. I quit after I worked out where the looking goes." },
+      { "title": "A script page, Season 9", "text": "SCENE 4. CONTESTANT DIES. (Hold the shot. Let them watch. Big spike. Remember what the spike is for.)" },
+      { "title": "An agent's contract", "text": "Clause 12: the talent agrees that their likeness, voice, fans and soul are licensed to the Network in perpetuity, throughout the universe, in all media now known or hereafter devised." },
+      { "title": "Dex's diary", "text": "Two million fans. I can feel them now. Like a hand on my back, pushing. Downwards." },
+      { "title": "A canteen menu", "text": "Today's special: whatever was left over from yesterday's contestants. (A joke, the chef says. Probably.)" }
+    ] },
+    "5": { "title": "The Archive", "pages": [
+      { "title": "The Builders' last entry", "text": "The signal found the seals. It feeds them, and they feed it, and the people on the stairs pay for both. We are turning off the lights. Someone else will have to turn off the rest." },
+      { "title": "A museum label", "text": "SEASON 9: CASTLE DREAD. Cast retained on site for authenticity. Please do not feed the cast." },
+      { "title": "The first contestant's wristband", "text": "Contestant 0001. Fans: 1. The one fan's ID matches the Network's founding account." },
+      { "title": "A backup tape label", "text": "EVERYONE. ALL SEASONS. DO NOT ERASE. DO NOT PLAY BACK. Someone has stuck a gold star on it." },
+      { "title": "A card from the Index", "text": "FILED UNDER: YOU. See also: everyone who came before you. See also: everyone who will." },
+      { "title": "Rattle's memory, recovered", "text": "My name was Ruth. Season 4. I reached Floor 15 and they offered me a job. I didn't know the job was being a guard forever." }
+    ] },
+    "6": { "title": "The Host", "pages": [
+      { "title": "A school report card", "text": "A natural performer. Charming. Must learn that not everyone in the room is his audience. Grade: A+. Teacher's note, later: he never left the room." },
+      { "title": "A winner's certificate", "text": "SEASON 1 CHAMPION. Prize: the show. All of it. Forever. Congratulations." },
+      { "title": "A letter to his mother", "text": "Mum, I won. They say I have to stay and host now. Just for a while. I'll be home for dinner." },
+      { "title": "A director's note", "text": "Every winner becomes the next Host. The old Host becomes the set. Please do not tell the talent." },
+      { "title": "A switch label", "text": "MASTER BROADCAST. ON / OFF. There has never been a reason to use OFF. There has never been anyone allowed this far down." },
+      { "title": "Unsigned, on the Builders' seat", "text": "If you are reading this, you got here. That means you can choose. We couldn't. Choose better." }
+    ] }
+  }
+}
